@@ -184,7 +184,7 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
     }
 
     @ReactMethod
-    public void getCharacteristic(String mac, String uuid, Promise promise) {
+    public void getFirstCharacteristic(String mac, String characteristicUUID, Promise promise) {
         final RxBleDeviceServices rxBleDeviceServices = deviceServicesMap.get(mac);
         if (rxBleDeviceServices == null) {
             promise.reject(new RuntimeException("NoSuchServiceException for " + mac)); // TODO Create NoSuchServiceException
@@ -192,7 +192,23 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
         }
 
         final Subscription subscribe = rxBleDeviceServices
-                .getCharacteristic(UUID.fromString(uuid))
+                .getCharacteristic(UUID.fromString(characteristicUUID))
+                .subscribe(bluetoothGattCharacteristic -> onGetCharacteristicSuccess(bluetoothGattCharacteristic, promise),
+                        throwable -> onGetCharacteristicFailure(throwable, promise));
+    }
+
+
+
+    @ReactMethod
+    public void getCharacteristic(String mac, String serviceUUID, String characteristicUUID, Promise promise) {
+        final RxBleDeviceServices rxBleDeviceServices = deviceServicesMap.get(mac);
+        if (rxBleDeviceServices == null) {
+            promise.reject(new RuntimeException("NoSuchServiceException for " + mac)); // TODO Create NoSuchServiceException
+            return;
+        }
+
+        final Subscription subscribe = rxBleDeviceServices
+                .getCharacteristic(UUID.fromString(serviceUUID), UUID.fromString(characteristicUUID))
                 .subscribe(bluetoothGattCharacteristic -> onGetCharacteristicSuccess(bluetoothGattCharacteristic, promise),
                         throwable -> onGetCharacteristicFailure(throwable, promise));
     }
