@@ -118,6 +118,7 @@ class ReactNativeTest extends Component {
     async asyncConnect(text) {
         try {
             var response = await  RxBleClient.establishConnection(text, false);
+            var response = await  RxBleClient.discoverServices(text);
             ToastModule.show(JSON.stringify(response), ToastModule.SHORT);
         } catch (e) {
             ToastModule.show(e.code, ToastModule.SHORT);
