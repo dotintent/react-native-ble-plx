@@ -117,8 +117,13 @@ class ReactNativeTest extends Component {
 
     async asyncConnect(text) {
         try {
-            var response = await  RxBleClient.establishConnection(text, false);
-            var response = await  RxBleClient.discoverServices(text);
+            var response1 = await  RxBleClient.establishConnection(text, false);
+            var response2 = await  RxBleClient.discoverServices(text);
+            //First option
+            var response3 = await  RxBleClient.getCharacteristic(text, response2.SERVICES[0].CHARACTERISTICS[0].UUID);
+            var response = await  RxBleClient.readCharacteristic(text, response3);
+            //Second option
+            // var response = await  RxBleClient.readCharacteristic(text, response2.SERVICES[0].CHARACTERISTICS[0].UUID);
             ToastModule.show(JSON.stringify(response), ToastModule.SHORT);
         } catch (e) {
             ToastModule.show(e.code, ToastModule.SHORT);

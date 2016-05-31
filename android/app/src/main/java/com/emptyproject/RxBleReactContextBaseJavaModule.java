@@ -1,7 +1,10 @@
 package com.emptyproject;
 
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattService;
 import android.support.annotation.Nullable;
+import android.util.Base64;
+import android.util.Log;
 import com.emptyproject.converter.RxBleConnectionStateConverter;
 import com.emptyproject.converter.RxBleDeviceServicesConverter;
 import com.emptyproject.converter.RxBleScanResultConverter;
@@ -18,13 +21,15 @@ import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
 import com.polidea.rxandroidble.RxBleDeviceServices;
 import com.polidea.rxandroidble.RxBleScanResult;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import rx.Observable;
 import rx.Subscription;
 
 public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule {
+
+    private static final String TAG = RxBleReactContextBaseJavaModule.class.getSimpleName();
 
     interface Metadata {
 
@@ -105,11 +110,18 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
         if (oldSubscription != null && !oldSubscription.isUnsubscribed()) {
             return;
         }
+        final RxBleConnection connection = connectionMap.get(mac);
+        if (!rxBleDevice.getConnectionState().equals(RxBleConnection.RxBleConnectionState.CONNECTED) && connection != null) {
+            promise.resolve(mac);
+            return;
+        }
+
         final Subscription subscription = rxBleDevice
                 .establishConnection(getReactApplicationContext(), autoConnect)
                 .subscribe(
                         rxBleConnection -> onEstablishConnectionSuccess(mac, rxBleConnection, promise),
-                        throwable -> onEstablishConnectionFailure(mac, throwable, promise));
+                        throwable -> onEstablishConnectionFailure(mac, throwable, promise),
+                        () -> Log.d(TAG, "establishConnection onComplete for " + mac));
         establishConnectionSubscriptionMap.put(mac, subscription);
     }
 
@@ -148,21 +160,67 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
     }
 
     @ReactMethod
-    public void getCharacteristic(String mac, String uuid, Promise promise){
+    public void getService(String mac, String uuid, Promise promise) {
         final RxBleDeviceServices rxBleDeviceServices = deviceServicesMap.get(mac);
-        if(rxBleDeviceServices == null){
+        if (rxBleDeviceServices == null) {
+            promise.reject(new RuntimeException("NoSuchServiceException for " + mac)); // TODO Create NoSuchServiceException
+            return;
+        }
+
+        final Subscription subscribe = rxBleDeviceServices
+                .getService(UUID.fromString(uuid))
+                .subscribe(bluetoothGattService -> onGetServiceSuccess(bluetoothGattService, promise),
+                        throwable -> onGetCharacteristicFailure(throwable, promise));
+    }
+
+    private void onGetServiceSuccess(BluetoothGattService  bluetoothGattService, Promise promise) {
+        Log.d(TAG, "Characteristic is read");
+        promise.resolve(bluetoothGattService.getUuid().toString());
+    }
+
+    private void onGetServiceFailure(Throwable throwable, Promise promise) {
+        Log.d(TAG, "Characteristic reading is failure");
+        promise.reject(throwable);
+    }
+
+    @ReactMethod
+    public void getCharacteristic(String mac, String uuid, Promise promise) {
+        final RxBleDeviceServices rxBleDeviceServices = deviceServicesMap.get(mac);
+        if (rxBleDeviceServices == null) {
             promise.reject(new RuntimeException("NoSuchServiceException for " + mac)); // TODO Create NoSuchServiceException
             return;
         }
 
         final Subscription subscribe = rxBleDeviceServices
                 .getCharacteristic(UUID.fromString(uuid))
-                .subscribe(this::onGetCharacteristicSuccess);
+                .subscribe(bluetoothGattCharacteristic -> onGetCharacteristicSuccess(bluetoothGattCharacteristic, promise),
+                        throwable -> onGetCharacteristicFailure(throwable, promise));
     }
 
+    private void onGetCharacteristicSuccess(BluetoothGattCharacteristic bluetoothGattCharacteristic, Promise promise) {
+        Log.d(TAG, "Characteristic is read");
+        promise.resolve(bluetoothGattCharacteristic.getUuid().toString());
+    }
 
-    private void onGetCharacteristicSuccess(BluetoothGattCharacteristic bluetoothGattCharacteristic){
+    private void onGetCharacteristicFailure(Throwable throwable, Promise promise) {
+        Log.d(TAG, "Characteristic reading is failure");
+        promise.reject(throwable);
+    }
 
+    @ReactMethod
+    public void readCharacteristic(String mac, String uuid, Promise promise) {
+        final RxBleConnection rxBleConnection = connectionMap.get(mac);
+        if (rxBleConnection == null) {
+            promise.reject(new RuntimeException("NoSuchConnection for " + mac)); // TODO Create NoSuchConnection
+            return;
+        }
+        final Subscription subscribe = rxBleConnection.readCharacteristic(UUID.fromString(uuid))
+                .subscribe(bytes -> onReadCharacteristicSuccess(promise, bytes));
+    }
+
+    private void onReadCharacteristicSuccess(Promise promise, byte[] bytes) {
+        promise.resolve(Base64.encodeToString(bytes, Base64.DEFAULT));
+        Log.d(TAG, "onReadCharacteristicSuccess: " + Arrays.toString(bytes));
     }
 
     @ReactMethod
