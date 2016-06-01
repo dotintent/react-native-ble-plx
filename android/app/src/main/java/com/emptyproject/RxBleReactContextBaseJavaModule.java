@@ -8,6 +8,7 @@ import android.util.Log;
 import com.emptyproject.converter.RxBleConnectionStateConverter;
 import com.emptyproject.converter.RxBleDeviceServicesConverter;
 import com.emptyproject.converter.RxBleScanResultConverter;
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -21,10 +22,13 @@ import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
 import com.polidea.rxandroidble.RxBleDeviceServices;
 import com.polidea.rxandroidble.RxBleScanResult;
+import com.polidea.rxandroidble.exceptions.BleDisconnectedException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import rx.Observable;
 import rx.Subscription;
 
 public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule {
@@ -123,13 +127,14 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
                         throwable -> onEstablishConnectionFailure(mac, throwable, promise),
                         () -> Log.d(TAG, "establishConnection onComplete for " + mac));
         establishConnectionSubscriptionMap.put(mac, subscription);
+
+        Observable.just(Observable.just("test")).flatMap(obs -> obs).subscribe(str ->str.substring(1));
     }
 
     private void onEstablishConnectionSuccess(String mac, RxBleConnection rxBleConnection, Promise promise) {
         connectionMap.put(mac, rxBleConnection);
         promise.resolve(mac);
     }
-
 
     private void onEstablishConnectionFailure(String mac, Throwable throwable, Promise promise) {
         final Subscription establishConnectionSubscription = establishConnectionSubscriptionMap.get(mac);
@@ -173,7 +178,7 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
                         throwable -> onGetCharacteristicFailure(throwable, promise));
     }
 
-    private void onGetServiceSuccess(BluetoothGattService  bluetoothGattService, Promise promise) {
+    private void onGetServiceSuccess(BluetoothGattService bluetoothGattService, Promise promise) {
         Log.d(TAG, "Characteristic is read");
         promise.resolve(bluetoothGattService.getUuid().toString());
     }
@@ -197,8 +202,6 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
                         throwable -> onGetCharacteristicFailure(throwable, promise));
     }
 
-
-
     @ReactMethod
     public void getCharacteristic(String mac, String serviceUUID, String characteristicUUID, Promise promise) {
         final RxBleDeviceServices rxBleDeviceServices = deviceServicesMap.get(mac);
@@ -206,7 +209,6 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
             promise.reject(new RuntimeException("NoSuchServiceException for " + mac)); // TODO Create NoSuchServiceException
             return;
         }
-
         final Subscription subscribe = rxBleDeviceServices
                 .getCharacteristic(UUID.fromString(serviceUUID), UUID.fromString(characteristicUUID))
                 .subscribe(bluetoothGattCharacteristic -> onGetCharacteristicSuccess(bluetoothGattCharacteristic, promise),
@@ -231,13 +233,103 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
             return;
         }
         final Subscription subscribe = rxBleConnection.readCharacteristic(UUID.fromString(uuid))
+                .doOnNext(xx -> doOnNext())
                 .subscribe(bytes -> onReadCharacteristicSuccess(promise, bytes));
+    }
+
+    private void doOnNext() {
+        Log.d(TAG, "doOnNext: test");
     }
 
     private void onReadCharacteristicSuccess(Promise promise, byte[] bytes) {
         promise.resolve(Base64.encodeToString(bytes, Base64.DEFAULT));
         Log.d(TAG, "onReadCharacteristicSuccess: " + Arrays.toString(bytes));
     }
+
+    @ReactMethod
+    public void writeCharacteristic(String mac, String uuid, String data, Promise promise) {
+        final RxBleConnection rxBleConnection = connectionMap.get(mac);
+        if (rxBleConnection == null) {
+            promise.reject(new RuntimeException("NoSuchConnection for " + mac)); // TODO Create NoSuchConnection
+            return;
+        }
+        final Subscription subscribe = rxBleConnection.writeCharacteristic(UUID.fromString(uuid), Base64.decode(data, Base64.DEFAULT))
+                .subscribe(bytes -> onWriteCharacteristicSuccess(promise, bytes));
+    }
+
+    private void onWriteCharacteristicSuccess(Promise promise, byte[] bytes) {
+        promise.resolve(Base64.encodeToString(bytes, Base64.DEFAULT));
+        Log.d(TAG, "onWriteCharacteristicSuccess: " + Arrays.toString(bytes));
+    }
+    private static final UUID accelerometerCharacteristicDataUuid = UUID.fromString("F000AA11-0451-4000-B000-000000000000");
+
+    private static final UUID accelerometerCharacteristicConfigUuid = UUID.fromString("F000AA12-0451-4000-B000-000000000000");
+    @ReactMethod
+    public void xxXX() {
+        final RxBleDevice bleDevice = rxBleClient.getBleDevice("34:B1:F7:D5:04:01");
+        final Subscription dataSubscription = bleDevice
+                .establishConnection(getReactApplicationContext(), false)
+                .flatMap(rxBleConnection ->
+                        rxBleConnection.writeCharacteristic(accelerometerCharacteristicConfigUuid, new byte[]{1})
+                                .flatMap(ignoredBytes -> rxBleConnection.setupNotification(accelerometerCharacteristicDataUuid))
+                )
+                .flatMap(observable -> observable)
+                .retryWhen(observable -> observable.delay(5, TimeUnit.SECONDS).filter(throwable -> throwable instanceof BleDisconnectedException))
+                .subscribe(
+                        this::onNotification//,
+//                        throwable -> Toast.makeText(this, throwable.toString(), Toast.LENGTH_LONG).show()
+                );
+    }
+
+    @ReactMethod
+    public void wTeoriiDzialajacaMetoda(String mac, Promise promise) {
+        final RxBleDevice rxBleDevice = deviceMap.get(mac);
+        if (rxBleDevice == null) {
+            promise.reject(new RuntimeException()); // Todo Create NoFoundDeviceException or sth like that.
+            return;
+        }
+
+        final RxBleConnection connection = connectionMap.get(mac);
+        if(connection == null){
+            return;
+        }
+        if (!rxBleDevice.getConnectionState().equals(RxBleConnection.RxBleConnectionState.CONNECTED) && connection != null) {
+            promise.reject(new RuntimeException());
+            return;
+        }
+        connection.writeCharacteristic(accelerometerCharacteristicConfigUuid, new byte[]{1})
+                                .flatMap(ignoredBytes -> connection.setupNotification(accelerometerCharacteristicDataUuid))
+                .flatMap(observable -> observable)
+                .retryWhen(observable -> observable.delay(5, TimeUnit.SECONDS).filter(throwable -> throwable instanceof BleDisconnectedException))
+                .subscribe(
+                        this::onNotification//,
+//                        throwable -> Toast.makeText(this, throwable.toString(), Toast.LENGTH_LONG).show()
+                );
+    }
+
+    @ReactMethod
+    public void setupNotification(String mac, String uuid, Promise promise) {
+        final RxBleConnection rxBleConnection = connectionMap.get(mac);
+        if (rxBleConnection == null) {
+            promise.reject(new RuntimeException("NoSuchConnection for " + mac)); // TODO Create NoSuchConnection
+            return;
+        }
+        final Subscription subscribe = rxBleConnection.setupNotification(UUID.fromString(uuid)).subscribe(this::onSetupNotificationSuccess,
+                throwable -> Log.e(TAG, "Error : ", throwable));
+    }
+
+    private void onSetupNotificationSuccess(Observable<byte[]> byteObservable) {
+        byteObservable.subscribe(this::onNotification);
+        Log.d(TAG, "onWriteCharacteristicSuccess");
+    }
+
+    private void onNotification(byte[] bytes) {
+        Log.d(TAG, "onWriteCharacteristicSuccess: " + Arrays.toString(bytes));
+        WritableMap result = Arguments.createMap();
+        result.putString("test", Arrays.toString(bytes));
+        sendEvent(getReactApplicationContext(), "ON_NOTIFICATION_GET", result);
+    }
+
 
     @ReactMethod
     public void stopScanDevice() {

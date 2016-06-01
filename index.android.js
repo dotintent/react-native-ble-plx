@@ -47,6 +47,10 @@ class ReactNativeTest extends Component {
                 loaded: true,
             });
         });
+
+        DeviceEventEmitter.addListener('ON_NOTIFICATION_GET', (e) => {
+            ToastModule.show(JSON.stringify(e), ToastModule.SHORT);
+        });
     }
 
 
@@ -115,19 +119,31 @@ class ReactNativeTest extends Component {
         this.asyncConnect(text);
     }
 
+/*
+{
+    SERVICES  :[ {
+      UUID : "00a-sa-das-dasd-a"
+      CHARACTERISTICS : [{
+        UUID : "00a-sa-das-dasd-a"
+    }
+    ]
+  }]
+}
+*/
     async asyncConnect(text) {
         try {
-            var response1 = await  RxBleClient.establishConnection(text, false);
-            var response2 = await  RxBleClient.discoverServices(text);
+           var response1 = await  RxBleClient.establishConnection(text, false);
+          //  var response2 = await  RxBleClient.discoverServices(text);
             //First option
             //var response3 = await  RxBleClient.getFirstCharacteristic(text, response2.SERVICES[0].CHARACTERISTICS[1].UUID);
             //Socond option
-            var response3 = await  RxBleClient.getCharacteristic(text, response2.SERVICES[0].UUID, response2.SERVICES[0].CHARACTERISTICS[1].UUID);
-            var response = await  RxBleClient.readCharacteristic(text, response3);
+        //    var response3 = await  RxBleClient.getCharacteristic(text, response2.SERVICES[0].UUID, response2.SERVICES[0].CHARACTERISTICS[0].UUID);
+            //var response = await  RxBleClient.readCharacteristic(text, response3);
             //Third option
             // var response = await  RxBleClient.readCharacteristic(text, response2.SERVICES[0].CHARACTERISTICS[0].UUID);
-
-            ToastModule.show(JSON.stringify(response), ToastModule.SHORT);
+            //RxBleClient.setupNotification(text, response2.SERVICES[0].CHARACTERISTICS[0].UUID)
+            RxBleClient.wTeoriiDzialajacaMetoda(text);
+            //ToastModule.show(JSON.stringify(response), ToastModule.SHORT);
         } catch (e) {
             ToastModule.show(e.code, ToastModule.SHORT);
         }
