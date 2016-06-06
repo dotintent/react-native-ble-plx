@@ -5,9 +5,6 @@ import android.bluetooth.BluetoothGattService;
 import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
-import com.emptyproject.converter.RxBleConnectionStateConverter;
-import com.emptyproject.converter.RxBleDeviceServicesConverter;
-import com.emptyproject.converter.RxBleScanResultConverter;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
@@ -28,6 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import org.konradkrakowiak.blereactnative.converter.ConverterManager;
 import rx.Observable;
 import rx.Subscription;
 
@@ -39,11 +37,9 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
 
     }
 
-    RxBleScanResultConverter rxBleScanResultConverter;
 
-    RxBleConnectionStateConverter rxBleConnectionStateConverter;
+    ConverterManager converterManager;
 
-    RxBleDeviceServicesConverter rxBleDeviceServicesConverter;
 
     RxBleClient rxBleClient;
 
@@ -64,9 +60,7 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
 
     public RxBleReactContextBaseJavaModule(ReactApplicationContext reactContext) {
         super(reactContext);
-        rxBleScanResultConverter = new RxBleScanResultConverter();
-        rxBleConnectionStateConverter = new RxBleConnectionStateConverter();
-        rxBleDeviceServicesConverter = new RxBleDeviceServicesConverter();
+        converterManager = new ConverterManager();
         deviceMap = new HashMap<>();
         deviceServicesMap = new HashMap<>();
         establishConnectionSubscriptionMap = new HashMap<>();
@@ -96,7 +90,7 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
     }
 
     private void sendEventOnScanBleDevice(RxBleScanResult rxBleScanResult) {
-        final WritableMap params = rxBleScanResultConverter.convert(rxBleScanResult);
+        final WritableMap params = converterManager.convert(rxBleScanResult);
         final RxBleDevice bleDevice = rxBleScanResult.getBleDevice();
         deviceMap.put(bleDevice.getMacAddress(), bleDevice);
         sendEvent(getReactApplicationContext(), "BLE_SCAN_RESULT", params);
@@ -128,7 +122,7 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
                         () -> Log.d(TAG, "establishConnection onComplete for " + mac));
         establishConnectionSubscriptionMap.put(mac, subscription);
 
-        Observable.just(Observable.just("test")).flatMap(obs -> obs).subscribe(str ->str.substring(1));
+        Observable.just(Observable.just("test")).flatMap(obs -> obs).subscribe(str -> str.substring(1));
     }
 
     private void onEstablishConnectionSuccess(String mac, RxBleConnection rxBleConnection, Promise promise) {
@@ -161,7 +155,7 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
 
     private void onDiscoverDeviceServicesSuccess(String mac, RxBleDeviceServices rxBleDeviceServices, Promise promise) {
         deviceServicesMap.put(mac, rxBleDeviceServices);
-        promise.resolve(rxBleDeviceServicesConverter.convert(rxBleDeviceServices));
+        promise.resolve(converterManager.convert(rxBleDeviceServices));
     }
 
     @ReactMethod
@@ -261,9 +255,11 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
         promise.resolve(Base64.encodeToString(bytes, Base64.DEFAULT));
         Log.d(TAG, "onWriteCharacteristicSuccess: " + Arrays.toString(bytes));
     }
+
     private static final UUID accelerometerCharacteristicDataUuid = UUID.fromString("F000AA11-0451-4000-B000-000000000000");
 
     private static final UUID accelerometerCharacteristicConfigUuid = UUID.fromString("F000AA12-0451-4000-B000-000000000000");
+
     @ReactMethod
     public void xxXX() {
         final RxBleDevice bleDevice = rxBleClient.getBleDevice("34:B1:F7:D5:04:01");
@@ -290,15 +286,15 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
         }
 
         final RxBleConnection connection = connectionMap.get(mac);
-        if(connection == null){
+        if (connection == null) {
             return;
         }
-        if (!rxBleDevice.getConnectionState().equals(RxBleConnection.RxBleConnectionState.CONNECTED) && connection != null) {
+        if (!rxBleDevice.getConnectionState().equals(RxBleConnection.RxBleConnectionState.CONNECTED)) {
             promise.reject(new RuntimeException());
             return;
         }
         connection.writeCharacteristic(accelerometerCharacteristicConfigUuid, new byte[]{1})
-                                .flatMap(ignoredBytes -> connection.setupNotification(accelerometerCharacteristicDataUuid))
+                .flatMap(ignoredBytes -> connection.setupNotification(accelerometerCharacteristicDataUuid))
                 .flatMap(observable -> observable)
                 .retryWhen(observable -> observable.delay(5, TimeUnit.SECONDS).filter(throwable -> throwable instanceof BleDisconnectedException))
                 .subscribe(

@@ -20,6 +20,7 @@ import {
 } from 'react-native';
 const ToastModule = NativeModules.TestBLEModule;
 const RxBleClient = NativeModules.RxBleClient;
+const BleModule = NativeModules.BleModule;
 
 var array = [];
 
@@ -39,7 +40,7 @@ class ReactNativeTest extends Component {
     }
 
     componentWillMount() {
-        DeviceEventEmitter.addListener('BLE_SCAN_RESULT', (e) => {
+        DeviceEventEmitter.addListener('SCAN_RESULT', (e) => {
             array[arrayCount] = e.BLE_DEVICE.MAC_ADDRESS;
             arrayCount = arrayCount + 1;
             this.setState({
@@ -55,10 +56,19 @@ class ReactNativeTest extends Component {
 
 
     componentDidMount() {
-        ToastModule.pingEvent("costam");
-        RxBleClient.createContext((b) => {
-            RxBleClient.scanBleDevices();
-        });
+        // ToastModule.pingEvent("costam");
+        // RxBleClient.createContext((b) => {
+        //     RxBleClient.scanBleDevices();
+        // });
+
+        BleModule.createClient();
+        BleModule.scanBleDevices((e)=> {ToastModule.show(e, ToastModule.SHORT)});
+        setTimeout(
+            () => {
+              ToastModule.show("Scan stop", ToastModule.SHORT);
+              BleModule.stopScanBleDevices(); },
+            20000
+        );
         // this.ping();
         // this.fetchData();
     }
@@ -132,7 +142,11 @@ class ReactNativeTest extends Component {
 */
     async asyncConnect(text) {
         try {
-           var response1 = await  RxBleClient.establishConnection(text, false);
+
+          var isConnected = await BleModule.establishConnection("34:B1:F7:D5:04:01", true);
+          var saved = await BleModule.writeCharacteristic("34:B1:F7:D5:04:01", "xxx", "F000AA12-0451-4000-B000-000000000000", "MQ==");
+          BleModule.setupNotification("34:B1:F7:D5:04:01", "xxx", "F000AA11-0451-4000-B000-000000000000", (e)=> {ToastModule.show(e.DATA, ToastModule.SHORT)});
+            //var response1 = await  RxBleClient.establishConnection(text, false);
           //  var response2 = await  RxBleClient.discoverServices(text);
             //First option
             //var response3 = await  RxBleClient.getFirstCharacteristic(text, response2.SERVICES[0].CHARACTERISTICS[1].UUID);
@@ -142,11 +156,20 @@ class ReactNativeTest extends Component {
             //Third option
             // var response = await  RxBleClient.readCharacteristic(text, response2.SERVICES[0].CHARACTERISTICS[0].UUID);
             //RxBleClient.setupNotification(text, response2.SERVICES[0].CHARACTERISTICS[0].UUID)
-            RxBleClient.wTeoriiDzialajacaMetoda(text);
-            //ToastModule.show(JSON.stringify(response), ToastModule.SHORT);
+          //  RxBleClient.xxXX();
+
+          //  ToastModule.show(JSON.stringify(response), ToastModule.SHORT);
+
+          //New solution
+
+
         } catch (e) {
             ToastModule.show(e.code, ToastModule.SHORT);
         }
+    }
+
+    async delay(){
+
     }
     renderMovie(movie) {
         return ( < View style = {

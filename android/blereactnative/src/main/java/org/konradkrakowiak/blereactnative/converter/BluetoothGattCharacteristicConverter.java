@@ -1,13 +1,10 @@
-package com.emptyproject.converter;
+package org.konradkrakowiak.blereactnative.converter;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 
-/**
- * Created by Konrad on 31/05/16.
- */
-public class BluetoothGattCharacteristicConverter implements Converter<BluetoothGattCharacteristic> {
+class BluetoothGattCharacteristicConverter implements Converter<BluetoothGattCharacteristic> {
 
     private interface Metadata {
 

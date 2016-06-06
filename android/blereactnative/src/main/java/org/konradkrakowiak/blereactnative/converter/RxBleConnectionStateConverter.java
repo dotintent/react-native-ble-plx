@@ -1,18 +1,18 @@
-package com.emptyproject.converter;
+package org.konradkrakowiak.blereactnative.converter;
 
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.rxandroidble.RxBleConnection;
 
-public class RxBleConnectionStateConverter implements Converter<RxBleConnection.RxBleConnectionState> {
+class RxBleConnectionStateConverter implements Converter<RxBleConnection.RxBleConnectionState> {
 
     private interface Metadata {
 
         String STATE = "STATE";
     }
 
-    public interface State {
+    interface State {
 
         String CONNECTING = "CONNECTING";
         String CONNECTED = "CONNECTED";

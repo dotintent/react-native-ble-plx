@@ -1,11 +1,11 @@
-package com.emptyproject.converter;
+package org.konradkrakowiak.blereactnative.converter;
 
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.rxandroidble.RxBleDevice;
 
-public class RxBleDeviceConverter implements Converter<RxBleDevice> {
+class RxBleDeviceConverter implements Converter<RxBleDevice> {
 
     private interface Metadata {
 
@@ -14,10 +14,10 @@ public class RxBleDeviceConverter implements Converter<RxBleDevice> {
         String CONNECTION_STATE = "CONNECTION_STATE";
     }
 
-    RxBleConnectionStateConverter rxBleConnectionStateConverter;
+   private final RxBleConnectionStateConverter rxBleConnectionStateConverter;
 
-    public RxBleDeviceConverter() {
-        rxBleConnectionStateConverter = new RxBleConnectionStateConverter();
+    RxBleDeviceConverter(RxBleConnectionStateConverter rxBleConnectionStateConverter) {
+        this.rxBleConnectionStateConverter = rxBleConnectionStateConverter;
     }
 
     @Override

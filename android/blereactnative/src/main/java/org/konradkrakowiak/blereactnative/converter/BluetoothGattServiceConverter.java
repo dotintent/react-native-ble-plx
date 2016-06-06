@@ -1,4 +1,4 @@
-package com.emptyproject.converter;
+package org.konradkrakowiak.blereactnative.converter;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
@@ -7,10 +7,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import java.util.List;
 
-/**
- * Created by Konrad on 31/05/16.
- */
-public class BluetoothGattServiceConverter implements Converter<BluetoothGattService> {
+class BluetoothGattServiceConverter implements Converter<BluetoothGattService> {
 
     private interface Metadata {
 
@@ -20,9 +17,9 @@ public class BluetoothGattServiceConverter implements Converter<BluetoothGattSer
 
     private final BluetoothGattCharacteristicConverter bluetoothGattCharacteristicConverter;
 
-    public BluetoothGattServiceConverter() {
+    BluetoothGattServiceConverter(BluetoothGattCharacteristicConverter bluetoothGattCharacteristicConverter) {
 
-        bluetoothGattCharacteristicConverter = new BluetoothGattCharacteristicConverter();
+        this.bluetoothGattCharacteristicConverter = bluetoothGattCharacteristicConverter;
     }
 
     @Override
