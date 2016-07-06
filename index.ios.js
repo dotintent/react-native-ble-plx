@@ -9,10 +9,56 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Image,
+  ListView,
+  NativeModules,
+  DeviceEventEmitter,
+  NativeAppEventEmitter,
+  Subscribable,
+  TouchableNativeFeedback
 } from 'react-native';
 
+const BleModule = NativeModules.BleClientManager;
+
 class EmptyProject extends Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentWillMount() {
+      DeviceEventEmitter.addListener('TEST_EVENT', (e) => {
+        console.log(e);
+        // this.asyncConnect(e.identifier)
+      });
+  }
+
+  componentDidMount() {
+      console.log("Create BLE client");
+      BleModule.createClient();
+      BleModule.scanBleDevices((e)=> {
+        console.log(e);
+      });
+      setTimeout(
+          () => {
+            console.log("Scan stop");
+            BleModule.stopScanBleDevices(); },
+          20000
+      );
+  }
+
+
+  async asyncConnect(identifier) {
+    var isConnected = await BleModule.establishConnection(identifier);
+    if(isConnected) {
+      console.log("Connected");
+    } else {
+      console.log("NOT Connected");
+    }
+  }
+
+
   render() {
     return (
       <View style={styles.container}>
