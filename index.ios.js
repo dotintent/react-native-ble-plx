@@ -28,9 +28,9 @@ class EmptyProject extends Component {
   }
 
   componentWillMount() {
-      DeviceEventEmitter.addListener('TEST_EVENT', (e) => {
+      DeviceEventEmitter.addListener('SCAN_RESULT', (e) => {
         console.log(e);
-        // this.asyncConnect(e.identifier)
+        this.asyncConnect(e.identifier)
       });
   }
 
@@ -46,16 +46,25 @@ class EmptyProject extends Component {
             BleModule.stopScanBleDevices(); },
           20000
       );
+
   }
 
-
   async asyncConnect(identifier) {
-    var isConnected = await BleModule.establishConnection(identifier);
-    if(isConnected) {
-      console.log("Connected");
-    } else {
-      console.log("NOT Connected");
+    try {
+      var isConnected = await BleModule.establishConnection(identifier);
+      if(isConnected) {
+        console.log("Connected");
+
+        // Discover services
+
+
+      } else {
+        console.log("NOT Connected");
+      }
+    } catch(e) {
+      console.error(e);
     }
+
   }
 
 

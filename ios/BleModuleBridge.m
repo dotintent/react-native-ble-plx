@@ -15,20 +15,7 @@
 RCT_EXTERN_METHOD(createClient)
 RCT_EXTERN_METHOD(scanBleDevices:(RCTResponseSenderBlock)callback)
 RCT_EXTERN_METHOD(stopScanBleDevices)
-
-RCT_EXTERN_METHOD(establishConnection:(NSString*)deviceIdentifier resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseResolveBlock)reject)
-
-
-//RCT_REMAP_METHOD(establishConnection,
-//                 identifier:(NSString*)deviceIdentifier
-//                 resolver:(RCTPromiseResolveBlock)resolve
-//                 rejecter:(RCTPromiseRejectBlock)reject)
-//{
-//  if(1) {
-//    resolve(@(YES));
-//  } else {
-//    reject(@"1", @"2", nil);
-//  }
-//}
+RCT_EXTERN_METHOD(establishConnection:(NSString*)deviceIdentifier resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(discoverServices:(NSString*)deviceIdentifier resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
 @end
