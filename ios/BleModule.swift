@@ -73,6 +73,18 @@ class BleClientManager : NSObject {
       }
   }
   
+  func serviceForPeripherial(deviceIdentifier: String, serviceIdentifier: String) -> Observable<Service> {
+      return peripheralWithIdentifier(deviceIdentifier).flatMap {
+        Observable.from($0.discoverServices([CBUUID(string: serviceIdentifier)]))
+    }
+  }
+  
+  func characteristicForPeripherial(deviceIdentifier: String, serviceIdentifier: String, characteristicIdentifier: String) -> Observable<Characteristic> {
+      return serviceForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier).flatMap {
+        Observable.from($0.discoverCharacteristics([CBUUID(string: characteristicIdentifier)]))
+      }
+  }
+  
   @objc
   func scanBleDevices(callback: RCTResponseSenderBlock) {
     
@@ -139,9 +151,33 @@ class BleClientManager : NSObject {
   }
   
   @objc
-  func writeCharacteristic(deviceIdentifier : String, characteristicIdentifier: String, valueBase64: String) {
-      manager.retrievePeripheralsWithIdentifiers([NSUUID(UUIDBytes: deviceIdentifier)])
-  
+  func writeCharacteristic(deviceIdentifier: String,
+                           serviceIdentifier: String,
+                           characteristicIdentifier: String,
+                           valueBase64: String,
+                           resolver resolve: RCTPromiseResolveBlock,
+                           rejecter reject: RCTPromiseRejectBlock) {
+    
+      characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
+        .subscribeNext { characteristic in
+            // TODO Return some information if write is success or error
+            // TODO: convert using UTF
+            guard let data = valueBase64.dataUsingEncoding(0) else { return }
+          characteristic.writeValue(data, type: .WithResponse)
+                      .subscribe { event in
+                        switch(event) {
+                        case .Next:
+                          break;
+                        case .Completed:
+                          resolve(NSNumber(bool: true))
+                          break;
+                        case let .Error(error):
+                          self.callRecectWithError(reject, error: error)
+                          break;
+                        }
+                      }
+          }
+    
   }
   
   @objc
