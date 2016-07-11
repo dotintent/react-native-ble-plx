@@ -1,0 +1,5 @@
+target 'EmptyProject' do
+    pod 'RxBluetoothKit'
+
+    use_frameworks! // 
+end
