@@ -15,22 +15,40 @@ import {
   NativeModules,
   DeviceEventEmitter,
   NativeAppEventEmitter,
-  Subscribable,
-  TouchableNativeFeedback
+  Subscribable
 } from 'react-native';
 
 const BleModule = NativeModules.BleClientManager;
+
+var array = [];
+var arrayCount = 0;
 
 class EmptyProject extends Component {
 
   constructor(props) {
     super(props);
+    this.renderTest = this.renderTest.bind(this);
+    this._onPressButton = this._onPressButton.bind(this);
+    this.state = {
+        dataSource: new ListView.DataSource({
+            rowHasChanged: (row1, row2) => row1 !== row2,
+        }),
+        loaded: false,
+    };
   }
 
   componentWillMount() {
       DeviceEventEmitter.addListener('SCAN_RESULT', (e) => {
         console.log(e);
-        this.asyncConnect(e.identifier)
+        array[arrayCount] = e.identifier
+        arrayCount = arrayCount + 1;
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(array),
+            loaded: true,
+        });
+      });
+      DeviceEventEmitter.addListener('ON_NOTIFICATION_GET', (e) => {
+          console.log(JSON.stringify(e));
       });
   }
 
@@ -69,40 +87,67 @@ class EmptyProject extends Component {
 
 
   render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.ios.js
-        </Text>
-        <Text style={styles.instructions}>
-          Press Cmd+R to reload,{'\n'}
-          Cmd+D or shake for dev menu
-        </Text>
-      </View>
-    );
+      // if (!this.state.loaded) {
+      //     return this.renderLoadingView();
+      // }
+
+      return ( < ListView dataSource = {
+              this.state.dataSource
+          }
+          renderRow = {this.renderTest}
+          style = {
+              styles.listView
+          }
+          />
+      );
   }
+  renderTest(text) {
+      return (
+          <View><Text>{text}</Text></View>
+    )
+  }
+  renderLoadingView() {
+      return ( < View style = {
+              styles.container
+          } >
+          < Text >
+          Loading movies... < /Text> < /View >
+      );
+  }
+  _onPressButton(text){
+      ToastModule.justLogE(text);
+      this.asyncConnect(text);
+  }
+
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+var styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#F5FCFF',
+    },
+    rightContainer: {
+        flex: 1,
+    },
+    title: {
+        fontSize: 20,
+        marginBottom: 8,
+        textAlign: 'center',
+    },
+    year: {
+        textAlign: 'center',
+    },
+    thumbnail: {
+        width: 53,
+        height: 81,
+    },
+    listView: {
+        paddingTop: 20,
+        backgroundColor: '#F5FCFF',
+    },
 });
 
 AppRegistry.registerComponent('EmptyProject', () => EmptyProject);
