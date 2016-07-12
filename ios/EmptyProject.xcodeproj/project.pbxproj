@@ -21,6 +21,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		40C618901D3506AA00F2B1CE /* Promise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40C6188F1D3506AA00F2B1CE /* Promise.swift */; };
 		40F149721D2ABB53000B14FD /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F149711D2ABB53000B14FD /* Test.swift */; };
 		40F1497E1D2ABE57000B14FD /* BleModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F1497D1D2ABE57000B14FD /* BleModule.swift */; };
 		40F149801D2ABF2A000B14FD /* BleModuleBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F1497F1D2ABF2A000B14FD /* BleModuleBridge.m */; };
@@ -129,6 +130,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = EmptyProject/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		1605BCAC913392BB0A9E7BAB /* Pods-EmptyProject.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.debug.xcconfig"; path = "Pods/Target Support Files/Pods-EmptyProject/Pods-EmptyProject.debug.xcconfig"; sourceTree = "<group>"; };
+		40C6188F1D3506AA00F2B1CE /* Promise.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Promise.swift; path = EmptyProject/Promise.swift; sourceTree = "<group>"; };
 		40F149701D2ABB53000B14FD /* EmptyProject-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "EmptyProject-Bridging-Header.h"; sourceTree = "<group>"; };
 		40F149711D2ABB53000B14FD /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		40F1497D1D2ABE57000B14FD /* BleModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleModule.swift; sourceTree = "<group>"; };
@@ -244,6 +246,7 @@
 		13B07FAE1A68108700A75B9A /* EmptyProject */ = {
 			isa = PBXGroup;
 			children = (
+				40C6188F1D3506AA00F2B1CE /* Promise.swift */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -631,6 +634,7 @@
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				40F149721D2ABB53000B14FD /* Test.swift in Sources */,
 				40F1497E1D2ABE57000B14FD /* BleModule.swift in Sources */,
+				40C618901D3506AA00F2B1CE /* Promise.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

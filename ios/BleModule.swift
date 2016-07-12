@@ -135,7 +135,7 @@ class BleClientManager : NSObject {
                         resolver resolve: RCTPromiseResolveBlock,
                         rejecter reject: RCTPromiseRejectBlock) {
     // TODO: Timeouts? Cancel dicrovery??
-    peripheralWithIdentifier(deviceIdentifier)
+    _ = peripheralWithIdentifier(deviceIdentifier)
       .flatMap { Observable.from($0.discoverServices(nil)) }
       .flatMap { $0.discoverCharacteristics(nil) }
       .subscribe { event in
@@ -158,31 +158,39 @@ class BleClientManager : NSObject {
                            resolver resolve: RCTPromiseResolveBlock,
                            rejecter reject: RCTPromiseRejectBlock) {
     
-      characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
-        .subscribeNext { characteristic in
-            // TODO Return some information if write is success or error
-            // TODO: convert using UTF
-            guard let data = valueBase64.dataUsingEncoding(0) else { return }
-          characteristic.writeValue(data, type: .WithResponse)
-                      .subscribe { event in
-                        switch(event) {
-                        case .Next:
-                          break;
-                        case .Completed:
-                          resolve(NSNumber(bool: true))
-                          break;
-                        case let .Error(error):
-                          self.callRecectWithError(reject, error: error)
-                          break;
-                        }
-                      }
-          }
-    
+      _ = characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
+        .flatMap { (characteristic: Characteristic) -> Observable<Characteristic> in
+          // TODO: convert using UTF
+          // TODO: return diffrent error
+          guard let data = valueBase64.dataUsingEncoding(0) else { return Observable.error(BluetoothError.BluetoothUnsupported) }
+          return characteristic.writeValue(data, type: .WithResponse)
+        }
+        .toPromise()
+        .subscribe(resolve: { characteristic in
+            resolve(valueBase64)
+          },
+          reject: {
+            self.callRecectWithError(reject, error: $0)
+          })
   }
   
   @objc
-  func readCharacteristic(deviceIdentifier: String, characteristicIdentifier: String) {
-    
+  func readCharacteristic(deviceIdentifier: String,
+                          serviceIdentifier: String,
+                          characteristicIdentifier: String,
+                          resolver resolve: RCTPromiseResolveBlock,
+                          rejecter reject: RCTPromiseRejectBlock) {
+      _ = characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
+        .flatMap { (characteristic: Characteristic) -> Observable<Characteristic> in
+            characteristic.readValue()
+        }
+        .toPromise()
+        .subscribe(resolve: { characteristic in
+            guard let dataStr = NSString(data: characteristic.value!, encoding: NSUTF8StringEncoding) else { return self.callRecectWithError(reject, error: BluetoothError.BluetoothUnsupported) }
+            resolve(dataStr)
+        }, reject: {
+            self.callRecectWithError(reject, error: $0)
+        })
   }
   
   @objc
@@ -191,7 +199,7 @@ class BleClientManager : NSObject {
   }
   
   func callRecectWithError(reject: RCTPromiseRejectBlock, error: ErrorType) {
-    reject("Erro", "Message", error.toNSError())
+    reject("Error", "Message", error.toNSError())
   }
 
 }

@@ -66,7 +66,7 @@ class Promise<T> : ObserverType, Disposable {
   }
 
   @warn_unused_result(message="http://git.io/rxs.uo")
-  func subscribe(resolve: T -> Void, reject: ErrorType -> Void) -> Disposable {
+  func subscribe(resolve resolve: T -> Void, reject: ErrorType -> Void) -> Disposable {
     return subscribe { result in
       switch result {
       case let .Resolve(item):
