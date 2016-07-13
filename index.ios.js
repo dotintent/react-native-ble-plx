@@ -15,7 +15,8 @@ import {
   NativeModules,
   DeviceEventEmitter,
   NativeAppEventEmitter,
-  Subscribable
+  Subscribable,
+  TouchableHighlight
 } from 'react-native';
 
 const BleModule = NativeModules.BleClientManager;
@@ -87,10 +88,6 @@ class EmptyProject extends Component {
 
 
   render() {
-      // if (!this.state.loaded) {
-      //     return this.renderLoadingView();
-      // }
-
       return ( < ListView dataSource = {
               this.state.dataSource
           }
@@ -103,20 +100,14 @@ class EmptyProject extends Component {
   }
   renderTest(text) {
       return (
+        <TouchableHighlight onPress={this._onPressButton}>
           <View><Text>{text}</Text></View>
+        </TouchableHighlight>
     )
   }
-  renderLoadingView() {
-      return ( < View style = {
-              styles.container
-          } >
-          < Text >
-          Loading movies... < /Text> < /View >
-      );
-  }
   _onPressButton(text){
-      ToastModule.justLogE(text);
-      this.asyncConnect(text);
+      console.log('Connecting... ' + text);
+      // this.asyncConnect(text);
   }
 
 }

@@ -51,7 +51,16 @@ class BleClientManager : NSObject {
   private var scanSubscription: Disposable?
   private var scheduler: ConcurrentDispatchQueueScheduler!
   
+  private var connectingDevices = Dictionary<String, Disposable>()
+  private var writeTransactions = Dictionary<String, Disposable>()
+  private var readTransactions = Dictionary<String, Disposable>()
+  
   // TODO: add timeout mechanism
+  
+  func generateTransactionId() -> String {
+      let transactionId = NSUUID().UUIDString
+      return transactionId
+  }
   
   @objc
   func createClient() {
@@ -113,21 +122,39 @@ class BleClientManager : NSObject {
   func establishConnection(deviceIdentifier: String,
                            resolver resolve: RCTPromiseResolveBlock,
                            rejecter reject: RCTPromiseRejectBlock) {
-    // TODO: handle disposabe/tieout whatever
-    peripheralWithIdentifier(deviceIdentifier)
+      // TODO: handle disposabe/tieout whatever
+      // TODO: handle multiple concurent connections
+      let connectionDisp = peripheralWithIdentifier(deviceIdentifier)
       .flatMap { $0.connect() }
       .subscribe(onNext: { peripheral in
+          self.connectingDevices.removeValueForKey(deviceIdentifier)
           resolve(NSNumber(bool: true))
         }, onError: { error in
+          self.connectingDevices.removeValueForKey(deviceIdentifier)
           let bleError = error as? BluetoothError ?? BluetoothError.BluetoothUnsupported
           reject("Connection Error", "Couldn't connect to peripheral: \(deviceIdentifier)", bleError.error)
       });
+    
+      self.connectingDevices[deviceIdentifier] = connectionDisp
   }
   
   @objc
   func closeConnection(deviceIdentifier: String,
                        callback: RCTResponseSenderBlock) {
-    
+      _ = peripheralWithIdentifier(deviceIdentifier)
+        .flatMap{ $0.cancelConnection() }
+        .subscribe { event in
+          switch(event) {
+          case .Next:
+            break;
+          case .Completed:
+            callback([NSNull(), NSNumber(bool: true)])
+            break;
+          case let .Error(error):
+            callback([error.toNSError(), NSNumber(bool: true)])
+            break;
+          }
+        }
   }
   
   @objc
@@ -155,10 +182,11 @@ class BleClientManager : NSObject {
                            serviceIdentifier: String,
                            characteristicIdentifier: String,
                            valueBase64: String,
+                           transactionCallback: RCTResponseSenderBlock,
                            resolver resolve: RCTPromiseResolveBlock,
                            rejecter reject: RCTPromiseRejectBlock) {
     
-      _ = characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
+      let writeDisp = characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
         .flatMap { (characteristic: Characteristic) -> Observable<Characteristic> in
           // TODO: convert using UTF
           // TODO: return diffrent error
@@ -172,15 +200,26 @@ class BleClientManager : NSObject {
           reject: {
             self.callRecectWithError(reject, error: $0)
           })
+      let transactionId = generateTransactionId()
+      self.writeTransactions[transactionId] = writeDisp
+      transactionCallback([NSNull(), transactionId])
+  }
+  
+  @objc
+  func cancelWriteCharacteristic(transactionId: String) -> Bool {
+      guard let writeDisp = self.writeTransactions[transactionId] else { return false }
+      writeDisp.dispose()
+      return true;
   }
   
   @objc
   func readCharacteristic(deviceIdentifier: String,
                           serviceIdentifier: String,
                           characteristicIdentifier: String,
+                          transactionCallback: RCTResponseSenderBlock,
                           resolver resolve: RCTPromiseResolveBlock,
                           rejecter reject: RCTPromiseRejectBlock) {
-      _ = characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
+      let readDisp = characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
         .flatMap { (characteristic: Characteristic) -> Observable<Characteristic> in
             characteristic.readValue()
         }
@@ -191,10 +230,24 @@ class BleClientManager : NSObject {
         }, reject: {
             self.callRecectWithError(reject, error: $0)
         })
+    
+      let transactionId = generateTransactionId()
+      self.readTransactions[transactionId] = readDisp
+      transactionCallback([NSNull(), transactionId])
   }
   
   @objc
-  func setNotification(deviceIdentifier: String, characteristicIdentifier: String, enable: Bool) {
+  func cancelReadCharacteristic(transactionId: String) -> Bool {
+      guard let readDisp = self.readTransactions[transactionId] else { return false }
+      readDisp.dispose();
+      return true;
+  }
+  
+  @objc
+  func setNotification(deviceIdentifier: String,
+                       serviceIdentifier: String,
+                       characteristicIdentifier: String,
+                       enable: Bool) {
   
   }
   
