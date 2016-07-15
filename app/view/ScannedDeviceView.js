@@ -9,7 +9,7 @@ const ScannedDeviceView = ({name, uuid, rssi}) => {
       <View style={styles.topRow}>
         <View style={styles.nameRow}>
           <Text style={styles.titleText}>Name:</Text>
-          <Text style={styles.contentText}>{name}</Text>
+          <Text style={styles.contentText}>{name ? name : '-'}</Text>
         </View>
         <View style={styles.rssiRow}>
           <Text style={styles.titleText}>RSSI:</Text>
@@ -19,14 +19,14 @@ const ScannedDeviceView = ({name, uuid, rssi}) => {
       <View style={{backgroundColor: borderColor, height: 1, flex: 1}}/>
       <View style={styles.bottomRow}>
         <Text style={styles.titleText}>UUID:</Text>
-        <Text style={styles.contentText}>{uuid}</Text>
+        <Text style={styles.uuidText}>{uuid}</Text>
       </View>
     </View>
   )
 }
 
 ScannedDeviceView.propTypes = {
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   uuid: PropTypes.string.isRequired,
   rssi: PropTypes.number.isRequired
 }
@@ -49,6 +49,11 @@ var styles = StyleSheet.create({
   contentText: {
     paddingHorizontal: 2,
     paddingVertical: 3
+  },
+  uuidText: {
+    paddingHorizontal: 2,
+    paddingVertical: 3,
+    fontSize: 10,
   },
   topRow: {
     flex: 1,

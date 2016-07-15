@@ -1,5 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import { View, ListView, ListViewDataSource } from 'react-native';
+import {
+  View,
+  ListView,
+  ListViewDataSource
+} from 'react-native';
 import ScannedDeviceView from './ScannedDeviceView'
 
 export default class ScannedDeviceListView extends Component {
@@ -12,7 +16,7 @@ export default class ScannedDeviceListView extends Component {
 
   static propTypes = {
     scannedDevices: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
+      name: PropTypes.string,
       uuid: PropTypes.string.isRequired,
       rssi: PropTypes.number.isRequired
     }).isRequired).isRequired,
@@ -49,6 +53,7 @@ export default class ScannedDeviceListView extends Component {
         dataSource={this.state.dataSource}
         renderRow={this._renderCell}
         renderSeparator={this._renderSeparator}
+        enableEmptySections={true}
       />
     );
   }

@@ -1,5 +1,7 @@
-const mainReducer = (state = {}, action) => {
-  return state;
-}
+import { combineReducers } from 'redux'
+import { bleManagerSingleton } from '../ble/BleComponent'
+import bleReducer from './BleReducer'
 
-export default mainReducer
+export default combineReducers({
+  ble: bleReducer
+})

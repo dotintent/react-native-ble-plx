@@ -35,31 +35,97 @@ extension ErrorType {
   }
 }
 
+// All events dispatched by BleClientManager
+enum BleClientEvent: String {
+  case scan = "ScanEvent"
+
+  func name() -> String {
+    return rawValue
+  }
+  func id() -> String {
+    return "BleClientManager" + rawValue
+  }
+}
+
+// Main BLE module
 @objc(BleClientManager)
 class BleClientManager : NSObject {
-  
+
   class func moduleName() -> String {
     return "BleClientManager"
   }
   
   @objc
   var methodQueue: dispatch_queue_t!
-  
   var bridge: RCTBridge!
   
   private var manager : BluetoothManager!
-  private var scanSubscription: Disposable?
   private var scheduler: ConcurrentDispatchQueueScheduler!
-  
+
   // TODO: add timeout mechanism
-  
+
+  // Scanning
+  private var scanSubscription = SerialDisposable()
+
+  // MARK: Public interface
+
+  @objc
+  var constantsToExport : NSDictionary {
+    let dictionary = NSMutableDictionary()
+    let addEvent = { (event: BleClientEvent) in
+      dictionary.setObject(event.id(), forKey: event.name())
+    }
+    addEvent(.scan)
+    return dictionary
+  }
+
   @objc
   func createClient() {
-    manager = BluetoothManager(queue: methodQueue) // We are using method queue created for this react module
+    // We are using method queue created for this react module
+    manager = BluetoothManager(queue: methodQueue)
     let timerQueue = dispatch_queue_create("com.polidea.rxbluetoothkit.timer", nil)
     scheduler = ConcurrentDispatchQueueScheduler(queue: timerQueue)
   }
-  
+
+  @objc
+  func destroyClient() {
+    scanSubscription.disposable = NopDisposable.instance
+  }
+
+  @objc
+  func scanBleDevices() {
+    // TODO: Specify UUIDs?
+    scanSubscription.disposable = manager.rx_state
+      .filter { $0 == .PoweredOn }
+      .take(1)
+      .flatMap { _ in self.manager.scanForPeripherals(nil) }
+      .subscribe(onNext: { scannedPeripheral in
+        let peripheral = [
+          "uuid": scannedPeripheral.peripheral.identifier.UUIDString,
+          "name": scannedPeripheral.advertisementData.localName ?? NSNull(),
+          "rssi": scannedPeripheral.RSSI
+        ]
+        self.dispatchEvent(.scan, value: [NSNull(), peripheral])
+      }, onError: { errorType in
+        // TODO: Error type??
+        self.dispatchEvent(.scan, value: [self.error("Scan error", message: "Error occurred during scanning", code: 0)])
+      })
+  }
+
+  // MARK: Private interface
+
+  func dispatchEvent(type: BleClientEvent, value: AnyObject) {
+      bridge.eventDispatcher().sendDeviceEventWithName(type.id(), body: value)
+  }
+
+  func error(name: String, message: String, code: Int) -> NSDictionary {
+    return [
+      "name": name,
+      "message": message,
+      "code": code
+    ]
+  }
+
   func peripheralWithIdentifier(uuid: String) -> Observable<Peripheral> {
     // TODO: Define error
     guard let uuid = NSUUID(UUIDString: uuid) else { return Observable.error(BluetoothError.BluetoothUnsupported) }
@@ -86,27 +152,8 @@ class BleClientManager : NSObject {
   }
   
   @objc
-  func scanBleDevices(callback: RCTResponseSenderBlock) {
-    
-    scanSubscription = manager.rx_state
-      .filter { $0 == .PoweredOn }
-      .doOnNext { print("\($0.rawValue)") }
-      .take(1)
-      .flatMap { _ in self.manager.scanForPeripherals(nil) }
-      .subscribe(onNext: {
-        let result =  [
-          "name": $0.advertisementData.localName != nil ? $0.advertisementData.localName! : "Undefined Name",
-          "identifier" : $0.peripheral.identifier.UUIDString
-        ]
-        self.bridge.eventDispatcher().sendDeviceEventWithName("SCAN_RESULT", body: result)
-        
-        }, onError: { error in
-      })
-  }
-  
-  @objc
   func stopScanBleDevices() {
-    scanSubscription?.dispose();
+    scanSubscription.disposable = NopDisposable.instance
   }
   
   @objc
