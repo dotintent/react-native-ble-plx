@@ -13,8 +13,10 @@
 @interface RCT_EXTERN_MODULE(BleClientManager, NSObject)
 
 RCT_EXTERN_METHOD(createClient)
-RCT_EXTERN_METHOD(scanBleDevices:(RCTResponseSenderBlock)callback)
+
+RCT_EXTERN_METHOD(scanBleDevices)
 RCT_EXTERN_METHOD(stopScanBleDevices)
+
 RCT_EXTERN_METHOD(establishConnection:(NSString*)deviceIdentifier resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(discoverServices:(NSString*)deviceIdentifier resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
