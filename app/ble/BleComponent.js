@@ -2,12 +2,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import BleManager from './BleManager';
-import { blePeripheralFoundAction } from './BleActions';
+import { bleDeviceFoundAction } from './BleActions';
 
 class BleComponent extends Component {
   componentWillMount() {
     this.manager = new BleManager();
   }
+
+  // componentWillUnMount() {
+  //   this.manager.destroyClient()
+  //   delete this.manager
+  // }
 
   render() {
     if (this.props.scanning === true) {
@@ -18,6 +23,10 @@ class BleComponent extends Component {
     } else {
       this.manager.stopPeripheralScan();
     }
+
+    // if(this.props.connecting === true) {
+    //   this.manager.connecToDevice(this.props.selectedDevice)
+    // }
 
     return null;
   }
@@ -31,7 +40,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    peripheralScanned: (peripheral) => { dispatch(blePeripheralFoundAction.create(peripheral)) }
+    peripheralScanned: (peripheral) => { dispatch(bleDeviceFoundAction.create(peripheral)) }
   }
 }
 

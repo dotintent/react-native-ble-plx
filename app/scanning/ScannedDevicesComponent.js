@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 
 import ButtonView from '../view/ButtonView'
 import ScannedDeviceListView from './ScannedDeviceListView'
-import { bleStartScanAction, bleStopScanAction } from '../ble/BleActions'
+import { bleStartScanAction, bleStopScanAction, bleDeviceConnectAction } from '../ble/BleActions'
 
 class ScannedDevicesComponent extends Component {
   render() {
@@ -19,7 +19,8 @@ class ScannedDevicesComponent extends Component {
           Devices
         </Text>
         <ScannedDeviceListView
-          scannedDevices={this.props.devices}/>
+          scannedDevices={this.props.devices}
+          onScannedDeviceClicked={this.props.connectToDevice}/>
         <View style={styles.buttonRow}>
           <ButtonView
             onClick={this.props.startScan}
@@ -58,8 +59,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    startScan: () => {dispatch(bleStartScanAction.create())},
-    stopScan: () => {dispatch(bleStopScanAction.create())}
+    startScan:       ()         => {dispatch(bleStartScanAction.create())},
+    stopScan:        ()         => {dispatch(bleStopScanAction.create())},
+    connectToDevice: (deviceId) => {dispatch(bleDeviceConnectAction.create(deviceId))}
   }
 }
 

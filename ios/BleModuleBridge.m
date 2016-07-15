@@ -13,6 +13,7 @@
 @interface RCT_EXTERN_MODULE(BleClientManager, NSObject)
 
 RCT_EXTERN_METHOD(createClient)
+RCT_EXTERN_METHOD(destroyClient)
 
 RCT_EXTERN_METHOD(scanBleDevices)
 RCT_EXTERN_METHOD(stopScanBleDevices)

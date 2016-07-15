@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 let borderColor = '#2d7599'
 
-const ScannedDeviceView = ({name, uuid, rssi}) => {
+const ScannedDeviceView = ({name, uuid, rssi, onClick}) => {
   return (
+    <TouchableOpacity onPress={onClick}>
     <View style={styles.background}>
       <View style={styles.topRow}>
         <View style={styles.nameRow}>
@@ -22,6 +23,7 @@ const ScannedDeviceView = ({name, uuid, rssi}) => {
         <Text style={styles.uuidText}>{uuid}</Text>
       </View>
     </View>
+    </TouchableOpacity>
   )
 }
 

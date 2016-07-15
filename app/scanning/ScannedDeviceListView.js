@@ -12,6 +12,8 @@ export default class ScannedDeviceListView extends Component {
     super(props)
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = { dataSource: ds.cloneWithRows(this.props.scannedDevices) };
+
+    this._renderCell = this._renderCell.bind(this);
   }
 
   static propTypes = {
@@ -30,10 +32,14 @@ export default class ScannedDeviceListView extends Component {
 
   _renderCell(rowData) {
     return (
+
       <ScannedDeviceView
         uuid={rowData.uuid}
         name={rowData.name}
         rssi={rowData.rssi}
+        onClick={() => {
+          this.props.onScannedDeviceClicked(rowData.uuid)
+        }}
       />
     )
   }
