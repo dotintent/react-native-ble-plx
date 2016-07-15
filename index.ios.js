@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { View, AppRegistry } from 'react-native';
-
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import ScannedDevicesComponent from './app/components/ScannedDevicesComponent';
+
+import ScannedDevicesComponent from './app/scanning/ScannedDevicesComponent';
 import BleComponent from './app/ble/BleComponent';
-import reducer from './app/reducers/index';
+import reducer from './app/root/Reducer';
 
 class EmptyProject extends Component {
   render() {

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import BleManager from './BleManager';
-import { blePeripheralFoundAction } from '../actions/BleActions';
+import { blePeripheralFoundAction } from './BleActions';
 
 class BleComponent extends Component {
   componentWillMount() {

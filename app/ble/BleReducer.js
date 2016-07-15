@@ -2,7 +2,7 @@ import {
   bleStartScanAction,
   bleStopScanAction,
   blePeripheralFoundAction,
-} from '../actions/BleActions'
+} from './BleActions'
 
 export default (state = { devices: [] }, action) => {
   switch (action.type) {

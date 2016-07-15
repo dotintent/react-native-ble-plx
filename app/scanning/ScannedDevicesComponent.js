@@ -5,9 +5,10 @@ import {
   Text,
   TouchableHighlight,
 } from 'react-native';
-import ScannedDeviceListView from '../view/ScannedDeviceListView'
 import { connect } from 'react-redux'
-import { bleStartScanAction, bleStopScanAction } from '../actions/BleActions'
+
+import ScannedDeviceListView from './ScannedDeviceListView'
+import { bleStartScanAction, bleStopScanAction } from '../ble/BleActions'
 
 class ScannedDevicesComponent extends Component {
   render() {
