@@ -39,6 +39,8 @@ export default class BleManager {
   // Private API
 
   _scanEvent([error, scannedDevice]) {
-    this._scanEventListener(error, scannedDevice)
+    if (this._scanEventListener) {
+      this._scanEventListener(error, scannedDevice)
+    }
   }
 }

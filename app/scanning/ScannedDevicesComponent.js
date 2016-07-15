@@ -7,6 +7,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux'
 
+import ButtonView from '../view/ButtonView'
 import ScannedDeviceListView from './ScannedDeviceListView'
 import { bleStartScanAction, bleStopScanAction } from '../ble/BleActions'
 
@@ -20,18 +21,16 @@ class ScannedDevicesComponent extends Component {
         <ScannedDeviceListView
           scannedDevices={this.props.devices}/>
         <View style={styles.buttonRow}>
-          <TouchableHighlight
-            onPress={!this.props.scanning ? this.props.startScan : null}>
-            <Text style={[styles.button, styles.buttonGreen]}>
-              Start scanning
-            </Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-            onPress={this.props.scanning ? this.props.stopScan : null}>
-            <Text style={styles.button}>
-              Stop scanning
-            </Text>
-          </TouchableHighlight>
+          <ButtonView
+            onClick={this.props.startScan}
+            disabled={this.props.scanning}
+            text={'Start scanning'}
+            color={'#beffc6'}/>
+          <ButtonView
+            onClick={this.props.stopScan}
+            disabled={!this.props.scanning}
+            text={'Stop scanning'}
+            color={'#ffcbdc'}/>
         </View>
       </View>
     )
@@ -48,23 +47,12 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  button: {
-    fontWeight: 'bold',
-    borderRadius: 10,
-    borderWidth: 1,
-    overflow: 'hidden',
-    backgroundColor: '#ffb2ac',
-    padding: 10
-  },
-  buttonGreen: {
-    backgroundColor: '#9effe5',
-  }
 });
 
 function mapStateToProps(state) {
   return {
     devices: state.ble.devices,
-    scanning: state.ble.scanning
+    scanning: state.ble.scanning !== undefined ? state.ble.scanning : false
   }
 }
 
