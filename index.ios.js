@@ -39,9 +39,9 @@ class EmptyProject extends Component {
   }
 
   componentWillMount() {
-      DeviceEventEmitter.addListener('SCAN_RESULT', (e) => {
-        console.log(e);
-        array[arrayCount] = e.identifier
+      DeviceEventEmitter.addListener('SCAN_RESULT', (scanResult) => {
+        console.log(scanResult);
+        array[arrayCount] = scanResult;
         arrayCount = arrayCount + 1;
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(array),
@@ -65,26 +65,45 @@ class EmptyProject extends Component {
             BleModule.stopScanBleDevices(); },
           20000
       );
-
   }
 
-  async asyncConnect(identifier) {
+  componentDidMount
+
+  async asyncConnect(deviceIdentifier) {
     try {
-      var isConnected = await BleModule.establishConnection(identifier);
+      var isConnected = await BleModule.establishConnection(deviceIdentifier);
       if(isConnected) {
-        console.log("Connected");
+        console.log("Connected!");
 
         // Discover services
-
+        // this.asyncDiscoverServices(deviceIdentifier);
+        // var isSynchronized = await BleModule.discoverServices(deviceIdentifier);
+        // if(isSynchronized) {
+        //   console.log("Synchronized!");
+        // } else {
+        //   console.log("NOT Synchronized!");
+        // }
 
       } else {
-        console.log("NOT Connected");
+        console.log("NOT Connected!");
       }
     } catch(e) {
-      console.error(e);
+      console.log(e);
     }
-
   }
+
+  // async asyncDiscoverServices(deviceIdentifier) {
+  //   try {
+  //     var isSynchronized = await BleModule.discoverServices(deviceIdentifier);
+  //     if(isSynchronized) {
+  //       console.log("Synchronized!");
+  //     } else {
+  //       console.log("NOT Synchronized!");
+  //     }
+  //   } catch(e) {
+  //     console.error(e);
+  //   }
+  // }
 
 
   render() {
@@ -98,16 +117,21 @@ class EmptyProject extends Component {
           />
       );
   }
-  renderTest(text) {
+  renderTest(scanResult) {
       return (
-        <TouchableHighlight onPress={this._onPressButton}>
-          <View><Text>{text}</Text></View>
+        <TouchableHighlight onPress = {
+            () => this._onPressButton(scanResult)
+        }>
+          <View><Text>{scanResult.identifier} {scanResult.name}</Text></View>
         </TouchableHighlight>
     )
   }
-  _onPressButton(text){
-      console.log('Connecting... ' + text);
+  _onPressButton(scanResult) {
+      console.log('Connecting... ' + scanResult.identifier);
       // this.asyncConnect(text);
+
+
+      this.asyncConnect(scanResult.identifier)
   }
 
 }

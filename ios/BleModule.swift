@@ -55,21 +55,16 @@ class BleClientManager : NSObject {
   private var writeTransactions = Dictionary<String, Disposable>()
   private var readTransactions = Dictionary<String, Disposable>()
   
+  private let disposeBag = DisposeBag()
+  
   // TODO: add timeout mechanism
   
-  func generateTransactionId() -> String {
+  private func generateTransactionId() -> String {
       let transactionId = NSUUID().UUIDString
       return transactionId
   }
   
-  @objc
-  func createClient() {
-    manager = BluetoothManager(queue: methodQueue) // We are using method queue created for this react module
-    let timerQueue = dispatch_queue_create("com.polidea.rxbluetoothkit.timer", nil)
-    scheduler = ConcurrentDispatchQueueScheduler(queue: timerQueue)
-  }
-  
-  func peripheralWithIdentifier(uuid: String) -> Observable<Peripheral> {
+  private func peripheralWithIdentifier(uuid: String) -> Observable<Peripheral> {
     // TODO: Define error
     guard let uuid = NSUUID(UUIDString: uuid) else { return Observable.error(BluetoothError.BluetoothUnsupported) }
     return manager.retrievePeripheralsWithIdentifiers([uuid])
@@ -82,16 +77,30 @@ class BleClientManager : NSObject {
       }
   }
   
-  func serviceForPeripherial(deviceIdentifier: String, serviceIdentifier: String) -> Observable<Service> {
+  private func serviceForPeripherial(deviceIdentifier: String, serviceIdentifier: String) -> Observable<Service> {
       return peripheralWithIdentifier(deviceIdentifier).flatMap {
         Observable.from($0.discoverServices([CBUUID(string: serviceIdentifier)]))
     }
   }
   
-  func characteristicForPeripherial(deviceIdentifier: String, serviceIdentifier: String, characteristicIdentifier: String) -> Observable<Characteristic> {
+  private func characteristicForPeripherial(deviceIdentifier: String, serviceIdentifier: String, characteristicIdentifier: String) -> Observable<Characteristic> {
       return serviceForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier).flatMap {
         Observable.from($0.discoverCharacteristics([CBUUID(string: characteristicIdentifier)]))
       }
+  }
+  
+  private func monitorDisconnectionOfPeripheral(peripheral: Peripheral) {
+    manager.monitorPeripheralDisconnection(peripheral)
+      .subscribeNext { (peripheral) in
+        NSLog("Peripherial Disconnected \(peripheral)")
+      }.addDisposableTo(disposeBag)
+  }
+  
+  @objc
+  func createClient() {
+    manager = BluetoothManager(queue: methodQueue) // We are using method queue created for this react module
+    let timerQueue = dispatch_queue_create("com.polidea.rxbluetoothkit.timer", nil)
+    scheduler = ConcurrentDispatchQueueScheduler(queue: timerQueue)
   }
   
   @objc
@@ -103,9 +112,11 @@ class BleClientManager : NSObject {
       .take(1)
       .flatMap { _ in self.manager.scanForPeripherals(nil) }
       .subscribe(onNext: {
+        let name = $0.advertisementData.localName ?? "Undefined Name"
+        let identifier = $0.peripheral.identifier.UUIDString ?? "Undefined Identifier"
         let result =  [
-          "name": $0.advertisementData.localName != nil ? $0.advertisementData.localName! : "Undefined Name",
-          "identifier" : $0.peripheral.identifier.UUIDString
+          "name": name,
+          "identifier" : identifier
         ]
         self.bridge.eventDispatcher().sendDeviceEventWithName("SCAN_RESULT", body: result)
         
@@ -128,11 +139,13 @@ class BleClientManager : NSObject {
       .flatMap { $0.connect() }
       .subscribe(onNext: { peripheral in
           self.connectingDevices.removeValueForKey(deviceIdentifier)
+          self.monitorDisconnectionOfPeripheral(peripheral)
           resolve(NSNumber(bool: true))
         }, onError: { error in
           self.connectingDevices.removeValueForKey(deviceIdentifier)
           let bleError = error as? BluetoothError ?? BluetoothError.BluetoothUnsupported
           reject("Connection Error", "Couldn't connect to peripheral: \(deviceIdentifier)", bleError.error)
+          self.callRecectWithError(reject, error: error)
       });
     
       self.connectingDevices[deviceIdentifier] = connectionDisp
@@ -164,13 +177,14 @@ class BleClientManager : NSObject {
     // TODO: Timeouts? Cancel dicrovery??
     _ = peripheralWithIdentifier(deviceIdentifier)
       .flatMap { Observable.from($0.discoverServices(nil)) }
-      .flatMap { $0.discoverCharacteristics(nil) }
+      .flatMap { Observable.from($0.discoverCharacteristics(nil))}
+//      .flatMap { $0.discoverCharacteristics(nil) }
       .subscribe { event in
         switch (event) {
         case .Next:
           break
         case .Completed:
-          resolve(nil)
+          resolve(NSNumber(bool: true))
         case let .Error(error):
           self.callRecectWithError(reject, error: error)
         }
