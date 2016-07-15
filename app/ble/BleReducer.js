@@ -10,10 +10,18 @@ export default (state = { devices: [] }, action) => {
       return {...state, scanning: true}
     case bleStopScanAction.type:
       return {...state, scanning: false}
-    case blePeripheralFoundAction.type:
-      return {...state, devices: state.devices.filter((peripheral) => {
-        return peripheral.uuid !== action.peripheral.uuid
-      }).concat([action.peripheral])}
+    case blePeripheralFoundAction.type: {
+      var found = false;
+      var devices = state.devices.map((peripheral) => {
+      if (peripheral.uuid !== action.peripheral.uuid) {
+        return peripheral
+      } else {
+        found = true;
+        return action.peripheral;
+      }});
+      devices = !found ? devices.concat([action.peripheral]) : devices;
+      return {...state, devices: devices }
+    }
     default:
       return state;
   }

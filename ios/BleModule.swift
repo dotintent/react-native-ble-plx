@@ -98,7 +98,7 @@ class BleClientManager : NSObject {
     scanSubscription.disposable = manager.rx_state
       .filter { $0 == .PoweredOn }
       .take(1)
-      .flatMap { _ in self.manager.scanForPeripherals(nil) }
+      .flatMap { _ in self.manager.scanForPeripherals(nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true]) }
       .subscribe(onNext: { scannedPeripheral in
         let peripheral = [
           "uuid": scannedPeripheral.peripheral.identifier.UUIDString,
@@ -110,6 +110,11 @@ class BleClientManager : NSObject {
         // TODO: Error type??
         self.dispatchEvent(.scan, value: [self.error("Scan error", message: "Error occurred during scanning", code: 0)])
       })
+  }
+  
+  @objc
+  func stopScanBleDevices() {
+    scanSubscription.disposable = NopDisposable.instance
   }
 
   // MARK: Private interface
@@ -151,10 +156,7 @@ class BleClientManager : NSObject {
       }
   }
   
-  @objc
-  func stopScanBleDevices() {
-    scanSubscription.disposable = NopDisposable.instance
-  }
+ 
   
   @objc
   func establishConnection(deviceIdentifier: String,

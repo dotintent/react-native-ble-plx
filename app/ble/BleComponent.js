@@ -15,9 +15,7 @@ class BleComponent extends Component {
         // TODO: Handle error
         this.props.peripheralScanned(peripheral)
       })
-    }
-
-    if (this.props.scanning === false) {
+    } else {
       this.manager.stopPeripheralScan();
     }
 
