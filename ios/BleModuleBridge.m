@@ -24,14 +24,14 @@ RCT_EXTERN_METHOD(     writeCharacteristic:(NSString*)deviceIdentifier
                          serviceIdentifier:(NSString*)serviceIdentifier
                   characteristicIdentifier:(NSString*)characteristicIdentifier
                                valueBase64:(NSString*)valueBase64
-                       transactionCallback:(RCTResponseSenderBlock)transactionCallback
+                             transactionId:(NSString*)transactionId
                                   resolver:(RCTPromiseResolveBlock)resolve
                                   rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(      readCharacteristic:(NSString*)deviceIdentifier
                          serviceIdentifier:(NSString*)serviceIdentifier
                   characteristicIdentifier:(NSString*)characteristicIdentifier
-                       transactionCallback:(RCTResponseSenderBlock)transactionCallback
+                             transactionId:(NSString*)transactionId
                                   resolver:(RCTPromiseResolveBlock)resolve
                                   rejecter:(RCTPromiseRejectBlock)reject)
 @end

@@ -47,6 +47,26 @@ enum BleClientEvent: String {
   }
 }
 
+class TransactionDisposables {
+  private var transactions = Dictionary<String, Disposable>()
+  
+  private func disposeOld(key: String) {
+    if let disposable = self.transactions[key] {
+      disposable.dispose()
+    }
+  }
+  
+  func putTransaction(transaction: Disposable, key: String) {
+    disposeOld(key)
+    self.transactions[key] = transaction
+  }
+  
+  func removeTransaction(key: String) -> Bool {
+    disposeOld(key)
+    return self.transactions.removeValueForKey(key) != nil
+  }
+}
+
 // Main BLE module
 @objc(BleClientManager)
 class BleClientManager : NSObject {
@@ -62,9 +82,9 @@ class BleClientManager : NSObject {
   private var manager : BluetoothManager!
   private var scheduler: ConcurrentDispatchQueueScheduler!
   
-  private var connectingDevices = Dictionary<String, Disposable>()
-  private var writeTransactions = Dictionary<String, Disposable>()
-  private var readTransactions = Dictionary<String, Disposable>()
+  private var connectingDevices = TransactionDisposables()
+  private var writeTransactions = TransactionDisposables()
+  private var readTransactions = TransactionDisposables()
   
   private let disposeBag = DisposeBag()
   
@@ -183,17 +203,17 @@ class BleClientManager : NSObject {
       let connectionDisp = peripheralWithIdentifier(deviceIdentifier)
       .flatMap { $0.connect() }
       .subscribe(onNext: { peripheral in
-          self.connectingDevices.removeValueForKey(deviceIdentifier)
+//          self.connectingDevices.removeTransaction(deviceIdentifier)
           self.monitorDisconnectionOfPeripheral(peripheral)
           resolve(NSNumber(bool: true))
         }, onError: { error in
-          self.connectingDevices.removeValueForKey(deviceIdentifier)
+//          self.connectingDevices.removeTransaction(deviceIdentifier)
           let bleError = error as? BluetoothError ?? BluetoothError.BluetoothUnsupported
           reject("Connection Error", "Couldn't connect to peripheral: \(deviceIdentifier)", bleError.error)
           self.callRecectWithError(reject, error: error)
       });
     
-      self.connectingDevices[deviceIdentifier] = connectionDisp
+      self.connectingDevices.putTransaction(connectionDisp, key: deviceIdentifier)
   }
   
   @objc
@@ -241,7 +261,7 @@ class BleClientManager : NSObject {
                            serviceIdentifier: String,
                            characteristicIdentifier: String,
                            valueBase64: String,
-                           transactionCallback: RCTResponseSenderBlock,
+                           transactionId: String,
                            resolver resolve: RCTPromiseResolveBlock,
                            rejecter reject: RCTPromiseRejectBlock) {
     
@@ -259,23 +279,20 @@ class BleClientManager : NSObject {
           reject: {
             self.callRecectWithError(reject, error: $0)
           })
-      let transactionId = generateTransactionId()
-      self.writeTransactions[transactionId] = writeDisp
-      transactionCallback([NSNull(), transactionId])
+    
+        self.writeTransactions.putTransaction(writeDisp, key: transactionId)
   }
   
   @objc
   func cancelWriteCharacteristic(transactionId: String) -> Bool {
-      guard let writeDisp = self.writeTransactions[transactionId] else { return false }
-      writeDisp.dispose()
-      return true;
+      return self.writeTransactions.removeTransaction(transactionId)
   }
   
   @objc
   func readCharacteristic(deviceIdentifier: String,
                           serviceIdentifier: String,
                           characteristicIdentifier: String,
-                          transactionCallback: RCTResponseSenderBlock,
+                          transactionId: String,
                           resolver resolve: RCTPromiseResolveBlock,
                           rejecter reject: RCTPromiseRejectBlock) {
       let readDisp = characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
@@ -290,16 +307,12 @@ class BleClientManager : NSObject {
             self.callRecectWithError(reject, error: $0)
         })
     
-      let transactionId = generateTransactionId()
-      self.readTransactions[transactionId] = readDisp
-      transactionCallback([NSNull(), transactionId])
+      self.readTransactions.putTransaction(readDisp, key: transactionId)
   }
   
   @objc
   func cancelReadCharacteristic(transactionId: String) -> Bool {
-      guard let readDisp = self.readTransactions[transactionId] else { return false }
-      readDisp.dispose();
-      return true;
+      return self.readTransactions.removeTransaction(transactionId)
   }
   
   @objc
