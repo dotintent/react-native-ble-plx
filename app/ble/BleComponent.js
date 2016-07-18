@@ -1,7 +1,6 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import BleManager from './BleManager';
@@ -12,10 +11,10 @@ class BleComponent extends Component {
     this.manager = new BleManager();
   }
 
-  // componentWillUnMount() {
-  //   this.manager.destroyClient()
-  //   delete this.manager
-  // }
+  componentWillUnmount() {
+    this.manager.destroy();
+    delete this.manager;
+  }
 
   render() {
     if (this.props.scanning === true) {
@@ -35,14 +34,11 @@ class BleComponent extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
+export default connect(
+  state => ({
     scanning: state.ble.scanning
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ deviceFound }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(BleComponent)
+  }),
+  {
+    deviceFound
+  })
+(BleComponent)

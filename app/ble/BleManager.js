@@ -9,6 +9,10 @@ export default class BleManager {
     DeviceEventEmitter.addListener(BleModule.ScanEvent, this._scanEvent.bind(this))
   }
 
+  destroy() {
+    BleModule.destroyClient();
+  }
+
   startDeviceScan(listener) {
     console.log("Start device scan");
     this._scanEventListener = listener;

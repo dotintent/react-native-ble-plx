@@ -7,7 +7,6 @@ import {
   Text,
   TouchableHighlight,
 } from 'react-native';
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import ButtonView from '../view/ButtonView'
@@ -57,19 +56,14 @@ var styles = StyleSheet.create({
   },
 });
 
-function mapStateToProps(state) {
-  return {
+export default connect(
+  state => ({
     devices: state.ble.devices,
     scanning: state.ble.scanning !== undefined ? state.ble.scanning : false
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
+  }),
+  {
     startScan,
     stopScan,
     connectToDevice
-  }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ScannedDevicesComponent)
+  })
+(ScannedDevicesComponent)

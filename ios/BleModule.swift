@@ -121,6 +121,8 @@ class BleClientManager : NSObject {
   @objc
   func destroyClient() {
     scanSubscription.disposable = NopDisposable.instance
+    scheduler = nil
+    manager = nil
   }
 
   @objc
@@ -129,7 +131,7 @@ class BleClientManager : NSObject {
     scanSubscription.disposable = manager.rx_state
       .filter { $0 == .PoweredOn }
       .take(1)
-      .flatMap { _ in self.manager.scanForPeripherals(nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey : true]) }
+      .flatMap { _ in self.manager.scanForPeripherals(nil) }
       .subscribe(onNext: { scannedPeripheral in
         let peripheral = [
           "uuid": scannedPeripheral.peripheral.identifier.UUIDString,
@@ -151,7 +153,9 @@ class BleClientManager : NSObject {
   // MARK: Private interface
 
   func dispatchEvent(type: BleClientEvent, value: AnyObject) {
+    if (bridge.valid) {
       bridge.eventDispatcher().sendDeviceEventWithName(type.id(), body: value)
+    }
   }
 
   func error(name: String, message: String, code: Int) -> NSDictionary {
