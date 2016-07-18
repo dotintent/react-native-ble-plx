@@ -40,6 +40,8 @@ export default class BleManager {
     return false;
   }
 
+  // TODO: add disconnect method
+
   async discoverServices(identifier) {
     console.log("Discovering services and characteristics for device: " + identifier);
     try {
@@ -73,16 +75,16 @@ export default class BleManager {
   async readCharacteristic(deviceId, serviceId, characteristicId, transactionId) {
     console.log("Read characteristic: " + characteristicId + " in service: " + serviceId + " for device: " + deviceId + ". transactionId: " + transactionId);
     try {
-      var readSuccessful = await BleModule.readCharacteristic(deviceId, serviceId, characteristicId, transactionId);
-      if(readCharacteristic) {
-        console.log("Succecssful read with transactionId: " + transactionId);
-        return transactionId;
+      var readSuccessfulValue = await BleModule.readCharacteristic(deviceId, serviceId, characteristicId, transactionId);
+      if(readSuccessfulValue) {
+        console.log("Succecssful read with transactionId: " + transactionId + " and value: " + readSuccessfulValue);
+        return readSuccessfulValue;
       }
     } catch(e) {
       console.log(e);
     }
     console.log("Failed read with transactionId: " + transactionId);
-    return false;
+    return nil;
   }
 
   // Private API

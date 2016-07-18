@@ -4,6 +4,8 @@ export const START_SCAN = 'START_SCAN'
 export const STOP_SCAN = 'STOP_SCAN'
 export const DEVICE_FOUND = 'DEVICE_FOUND'
 export const CHANGE_DEVICE_STATE = 'CHANGE_DEVICE_STATE'
+export const WRITE_CHARACTERISTIC = 'WRITE_CHARACTERISTIC'
+export const READ_CHARACTERISTIC = 'READ_CHARACTERISTIC'
 
 export function startScan() {
   return {
@@ -37,5 +39,26 @@ export function changeDeviceState(deviceId, state) {
     type: CHANGE_DEVICE_STATE,
     deviceId: deviceId,
     state: state
+  }
+}
+
+export function writeCharacteristic(deviceId, serviceId, characteristicId, base64Value, transactionId) {
+  return {
+    type: WRITE_CHARACTERISTIC,
+    deviceId: deviceId,
+    serviceId: serviceId,
+    characteristicId: characteristicId,
+    base64Value: base64Value
+    transactionId: transactionId
+  }
+}
+
+export function readCharacteristic(deviceId, serviceId, characteristicId, transactionId) {
+  return {
+    type: READ_CHARACTERISTIC,
+    deviceId: deviceId,
+    serviceId: serviceId,
+    characteristicId: characteristicId,
+    transactionId: transactionId
   }
 }
