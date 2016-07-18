@@ -1,3 +1,5 @@
+'use strict';
+
 import { NativeModules, DeviceEventEmitter} from 'react-native';
 const BleModule = NativeModules.BleClientManager;
 

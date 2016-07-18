@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { Component, PropTypes } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 

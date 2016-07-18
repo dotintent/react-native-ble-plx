@@ -1,3 +1,5 @@
+'use strict';
+
 import {
   bleStartScanAction,
   bleStopScanAction,
@@ -6,7 +8,6 @@ import {
 } from './BleActions'
 
 export default (state = { devices: [] }, action) => {
-  // console.log(`Got action: ${action.type}`);
   switch (action.type) {
     case bleStartScanAction.type:
       return {...state, scanning: true}
@@ -22,7 +23,7 @@ export default (state = { devices: [] }, action) => {
         return action.peripheral;
       }});
       devices = !found ? devices.concat([action.peripheral]) : devices;
-      return {...state, devices: devices }
+      return {...state, devices: devices };
     }
     case bleDeviceConnectAction.type:
       console.log("Connect action with deviceId: " + action.deviceId);
