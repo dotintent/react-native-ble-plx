@@ -9,19 +9,19 @@ export default class BleManager {
     DeviceEventEmitter.addListener(BleModule.ScanEvent, this._scanEvent.bind(this))
   }
 
-  startPeripheralScan(listener) {
-    console.log("Start peripheral scan");
+  startDeviceScan(listener) {
+    console.log("Start device scan");
     this._scanEventListener = listener;
     BleModule.scanBleDevices();
   }
 
-  stopPeripheralScan() {
-    console.log("Stop peripheral scan");
+  stopDeviceScan() {
+    console.log("Stop device scan");
     BleModule.stopScanBleDevices();
     delete this._scanEventListener;
   }
 
-  async connecToDevice(identifier) {
+  async connectToDevice(identifier) {
     console.log("Connecting to device: " + identifier)
     try {
       var isConnected = await BleModule.establishConnection(identifier)

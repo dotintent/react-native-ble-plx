@@ -1,44 +1,32 @@
 'use strict';
 
-let BLE_START_SCAN_ACTION = 'BLE_START_SCAN_ACTION'
-let BLE_STOP_SCAN_ACTION = 'BLE_STOP_SCAN_ACTION'
-let BLE_DEVICE_FOUND_ACTION = 'BLE_DEVICE_FOUND_ACTION'
-let BLE_DEVICE_CONNECT_ACTION = 'BLE_DEVICE_CONNECT_ACTION'
+export const START_SCAN = 'START_SCAN'
+export const STOP_SCAN = 'STOP_SCAN'
+export const DEVICE_FOUND = 'DEVICE_FOUND'
+export const CONNECT_TO_DEVICE = 'CONNECT_TO_DEVICE'
 
-export const bleStartScanAction = {
-  create: () => {
-    return {
-      type: BLE_START_SCAN_ACTION
-    }
-  },
-  type: BLE_START_SCAN_ACTION
+export function startScan() {
+  return {
+    type: START_SCAN
+  }
 }
 
-export const bleStopScanAction = {
-  create: () => {
-    return {
-      type: BLE_STOP_SCAN_ACTION
-    }
-  },
-  type: BLE_STOP_SCAN_ACTION
+export function stopScan() {
+  return {
+    type: STOP_SCAN
+  }
 }
 
-export const bleDeviceFoundAction = {
-  create: (device) => {
-    return {
-      type: BLE_DEVICE_FOUND_ACTION,
-      peripheral: device
-    }
-  },
-  type: BLE_DEVICE_FOUND_ACTION
+export function deviceFound(device) {
+  return {
+    type: DEVICE_FOUND,
+    device: device
+  }
 }
 
-export const bleDeviceConnectAction = {
-  create: (deviceId) => {
-    return {
-      type: BLE_DEVICE_CONNECT_ACTION,
-      deviceId: deviceId
-    }
-  },
-  type: BLE_DEVICE_CONNECT_ACTION
+export function connectToDevice(deviceId) {
+  return {
+    type: CONNECT_TO_DEVICE,
+    deviceId: deviceId
+  }
 }

@@ -1,32 +1,26 @@
 'use strict';
 
-import {
-  bleStartScanAction,
-  bleStopScanAction,
-  bleDeviceFoundAction,
-  bleDeviceConnectAction,
-} from './BleActions'
+import * as ble from './BleActions'
 
 export default (state = { devices: [] }, action) => {
   switch (action.type) {
-    case bleStartScanAction.type:
+    case ble.START_SCAN:
       return {...state, scanning: true}
-    case bleStopScanAction.type:
+    case ble.STOP_SCAN:
       return {...state, scanning: false}
-    case bleDeviceFoundAction.type: {
+    case ble.DEVICE_FOUND: {
       var found = false;
-      var devices = state.devices.map((peripheral) => {
-      if (peripheral.uuid !== action.peripheral.uuid) {
-        return peripheral
+      var devices = state.devices.map((device) => {
+      if (device.uuid !== action.device.uuid) {
+        return device
       } else {
         found = true;
-        return action.peripheral;
+        return action.device;
       }});
-      devices = !found ? devices.concat([action.peripheral]) : devices;
+      devices = !found ? devices.concat([action.device]) : devices;
       return {...state, devices: devices };
     }
-    case bleDeviceConnectAction.type:
-      console.log("Connect action with deviceId: " + action.deviceId);
+    case ble.CONNECT_TO_DEVICE:
       return {...state, scanning: false, connecting: true, selectedDevice: action.deviceId}
     default:
       return state;

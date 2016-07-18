@@ -1,10 +1,11 @@
 'use strict';
 
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import BleManager from './BleManager';
-import { bleDeviceFoundAction } from './BleActions';
+import { deviceFound } from './BleActions';
 
 class BleComponent extends Component {
   componentWillMount() {
@@ -18,12 +19,12 @@ class BleComponent extends Component {
 
   render() {
     if (this.props.scanning === true) {
-      this.manager.startPeripheralScan((error, peripheral) => {
+      this.manager.startDeviceScan((error, device) => {
         // TODO: Handle error
-        this.props.peripheralScanned(peripheral)
+        this.props.deviceFound(device)
       })
     } else {
-      this.manager.stopPeripheralScan();
+      this.manager.stopDeviceScan();
     }
 
     // if(this.props.connecting === true) {
@@ -41,9 +42,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    peripheralScanned: (peripheral) => { dispatch(bleDeviceFoundAction.create(peripheral)) }
-  }
+  return bindActionCreators({ deviceFound }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BleComponent)

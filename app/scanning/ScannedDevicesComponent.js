@@ -7,11 +7,16 @@ import {
   Text,
   TouchableHighlight,
 } from 'react-native';
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import ButtonView from '../view/ButtonView'
 import ScannedDeviceListView from './ScannedDeviceListView'
-import { bleStartScanAction, bleStopScanAction, bleDeviceConnectAction } from '../ble/BleActions'
+import {
+  startScan,
+  stopScan,
+  connectToDevice
+} from '../ble/BleActions'
 
 class ScannedDevicesComponent extends Component {
   render() {
@@ -60,11 +65,11 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {
-    startScan:       ()         => {dispatch(bleStartScanAction.create())},
-    stopScan:        ()         => {dispatch(bleStopScanAction.create())},
-    connectToDevice: (deviceId) => {dispatch(bleDeviceConnectAction.create(deviceId))}
-  }
+  return bindActionCreators({
+    startScan,
+    stopScan,
+    connectToDevice
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ScannedDevicesComponent)

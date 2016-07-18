@@ -34,7 +34,6 @@ export default class ScannedDeviceListView extends Component {
 
   _renderCell(rowData) {
     return (
-
       <ScannedDeviceView
         uuid={rowData.uuid}
         name={rowData.name}

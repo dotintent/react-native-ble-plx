@@ -8,23 +8,23 @@ let borderColor = '#2d7599'
 const ScannedDeviceView = ({name, uuid, rssi, onClick}) => {
   return (
     <TouchableOpacity onPress={onClick}>
-    <View style={styles.background}>
-      <View style={styles.topRow}>
-        <View style={styles.nameRow}>
-          <Text style={styles.titleText}>Name:</Text>
-          <Text style={styles.contentText}>{name ? name : '-'}</Text>
+      <View style={styles.background}>
+        <View style={styles.topRow}>
+          <View style={styles.nameRow}>
+            <Text style={styles.titleText}>Name:</Text>
+            <Text style={styles.contentText}>{name ? name : '-'}</Text>
+          </View>
+          <View style={styles.rssiRow}>
+            <Text style={styles.titleText}>RSSI:</Text>
+            <Text style={styles.contentText}>{rssi}</Text>
+          </View>
         </View>
-        <View style={styles.rssiRow}>
-          <Text style={styles.titleText}>RSSI:</Text>
-          <Text style={styles.contentText}>{rssi}</Text>
+        <View style={{backgroundColor: borderColor, height: 1, flex: 1}}/>
+        <View style={styles.bottomRow}>
+          <Text style={styles.titleText}>UUID:</Text>
+          <Text style={styles.uuidText}>{uuid}</Text>
         </View>
       </View>
-      <View style={{backgroundColor: borderColor, height: 1, flex: 1}}/>
-      <View style={styles.bottomRow}>
-        <Text style={styles.titleText}>UUID:</Text>
-        <Text style={styles.uuidText}>{uuid}</Text>
-      </View>
-    </View>
     </TouchableOpacity>
   )
 }
