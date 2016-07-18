@@ -32,13 +32,56 @@ export default class BleManager {
       if(isConnected) {
         console.log("Connected to device: " + identifier);
         return true;
-      } else {
-        console.log("Couldn't connect to device: " + identifier);
-        return false;
       }
     } catch (e) {
       console.log(e);
     }
+    console.log("Couldn't connect to device: " + identifier);
+    return false;
+  }
+
+  async discoverServices(identifier) {
+    console.log("Discovering services and characteristics for device: " + identifier);
+    try {
+      var isDiscovered = await BleModule.discoverServices(identifier)
+      if(isDiscovered) {
+        console.log("Discovered services and characteristics for device: " + identifier);
+        return true;
+      }
+    } catch(e) {
+      console.log(e);
+    }
+    console.log("Couldn't discover services and characteristics for device: " + identifier);
+    return false;
+  }
+
+  async writeCharacteristic(deviceId, serviceId, characteristicsId, base64Value, transactionId) {
+    console.log("Write characteristic: " + characteristicId + " in service: " + serviceId + " for device: " + deviceId + ". transactionId: " + transactionId);
+    try {
+      var writeSuccessful = await BleModule.writeCharacteristic(deviceId, serviceId, characteristicId, base64Value, transactionId);
+      if(writeSuccessful) {
+        console.log("Successfull write with transactionId: " + transactionId);
+        return transactionId;
+      }
+    } catch(e) {
+      console.log(e);
+    }
+    console.log("Failed write with transactionId: " + transactionId);
+    return nil;
+  }
+
+  async readCharacteristic(deviceId, serviceId, characteristicId, transactionId) {
+    console.log("Read characteristic: " + characteristicId + " in service: " + serviceId + " for device: " + deviceId + ". transactionId: " + transactionId);
+    try {
+      var readSuccessful = await BleModule.readCharacteristic(deviceId, serviceId, characteristicId, transactionId);
+      if(readCharacteristic) {
+        console.log("Succecssful read with transactionId: " + transactionId);
+        return transactionId;
+      }
+    } catch(e) {
+      console.log(e);
+    }
+    console.log("Failed read with transactionId: " + transactionId);
     return false;
   }
 

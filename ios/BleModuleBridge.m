@@ -29,10 +29,15 @@ RCT_EXTERN_METHOD(     writeCharacteristic:(NSString*)deviceIdentifier
                                   resolver:(RCTPromiseResolveBlock)resolve
                                   rejecter:(RCTPromiseRejectBlock)reject)
 
+RCT_EXTERN_METHOD(cancelWriteCharacteristic:(NSString*)transactionId)
+
 RCT_EXTERN_METHOD(      readCharacteristic:(NSString*)deviceIdentifier
                          serviceIdentifier:(NSString*)serviceIdentifier
                   characteristicIdentifier:(NSString*)characteristicIdentifier
                              transactionId:(NSString*)transactionId
                                   resolver:(RCTPromiseResolveBlock)resolve
                                   rejecter:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(cancelReadCharacteristic:(NSString*)transactionId)
+
 @end

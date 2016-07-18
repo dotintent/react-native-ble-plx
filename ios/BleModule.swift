@@ -15,6 +15,7 @@ protocol CustomErrorConvertible {
   var error: NSError { get }
 }
 
+// TODO: better error handling
 extension BluetoothError : CustomErrorConvertible {
   public var error: NSError {
     var code : Int
@@ -56,14 +57,15 @@ class TransactionDisposables {
     }
   }
   
-  func putTransaction(transaction: Disposable, key: String) {
-    disposeOld(key)
-    self.transactions[key] = transaction
-  }
-  
-  func removeTransaction(key: String) -> Bool {
-    disposeOld(key)
-    return self.transactions.removeValueForKey(key) != nil
+  subscript(index: String) -> Disposable? {
+    get {
+      return self.transactions[index]
+    }
+    
+    set(newValue) {
+      disposeOld(index)
+      self.transactions[index] = newValue
+    }
   }
 }
 
@@ -103,11 +105,6 @@ class BleClientManager : NSObject {
     }
     addEvent(.scan)
     return dictionary
-  }
-  
-  private func generateTransactionId() -> String {
-    let transactionId = NSUUID().UUIDString
-    return transactionId
   }
 
   @objc
@@ -202,22 +199,22 @@ class BleClientManager : NSObject {
   func establishConnection(deviceIdentifier: String,
                            resolver resolve: RCTPromiseResolveBlock,
                            rejecter reject: RCTPromiseRejectBlock) {
-      // TODO: handle disposabe/tieout whatever
-      // TODO: handle multiple concurent connections
-      let connectionDisp = peripheralWithIdentifier(deviceIdentifier)
-      .flatMap { $0.connect() }
-      .subscribe(onNext: { peripheral in
+    // TODO: handle disposabe/tieout whatever
+    // TODO: handle multiple concurent connections
+    let connectionDisp = peripheralWithIdentifier(deviceIdentifier)
+    .flatMap { $0.connect() }
+    .subscribe(onNext: { peripheral in
 //          self.connectingDevices.removeTransaction(deviceIdentifier)
-          self.monitorDisconnectionOfPeripheral(peripheral)
-          resolve(NSNumber(bool: true))
-        }, onError: { error in
+        self.monitorDisconnectionOfPeripheral(peripheral)
+        resolve(NSNumber(bool: true))
+      }, onError: { error in
 //          self.connectingDevices.removeTransaction(deviceIdentifier)
-          let bleError = error as? BluetoothError ?? BluetoothError.BluetoothUnsupported
-          reject("Connection Error", "Couldn't connect to peripheral: \(deviceIdentifier)", bleError.error)
-          self.callRecectWithError(reject, error: error)
-      });
+        let bleError = error as? BluetoothError ?? BluetoothError.BluetoothUnsupported
+        reject("Connection Error", "Couldn't connect to peripheral: \(deviceIdentifier)", bleError.error)
+        self.callRecectWithError(reject, error: error)
+    });
     
-      self.connectingDevices.putTransaction(connectionDisp, key: deviceIdentifier)
+    self.connectingDevices[deviceIdentifier] = connectionDisp;
   }
   
   @objc
@@ -284,12 +281,16 @@ class BleClientManager : NSObject {
             self.callRecectWithError(reject, error: $0)
           })
     
-        self.writeTransactions.putTransaction(writeDisp, key: transactionId)
+        self.writeTransactions[transactionId] = writeDisp
   }
   
   @objc
   func cancelWriteCharacteristic(transactionId: String) -> Bool {
-      return self.writeTransactions.removeTransaction(transactionId)
+    if let _ = self.writeTransactions[transactionId] {
+      self.writeTransactions[transactionId] = nil;
+      return true;
+    }
+    return false;
   }
   
   @objc
@@ -311,12 +312,16 @@ class BleClientManager : NSObject {
             self.callRecectWithError(reject, error: $0)
         })
     
-      self.readTransactions.putTransaction(readDisp, key: transactionId)
+      self.readTransactions[transactionId] = readDisp
   }
   
   @objc
   func cancelReadCharacteristic(transactionId: String) -> Bool {
-      return self.readTransactions.removeTransaction(transactionId)
+    if let _ = self.readTransactions[transactionId] {
+      self.readTransactions[transactionId] = nil
+      return true;
+    }
+    return false;
   }
   
   @objc
