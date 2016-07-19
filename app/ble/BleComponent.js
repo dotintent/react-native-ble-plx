@@ -35,31 +35,20 @@ class BleComponent extends Component {
       case ble.DEVICE_STATE_CONNECT:
         this.manager.connectToDevice(props.selectedDevice)
         .then((success) => {
+          return this.manager.servicesForDevice(props.selectedDevice)
+        })
+        .then((services) => {
           props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_CONNECTED);
+          props.updateServices(props.selectedDevice, services)
         }, (rejected) => {
           // TODO: Handle error
           props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_DISCONNECTED);
         })
+
         props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_CONNECTING);
         Actions.services();
         break;
-      case ble.DEVICE_STATE_CONNECTING:
-        break;
       case ble.DEVICE_STATE_CONNECTED:
-        props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_DISCOVER_SERVICES);
-        break;
-      case ble.DEVICE_STATE_DISCOVER_SERVICES:
-        this.manager.discoverServices(props.selectedDevice)
-        .then((success) => {
-          props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_DISCOVERED_SERVICES);
-        }, (rejected) => {
-          //TODO: Handle
-        })
-        props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_DISCOVERING_SERVICES);
-        break;
-      case ble.DEVICE_STATE_DISCOVERING_SERVICES:
-        break;
-      case ble.DEVICE_STATE_DISCOVERED_SERVICES:
         break;
     }
   }
@@ -77,6 +66,7 @@ export default connect(
   }),
   {
     deviceFound: ble.deviceFound,
-    changeDeviceState: ble.changeDeviceState
+    changeDeviceState: ble.changeDeviceState,
+    servicesForDevice: ble.servicesForDevice
   })
 (BleComponent)

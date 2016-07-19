@@ -33,6 +33,5 @@ export default connect(
     state: state.ble.state
   }),
   {
-
   })
 (ServicesComponent)

@@ -28,6 +28,13 @@ export default (state = defaultState, action) => {
     }
     case ble.CHANGE_DEVICE_STATE:
       return {...state, scanning: false, state: action.state, selectedDevice: action.deviceId}
+    case ble.UPDATE_SERVICES:
+      const resultServices = action.services.map(service => ({
+        uuid: service,
+        characteristicsCount: 0,
+        isPrimary: false
+      }));
+      return {...state, services: resultServices}
     default:
       return state;
   }

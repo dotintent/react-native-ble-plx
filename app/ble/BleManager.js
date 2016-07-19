@@ -42,6 +42,16 @@ export default class BleManager {
 
   // TODO: add disconnect method
 
+  async servicesForDevice(deviceIdentifier) {
+    try {
+      var services = await BleModule.servicesForDevice(deviceIdentifier);
+      return services;
+    } catch(e) {
+      console.log(e);
+    }
+    return nil;
+  }
+
   async discoverServices(identifier) {
     console.log("Discovering services and characteristics for device: " + identifier);
     try {

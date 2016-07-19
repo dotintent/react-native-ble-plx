@@ -195,6 +195,7 @@ class BleClientManager : NSObject {
       }.addDisposableTo(disposeBag)
   }
   
+
   @objc
   func establishConnection(deviceIdentifier: String,
                            resolver resolve: RCTPromiseResolveBlock,
@@ -203,16 +204,17 @@ class BleClientManager : NSObject {
     // TODO: handle multiple concurent connections
     let connectionDisp = peripheralWithIdentifier(deviceIdentifier)
     .flatMap { $0.connect() }
-    .subscribe(onNext: { peripheral in
-//          self.connectingDevices.removeTransaction(deviceIdentifier)
-        self.monitorDisconnectionOfPeripheral(peripheral)
+    .flatMap { Observable.from($0.discoverServices(nil)) }
+    .flatMap { Observable.from($0.discoverCharacteristics(nil))}
+    .subscribe(onNext: {_ in}, onError: { error in
+//      self.connectingDevices[deviceIdentifier] = nil;
+      let bleError = error as? BluetoothError ?? BluetoothError.BluetoothUnsupported
+      reject("Connection Error", "Couldn't connect to peripheral: \(deviceIdentifier)", bleError.error)
+      self.callRecectWithError(reject, error: error)
+      }, onCompleted: { peripheral in
+//        self.connectingDevices[deviceIdentifier] = nil;
         resolve(NSNumber(bool: true))
-      }, onError: { error in
-//          self.connectingDevices.removeTransaction(deviceIdentifier)
-        let bleError = error as? BluetoothError ?? BluetoothError.BluetoothUnsupported
-        reject("Connection Error", "Couldn't connect to peripheral: \(deviceIdentifier)", bleError.error)
-        self.callRecectWithError(reject, error: error)
-    });
+      });
     
     self.connectingDevices[deviceIdentifier] = connectionDisp;
   }
@@ -237,6 +239,48 @@ class BleClientManager : NSObject {
   }
   
   @objc
+  func servicesForDevice(deviceIdentifier: String,
+                         resolver resolve: RCTPromiseResolveBlock,
+                         rejecter reject: RCTPromiseRejectBlock) {
+    _ = peripheralWithIdentifier(deviceIdentifier)
+    .flatMap{ $0.discoverServices(nil) }
+//      .flatMap{ peripherial in return Observable.just(peripherial.services ?? []) }
+      .debug()
+    .map { (services: [Service]) -> [String] in
+      services.map { $0.UUID.UUIDString }
+    }
+    .toPromise()
+    .subscribe(resolve: { services in
+      resolve(services)
+    },
+    reject: {
+      self.callRecectWithError(reject, error: $0)
+    })
+  }
+  
+//  @objc
+//  func characteristicsForDevice(deviceIdentifier: String,
+//                                serviceIdentifier: String,
+//                                resolver resolve: RCTPromiseResolveBlock,
+//                                rejecter reject: RCTPromiseRejectBlock) {
+//    _ = peripheralWithIdentifier(deviceIdentifier)
+//    .flatMap{ $0.discoverServices([CBUUID(string: deviceIdentifier)]) }
+//    .flatMap{ $0.disco }
+//    .map { (characteristics: [Characteristic]) -> [String] in
+//      characteristics.map {
+//        return $0.UUID.UUIDString
+//      }
+//    }
+//    .toPromise()
+//    .subscribe(resolve: { characteristics in
+//      resolve(characteristics)
+//    },
+//    reject: {
+//      self.callRecectWithError(reject, error: $0)
+//    })
+//  }
+  
+  @objc
   func discoverServices(deviceIdentifier: String,
                         resolver resolve: RCTPromiseResolveBlock,
                         rejecter reject: RCTPromiseRejectBlock) {
@@ -255,6 +299,8 @@ class BleClientManager : NSObject {
         }
       }
   }
+  
+  // TODO:
   
   @objc
   func writeCharacteristic(deviceIdentifier: String,

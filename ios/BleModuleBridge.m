@@ -20,6 +20,7 @@ RCT_EXTERN_METHOD(stopScanBleDevices)
 
 RCT_EXTERN_METHOD(establishConnection:(NSString*)deviceIdentifier resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 RCT_EXTERN_METHOD(discoverServices:(NSString*)deviceIdentifier resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(servicesForDevice:(NSString*)deviceIdentifier resolver:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(     writeCharacteristic:(NSString*)deviceIdentifier
                          serviceIdentifier:(NSString*)serviceIdentifier
