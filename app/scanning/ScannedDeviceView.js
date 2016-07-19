@@ -19,7 +19,7 @@ const ScannedDeviceView = ({name, uuid, rssi, onClick}) => {
             <Text style={styles.contentText}>{rssi}</Text>
           </View>
         </View>
-        <View style={{backgroundColor: borderColor, height: 1, flex: 1}}/>
+        <View style={{backgroundColor: borderColor, height: 1}}/>
         <View style={styles.bottomRow}>
           <Text style={styles.titleText}>UUID:</Text>
           <Text style={styles.uuidText}>{uuid}</Text>
@@ -62,6 +62,7 @@ var styles = StyleSheet.create({
   topRow: {
     flex: 1,
     flexDirection: 'row',
+    backgroundColor: 'white',
   },
   bottomRow: {
     flex: 1,

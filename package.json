@@ -6,11 +6,12 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "dependencies": {
-    "react": "15.0.2",
-    "react-native": "^0.26.0",
+    "react": "15.2.1",
+    "react-native": "0.29.2",
     "redux": "3.5.2",
     "react-redux": "4.4.5",
     "redux-freeze": "0.1.4",
-    "redux-logger": "2.6.1"
+    "redux-logger": "2.6.1",
+    "react-native-router-flux": "3.31.1"
   }
 }

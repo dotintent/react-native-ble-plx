@@ -57,6 +57,7 @@ export default class ScannedDeviceListView extends Component {
   render() {
     return (
       <ListView
+        style={{paddingTop: 50}}
         dataSource={this.state.dataSource}
         renderRow={this._renderCell}
         renderSeparator={this._renderSeparator}

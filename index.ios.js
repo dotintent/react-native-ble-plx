@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import createLogger from 'redux-logger';
 import freeze from 'redux-freeze';
 
-import ScannedDevicesComponent from './app/scanning/ScannedDevicesComponent';
+import RootComponent from './app/root/RootComponent';
 import BleComponent from './app/ble/BleComponent';
 import reducer from './app/root/Reducer';
 
@@ -16,14 +16,14 @@ const store = createStore(reducer, applyMiddleware(freeze, logger))
 
 class EmptyProject extends Component {
   render() {
-      return (
-        <Provider store={store}>
-          <View style={{flex:1}}>
-            <ScannedDevicesComponent/>
-            <BleComponent/>
-          </View>
-        </Provider>
-      );
+    return (
+      <Provider store={store}>
+        <View style={{flex:1}}>
+          <RootComponent/>
+          <BleComponent/>
+        </View>
+      </Provider>
+    );
   }
 }
 

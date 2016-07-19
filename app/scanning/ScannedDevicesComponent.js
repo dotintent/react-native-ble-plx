@@ -21,9 +21,6 @@ class ScannedDevicesComponent extends Component {
   render() {
     return (
       <View style={{flex: 1, padding: 20}}>
-        <Text style={styles.title}>
-          Devices
-        </Text>
         <ScannedDeviceListView
           scannedDevices={this.props.devices}
           onScannedDeviceClicked={this.props.connectToDevice}/>
