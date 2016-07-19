@@ -2,7 +2,13 @@
 
 import * as ble from './BleActions'
 
-export default (state = { devices: [] }, action) => {
+const defaultState = {
+  devices: [],
+  services: [],
+  state: ble.DEVICE_STATE_DISCONNECTED
+};
+
+export default (state = defaultState, action) => {
   switch (action.type) {
     case ble.START_SCAN:
       return {...state, scanning: true}
@@ -20,8 +26,8 @@ export default (state = { devices: [] }, action) => {
       devices = !found ? devices.concat([action.device]) : devices;
       return {...state, devices: devices };
     }
-    case ble.CONNECT_TO_DEVICE:
-      return {...state, scanning: false, connecting: true, selectedDevice: action.deviceId}
+    case ble.CHANGE_DEVICE_STATE:
+      return {...state, scanning: false, state: action.state, selectedDevice: action.deviceId}
     default:
       return state;
   }

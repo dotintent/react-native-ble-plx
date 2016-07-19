@@ -244,7 +244,6 @@ class BleClientManager : NSObject {
     _ = peripheralWithIdentifier(deviceIdentifier)
       .flatMap { Observable.from($0.discoverServices(nil)) }
       .flatMap { Observable.from($0.discoverCharacteristics(nil))}
-//      .flatMap { $0.discoverCharacteristics(nil) }
       .subscribe { event in
         switch (event) {
         case .Next:

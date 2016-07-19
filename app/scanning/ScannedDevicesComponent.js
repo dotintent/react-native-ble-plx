@@ -11,19 +11,19 @@ import { connect } from 'react-redux'
 
 import ButtonView from '../view/ButtonView'
 import ScannedDeviceListView from './ScannedDeviceListView'
-import {
-  startScan,
-  stopScan,
-  connectToDevice
-} from '../ble/BleActions'
+import * as ble from '../ble/BleActions'
 
 class ScannedDevicesComponent extends Component {
   render() {
+    const connectToDevice = (deviceId) => {
+      this.props.changeDeviceState(deviceId, ble.DEVICE_STATE_CONNECT)
+    }
+
     return (
       <View style={{flex: 1, padding: 20}}>
         <ScannedDeviceListView
           scannedDevices={this.props.devices}
-          onScannedDeviceClicked={this.props.connectToDevice}/>
+          onScannedDeviceClicked={connectToDevice}/>
         <View style={styles.buttonRow}>
           <ButtonView
             onClick={this.props.startScan}
@@ -59,8 +59,8 @@ export default connect(
     scanning: state.ble.scanning !== undefined ? state.ble.scanning : false
   }),
   {
-    startScan,
-    stopScan,
-    connectToDevice
+    startScan: ble.startScan,
+    stopScan: ble.stopScan,
+    changeDeviceState: ble.changeDeviceState
   })
 (ScannedDevicesComponent)
