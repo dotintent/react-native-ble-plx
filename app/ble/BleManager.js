@@ -52,19 +52,14 @@ export default class BleManager {
     return nil;
   }
 
-  async discoverServices(identifier) {
-    console.log("Discovering services and characteristics for device: " + identifier);
+  async characteristicsForDevice(deviceIdentifier, serviceIdentifier) {
     try {
-      var isDiscovered = await BleModule.discoverServices(identifier)
-      if(isDiscovered) {
-        console.log("Discovered services and characteristics for device: " + identifier);
-        return true;
-      }
+      var characteristics = await BleModule.characteristicsForDevice(deviceIdentifier, serviceIdentifier);
+      return characteristics;
     } catch(e) {
       console.log(e);
     }
-    console.log("Couldn't discover services and characteristics for device: " + identifier);
-    return false;
+    return nil;
   }
 
   async writeCharacteristic(deviceId, serviceId, characteristicsId, base64Value, transactionId) {

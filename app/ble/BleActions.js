@@ -27,19 +27,11 @@ export function deviceFound(device) {
   }
 }
 
-export function updateServices(deviceId, services) {
+export function udpateServices(deviceId, services) {
   return {
     type: UPDATE_SERVICES,
     deviceId: deviceId,
-    services: services
-  }
-}
-
-export function updateCharacteristics(deviceId, characteristics) {
-  return {
-    type: UPDATE_CHARACTERISTICS,
-    deviceId: deviceId,
-    characteristics: characteristics
+    services: services,
   }
 }
 

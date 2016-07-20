@@ -13,6 +13,7 @@ class RootComponent extends Component {
         <Scene key="root">
           <Scene key="scannedDevices" component={ScannedDevicesComponent} title="Devices" initial={true}/>
           <Scene key="services" component={ServicesComponent} title="Services"/>
+          <Scene key="characteristics" component={CharacteristicsComponent} title="Characteristics"/>
         </Scene>
       </Router>
     )

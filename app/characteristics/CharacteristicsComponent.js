@@ -9,15 +9,14 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux'
 
-import ServicesListView from './ServicesListView'
+import CharacteristicsListView from './CharacteristicsListView'
 
-class ServicesComponent extends Component {
+class CharacteristicsComponent extends Component {
   render() {
     return (
       <View style={{flex: 1, padding: 20}}>
-        <ServicesListView
-          services={this.props.services}
-          onServiceClicked={onServiceClicked}/>
+        <CharacteristicsListView
+          services={this.props.characteristics}/>
         <Text>Status: {this.props.state}</Text>
       </View>
     )
@@ -30,10 +29,9 @@ var styles = StyleSheet.create({
 
 export default connect(
   state => ({
-    services: state.ble.services,
+    characteristics: state.ble.characteristics,
     state: state.ble.state
   }),
   {
-    onServiceClicked: ble.onServiceClicked
   })
-(ServicesComponent)
+(CharacteristicsComponent)

@@ -17,6 +17,15 @@ class BleComponent extends Component {
     delete this.manager;
   }
 
+  async allCharactersiticsForServices(deviceIdentifier, services) {
+    var resultCharacteristics;
+    for (let service of services) {
+      var characteristics = await BleManager.characteristicsForDevice(deviceIdentifier, service)
+      resultCharacteristics[service] = characteristics
+    }
+    return resultCharacteristics
+  }
+
   componentWillReceiveProps(props) {
     // Handle scanning
     if (props.scanning === true) {
@@ -43,8 +52,12 @@ class BleComponent extends Component {
           return this.manager.servicesForDevice(props.selectedDevice)
         })
         .then((services) => {
+          props.updateServices(props.selectedDevice, services);
+          return allCharactersiticsForServices(props.selectedDevice, services);
+        })
+        .then((characteristics) => {
+          props.updateCharacteristics(props.selectedDevice, characteristics);
           props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_CONNECTED);
-          props.updateServices(props.selectedDevice, services)
         }, (rejected) => {
           // TODO: Handle error
           props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_DISCONNECTED);
@@ -74,6 +87,7 @@ export default connect(
     changeDeviceState: ble.changeDeviceState,
     servicesForDevice: ble.servicesForDevice,
     stopScan: ble.stopScan,
-    updateServices: ble.updateServices
+    updateServices: ble.updateServices,
+    updateCharacteristics: ble.updateCharacteristics
   })
 (BleComponent)
