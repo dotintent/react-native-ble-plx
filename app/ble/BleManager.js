@@ -13,10 +13,10 @@ export default class BleManager {
     BleModule.destroyClient();
   }
 
-  startDeviceScan(listener) {
+  startDeviceScan(uuids, listener) {
     console.log("Start device scan");
     this._scanEventListener = listener;
-    BleModule.scanBleDevices();
+    BleModule.scanBleDevices(uuids);
   }
 
   stopDeviceScan() {
@@ -95,6 +95,10 @@ export default class BleManager {
     }
     console.log("Failed read with transactionId: " + transactionId);
     return nil;
+  }
+
+  cancelCharacteristicOperation(transactionId) {
+    BleModule.cancelCharacteristicOperation(transactionId)
   }
 
   // Private API

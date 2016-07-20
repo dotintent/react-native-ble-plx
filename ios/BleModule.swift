@@ -3,7 +3,6 @@
 //  EmptyProject
 //
 //  Created by Konrad Rodzik on 7/4/16.
-//  Copyright © 2016 Facebook. All rights reserved.
 //
 
 import Foundation
@@ -48,54 +47,41 @@ enum BleClientEvent: String {
   }
 }
 
-class TransactionDisposables {
-  private var transactions = Dictionary<String, Disposable>()
-  
-  private func disposeOld(key: String) {
-    if let disposable = self.transactions[key] {
-      disposable.dispose()
-    }
+class DisposableMap {
+  private var disposables = Dictionary<String, Disposable>()
+
+  func replaceDisposable(key: String, disposable: Disposable?) {
+    disposables[key]?.dispose()
+    disposables[key] = disposable
   }
-  
-  subscript(index: String) -> Disposable? {
-    get {
-      return self.transactions[index]
-    }
-    
-    set(newValue) {
-      disposeOld(index)
-      self.transactions[index] = newValue
-    }
+
+  func removeDisposable(key: String) {
+    replaceDisposable(key, disposable: nil)
   }
 }
 
-// Main BLE module
 @objc(BleClientManager)
 class BleClientManager : NSObject {
-
-  class func moduleName() -> String {
-    return "BleClientManager"
-  }
   
   @objc
   var methodQueue: dispatch_queue_t!
   var bridge: RCTBridge!
   
   private var manager : BluetoothManager!
-  private var scheduler: ConcurrentDispatchQueueScheduler!
-  
-  private var connectingDevices = TransactionDisposables()
-  private var writeTransactions = TransactionDisposables()
-  private var readTransactions = TransactionDisposables()
-  
-  private let disposeBag = DisposeBag()
+  private var connectedDevices = Dictionary<String, Peripheral>()
   
   // TODO: add timeout mechanism
 
-  // Scanning
+  // Disposables
   private var scanSubscription = SerialDisposable()
+  private var connectingDevices = DisposableMap()
+  private var operationsInProgress = DisposableMap()
 
   // MARK: Public interface
+
+  class func moduleName() -> String {
+    return "BleClientManager"
+  }
 
   @objc
   var constantsToExport : NSDictionary {
@@ -109,26 +95,33 @@ class BleClientManager : NSObject {
 
   @objc
   func createClient() {
-    // We are using method queue created for this react module
     manager = BluetoothManager(queue: methodQueue)
-    let timerQueue = dispatch_queue_create("com.polidea.rxbluetoothkit.timer", nil)
-    scheduler = ConcurrentDispatchQueueScheduler(queue: timerQueue)
   }
 
   @objc
   func destroyClient() {
     scanSubscription.disposable = NopDisposable.instance
-    scheduler = nil
     manager = nil
   }
 
+
+  // Discovery --------------------------------
+
   @objc
-  func scanBleDevices() {
-    // TODO: Specify UUIDs?
+  func scanBleDevices(filteredUUIDs: [String]?) {
+    var uuids: [CBUUID]? = nil
+    if let filteredUUIDs = filteredUUIDs {
+      guard let cbuuids = filteredUUIDs.toCBUUIDS() else {
+        self.dispatchEvent(.scan, value: [self.error("Scan error", message: "Invalid UUID were passed as an argument", code: 0)])
+        return
+      }
+      uuids = cbuuids
+    }
+
     scanSubscription.disposable = manager.rx_state
       .filter { $0 == .PoweredOn }
       .take(1)
-      .flatMap { _ in self.manager.scanForPeripherals(nil) }
+      .flatMap { _ in self.manager.scanForPeripherals(uuids) }
       .subscribe(onNext: { scannedPeripheral in
         let peripheral = [
           "uuid": scannedPeripheral.peripheral.identifier.UUIDString,
@@ -137,7 +130,7 @@ class BleClientManager : NSObject {
         ]
         self.dispatchEvent(.scan, value: [NSNull(), peripheral])
       }, onError: { errorType in
-        // TODO: Error type??
+        // TODO: Check error
         self.dispatchEvent(.scan, value: [self.error("Scan error", message: "Error occurred during scanning", code: 0)])
       })
   }
@@ -147,54 +140,7 @@ class BleClientManager : NSObject {
     scanSubscription.disposable = NopDisposable.instance
   }
 
-  // MARK: Private interface
-
-  func dispatchEvent(type: BleClientEvent, value: AnyObject) {
-    if (bridge.valid) {
-      bridge.eventDispatcher().sendDeviceEventWithName(type.id(), body: value)
-    }
-  }
-
-  func error(name: String, message: String, code: Int) -> NSDictionary {
-    return [
-      "name": name,
-      "message": message,
-      "code": code
-    ]
-  }
-
-  func peripheralWithIdentifier(uuid: String) -> Observable<Peripheral> {
-    // TODO: Define error
-    guard let uuid = NSUUID(UUIDString: uuid) else { return Observable.error(BluetoothError.BluetoothUnsupported) }
-    return manager.retrievePeripheralsWithIdentifiers([uuid])
-      .flatMap { (peripherals: [Peripheral]) -> Observable<Peripheral> in
-        guard let peripheral = peripherals.first else {
-          // TODO: Define error
-          return Observable.error(BluetoothError.BluetoothUnsupported);
-        }
-        return Observable.just(peripheral)
-      }
-  }
-  
-  private func serviceForPeripherial(deviceIdentifier: String, serviceIdentifier: String) -> Observable<Service> {
-      return peripheralWithIdentifier(deviceIdentifier).flatMap {
-        Observable.from($0.discoverServices([CBUUID(string: serviceIdentifier)]))
-    }
-  }
-  
-  private func characteristicForPeripherial(deviceIdentifier: String, serviceIdentifier: String, characteristicIdentifier: String) -> Observable<Characteristic> {
-      return serviceForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier).flatMap {
-        Observable.from($0.discoverCharacteristics([CBUUID(string: characteristicIdentifier)]))
-      }
-  }
-  
-  private func monitorDisconnectionOfPeripheral(peripheral: Peripheral) {
-    manager.monitorPeripheralDisconnection(peripheral)
-      .subscribeNext { (peripheral) in
-        NSLog("Peripherial Disconnected \(peripheral)")
-      }.addDisposableTo(disposeBag)
-  }
-  
+  // Connections state --------------------------------
 
   @objc
   func establishConnection(deviceIdentifier: String,
@@ -202,106 +148,98 @@ class BleClientManager : NSObject {
                            rejecter reject: RCTPromiseRejectBlock) {
     // TODO: handle disposabe/tieout whatever
     // TODO: handle multiple concurent connections
-    let connectionDisp = peripheralWithIdentifier(deviceIdentifier)
-    .flatMap { $0.connect() }
-    .flatMap { Observable.from($0.discoverServices(nil)) }
-    .flatMap { Observable.from($0.discoverCharacteristics(nil))}
-    .subscribe(onNext: {_ in}, onError: { error in
-//      self.connectingDevices[deviceIdentifier] = nil;
-      let bleError = error as? BluetoothError ?? BluetoothError.BluetoothUnsupported
-      reject("Connection Error", "Couldn't connect to peripheral: \(deviceIdentifier)", bleError.error)
-      self.callRecectWithError(reject, error: error)
-      }, onCompleted: { peripheral in
-//        self.connectingDevices[deviceIdentifier] = nil;
-        resolve(NSNumber(bool: true))
-      });
-    
-    self.connectingDevices[deviceIdentifier] = connectionDisp;
+    var peripheral: Peripheral? = nil
+    guard let nsuuid = NSUUID(UUIDString: deviceIdentifier) else {
+      // TODO: Error
+      callRejectWithError(reject, error: BluetoothError.BluetoothUnsupported.toNSError())
+      return
+    }
+
+    let connectionDisp = manager.retrievePeripheralsWithIdentifiers([nsuuid])
+      .flatMap { devices -> Observable<Peripheral> in
+        guard let device = devices.first else {
+          // TODO: Error
+          return Observable.error(BluetoothError.BluetoothUnsupported)
+        }
+        return Observable.just(device)
+      }
+      .flatMap { $0.connect() }
+      .doOnNext { peripheral = $0 }
+      .flatMap { Observable.from($0.discoverServices(nil)) }
+      .flatMap { Observable.from($0.discoverCharacteristics(nil))}
+      .subscribe(
+        onNext: nil,
+        onError: { error in
+          peripheral?.cancelConnection()
+          self.callRejectWithError(reject, error: error)
+        },
+        onCompleted: {
+          self.connectedDevices[deviceIdentifier] = peripheral
+          resolve(deviceIdentifier)
+        },
+        onDisposed: {
+          self.connectingDevices.removeDisposable(deviceIdentifier)
+        }
+      );
+
+    connectingDevices.replaceDisposable(deviceIdentifier, disposable: connectionDisp)
   }
-  
+
   @objc
   func closeConnection(deviceIdentifier: String,
                        callback: RCTResponseSenderBlock) {
-      _ = peripheralWithIdentifier(deviceIdentifier)
-        .flatMap{ $0.cancelConnection() }
-        .subscribe { event in
-          switch(event) {
-          case .Next:
-            break;
-          case .Completed:
-            callback([NSNull(), NSNumber(bool: true)])
-            break;
-          case let .Error(error):
-            callback([error.toNSError(), NSNumber(bool: true)])
-            break;
-          }
-        }
+    if let device = connectedDevices[deviceIdentifier] {
+      _ = device.cancelConnection()
+        .subscribe(
+          onNext: nil,
+          onError: { callback([$0.toNSError(), deviceIdentifier]) },
+          onCompleted: {
+            self.connectedDevices[deviceIdentifier] = nil
+            callback([NSNull(), deviceIdentifier])
+          })
+    } else {
+      connectingDevices.removeDisposable(deviceIdentifier)
+    }
   }
-  
+
+  // Services and characteristics -----------------------------------
+
   @objc
   func servicesForDevice(deviceIdentifier: String,
                          resolver resolve: RCTPromiseResolveBlock,
                          rejecter reject: RCTPromiseRejectBlock) {
-    _ = peripheralWithIdentifier(deviceIdentifier)
-    .flatMap{ $0.discoverServices(nil) }
-//      .flatMap{ peripherial in return Observable.just(peripherial.services ?? []) }
-      .debug()
-    .map { (services: [Service]) -> [String] in
-      services.map { $0.UUID.UUIDString }
+    guard let device = connectedDevices[deviceIdentifier] else {
+      // TODO handle error
+      self.callRejectWithError(reject, error: BluetoothError.BluetoothUnsupported.toNSError())
+      return
     }
-    .toPromise()
-    .subscribe(resolve: { services in
-      resolve(services)
-    },
-    reject: {
-      self.callRecectWithError(reject, error: $0)
-    })
+
+    let serviceUUIDs = device.services?.map { $0.UUID.UUIDString } ?? []
+    resolve(serviceUUIDs)
   }
-  
-//  @objc
-//  func characteristicsForDevice(deviceIdentifier: String,
-//                                serviceIdentifier: String,
-//                                resolver resolve: RCTPromiseResolveBlock,
-//                                rejecter reject: RCTPromiseRejectBlock) {
-//    _ = peripheralWithIdentifier(deviceIdentifier)
-//    .flatMap{ $0.discoverServices([CBUUID(string: deviceIdentifier)]) }
-//    .flatMap{ $0.disco }
-//    .map { (characteristics: [Characteristic]) -> [String] in
-//      characteristics.map {
-//        return $0.UUID.UUIDString
-//      }
-//    }
-//    .toPromise()
-//    .subscribe(resolve: { characteristics in
-//      resolve(characteristics)
-//    },
-//    reject: {
-//      self.callRecectWithError(reject, error: $0)
-//    })
-//  }
-  
+
   @objc
-  func discoverServices(deviceIdentifier: String,
-                        resolver resolve: RCTPromiseResolveBlock,
-                        rejecter reject: RCTPromiseRejectBlock) {
-    // TODO: Timeouts? Cancel dicrovery??
-    _ = peripheralWithIdentifier(deviceIdentifier)
-      .flatMap { Observable.from($0.discoverServices(nil)) }
-      .flatMap { Observable.from($0.discoverCharacteristics(nil))}
-      .subscribe { event in
-        switch (event) {
-        case .Next:
-          break
-        case .Completed:
-          resolve(NSNumber(bool: true))
-        case let .Error(error):
-          self.callRecectWithError(reject, error: error)
-        }
-      }
+  func characteristicsForDevice(deviceIdentifier: String,
+                                serviceIdentifier: String,
+                                resolver resolve: RCTPromiseResolveBlock,
+                                rejecter reject: RCTPromiseRejectBlock) {
+    guard let device = connectedDevices[deviceIdentifier] else {
+      // TODO handle error
+      self.callRejectWithError(reject, error: BluetoothError.BluetoothUnsupported.toNSError())
+      return
+    }
+
+    let serviceUUIDs = device.services?.filter {
+      deviceIdentifier.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame
+    } ?? []
+
+    let characteristicsUUIDs = serviceUUIDs
+      .flatMap { $0.characteristics ?? [] }
+      .map { $0.UUID.UUIDString }
+
+    resolve(characteristicsUUIDs)
   }
-  
-  // TODO:
-  
+
   @objc
   func writeCharacteristic(deviceIdentifier: String,
                            serviceIdentifier: String,
@@ -309,76 +247,97 @@ class BleClientManager : NSObject {
                            valueBase64: String,
                            transactionId: String,
                            resolver resolve: RCTPromiseResolveBlock,
-                           rejecter reject: RCTPromiseRejectBlock) {
-    
-      let writeDisp = characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
-        .flatMap { (characteristic: Characteristic) -> Observable<Characteristic> in
-          // TODO: convert using UTF
-          // TODO: return diffrent error
-          guard let data = valueBase64.dataUsingEncoding(0) else { return Observable.error(BluetoothError.BluetoothUnsupported) }
-          return characteristic.writeValue(data, type: .WithResponse)
+                                    rejecter reject: RCTPromiseRejectBlock) {
+
+   let writeDisp = characteristicObservable(deviceIdentifier,
+                                            serviceIdentifier: serviceIdentifier,
+                                            characteristicIdentifier: characteristicIdentifier)
+      .flatMap { characteristic -> Observable<Characteristic> in
+        // TODO: return diffrent error
+        guard let data = NSData(base64EncodedString: valueBase64, options: .IgnoreUnknownCharacters) else {
+          return Observable.error(BluetoothError.BluetoothUnsupported)
         }
-        .toPromise()
-        .subscribe(resolve: { characteristic in
-            resolve(valueBase64)
-          },
-          reject: {
-            self.callRecectWithError(reject, error: $0)
-          })
-    
-        self.writeTransactions[transactionId] = writeDisp
+        return characteristic.writeValue(data, type: .WithResponse)
+      }
+      .subscribe(
+        onNext: nil,
+        onError: { error in
+          self.callRejectWithError(reject, error: error)
+        },
+        onCompleted: {
+          resolve(valueBase64)
+        },
+        onDisposed: {
+          self.operationsInProgress.removeDisposable(transactionId)
+      })
+
+    operationsInProgress.replaceDisposable(transactionId, disposable: writeDisp)
   }
-  
-  @objc
-  func cancelWriteCharacteristic(transactionId: String) -> Bool {
-    if let _ = self.writeTransactions[transactionId] {
-      self.writeTransactions[transactionId] = nil;
-      return true;
-    }
-    return false;
-  }
-  
+
   @objc
   func readCharacteristic(deviceIdentifier: String,
                           serviceIdentifier: String,
                           characteristicIdentifier: String,
                           transactionId: String,
                           resolver resolve: RCTPromiseResolveBlock,
-                          rejecter reject: RCTPromiseRejectBlock) {
-      let readDisp = characteristicForPeripherial(deviceIdentifier, serviceIdentifier: serviceIdentifier, characteristicIdentifier: characteristicIdentifier)
-        .flatMap { (characteristic: Characteristic) -> Observable<Characteristic> in
-            characteristic.readValue()
-        }
-        .toPromise()
-        .subscribe(resolve: { characteristic in
-            guard let dataStr = NSString(data: characteristic.value!, encoding: NSUTF8StringEncoding) else { return self.callRecectWithError(reject, error: BluetoothError.BluetoothUnsupported) }
-            resolve(dataStr)
-        }, reject: {
-            self.callRecectWithError(reject, error: $0)
-        })
-    
-      self.readTransactions[transactionId] = readDisp
+                                   rejecter reject: RCTPromiseRejectBlock) {
+
+    var valueBase64: String?
+    let readDisp = characteristicObservable(deviceIdentifier,
+                                            serviceIdentifier: serviceIdentifier,
+                                            characteristicIdentifier: characteristicIdentifier)
+      .flatMap { $0.readValue() }
+      .subscribe(
+        onNext: { (characteristic: Characteristic) in
+          valueBase64 = characteristic.value?.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+        },
+        onError: { error in
+          self.callRejectWithError(reject, error: error)
+        },
+        onCompleted: {
+          resolve(valueBase64 ?? "")
+        },
+        onDisposed: {
+          self.operationsInProgress.removeDisposable(transactionId)
+      })
+
+    operationsInProgress.replaceDisposable(transactionId, disposable: readDisp)
   }
-  
-  @objc
-  func cancelReadCharacteristic(transactionId: String) -> Bool {
-    if let _ = self.readTransactions[transactionId] {
-      self.readTransactions[transactionId] = nil
-      return true;
+
+  // MARK: Private interface ------------------------------------------------------------------------------------------
+
+  private func dispatchEvent(type: BleClientEvent, value: AnyObject) {
+    if (bridge.valid) {
+      bridge.eventDispatcher().sendDeviceEventWithName(type.id(), body: value)
     }
-    return false;
   }
-  
-  @objc
-  func setNotification(deviceIdentifier: String,
-                       serviceIdentifier: String,
-                       characteristicIdentifier: String,
-                       enable: Bool) {
-  
+
+  private func error(name: String, message: String, code: Int) -> NSDictionary {
+    return [
+      "name": name,
+      "message": message,
+      "code": code
+    ]
   }
-  
-  func callRecectWithError(reject: RCTPromiseRejectBlock, error: ErrorType) {
+
+  private func callRejectWithError(reject: RCTPromiseRejectBlock, error: ErrorType) {
     reject("Error", "Message", error.toNSError())
   }
 
+  private func characteristicObservable(deviceIdentifier: String,
+                                        serviceIdentifier: String,
+                                        characteristicIdentifier: String) -> Observable<Characteristic> {
+    return Observable.deferred {
+      guard let device = self.connectedDevices[deviceIdentifier] else {
+        return Observable.error(BluetoothError.BluetoothUnsupported)
+      }
+
+      let characteristics = device.services?
+        .filter { serviceIdentifier.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame }
+        .flatMap { $0.characteristics ?? [] }
+        .filter { characteristicIdentifier.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame } ?? []
+
+      return Observable.from(Observable.just(characteristics))
+    }
+  }
 }
