@@ -35,6 +35,19 @@ export default (state = defaultState, action) => {
         isPrimary: false
       }));
       return {...state, services: resultServices}
+    case ble.WRITE_CHARACTERISTIC:
+      return {...state, writing: true,
+              deviceId: action.deviceId,
+              serviceId: action.serviceId,
+              characteristicId: action.characteristicId,
+              value: action.base64Value,
+              transactionId: action.transactionId}
+    case ble.READ_CHARACTERISTIC:
+      return {...state, reading: true,
+              deviceId: action.deviceId,
+              serviceId: action.serviceId,
+              characteristicId: action.characteristicId,
+              transactionId: action.transactionId}
     default:
       return state;
   }

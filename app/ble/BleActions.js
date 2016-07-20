@@ -35,6 +35,14 @@ export function updateServices(deviceId, services) {
   }
 }
 
+export function updateCharacteristics(deviceId, characteristics) {
+  return {
+    type: UPDATE_CHARACTERISTICS,
+    deviceId: deviceId,
+    characteristics: characteristics
+  }
+}
+
 export function writeCharacteristic(deviceId, serviceId, characteristicId, base64Value, transactionId) {
   return {
     type: WRITE_CHARACTERISTIC,
