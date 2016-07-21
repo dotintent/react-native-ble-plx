@@ -22,7 +22,7 @@ class BleComponent extends Component {
       var resultServices = {};
       for (let serviceId of serviceIds) {
         var characteristicsIds = await this.manager.characteristicIdsForDevice(deviceIdentifier, serviceId);
-        console.log("CHARS: " + characteristicsIds + " LEN: " + characteristicsIds.length);
+        
         var characteristics = {};
         for (let charId of characteristicsIds) {
           characteristics[charId] = {
