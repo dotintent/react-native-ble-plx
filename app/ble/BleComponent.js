@@ -53,6 +53,7 @@ class BleComponent extends Component {
           newProps.stopScan()
           return
         }
+        device['services'] = {}
         newProps.deviceFound(device)
       })
     } else {
@@ -82,9 +83,9 @@ class BleComponent extends Component {
         })
 
         newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_CONNECTING);
+        Actions.services();
         break;
       case ble.DEVICE_STATE_CONNECTED:
-        Actions.services();
         break;
     }
   }
