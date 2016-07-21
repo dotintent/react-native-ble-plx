@@ -17,11 +17,11 @@ class BleComponent extends Component {
     delete this.manager;
   }
 
-  async allCharactersiticsForServices(deviceIdentifier, serviceIds) {
+  async allCharacteristicsForServices(deviceIdentifier, serviceIds) {
     try {
       var resultServices = {};
       for (let serviceId of serviceIds) {
-        var characteristicsIds = await this.manager.characteristicsForDevice(deviceIdentifier, serviceId);
+        var characteristicsIds = await this.manager.characteristicIdsForDevice(deviceIdentifier, serviceId);
         console.log("CHARS: " + characteristicsIds + " LEN: " + characteristicsIds.length);
         var characteristics = {};
         for (let charId of characteristicsIds) {
@@ -66,10 +66,10 @@ class BleComponent extends Component {
       case ble.DEVICE_STATE_CONNECT:
         this.manager.connectToDevice(newProps.selectedDeviceId)
         .then((success) => {
-          return this.manager.servicesForDevice(newProps.selectedDeviceId)
+          return this.manager.serviceIdsForDevice(newProps.selectedDeviceId)
         })
         .then((serviceIds) => {
-          return this.allCharactersiticsForServices(newProps.selectedDeviceId, serviceIds);
+          return this.allCharacteristicsForServices(newProps.selectedDeviceId, serviceIds);
         })
         .then((services) => {
           newProps.updateServices(newProps.selectedDeviceId, services);
@@ -103,7 +103,7 @@ export default connect(
   {
     deviceFound: ble.deviceFound,
     changeDeviceState: ble.changeDeviceState,
-    servicesForDevice: ble.servicesForDevice,
+    serviceIdsForDevice: ble.serviceIdsForDevice,
     stopScan: ble.stopScan,
     updateServices: ble.updateServices,
     updateCharacteristics: ble.updateCharacteristics

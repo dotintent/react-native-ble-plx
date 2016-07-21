@@ -205,7 +205,7 @@ class BleClientManager : NSObject {
   // Services and characteristics -----------------------------------
 
   @objc
-  func servicesForDevice(deviceIdentifier: String,
+  func serviceIdsForDevice(deviceIdentifier: String,
                          resolver resolve: RCTPromiseResolveBlock,
                          rejecter reject: RCTPromiseRejectBlock) {
     guard let device = connectedDevices[deviceIdentifier] else {
@@ -219,7 +219,7 @@ class BleClientManager : NSObject {
   }
 
   @objc
-  func characteristicsForDevice(deviceIdentifier: String,
+  func characteristicIdsForDevice(deviceIdentifier: String,
                                 serviceIdentifier: String,
                                 resolver resolve: RCTPromiseResolveBlock,
                                 rejecter reject: RCTPromiseRejectBlock) {
