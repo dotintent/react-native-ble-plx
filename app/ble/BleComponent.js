@@ -26,7 +26,10 @@ class BleComponent extends Component {
         var characteristics = {};
         for (let charId of characteristicsIds) {
           characteristics[charId] = {
-            "uuid": charId
+            "uuid": charId,
+            "isReadable": true,
+            "isWritable": true,
+            "isNotifiable": true
           }
         }
         resultServices[serviceId] = {
@@ -58,6 +61,10 @@ class BleComponent extends Component {
       })
     } else {
       this.manager.stopDeviceScan();
+    }
+
+    if(newProps.selectedServiceId) {
+      Actions.characteristics();
     }
 
     switch (newProps.state) {
@@ -99,7 +106,8 @@ export default connect(
   state => ({
     scanning: state.getIn(['ble', 'scanning']),
     state: state.getIn(['ble', 'state']),
-    selectedDeviceId: state.getIn(['ble', 'selectedDeviceId'])
+    selectedDeviceId: state.getIn(['ble', 'selectedDeviceId']),
+    selectedServiceId: state.getIn(['ble', 'selectedServiceId'])
   }),
   {
     deviceFound: ble.deviceFound,

@@ -28,6 +28,8 @@ export default (state = defaultState, action) => {
       });
     case ble.UPDATE_SERVICES:
       return state.mergeDeepIn(['devices', action.deviceId, 'services'], action.services);
+    case ble.SELECT_SERVICE:
+      return state.set('selectedServiceId', action.serviceId);
     case ble.UPDATE_CHARACTERISTICS:
       return state
     case ble.WRITE_CHARACTERISTIC:

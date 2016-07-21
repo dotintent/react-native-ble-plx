@@ -15,11 +15,17 @@ import * as ble from '../ble/BleActions'
 
 class ServicesComponent extends Component {
   render() {
+    const serviceClicked = (serviceId) => {
+      this.props.selectService(this.props.deviceId, serviceId)
+    }
+
+    const services = this.props.services.toJS();
+
     return (
       <View style={{flex: 1, padding: 20}}>
         <ServicesListView
-          services={this.props.services}
-          // onServiceClicked={onServiceClicked}
+          services={services}
+          onServiceClicked={serviceClicked}
         />
         <Text>Status: {this.props.state}</Text>
       </View>
@@ -28,15 +34,15 @@ class ServicesComponent extends Component {
 }
 
 var styles = StyleSheet.create({
-
 });
 
 export default connect(
   state => ({
-    services: state.getIn(['ble', 'devices', state.getIn(['ble', 'selectedDeviceId']), 'services']).toList().toJS(),
+    deviceId: state.getIn(['ble', 'selectedDeviceId']),
+    services: state.getIn(['ble', 'devices', state.getIn(['ble', 'selectedDeviceId']), 'services']).toList(),
     state: state.getIn(['ble', 'state'])
   }),
   {
-    // onServiceClicked: ()=>{}
+    selectService: ble.selectService
   })
 (ServicesComponent)

@@ -19,10 +19,12 @@ class ScannedDevicesComponent extends Component {
       this.props.changeDeviceState(deviceId, ble.DEVICE_STATE_CONNECT)
     }
 
+    const devices = this.props.devices.toJS()
+
     return (
       <View style={{flex: 1, padding: 20}}>
         <ScannedDeviceListView
-          scannedDevices={this.props.devices}
+          scannedDevices={devices}
           onScannedDeviceClicked={connectToDevice}/>
         <View style={styles.buttonRow}>
           <ButtonView
@@ -55,7 +57,7 @@ var styles = StyleSheet.create({
 
 export default connect(
   state => ({
-    devices: state.getIn(['ble', 'devices']).toList().toJS(),
+    devices: state.getIn(['ble', 'devices']).toList(),
     scanning: state.getIn(['ble', 'scanning'])
   }),
   {

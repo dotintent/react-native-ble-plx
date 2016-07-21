@@ -33,17 +33,15 @@ export default class CharacteristicsListView extends Component {
   }
 
   _renderCell(rowData) {
-    return (
+    (
       <CharacteristicsView
-        isReadable={rowData.isWritable}
-        isWritable={rowData.isReadable}
+        isReadable={rowData.isReadable}
+        isWritable={rowData.isWritable}
         isNotifiable={rowData.isNotifiable}
         uuid={rowData.uuid}
-        onClick={() => {
-          this.props.onCharacteristicClicked(rowData.uuid)
-        }}
+        onClick={null}
       />
-    )
+    );
   }
 
   _renderSeparator(section, row, adjacentRowHighlighted) {

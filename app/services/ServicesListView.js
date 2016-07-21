@@ -38,7 +38,7 @@ export default class ServiceListView extends Component {
         isPrimary={rowData.isPrimary}
         uuid={rowData.uuid}
         onClick={() => {
-          // this.props.onServiceClicked(rowData.uuid)
+          this.props.onServiceClicked(rowData.uuid)
         }}
       />
     )

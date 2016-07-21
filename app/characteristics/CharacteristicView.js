@@ -7,7 +7,7 @@ let borderColor = '#a2001d'
 
 const CharacteristicView = (uuid, isReadable, isWritable, isNotifiable, onclick) => {
     return (
-        <TouchableOpacity onPress={onClick}>
+        <TouchableOpacity onPress={onclick}>
         <View style={styles.background}>
             <View style={styles.topRow}>
             <View style={styles.row}>

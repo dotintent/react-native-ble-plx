@@ -7,6 +7,7 @@ export const CHANGE_DEVICE_STATE = 'CHANGE_DEVICE_STATE'
 export const WRITE_CHARACTERISTIC = 'WRITE_CHARACTERISTIC'
 export const READ_CHARACTERISTIC = 'READ_CHARACTERISTIC'
 export const UPDATE_SERVICES = 'UPDATE_SERVICES'
+export const SELECT_SERVICE = 'SELECT_SERVICE'
 
 export function startScan() {
   return {
@@ -66,5 +67,13 @@ export function changeDeviceState(deviceId, state) {
     type: CHANGE_DEVICE_STATE,
     deviceId: deviceId,
     state: state
+  }
+}
+
+export function selectService(deviceId, serviceId) {
+  return {
+    type: SELECT_SERVICE,
+    deviceId: deviceId,
+    serviceId: serviceId
   }
 }
