@@ -6,7 +6,7 @@ import {
   ListView,
   ListViewDataSource
 } from 'react-native';
-import CharacteristicsView from './CharacteristicsView'
+import CharacteristicsView from './CharacteristicView'
 
 export default class CharacteristicsListView extends Component {
 

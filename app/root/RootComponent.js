@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import ServicesComponent from '../services/ServicesComponent';
+import CharacteristicsComponent from '../characteristics/CharacteristicsComponent';
 import ScannedDevicesComponent from '../scanning/ScannedDevicesComponent';
 
 class RootComponent extends Component {

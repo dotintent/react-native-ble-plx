@@ -11,6 +11,8 @@ import { connect } from 'react-redux'
 
 import ServicesListView from './ServicesListView'
 
+import * as ble from '../ble/BleActions'
+
 class ServicesComponent extends Component {
   render() {
     return (
