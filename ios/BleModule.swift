@@ -230,7 +230,7 @@ class BleClientManager : NSObject {
     }
 
     let serviceUUIDs = device.services?.filter {
-      deviceIdentifier.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame
+      serviceIdentifier.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame
     } ?? []
 
     let characteristicsUUIDs = serviceUUIDs

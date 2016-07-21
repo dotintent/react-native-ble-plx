@@ -1,6 +1,6 @@
 'use strict';
 
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux-immutable'
 import bleReducer from '../ble/BleReducer'
 
 export default combineReducers({

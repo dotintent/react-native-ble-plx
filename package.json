@@ -13,6 +13,7 @@
     "redux-freeze": "0.1.4",
     "redux-logger": "2.6.1",
     "react-native-router-flux": "3.31.1",
-    "immutable": "3.8.1"
+    "immutable": "3.8.1",
+    "redux-immutable": "3.0.6"
   }
 }

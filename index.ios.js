@@ -11,7 +11,17 @@ import RootComponent from './app/root/RootComponent';
 import BleComponent from './app/ble/BleComponent';
 import reducer from './app/root/Reducer';
 
-const logger = createLogger()
+import { Iterable } from 'immutable';
+
+const stateTransformer = (state) => {
+  if (Iterable.isIterable(state)) {
+    return state.toJS()
+  } else {
+    return state;
+  }
+};
+
+const logger = createLogger({ stateTransformer });
 const store = createStore(reducer, applyMiddleware(freeze, logger))
 
 class EmptyProject extends Component {

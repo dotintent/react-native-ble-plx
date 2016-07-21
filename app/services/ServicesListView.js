@@ -19,7 +19,7 @@ export default class ServiceListView extends Component {
 
   static propTypes = {
     services: PropTypes.arrayOf(PropTypes.shape({
-      characteristicsCount: PropTypes.number,
+      characteristicsCount: PropTypes.number.isRequired,
       isPrimary: PropTypes.bool.isRequired,
       uuid: PropTypes.string.isRequired
     }).isRequired).isRequired,
@@ -38,7 +38,7 @@ export default class ServiceListView extends Component {
         isPrimary={rowData.isPrimary}
         uuid={rowData.uuid}
         onClick={() => {
-          this.props.onServiceClicked(rowData.uuid)
+          // this.props.onServiceClicked(rowData.uuid)
         }}
       />
     )

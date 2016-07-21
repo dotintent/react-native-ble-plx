@@ -17,56 +17,74 @@ class BleComponent extends Component {
     delete this.manager;
   }
 
-  async allCharactersiticsForServices(deviceIdentifier, services) {
-    var resultCharacteristics;
-    for (let service of services) {
-      var characteristics = await BleManager.characteristicsForDevice(deviceIdentifier, service)
-      resultCharacteristics[service] = characteristics
+  async allCharactersiticsForServices(deviceIdentifier, serviceIds) {
+    try {
+      var resultServices = {};
+      for (let serviceId of serviceIds) {
+        var characteristicsIds = await this.manager.characteristicsForDevice(deviceIdentifier, serviceId);
+        console.log("CHARS: " + characteristicsIds + " LEN: " + characteristicsIds.length);
+        var characteristics = {};
+        for (let charId of characteristicsIds) {
+          characteristics[charId] = {
+            "uuid": charId
+          }
+        }
+        resultServices[serviceId] = {
+            "uuid" : serviceId,
+            "isPrimary": false,
+            "characteristicsCount": characteristicsIds.length,
+            "characteristics" : characteristics
+        };
+      }
+      return resultServices;
+    } catch (e) {
+      console.log('Error: ' + e);
     }
-    return resultCharacteristics
+    return null;
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(newProps) {
     // Handle scanning
-    if (props.scanning === true) {
+    if (newProps.scanning === true) {
       //this.manager.startDeviceScan(["53bc4f57-545f-4881-9dfc-69d319695571"], (error, device) => {
       this.manager.startDeviceScan(null, (error, device) => {
         if (error) {
           console.log("Cannot scan devices: " + error.message)
-          props.stopScan()
+          newProps.stopScan()
           return
         }
-        props.deviceFound(device)
+        newProps.deviceFound(device)
       })
     } else {
       this.manager.stopDeviceScan();
     }
 
-    switch (props.state) {
+    switch (newProps.state) {
       case ble.DEVICE_STATE_DISCONNECTED:
         // TODO
         break;
       case ble.DEVICE_STATE_CONNECT:
-        this.manager.connectToDevice(props.selectedDevice)
+        this.manager.connectToDevice(newProps.selectedDeviceId)
         .then((success) => {
-          return this.manager.servicesForDevice(props.selectedDevice)
+          return this.manager.servicesForDevice(newProps.selectedDeviceId)
+        })
+        .then((serviceIds) => {
+          return this.allCharactersiticsForServices(newProps.selectedDeviceId, serviceIds);
         })
         .then((services) => {
-          props.updateServices(props.selectedDevice, services);
-          return allCharactersiticsForServices(props.selectedDevice, services);
-        })
-        .then((characteristics) => {
-          props.updateCharacteristics(props.selectedDevice, characteristics);
-          props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_CONNECTED);
-        }, (rejected) => {
+          newProps.updateServices(newProps.selectedDeviceId, services);
+          newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_CONNECTED);
+        }, 
+        (rejected) => {
           // TODO: Handle error
-          props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_DISCONNECTED);
+          console.log('ERROR: ' + rejected.message);
+          newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
         })
 
-        props.changeDeviceState(props.selectedDevice, ble.DEVICE_STATE_CONNECTING);
-        Actions.services();
+        newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_CONNECTING);
         break;
       case ble.DEVICE_STATE_CONNECTED:
+        Actions.services();
         break;
     }
   }
@@ -78,9 +96,9 @@ class BleComponent extends Component {
 
 export default connect(
   state => ({
-    scanning: state.ble.scanning,
-    state: state.ble.state,
-    selectedDevice: state.ble.selectedDevice
+    scanning: state.getIn(['ble', 'scanning']),
+    state: state.getIn(['ble', 'state']),
+    selectedDeviceId: state.getIn(['ble', 'selectedDeviceId'])
   }),
   {
     deviceFound: ble.deviceFound,

@@ -27,11 +27,5 @@ var styles = StyleSheet.create({
 
 });
 
-export default connect(
-  state => ({
-    characteristics: state.ble.characteristics,
-    state: state.ble.state
-  }),
-  {
-  })
+export default connect()
 (CharacteristicsComponent)

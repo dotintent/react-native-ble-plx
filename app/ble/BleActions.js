@@ -27,7 +27,7 @@ export function deviceFound(device) {
   }
 }
 
-export function udpateServices(deviceId, services) {
+export function updateServices(deviceId, services) {
   return {
     type: UPDATE_SERVICES,
     deviceId: deviceId,

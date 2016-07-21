@@ -55,8 +55,8 @@ var styles = StyleSheet.create({
 
 export default connect(
   state => ({
-    devices: state.ble.devices,
-    scanning: state.ble.scanning !== undefined ? state.ble.scanning : false
+    devices: state.getIn(['ble', 'devices']).toList().toJS(),
+    scanning: state.getIn(['ble', 'scanning'])
   }),
   {
     startScan: ble.startScan,

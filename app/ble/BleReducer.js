@@ -1,84 +1,39 @@
 'use strict';
 
 import * as ble from './BleActions'
-import Immutable from 'immutable'
+import { Map, OrderedMap } from 'immutable'
 
-const defaultState = {
-  devices: [],
-  selectedDevice: null,
-  selectedService: null,
-  selectedCharacteristic: null,
+const defaultState = Map({
+  devices: OrderedMap(),
+  selectedDeviceId: null,
+  selectedServiceId: null,
+  selectedCharacteristicId: null,
+  scanning: false,
   state: ble.DEVICE_STATE_DISCONNECTED
-};
-
-function createDevice(uuid, name, rssi, state, services) {
-  return {
-    "uuid": uuid,
-    "name": name,
-    "rssi": rssi,
-    "state": state,
-    "services": services
-  }
-}
-
-function createService(uuid, characteristics) {
-  return {
-    "uuid": uuid,
-    "characteristics": characteristics
-  }
-}
-
-function createCharacteristic(uuid, isWritable, isReadable, isNotifiable) {
-  return {
-    "uuid": uuid,
-    "isWritable": isWritable,
-    "isReadable": isReadable,
-    "isNotifiable": isNotifiable,
-  }
-}
-
-function updateDevicesState(devices, device) {
-  var oldDevice = Immutable.fromJS(devices[device.uuid]);
-  var newDevice = Immutable.fromJS(device);
-  resultDevice = oldDevice.mergeDeep(newDevice);
-  const uuid = device.uuid
-  return  {...devices, uuid: resultDevice.toJS()}
-}
-
-function updateServices(oldServices, newServices) {
-  oldServicesImmutable = Immutable.fromJS(oldServices);
-  newServicesImmutable = Immutable.fromJS(newServices);
-  return oldServicesImmutable.mergeDeep(newServicesImmutable).toJS();
-}
+});
 
 export default (state = defaultState, action) => {
   switch (action.type) {
     case ble.START_SCAN:
-      return {...state, scanning: true}
+      return state.set('scanning', true);
     case ble.STOP_SCAN:
-      return {...state, scanning: false}
+      return state.set('scanning', false);
     case ble.DEVICE_FOUND:
-      return {...state, devices: updateDevicesState(state.devices, action.device)}
+      return state.mergeDeepIn(['devices', action.device.uuid], action.device);
     case ble.CHANGE_DEVICE_STATE:
-      return {...state, scanning: false, state: action.state, selectedDevice: action.deviceId}
+      return state.withMutations(state => {
+        state.set('scanning', false)
+             .set('state', action.state)
+             .set('selectedDeviceId', action.deviceId)
+      });
     case ble.UPDATE_SERVICES:
-      services = updateServices(state.devices[action.deviceId].services, action.services);
-      return {...state, devices: {...state.devices, services: services}};
+      return state.mergeDeepIn(['devices', action.deviceId, 'services'], action.services);
     case ble.UPDATE_CHARACTERISTICS:
-      return {...state}
+      return state
     case ble.WRITE_CHARACTERISTIC:
-      return {...state, writing: true,
-              deviceId: action.deviceId,
-              serviceId: action.serviceId,
-              characteristicId: action.characteristicId,
-              value: action.base64Value,
-              transactionId: action.transactionId}
+      return state
     case ble.READ_CHARACTERISTIC:
-      return {...state, reading: true,
-              deviceId: action.deviceId,
-              serviceId: action.serviceId,
-              characteristicId: action.characteristicId,
-              transactionId: action.transactionId}
+      return state
     default:
       return state;
   }

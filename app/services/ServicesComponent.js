@@ -19,7 +19,8 @@ class ServicesComponent extends Component {
       <View style={{flex: 1, padding: 20}}>
         <ServicesListView
           services={this.props.services}
-          onServiceClicked={onServiceClicked}/>
+          // onServiceClicked={onServiceClicked}
+        />
         <Text>Status: {this.props.state}</Text>
       </View>
     )
@@ -32,10 +33,10 @@ var styles = StyleSheet.create({
 
 export default connect(
   state => ({
-    services: state.ble.services,
-    state: state.ble.state
+    services: state.getIn(['ble', 'devices', state.getIn(['ble', 'selectedDeviceId']), 'services']).toList().toJS(),
+    state: state.getIn(['ble', 'state'])
   }),
   {
-    onServiceClicked: ble.onServiceClicked
+    // onServiceClicked: ()=>{}
   })
 (ServicesComponent)
