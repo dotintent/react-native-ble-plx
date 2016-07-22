@@ -33,6 +33,7 @@ ServiceView.propTypes = {
   characteristicsCount: PropTypes.number,
   isPrimary: PropTypes.bool.isRequired,
   uuid: PropTypes.string.isRequired,
+  onClick: PropTypes.func
 }
 
 var styles = StyleSheet.create({

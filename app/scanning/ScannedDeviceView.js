@@ -32,7 +32,8 @@ const ScannedDeviceView = ({name, uuid, rssi, onClick}) => {
 ScannedDeviceView.propTypes = {
   name: PropTypes.string,
   uuid: PropTypes.string.isRequired,
-  rssi: PropTypes.number.isRequired
+  rssi: PropTypes.number.isRequired,
+  onClick: PropTypes.func.isRequired
 }
 
 var styles = StyleSheet.create({

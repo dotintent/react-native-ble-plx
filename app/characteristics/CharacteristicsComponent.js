@@ -1,47 +1,48 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-} from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux'
-
-import CharacteristicsListView from './CharacteristicsListView'
+import CharacteristicView from './CharacteristicView'
+import ImmutableListView from '../view/ImmutableListView'
 
 class CharacteristicsComponent extends Component {
+
+  _renderCharacteristicCell(rowData) {
+    return (
+      <CharacteristicView
+        isReadable={rowData.get('isReadable')}
+        isWritable={rowData.get('isWritable')}
+        isNotifiable={rowData.get('isNotifiable')}
+        uuid={rowData.get('uuid')}
+      />
+    )
+  }
+
   render() {
-
-    const characteristics = this.props.characteristics.toJS();
-
     return (
       <View style={{flex: 1, padding: 20}}>
-        <CharacteristicsListView
-          characteristics={characteristics}/>
-        <Text>Status: {this.props.state}</Text>
+        <ImmutableListView
+          data={this.props.characteristics}
+          onRenderCell={this._renderCharacteristicCell.bind(this)}/>
+        <Text>Device status: {this.props.state}</Text>
       </View>
     )
   }
 }
 
-var styles = StyleSheet.create({
-
-});
-
 export default connect(
-  state => ({
-    deviceId: state.getIn(['ble', 'selectedDeviceId']),
-    serviceId: state.getIn(['ble', 'selectedServiceId']),
-    characteristics: state.getIn(['ble', 
-                                  'devices', 
-                                  state.getIn(['ble', 'selectedDeviceId']), 
-                                  'services', 
-                                  state.getIn(['ble', 'selectedServiceId']), 
-                                  'characteristics']).toList(),
-    state: state.getIn(['ble', 'state'])
-  }),
+  state => {
+    const deviceId = state.getIn(['ble', 'selectedDeviceId']);
+    const serviceId = state.getIn(['ble', 'selectedServiceId']);
+
+    return {
+      deviceId,
+      serviceId,
+      state: state.getIn(['ble', 'state']),
+      characteristics: state.getIn(['ble', 'devices', deviceId, 'services', serviceId, 'characteristics']) 
+    }
+  },
   {
     // selectService: ble.selectService
   })

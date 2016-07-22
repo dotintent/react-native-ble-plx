@@ -1,31 +1,37 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux'
 
 import ButtonView from '../view/ButtonView'
-import ScannedDeviceListView from './ScannedDeviceListView'
+import ImmutableListView from '../view/ImmutableListView'
+import ScannedDeviceView from './ScannedDeviceView'
 import * as ble from '../ble/BleActions'
 
 class ScannedDevicesComponent extends Component {
-  render() {
-    const connectToDevice = (deviceId) => {
-      this.props.changeDeviceState(deviceId, ble.DEVICE_STATE_CONNECT)
+
+  _renderScannedDeviceCell(rowData) {
+    const connectToDevice = () => {
+      this.props.changeDeviceState(rowData.get('uuid'), ble.DEVICE_STATE_CONNECT)
     }
+  
+    return (
+      <ScannedDeviceView
+        name={rowData.get('name')}
+        uuid={rowData.get('uuid')}
+        rssi={rowData.get('rssi')}
+        onClick={connectToDevice}
+      />
+    )
+  }
 
-    const devices = this.props.devices.toJS()
-
+  render() {
     return (
       <View style={{flex: 1, padding: 20}}>
-        <ScannedDeviceListView
-          scannedDevices={devices}
-          onScannedDeviceClicked={connectToDevice}/>
+        <ImmutableListView
+          data={this.props.devices}
+          onRenderCell={this._renderScannedDeviceCell.bind(this)}/>
         <View style={styles.buttonRow}>
           <ButtonView
             onClick={this.props.startScan}
@@ -57,7 +63,7 @@ var styles = StyleSheet.create({
 
 export default connect(
   state => ({
-    devices: state.getIn(['ble', 'devices']).toList(),
+    devices: state.getIn(['ble', 'devices']),
     scanning: state.getIn(['ble', 'scanning'])
   }),
   {

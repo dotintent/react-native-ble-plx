@@ -1,47 +1,51 @@
 'use strict';
 
 import React, { Component } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-} from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux'
-
-import ServicesListView from './ServicesListView'
-
 import * as ble from '../ble/BleActions'
+import ServiceView from './ServiceView'
+import ImmutableListView from '../view/ImmutableListView'
 
 class ServicesComponent extends Component {
-  render() {
-    const serviceClicked = (serviceId) => {
-      this.props.selectService(this.props.deviceId, serviceId)
+
+  _renderServiceCell(rowData) {
+    const serviceClicked = () => {
+      this.props.selectService(this.props.deviceId, rowData.get('uuid'))
     }
 
-    const services = this.props.services.toJS();
+    return (
+      <ServiceView
+        characteristicsCount={rowData.get('characteristicsCount')}
+        isPrimary={rowData.get('isPrimary')}
+        uuid={rowData.get('uuid')}
+        onClick={serviceClicked}
+        />
+    )
+  }
 
+  render() {
     return (
       <View style={{flex: 1, padding: 20}}>
-        <ServicesListView
-          services={services}
-          onServiceClicked={serviceClicked}
+        <ImmutableListView
+          data={this.props.services}
+          onRenderCell={this._renderServiceCell.bind(this)}
         />
-        <Text>Status: {this.props.state}</Text>
+        <Text>Device status: {this.props.state}</Text>
       </View>
     )
   }
 }
 
-var styles = StyleSheet.create({
-});
-
 export default connect(
-  state => ({
-    deviceId: state.getIn(['ble', 'selectedDeviceId']),
-    services: state.getIn(['ble', 'devices', state.getIn(['ble', 'selectedDeviceId']), 'services']).toList(),
-    state: state.getIn(['ble', 'state'])
-  }),
+  state => {
+    const deviceId = state.getIn(['ble', 'selectedDeviceId'])
+    return {
+      deviceId,
+      services: state.getIn(['ble', 'devices', deviceId, 'services']),
+      state: state.getIn(['ble', 'state'])
+    }
+  },
   {
     selectService: ble.selectService
   })

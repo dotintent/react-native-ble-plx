@@ -5,7 +5,6 @@ import { View, AppRegistry } from 'react-native';
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import createLogger from 'redux-logger';
-import freeze from 'redux-freeze';
 
 import RootComponent from './app/root/RootComponent';
 import BleComponent from './app/ble/BleComponent';
@@ -22,7 +21,7 @@ const stateTransformer = (state) => {
 };
 
 const logger = createLogger({ stateTransformer });
-const store = createStore(reducer, applyMiddleware(freeze, logger))
+const store = createStore(reducer, applyMiddleware(logger))
 
 class EmptyProject extends Component {
   render() {
