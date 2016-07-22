@@ -57,6 +57,8 @@ export function readCharacteristic(deviceId, serviceId, characteristicId, transa
   }
 }
 
+export const DEVICE_STATE_DISCONNECT = 'DISCONNECT'
+export const DEVICE_STATE_DISCONNECTING = 'DISCONNECTING'
 export const DEVICE_STATE_DISCONNECTED = 'DISCONNECTED'
 export const DEVICE_STATE_CONNECT = 'CONNECT'
 export const DEVICE_STATE_CONNECTING = 'CONNECTING'

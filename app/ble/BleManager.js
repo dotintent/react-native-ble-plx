@@ -27,20 +27,15 @@ export default class BleManager {
 
   async connectToDevice(identifier) {
     console.log("Connecting to device: " + identifier)
-    try {
-      var isConnected = await BleModule.establishConnection(identifier)
-      if(isConnected) {
-        console.log("Connected to device: " + identifier);
-        return true;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-    console.log("Couldn't connect to device: " + identifier);
-    return false;
+    var connectedIdentifier = await BleModule.establishConnection(identifier);
+    return connectedIdentifier;
   }
 
-  // TODO: add disconnect method
+  async closeConnection(identifier) {
+    console.log("Closing connection to device: " + identifier)
+    var closedIdentifier = await BleModule.closeConnection(identifier);
+    return closedIdentifier;
+  }
 
   async serviceIdsForDevice(deviceIdentifier) {
     try {
@@ -60,6 +55,11 @@ export default class BleManager {
       console.log(e);
     }
     return nil;
+  }
+
+  async characteristicDetails(deviceIdentifier, serviceIdentifier, characteristicIdentifier) {
+    var characteristicDetails = await BleModule.detailsForCharacteristic(deviceIdentifier, serviceIdentifier, characteristicIdentifier);
+    return characteristicDetails;
   }
 
   async writeCharacteristic(deviceId, serviceId, characteristicsId, base64Value, transactionId) {

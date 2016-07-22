@@ -6,12 +6,16 @@ import { connect } from 'react-redux'
 import * as ble from '../ble/BleActions'
 import ServiceView from './ServiceView'
 import ImmutableListView from '../view/ImmutableListView'
+import * as SceneConst from '../scene/Const'
+import { Actions } from 'react-native-router-flux'
+import Style from '../view/Style'
 
 class ServicesComponent extends Component {
 
   _renderServiceCell(rowData) {
     const serviceClicked = () => {
       this.props.selectService(this.props.deviceId, rowData.get('uuid'))
+      Actions[SceneConst.CHARACTERISTICS_SCENE]();
     }
 
     return (
@@ -26,7 +30,7 @@ class ServicesComponent extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, padding: 20}}>
+      <View style={Style.component}>
         <ImmutableListView
           data={this.props.services}
           onRenderCell={this._renderServiceCell.bind(this)}

@@ -5,6 +5,7 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux'
 import CharacteristicView from './CharacteristicView'
 import ImmutableListView from '../view/ImmutableListView'
+import Style from '../view/Style'
 
 class CharacteristicsComponent extends Component {
 
@@ -21,7 +22,7 @@ class CharacteristicsComponent extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, padding: 20}}>
+      <View style={Style.component}>
         <ImmutableListView
           data={this.props.characteristics}
           onRenderCell={this._renderCharacteristicCell.bind(this)}/>

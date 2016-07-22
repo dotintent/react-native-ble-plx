@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import BleManager from './BleManager';
 import * as ble from './BleActions';
 import {Actions} from 'react-native-router-flux';
+import * as SceneConst from '../scene/Const'
 
 class BleComponent extends Component {
   componentWillMount() {
@@ -25,12 +26,8 @@ class BleComponent extends Component {
         
         var characteristics = {};
         for (let charId of characteristicsIds) {
-          characteristics[charId] = {
-            "uuid": charId,
-            "isReadable": true,
-            "isWritable": true,
-            "isNotifiable": true
-          }
+          var characteristicDetails = await this.manager.characteristicDetails(deviceIdentifier, serviceId, charId);
+          characteristics[charId] = characteristicDetails;
         }
         resultServices[serviceId] = {
             "uuid" : serviceId,
@@ -63,14 +60,20 @@ class BleComponent extends Component {
       this.manager.stopDeviceScan();
     }
 
-    if(newProps.selectedServiceId) {
-      Actions.characteristics();
-    }
-
+    // Handle connection state
     switch (newProps.state) {
-      case ble.DEVICE_STATE_DISCONNECTED:
-        // TODO
+      case ble.DEVICE_STATE_DISCONNECT:
+        this.manager.closeConnection(newProps.selectedDeviceId)
+        .then((successIdentifier) => {
+          newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
+        }, (rejected) => {
+          // TODO: Handle error
+          console.log('ERROR: ' + rejected.message);
+          newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
+        });
+        newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTING);
         break;
+
       case ble.DEVICE_STATE_CONNECT:
         this.manager.connectToDevice(newProps.selectedDeviceId)
         .then((success) => {
@@ -87,12 +90,9 @@ class BleComponent extends Component {
           // TODO: Handle error
           console.log('ERROR: ' + rejected.message);
           newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
-        })
+        });
 
         newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_CONNECTING);
-        Actions.services();
-        break;
-      case ble.DEVICE_STATE_CONNECTED:
         break;
     }
   }
@@ -107,7 +107,8 @@ export default connect(
     scanning: state.getIn(['ble', 'scanning']),
     state: state.getIn(['ble', 'state']),
     selectedDeviceId: state.getIn(['ble', 'selectedDeviceId']),
-    selectedServiceId: state.getIn(['ble', 'selectedServiceId'])
+    selectedServiceId: state.getIn(['ble', 'selectedServiceId']),
+    sceneState: state.getIn('route', 'state')
   }),
   {
     deviceFound: ble.deviceFound,

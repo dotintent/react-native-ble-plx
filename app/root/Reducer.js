@@ -2,7 +2,9 @@
 
 import { combineReducers } from 'redux-immutable'
 import bleReducer from '../ble/BleReducer'
+import sceneReducer from '../scene/SceneReducer'
 
 export default combineReducers({
-  ble: bleReducer
+  ble:   bleReducer,
+  route: sceneReducer
 })

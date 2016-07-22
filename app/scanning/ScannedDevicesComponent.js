@@ -8,12 +8,16 @@ import ButtonView from '../view/ButtonView'
 import ImmutableListView from '../view/ImmutableListView'
 import ScannedDeviceView from './ScannedDeviceView'
 import * as ble from '../ble/BleActions'
+import { Actions } from 'react-native-router-flux'
+import * as SceneConst from '../scene/Const'
+import Style from '../view/Style'
 
 class ScannedDevicesComponent extends Component {
 
   _renderScannedDeviceCell(rowData) {
     const connectToDevice = () => {
       this.props.changeDeviceState(rowData.get('uuid'), ble.DEVICE_STATE_CONNECT)
+      Actions[SceneConst.SERVICES_SCENE]();
     }
   
     return (
@@ -28,7 +32,7 @@ class ScannedDevicesComponent extends Component {
 
   render() {
     return (
-      <View style={{flex: 1, padding: 20}}>
+      <View style={Style.component}>
         <ImmutableListView
           data={this.props.devices}
           onRenderCell={this._renderScannedDeviceCell.bind(this)}/>

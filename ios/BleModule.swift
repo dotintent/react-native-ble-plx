@@ -187,16 +187,22 @@ class BleClientManager : NSObject {
 
   @objc
   func closeConnection(deviceIdentifier: String,
-                       callback: RCTResponseSenderBlock) {
+                       resolver resolve: RCTPromiseResolveBlock,
+                       rejecter reject: RCTPromiseRejectBlock) {
     if let device = connectedDevices[deviceIdentifier] {
       _ = device.cancelConnection()
         .subscribe(
           onNext: nil,
-          onError: { callback([$0.toNSError(), deviceIdentifier]) },
+          onError: { error in
+            self.callRejectWithError(reject, error: error)
+          },
           onCompleted: {
+            resolve(deviceIdentifier)
+          },
+          onDisposed: {
             self.connectedDevices[deviceIdentifier] = nil
-            callback([NSNull(), deviceIdentifier])
-          })
+          }
+      );
     } else {
       connectingDevices.removeDisposable(deviceIdentifier)
     }
@@ -238,6 +244,39 @@ class BleClientManager : NSObject {
       .map { $0.UUID.UUIDString }
 
     resolve(characteristicsUUIDs)
+  }
+  
+  func detailsForCharacteristic(deviceIdentifier: String,
+                                serviceIdentifier: String,
+                                characteristicIdentifier: String,
+                                resolver resolve: RCTPromiseResolveBlock,
+                                rejecter reject: RCTPromiseRejectBlock) {
+    
+    guard let device = connectedDevices[deviceIdentifier] else {
+      // TODO handle error
+      self.callRejectWithError(reject, error: BluetoothError.BluetoothUnsupported.toNSError())
+      return
+    }
+    
+    let service = device.services?.filter {
+      serviceIdentifier.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame
+    }.first
+    
+    guard let characteristic = (service?.characteristics?
+        .filter { characteristicIdentifier.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame }
+        .first)
+    else {
+      resolve(NSNull())
+      return
+    }
+    
+    var result =  Dictionary<String, AnyObject>()
+    result["isWritable"] = characteristic.properties.contains(.Write)
+    result["isReadable"] = characteristic.properties.contains(.Read)
+    result["isNotifiable"] = characteristic.properties.contains(.Notify)
+    result["uuid"] = characteristic.UUID.UUIDString
+    
+    resolve(result)
   }
 
   @objc
