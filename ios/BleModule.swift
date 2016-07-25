@@ -35,18 +35,6 @@ extension ErrorType {
   }
 }
 
-// All events dispatched by BleClientManager
-enum BleClientEvent: String {
-  case scan = "ScanEvent"
-
-  func name() -> String {
-    return rawValue
-  }
-  func id() -> String {
-    return "BleClientManager" + rawValue
-  }
-}
-
 class DisposableMap {
   private var disposables = Dictionary<String, Disposable>()
 
@@ -61,12 +49,8 @@ class DisposableMap {
 }
 
 @objc(BleClientManager)
-class BleClientManager : NSObject {
-  
-  @objc
-  var methodQueue: dispatch_queue_t!
-  var bridge: RCTBridge!
-  
+class BleClientManager : RCTEventEmitter {
+
   private var manager : BluetoothManager!
   private var connectedDevices = Dictionary<String, Peripheral>()
   
@@ -79,23 +63,32 @@ class BleClientManager : NSObject {
 
   // MARK: Public interface
 
-  class func moduleName() -> String {
+  // React functions --------------------------
+
+  /// Module name
+  override class func moduleName() -> String {
     return "BleClientManager"
   }
 
-  @objc
-  var constantsToExport : NSDictionary {
-    let dictionary = NSMutableDictionary()
-    let addEvent = { (event: BleClientEvent) in
-      dictionary.setObject(event.id(), forKey: event.name())
+  /// Global variables visible by user of BLE module
+  override func constantsToExport() -> [String : AnyObject]! {
+    var dictionary = [String:AnyObject]()
+    for event in BleEvent.supportedEvents {
+      dictionary[event.name] = event.id
     }
-    addEvent(.scan)
     return dictionary
   }
 
+  /// List of all supported events to which user can register
+  override func supportedEvents() -> [String]! {
+    return BleEvent.supportedEvents.map { $0.id }
+  }
+
+  // Initialization ---------------------------
+
   @objc
   func createClient() {
-    manager = BluetoothManager(queue: methodQueue)
+    manager = BluetoothManager(queue: dispatch_get_main_queue())
   }
 
   @objc
@@ -104,6 +97,15 @@ class BleClientManager : NSObject {
     manager = nil
   }
 
+  // Event observations -----------------------
+
+  override func startObserving() {
+    print("Start Observing")
+  }
+
+  override func stopObserving() {
+    print("Stop Observing")
+  }
 
   // Discovery --------------------------------
 
@@ -345,9 +347,9 @@ class BleClientManager : NSObject {
 
   // MARK: Private interface ------------------------------------------------------------------------------------------
 
-  private func dispatchEvent(type: BleClientEvent, value: AnyObject) {
+  private func dispatchEvent(type: BleEvent, value: AnyObject) {
     if (bridge.valid) {
-      bridge.eventDispatcher().sendDeviceEventWithName(type.id(), body: value)
+      sendEventWithName(type.id, body: value)
     }
   }
 

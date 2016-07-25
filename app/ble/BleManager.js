@@ -1,29 +1,40 @@
 'use strict';
 
-import { NativeModules, DeviceEventEmitter} from 'react-native';
+import { NativeModules, NativeEventEmitter} from 'react-native';
 const BleModule = NativeModules.BleClientManager;
 
 export default class BleManager {
   constructor() {
     BleModule.createClient();
-    DeviceEventEmitter.addListener(BleModule.ScanEvent, this._scanEvent.bind(this))
+    this.eventEmitter = new NativeEventEmitter(BleModule)
   }
 
   destroy() {
     BleModule.destroyClient();
   }
 
+  // Scanning...
+
   startDeviceScan(uuids, listener) {
     console.log("Start device scan");
-    this._scanEventListener = listener;
+    this.stopDeviceScan()
+    const scanListener = ([error, scannedDevice]) => {
+      listener(error, scannedDevice)
+    };
+    this._scanEventSubscription = this.eventEmitter.addListener(BleModule.ScanEvent, scanListener);
     BleModule.scanBleDevices(uuids);
   }
 
   stopDeviceScan() {
     console.log("Stop device scan");
+    if (this._scanEventSubscription) {
+      this._scanEventSubscription.remove()
+      delete this._scanEventSubscription
+    }
     BleModule.stopScanBleDevices();
-    delete this._scanEventListener;
   }
+
+  // Handling connections
 
   async connectToDevice(identifier) {
     console.log("Connecting to device: " + identifier)
@@ -94,13 +105,5 @@ export default class BleManager {
 
   cancelCharacteristicOperation(transactionId) {
     BleModule.cancelCharacteristicOperation(transactionId)
-  }
-
-  // Private API
-
-  _scanEvent([error, scannedDevice]) {
-    if (this._scanEventListener) {
-      this._scanEventListener(error, scannedDevice)
-    }
   }
 }

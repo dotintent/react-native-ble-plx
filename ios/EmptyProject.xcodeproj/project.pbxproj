@@ -27,6 +27,7 @@
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		AB95D09AA596A9C16670B74F /* Pods_EmptyProject.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56D4E438B06B66D85ADD2A01 /* Pods_EmptyProject.framework */; };
 		D754D9811D3F8241000E0C47 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D754D9801D3F8241000E0C47 /* Utils.swift */; };
+		D7822AC71D460427006DF66A /* BleEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7822AC61D460427006DF66A /* BleEvent.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -138,6 +139,7 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		D754D9801D3F8241000E0C47 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		D7822AC61D460427006DF66A /* BleEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleEvent.swift; sourceTree = "<group>"; };
 		F2242B47225D0A7F62E8A990 /* Pods-EmptyProject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EmptyProject.release.xcconfig"; path = "Pods/Target Support Files/Pods-EmptyProject/Pods-EmptyProject.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -258,6 +260,7 @@
 				40F1497D1D2ABE57000B14FD /* BleModule.swift */,
 				40F1497F1D2ABF2A000B14FD /* BleModuleBridge.m */,
 				D754D9801D3F8241000E0C47 /* Utils.swift */,
+				D7822AC61D460427006DF66A /* BleEvent.swift */,
 			);
 			name = EmptyProject;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				40F149801D2ABF2A000B14FD /* BleModuleBridge.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 				D754D9811D3F8241000E0C47 /* Utils.swift in Sources */,
+				D7822AC71D460427006DF66A /* BleEvent.swift in Sources */,
 				40F149721D2ABB53000B14FD /* Test.swift in Sources */,
 				40F1497E1D2ABE57000B14FD /* BleModule.swift in Sources */,
 			);

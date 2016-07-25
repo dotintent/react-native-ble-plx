@@ -5,7 +5,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 let borderColor = '#a2001d'
 
-const CharacteristicView = ({uuid, isReadable, isWritable, isNotifiable, onClick}) => {
+const CharacteristicView = ({uuid, value, isReadable, isWritable, isNotifiable, onClick}) => {
     return (
         <TouchableOpacity onPress={onClick}>
         <View style={styles.background}>
@@ -25,8 +25,12 @@ const CharacteristicView = ({uuid, isReadable, isWritable, isNotifiable, onClick
             </View>
             <View style={{backgroundColor: borderColor, height: 1}}/>
             <View style={styles.bottomRow}>
-            <Text style={styles.titleText}>UUID:</Text>
-            <Text style={styles.uuidText}>{uuid}</Text>
+              <Text style={styles.titleText}>UUID:</Text>
+              <Text style={styles.uuidText}>{uuid}</Text>
+            </View>
+            <View style={styles.bottomRow}>
+              <Text style={styles.titleText}>Value:</Text>
+              <Text style={styles.uuidText}>{value || '-'}</Text>
             </View>
         </View>
         </TouchableOpacity>
