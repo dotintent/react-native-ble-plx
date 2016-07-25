@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import createLogger from 'redux-logger';
 
 import RootComponent from './app/root/RootComponent';
+import ErrorComponent from './app/root/ErrorComponent';
 import BleComponent from './app/ble/BleComponent';
 import reducer from './app/root/Reducer';
 
@@ -28,6 +29,7 @@ class EmptyProject extends Component {
     return (
       <Provider store={store}>
         <View style={{flex:1}}>
+          <ErrorComponent/>
           <RootComponent/>
           <BleComponent/>
         </View>

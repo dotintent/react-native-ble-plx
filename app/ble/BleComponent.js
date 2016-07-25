@@ -38,7 +38,7 @@ class BleComponent extends Component {
       }
       return resultServices;
     } catch (e) {
-      console.log('Error: ' + e);
+      this.props.pushError(e.message)
     }
     return null;
   }
@@ -46,10 +46,9 @@ class BleComponent extends Component {
   componentWillReceiveProps(newProps) {
     // Handle scanning
     if (newProps.scanning === true) {
-      //this.manager.startDeviceScan(["53bc4f57-545f-4881-9dfc-69d319695571"], (error, device) => {
       this.manager.startDeviceScan(null, (error, device) => {
         if (error) {
-          console.log("Cannot scan devices: " + error.message)
+          newProps.pushError(error.message)
           newProps.stopScan()
           return
         }
@@ -67,8 +66,7 @@ class BleComponent extends Component {
         .then((successIdentifier) => {
           newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
         }, (rejected) => {
-          // TODO: Handle error
-          console.log('ERROR: ' + rejected.message);
+          newProps.pushError(rejected.message)
           newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
         });
         newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTING);
@@ -87,8 +85,7 @@ class BleComponent extends Component {
           newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_CONNECTED);
         }, 
         (rejected) => {
-          // TODO: Handle error
-          console.log('ERROR: ' + rejected.message);
+          newProps.pushError(rejected.message)
           newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
         });
 
@@ -114,6 +111,7 @@ export default connect(
     serviceIdsForDevice: ble.serviceIdsForDevice,
     stopScan: ble.stopScan,
     updateServices: ble.updateServices,
-    updateCharacteristics: ble.updateCharacteristics
+    updateCharacteristics: ble.updateCharacteristics,
+    pushError: ble.pushError
   })
 (BleComponent)

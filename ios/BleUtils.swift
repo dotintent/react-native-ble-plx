@@ -1,13 +1,26 @@
 //
-//  Utils.swift
+//  BleUtils.swift
 //  EmptyProject
 //
 //  Created by Przemysław Lenart on 20/07/16.
-//  Copyright © 2016 Facebook. All rights reserved.
 //
 
 import Foundation
+import RxSwift
 import CoreBluetooth
+
+class DisposableMap {
+  private var disposables = Dictionary<String, Disposable>()
+
+  func replaceDisposable(key: String, disposable: Disposable?) {
+    disposables[key]?.dispose()
+    disposables[key] = disposable
+  }
+
+  func removeDisposable(key: String) {
+    replaceDisposable(key, disposable: nil)
+  }
+}
 
 extension SequenceType where Generator.Element == String {
   func toCBUUIDS() -> [CBUUID]? {

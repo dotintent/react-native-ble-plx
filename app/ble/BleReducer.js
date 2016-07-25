@@ -1,7 +1,7 @@
 'use strict';
 
 import * as ble from './BleActions'
-import { Map, OrderedMap } from 'immutable'
+import { Map, List, OrderedMap } from 'immutable'
 
 const defaultState = Map({
   devices: OrderedMap(),
@@ -9,6 +9,7 @@ const defaultState = Map({
   selectedServiceId: null,
   selectedCharacteristicId: null,
   scanning: false,
+  errors: List(),
   state: ble.DEVICE_STATE_DISCONNECTED
 });
 
@@ -36,6 +37,10 @@ export default (state = defaultState, action) => {
       return state
     case ble.READ_CHARACTERISTIC:
       return state
+    case ble.PUSH_ERROR:
+      return state.set('errors', state.get('errors').push(action.errorMessage))
+    case ble.POP_ERROR:
+      return state.set('errors', state.get('errors').pop())
     default:
       return state;
   }

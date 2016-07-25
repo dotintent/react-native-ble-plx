@@ -9,6 +9,8 @@ export const READ_CHARACTERISTIC = 'READ_CHARACTERISTIC'
 export const UPDATE_SERVICES = 'UPDATE_SERVICES'
 export const SELECT_SERVICE = 'SELECT_SERVICE'
 export const SELECT_CHARACTERISTIC = 'SELECT_CHARACTERISTIC'
+export const PUSH_ERROR = 'PUSH_ERROR'
+export const POP_ERROR = 'POP_ERROR'
 
 export function startScan() {
   return {
@@ -87,5 +89,18 @@ export function selectCharacteristic(deviceId, serviceId, characteristicId) {
     deviceId: deviceId,
     serviceId: serviceId,
     characteristicId: characteristicId
+  }
+}
+
+export function pushError(errorMessage) {
+  return {
+    type: PUSH_ERROR,
+    errorMessage
+  }
+}
+
+export function popError() {
+  return {
+    type: POP_ERROR,
   }
 }
