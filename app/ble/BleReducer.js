@@ -30,8 +30,8 @@ export default (state = defaultState, action) => {
       return state.mergeDeepIn(['devices', action.deviceId, 'services'], action.services);
     case ble.SELECT_SERVICE:
       return state.set('selectedServiceId', action.serviceId);
-    case ble.UPDATE_CHARACTERISTICS:
-      return state
+    case ble.SELECT_CHARACTERISTIC:
+      return state.set('selectedCharacteristicId', action.characteristicId);
     case ble.WRITE_CHARACTERISTIC:
       return state
     case ble.READ_CHARACTERISTIC:

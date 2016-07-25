@@ -106,9 +106,7 @@ export default connect(
   state => ({
     scanning: state.getIn(['ble', 'scanning']),
     state: state.getIn(['ble', 'state']),
-    selectedDeviceId: state.getIn(['ble', 'selectedDeviceId']),
-    selectedServiceId: state.getIn(['ble', 'selectedServiceId']),
-    sceneState: state.getIn('route', 'state')
+    selectedDeviceId: state.getIn(['ble', 'selectedDeviceId'])
   }),
   {
     deviceFound: ble.deviceFound,

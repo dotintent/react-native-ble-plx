@@ -8,6 +8,7 @@ export const WRITE_CHARACTERISTIC = 'WRITE_CHARACTERISTIC'
 export const READ_CHARACTERISTIC = 'READ_CHARACTERISTIC'
 export const UPDATE_SERVICES = 'UPDATE_SERVICES'
 export const SELECT_SERVICE = 'SELECT_SERVICE'
+export const SELECT_CHARACTERISTIC = 'SELECT_CHARACTERISTIC'
 
 export function startScan() {
   return {
@@ -77,5 +78,14 @@ export function selectService(deviceId, serviceId) {
     type: SELECT_SERVICE,
     deviceId: deviceId,
     serviceId: serviceId
+  }
+}
+
+export function selectCharacteristic(deviceId, serviceId, characteristicId) {
+  return {
+    type: SELECT_CHARACTERISTIC,
+    deviceId: deviceId,
+    serviceId: serviceId,
+    characteristicId: characteristicId
   }
 }

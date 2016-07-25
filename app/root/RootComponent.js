@@ -3,9 +3,10 @@
 import React, { Component } from 'react';
 import { Router, Scene } from 'react-native-router-flux';
 import { connect } from 'react-redux';
+import ScannedDevicesComponent from '../scanning/ScannedDevicesComponent';
 import ServicesComponent from '../services/ServicesComponent';
 import CharacteristicsComponent from '../characteristics/CharacteristicsComponent';
-import ScannedDevicesComponent from '../scanning/ScannedDevicesComponent';
+import CharacteristicDetailsComponent from '../characteristics/CharacteristicDetailsComponent';
 import * as SceneConst from '../scene/Const.js'
 import * as ble from '../ble/BleActions'
 import { Actions } from 'react-native-router-flux'
@@ -26,6 +27,7 @@ class RootComponent extends Component {
           <Scene key={SceneConst.DEVICES_SCENE} component={ScannedDevicesComponent} title="Devices" initial={true}/>
           <Scene key={SceneConst.SERVICES_SCENE} component={ServicesComponent} title="Services" onBack={this._onBack.bind(this)}/>
           <Scene key={SceneConst.CHARACTERISTICS_SCENE} component={CharacteristicsComponent} title="Characteristics"/>
+          <Scene key={SceneConst.CHARACTERISTIC_DETAILS_SCENE} component={CharacteristicDetailsComponent} title="Characteristic Details"/>
         </Scene>
       </RouterWithRedux>
     )

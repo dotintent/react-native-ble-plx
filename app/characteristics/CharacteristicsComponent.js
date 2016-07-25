@@ -6,8 +6,16 @@ import { connect } from 'react-redux'
 import CharacteristicView from './CharacteristicView'
 import ImmutableListView from '../view/ImmutableListView'
 import Style from '../view/Style'
+import { Actions } from  'react-native-router-flux'
+import * as SceneConst from '../scene/Const'
+import * as ble from '../ble/BleActions'
 
 class CharacteristicsComponent extends Component {
+
+  _characteristicClicked(rowData) {
+    this.props.selectCharacteristic(this.props.deviceId, this.props.serviceId, rowData.get('uuid'))
+    Actions[SceneConst.CHARACTERISTIC_DETAILS]();
+  }
 
   _renderCharacteristicCell(rowData) {
     return (
@@ -16,6 +24,7 @@ class CharacteristicsComponent extends Component {
         isWritable={rowData.get('isWritable')}
         isNotifiable={rowData.get('isNotifiable')}
         uuid={rowData.get('uuid')}
+        onClick={this._characteristicClicked.bind(this, rowData)}
       />
     )
   }
@@ -45,6 +54,6 @@ export default connect(
     }
   },
   {
-    // selectService: ble.selectService
+    selectCharacteristic: ble.selectCharacteristic
   })
 (CharacteristicsComponent)
