@@ -73,6 +73,8 @@ class BleClientManager : RCTEventEmitter {
 
   @objc
   func scanBleDevices(filteredUUIDs: [String]?) {
+    // TODO: check if ble client is already initialized
+    
     var uuids: [CBUUID]? = nil
     if let filteredUUIDs = filteredUUIDs {
       guard let cbuuids = filteredUUIDs.toCBUUIDS() else {

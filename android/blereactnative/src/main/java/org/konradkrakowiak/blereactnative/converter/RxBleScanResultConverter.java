@@ -6,13 +6,14 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.rxandroidble.RxBleScanResult;
 
+import java.util.UUID;
+
 public class RxBleScanResultConverter implements Converter<RxBleScanResult> {
 
     interface Metadata {
-
-        String RSSI = "RSSI";
-        String SCAN_RECORD = "SCAN_RECORD";
-        String BLE_DEVICE = "BLE_DEVICE";
+        String UUID = "uuid";
+        String NAME = "name";
+        String RSSI = "rssi";
     }
 
     private final RxBleDeviceConverter bleDeviceConverter;
@@ -24,10 +25,9 @@ public class RxBleScanResultConverter implements Converter<RxBleScanResult> {
     @Override
     public WritableMap convert(RxBleScanResult rxBleScanResult) {
         WritableMap result = Arguments.createMap();
-        result.putInt(Metadata.RSSI, rxBleScanResult.getRssi());
-        final byte[] scanRecord = rxBleScanResult.getScanRecord();
-        result.putString(Metadata.SCAN_RECORD, Base64.encodeToString(scanRecord, Base64.DEFAULT));
-        result.putMap(Metadata.BLE_DEVICE, bleDeviceConverter.convert(rxBleScanResult.getBleDevice()));
+        result.putString(Metadata.UUID, rxBleScanResult.getBleDevice().getMacAddress());
+        result.putString(Metadata.NAME, rxBleScanResult.getBleDevice().getName());
+        result.putString(Metadata.RSSI, String.valueOf(rxBleScanResult.getRssi()));
         return result;
     }
 }

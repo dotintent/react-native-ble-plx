@@ -49,23 +49,13 @@ export default class BleManager {
   }
 
   async serviceIdsForDevice(deviceIdentifier) {
-    try {
       var services = await BleModule.serviceIdsForDevice(deviceIdentifier);
       return services;
-    } catch(e) {
-      console.log(e);
-    }
-    return nil;
   }
 
   async characteristicIdsForDevice(deviceIdentifier, serviceIdentifier) {
-    try {
       var characteristics = await BleModule.characteristicIdsForDevice(deviceIdentifier, serviceIdentifier);
       return characteristics;
-    } catch(e) {
-      console.log(e);
-    }
-    return nil;
   }
 
   async characteristicDetails(deviceIdentifier, serviceIdentifier, characteristicIdentifier) {
