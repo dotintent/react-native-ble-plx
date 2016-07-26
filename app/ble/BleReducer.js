@@ -10,7 +10,8 @@ const defaultState = Map({
   selectedCharacteristicId: null,
   scanning: false,
   errors: List(),
-  state: ble.DEVICE_STATE_DISCONNECTED
+  state: ble.DEVICE_STATE_DISCONNECTED,
+  operations: Map(), 
 });
 
 export default (state = defaultState, action) => {
@@ -29,14 +30,37 @@ export default (state = defaultState, action) => {
       });
     case ble.UPDATE_SERVICES:
       return state.mergeDeepIn(['devices', action.deviceId, 'services'], action.services);
+    case ble.UPDATE_CHARACTERISTIC:
+      return state.mergeDeepIn(['devices', action.deviceId, 
+                                'services', action.serviceId, 
+                                'characteristics', action.characteristicId], action.characteristic)
     case ble.SELECT_SERVICE:
       return state.set('selectedServiceId', action.serviceId);
     case ble.SELECT_CHARACTERISTIC:
       return state.set('selectedCharacteristicId', action.characteristicId);
     case ble.WRITE_CHARACTERISTIC:
-      return state
+      return state.setIn(['operations', action.transactionId], {
+        type: 'write',
+        state: 'new',
+        deviceId: action.deviceId,
+        serviceId: action.serviceId,
+        characteristicId: action.characteristicId,
+        base64Value: action.base64Value,
+        transactionId: action.transactionId
+      })
     case ble.READ_CHARACTERISTIC:
-      return state
+      return state.setIn(['operations', action.transactionId], Map({
+        type: 'read',
+        state: 'new',
+        deviceId: action.deviceId,
+        serviceId: action.serviceId,
+        characteristicId: action.characteristicId,
+        transactionId: action.transactionId
+      }));
+    case ble.EXECUTE_TRANSACTION:
+      return state.setIn(['operations', action.transactionId, 'state'], 'inProgress')
+    case ble.COMPLETE_TRANSACTION:
+      return state.removeIn(['operations', action.transactionId])
     case ble.PUSH_ERROR:
       return state.set('errors', state.get('errors').push(action.errorMessage))
     case ble.POP_ERROR:

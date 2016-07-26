@@ -7,10 +7,13 @@ export const CHANGE_DEVICE_STATE = 'CHANGE_DEVICE_STATE'
 export const WRITE_CHARACTERISTIC = 'WRITE_CHARACTERISTIC'
 export const READ_CHARACTERISTIC = 'READ_CHARACTERISTIC'
 export const UPDATE_SERVICES = 'UPDATE_SERVICES'
+export const UPDATE_CHARACTERISTIC = 'UPDATE_CHARACTERISTIC'
 export const SELECT_SERVICE = 'SELECT_SERVICE'
 export const SELECT_CHARACTERISTIC = 'SELECT_CHARACTERISTIC'
 export const PUSH_ERROR = 'PUSH_ERROR'
 export const POP_ERROR = 'POP_ERROR'
+export const EXECUTE_TRANSACTION = 'EXECUTE_TRANSACTION'
+export const COMPLETE_TRANSACTION = 'COMPLETE_TRANSACTION'
 
 export function startScan() {
   return {
@@ -36,6 +39,16 @@ export function updateServices(deviceId, services) {
     type: UPDATE_SERVICES,
     deviceId: deviceId,
     services: services,
+  }
+}
+
+export function updateCharacteristic(deviceId, serviceId, characteristicId, characteristic) {
+  return {
+    type: UPDATE_CHARACTERISTIC,
+    deviceId,
+    serviceId,
+    characteristicId,
+    characteristic
   }
 }
 
@@ -102,5 +115,19 @@ export function pushError(errorMessage) {
 export function popError() {
   return {
     type: POP_ERROR,
+  }
+}
+
+export function executeTransaction(transactionId) {
+  return {
+    type: EXECUTE_TRANSACTION,
+    transactionId
+  }
+}
+
+export function completeTransaction(transactionId) {
+  return {
+    type: COMPLETE_TRANSACTION,
+    transactionId
   }
 }

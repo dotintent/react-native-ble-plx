@@ -43,7 +43,6 @@ export default class ImmutableListView extends Component {
   render() {
     return (
       <ListView
-        style={{ paddingTop: 50 }}
         dataSource={this.state.dataSource}
         renderRow={this.props.onRenderCell}
         renderSeparator={this._renderSeparator}

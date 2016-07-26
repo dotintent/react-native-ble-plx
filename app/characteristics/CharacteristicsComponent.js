@@ -14,7 +14,7 @@ class CharacteristicsComponent extends Component {
 
   _characteristicClicked(rowData) {
     this.props.selectCharacteristic(this.props.deviceId, this.props.serviceId, rowData.get('uuid'))
-    Actions[SceneConst.CHARACTERISTIC_DETAILS]();
+    Actions[SceneConst.CHARACTERISTIC_DETAILS_SCENE]();
   }
 
   _renderCharacteristicCell(rowData) {
@@ -24,6 +24,7 @@ class CharacteristicsComponent extends Component {
         isWritable={rowData.get('isWritable')}
         isNotifiable={rowData.get('isNotifiable')}
         uuid={rowData.get('uuid')}
+        value={rowData.get('value')}
         onClick={this._characteristicClicked.bind(this, rowData)}
       />
     )
