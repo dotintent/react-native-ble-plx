@@ -319,6 +319,10 @@ class BleClientManager : RCTEventEmitter {
         .flatMap { $0.characteristics ?? [] }
         .filter { characteristicIdentifier.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame } ?? []
 
+      if characteristics.isEmpty {
+        return Observable.error(BleError.characteristicNotFound(characteristicIdentifier))
+      }
+
       return Observable.from(Observable.just(characteristics))
     }
   }

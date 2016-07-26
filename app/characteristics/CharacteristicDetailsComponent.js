@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, Switch, Text, StyleSheet } from 'react-native';
+import { View, Switch, Text, TextInput, StyleSheet } from 'react-native';
 import Style from '../view/Style';
 import ButtonView from '../view/ButtonView';
 import * as ble from '../ble/BleActions';
@@ -45,6 +45,7 @@ class CharacteristicDetailsComponent extends Component {
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingTop: 10 }}>
           <View style={{ flex: 1 }}>
             <Text style={{ fontSize: 10 }}>Value: </Text>
+            <TextInput/>
             <Text>{value || '-'}</Text>
           </View>
           <ButtonView onClick={read} disabled={false} color={'#beffc6'} text={'Read'}/>
