@@ -2,21 +2,20 @@
 
 import React, { Component, PropTypes } from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import Button from 'react-native-button'
 
 const ButtonView = ({onClick, disabled, color, text}) => {
-  var style = [styles.button];
+  var style = [styles.containerStyle];
   style.push({backgroundColor: color})
   if (disabled) style.push(styles.buttonDisabled)
 
   return (
-    <TouchableOpacity
-      style={styles.highlight}
+    <Button
       onPress={onClick}
-      disabled={disabled}>
-      <Text style={style}>
+      disabled={disabled}
+      containerStyle={style}>
         {text}
-      </Text>
-    </TouchableOpacity>
+    </Button>
   )
 }
 
@@ -28,12 +27,12 @@ ButtonView.propTypes = {
 }
 
 var styles = StyleSheet.create({
-  button: {
-    fontWeight: 'bold',
+  containerStyle: {
+    padding: 10,
+    height: 45,
+    overflow: 'hidden',
     borderRadius: 10,
     borderWidth: 1,
-    overflow: 'hidden',
-    padding: 10
   },
   buttonDisabled: {
     backgroundColor: '#ede9eb'
