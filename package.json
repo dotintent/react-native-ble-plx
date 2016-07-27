@@ -15,6 +15,7 @@
     "immutable": "3.8.1",
     "redux-immutable": "3.0.6",
     "react-immutable-proptypes": "1.7.1",
-    "react-native-button": "1.6.0"
+    "react-native-button": "1.6.0",
+    "react-native-android-permissions": "0.0.6"
   }
 }

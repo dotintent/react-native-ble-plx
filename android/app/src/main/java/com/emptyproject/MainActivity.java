@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 import org.konradkrakowiak.blereactnative.BlePackage;
 
+import com.burnweb.rnpermissions.RNPermissionsPackage;
+
 public class MainActivity extends ReactActivity {
 
     /**
@@ -16,5 +18,11 @@ public class MainActivity extends ReactActivity {
     @Override
     protected String getMainComponentName() {
         return "EmptyProject";
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        RNPermissionsPackage.onRequestPermissionsResult(requestCode, permissions, grantResults); // very important event callback
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

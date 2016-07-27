@@ -27,7 +27,7 @@ public class RxBleScanResultConverter implements Converter<RxBleScanResult> {
         WritableMap result = Arguments.createMap();
         result.putString(Metadata.UUID, rxBleScanResult.getBleDevice().getMacAddress());
         result.putString(Metadata.NAME, rxBleScanResult.getBleDevice().getName());
-        result.putString(Metadata.RSSI, String.valueOf(rxBleScanResult.getRssi()));
+        result.putInt(Metadata.RSSI, rxBleScanResult.getRssi());
         return result;
     }
 }

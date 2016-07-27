@@ -5,26 +5,29 @@ import android.bluetooth.BluetoothGattService;
 import android.support.annotation.Nullable;
 import android.util.Base64;
 import android.util.Log;
+
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
 import com.polidea.rxandroidble.RxBleScanResult;
+import com.polidea.rxandroidble.internal.RxBleLog;
+
+import org.konradkrakowiak.blereactnative.converter.ConverterManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-import org.konradkrakowiak.blereactnative.converter.ConverterManager;
+
 import rx.Subscription;
 
 public class BleModule extends ReactContextBaseJavaModule {
@@ -61,12 +64,12 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     private UUID[] convertToUUIDs(@Nullable String... filteredUUIDs) {
-        if(filteredUUIDs == null) {
+        if (filteredUUIDs == null) {
             return null;
         }
 
         ArrayList<UUID> result = new ArrayList<>();
-        for(String uuidStr : filteredUUIDs) {
+        for (String uuidStr : filteredUUIDs) {
             UUID uuid = UUID.fromString(uuidStr);
             result.add(uuid);
         }
@@ -82,7 +85,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void destroyClient() {
         Log.d(TAG, "destroyClient was called");
-        if(scanSubscription != null) {
+        if (scanSubscription != null) {
             scanSubscription.unsubscribe();
             scanSubscription = null;
         }
@@ -156,58 +159,64 @@ public class BleModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void serviceIdsForDevice(String deviceIdentifier, Promise promise) {
         final RxBleConnection rxBleConnection = connectionMap.get(deviceIdentifier);
-        if(rxBleConnection != null) {
+        if (rxBleConnection == null) {
             // TODO: handle error
             String error = ErrorKey.BLE_GATT_CANNOT_START_EXCEPTION;
             promise.reject(error, error);
             return;
         }
-        rxBleConnection.discoverServices().subscribe(rxBleDeviceServices -> {
-            List<BluetoothGattService> services = rxBleDeviceServices.getBluetoothGattServices();
-            WritableArray resultServices = Arguments.createArray();
-            for(BluetoothGattService service : services) {
-                resultServices.pushString(service.getUuid().toString());
-            }
-            promise.resolve(resultServices);
-        }, throwable -> {
-            final String error = errorConverter.convert(throwable);
-            promise.reject(error, error);
-        });
+        rxBleConnection.discoverServices().subscribe(
+                rxBleDeviceServices -> {
+                    List<BluetoothGattService> services = rxBleDeviceServices.getBluetoothGattServices();
+                    WritableArray resultServices = Arguments.createArray();
+                    for (BluetoothGattService service : services) {
+                        resultServices.pushString(service.getUuid().toString());
+                    }
+                    promise.resolve(resultServices);
+                },
+                throwable -> {
+                    final String error = errorConverter.convert(throwable);
+                    promise.reject(error, error);
+                }
+        );
     }
 
     @ReactMethod
     public void characteristicIdsForDevice(String deviceIdentifier, String serviceIdentifier, Promise promise) {
         final RxBleConnection rxBleConnection = connectionMap.get(deviceIdentifier);
-        if(rxBleConnection != null) {
+        if (rxBleConnection == null) {
             // TODO: handle error
             String error = ErrorKey.BLE_GATT_CANNOT_START_EXCEPTION;
             promise.reject(error, error);
             return;
         }
-        rxBleConnection.discoverServices().subscribe(rxBleDeviceServices -> {
-            WritableArray resultCharacteristics = Arguments.createArray();
-            List<BluetoothGattService> services = rxBleDeviceServices.getBluetoothGattServices();
-            for(BluetoothGattService service : services) {
-                if(service.getUuid().toString().compareToIgnoreCase(serviceIdentifier) == 0) {
-                    List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
-                    for(BluetoothGattCharacteristic characteristic : characteristics) {
-                        resultCharacteristics.pushString(characteristic.getUuid().toString());
+        rxBleConnection.discoverServices().subscribe(
+                rxBleDeviceServices -> {
+                    WritableArray resultCharacteristics = Arguments.createArray();
+                    List<BluetoothGattService> services = rxBleDeviceServices.getBluetoothGattServices();
+                    for (BluetoothGattService service : services) {
+                        if (service.getUuid().toString().compareToIgnoreCase(serviceIdentifier) == 0) {
+                            List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
+                            for (BluetoothGattCharacteristic characteristic : characteristics) {
+                                resultCharacteristics.pushString(characteristic.getUuid().toString());
+                            }
+                            break;
+                        }
                     }
-                    return;
+                    promise.resolve(resultCharacteristics);
+                },
+                throwable -> {
+                    // TODO: handle error
+                    final String error = errorConverter.convert(throwable);
+                    promise.reject(error, error);
                 }
-            }
-            promise.resolve(resultCharacteristics);
-        }, throwable -> {
-            // TODO: handle error
-            final String error = errorConverter.convert(throwable);
-            promise.reject(error, error);
-        });
+        );
     }
 
     @ReactMethod
     public void detailsForCharacteristic(String deviceIdentifier, String serviceIdentifier, String characteristicIdentifier, Promise promise) {
         final RxBleConnection rxBleConnection = connectionMap.get(deviceIdentifier);
-        if(rxBleConnection != null) {
+        if (rxBleConnection == null) {
             // TODO: handle error
             String error = ErrorKey.BLE_GATT_CANNOT_START_EXCEPTION;
             promise.reject(error, error);
@@ -215,11 +224,11 @@ public class BleModule extends ReactContextBaseJavaModule {
         }
         rxBleConnection.discoverServices().subscribe(rxBleDeviceServices -> {
             List<BluetoothGattService> services = rxBleDeviceServices.getBluetoothGattServices();
-            for(BluetoothGattService service : services) {
-                if(service.getUuid().toString().compareToIgnoreCase(serviceIdentifier) == 0) {
+            for (BluetoothGattService service : services) {
+                if (service.getUuid().toString().compareToIgnoreCase(serviceIdentifier) == 0) {
                     List<BluetoothGattCharacteristic> characteristics = service.getCharacteristics();
-                    for(BluetoothGattCharacteristic characteristic : characteristics) {
-                        if(characteristic.getUuid().toString().compareToIgnoreCase(characteristicIdentifier) == 0) {
+                    for (BluetoothGattCharacteristic characteristic : characteristics) {
+                        if (characteristic.getUuid().toString().compareToIgnoreCase(characteristicIdentifier) == 0) {
                             WritableMap result = Arguments.createMap();
                             result.putBoolean("isWritable", isCharacteristicWriteable(characteristic));
                             result.putBoolean("isReadable", isCharacterisitcReadable(characteristic));
@@ -311,15 +320,14 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     private void onEstablishConnectionSuccessSuccess(String deviceId, RxBleConnection rxBleConnection, Promise promise) {
         connectionMap.put(deviceId, rxBleConnection);
-        promise.resolve(true);
+        promise.resolve(deviceId);
         Log.d(TAG, "Establish connection success for : " + deviceId);
-
     }
 
-    private void onEstablishConnectionSuccessFailure(Throwable throwable, Promise errorCallback) {
+    private void onEstablishConnectionSuccessFailure(Throwable throwable, Promise promise) {
         final String error = errorConverter.convert(throwable);
         Log.e(TAG, "onEstablishConnectionSuccessFailure: ", throwable);
-        errorCallback.reject(error, error);
+        promise.reject(error, error);
     }
 
     //Support for readCharacteristic(...)
@@ -364,7 +372,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     // Get properties from characteristic and check against flags
     // TODO: move it to the helper class
 
-    private  boolean isCharacteristicWriteable(BluetoothGattCharacteristic pChar) {
+    private boolean isCharacteristicWriteable(BluetoothGattCharacteristic pChar) {
         return (pChar.getProperties() & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0;
     }
 

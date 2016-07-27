@@ -13,6 +13,9 @@ import reducer from './app/root/Reducer';
 
 import { Iterable } from 'immutable';
 
+import {checkPermission} from 'react-native-android-permissions';
+import {requestPermission} from 'react-native-android-permissions';
+
 const stateTransformer = (state) => {
   if (Iterable.isIterable(state)) {
     return state.toJS()
@@ -25,6 +28,28 @@ const logger = createLogger({ stateTransformer });
 const store = createStore(reducer, applyMiddleware(logger))
 
 class EmptyProject extends Component {
+
+  componentDidMount() {
+    this.checkAndGrantPermissions()
+  }
+
+  checkAndGrantPermissions() {
+    checkPermission("android.permission.ACCESS_COARSE_LOCATION").then((result) => {
+      console.log("Already Granted!");
+      console.log(result);
+    }, (result) => {
+      console.log("Not Granted!");
+      console.log(result);
+
+      requestPermission("android.permission.ACCESS_COARSE_LOCATION").then((result) => {
+        console.log("Granted!", result);
+      }, (result) => {
+        console.log("Not Granted!");
+        console.log(result);
+      });
+    });
+  }
+
   render() {
     return (
       <Provider store={store}>

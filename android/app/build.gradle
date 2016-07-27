@@ -132,6 +132,8 @@ dependencies {
     compile 'com.polidea.rxandroidble:rxandroidble:1.0.1'
     compile 'me.tatarka:gradle-retrolambda:3.2.4'
     compile project(':blereactnative')
+
+    compile project(':RNPermissionsModule')
 }
 
 // Run this once to be able to run the application with BUCK
