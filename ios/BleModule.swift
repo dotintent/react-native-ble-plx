@@ -78,7 +78,7 @@ class BleClientManager : RCTEventEmitter {
     var uuids: [CBUUID]? = nil
     if let filteredUUIDs = filteredUUIDs {
       guard let cbuuids = filteredUUIDs.toCBUUIDS() else {
-        self.dispatchEvent(.scan, value: BleError.invalidUUIDs(filteredUUIDs).toJSResult)
+        self.dispatchEvent(.scan, value: [BleError.invalidUUIDs(filteredUUIDs).toJSResult, NSNull()])
         return
       }
       uuids = cbuuids

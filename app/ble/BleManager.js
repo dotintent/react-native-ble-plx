@@ -1,6 +1,6 @@
 'use strict';
 
-import { NativeModules, NativeEventEmitter} from 'react-native';
+import { NativeModules, NativeEventEmitter, DeviceEventEmitter, Platform} from 'react-native';
 const BleModule = NativeModules.BleClientManager;
 
 export default class BleManager {
@@ -21,15 +21,27 @@ export default class BleManager {
     const scanListener = ([error, scannedDevice]) => {
       listener(error, scannedDevice)
     };
-    this._scanEventSubscription = this.eventEmitter.addListener(BleModule.ScanEvent, scanListener);
+
+    if(Platform.OS === 'ios') {
+      this._scanEventSubscription = this.eventEmitter.addListener(BleModule.ScanEvent, scanListener);
+    } else if(Platform.OS === 'android') {
+      DeviceEventEmitter.addListener(BleModule.ScanEvent, (scannedDevice) => {
+        listener(null, scannedDevice);
+      });
+    }
+
     BleModule.scanBleDevices(uuids);
   }
 
   stopDeviceScan() {
     console.log("Stop device scan");
-    if (this._scanEventSubscription) {
-      this._scanEventSubscription.remove()
-      delete this._scanEventSubscription
+    if(Platform.OS === 'ios') {
+      if (this._scanEventSubscription) {
+        this._scanEventSubscription.remove()
+        delete this._scanEventSubscription
+      }
+    } else if(Platform.OS === 'android') {
+      DeviceEventEmitter.removeListener(BleModule.ScanEvent);
     }
     BleModule.stopScanBleDevices();
   }

@@ -19,13 +19,13 @@ import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
 import com.polidea.rxandroidble.RxBleScanResult;
-import com.polidea.rxandroidble.internal.RxBleLog;
 
 import org.konradkrakowiak.blereactnative.converter.ConverterManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import rx.Subscription;
@@ -61,6 +61,14 @@ public class BleModule extends ReactContextBaseJavaModule {
     @Override
     public String getName() {
         return NAME;
+    }
+
+    @Override
+    public Map<String, Object> getConstants() {
+        final Map<String, Object> constants = new HashMap<>();
+        constants.put(EventKey.SCAN_EVENT, EventKey.SCAN_EVENT);
+        constants.put(EventKey.NOTIFICATION_EVENT, EventKey.NOTIFICATION_EVENT);
+        return constants;
     }
 
     private UUID[] convertToUUIDs(@Nullable String... filteredUUIDs) {
@@ -306,7 +314,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     private void onScanBleDevicesSuccess(RxBleScanResult rxBleScanResult) {
         Log.d(TAG, "onScanBleDevicesSuccess: " + rxBleScanResult.toString());
-        sendEvent(EventKey.SCAN_RESULT, converterManager.convert(rxBleScanResult));
+        sendEvent(EventKey.SCAN_EVENT, converterManager.convert(rxBleScanResult));
     }
 
     private void onScanBleDevicesFailure(Throwable throwable) {
@@ -361,13 +369,12 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     //Common support method
-
     private void sendEvent(String eventName, @Nullable WritableMap params) {
         getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+//                .getJSModule(RCTNativeAppEventEmitter.class)
                 .emit(eventName, params);
     }
-
 
     // Get properties from characteristic and check against flags
     // TODO: move it to the helper class

@@ -323,7 +323,7 @@ public class RxBleReactContextBaseJavaModule extends ReactContextBaseJavaModule 
         Log.d(TAG, "onWriteCharacteristicSuccess: " + Arrays.toString(bytes));
         WritableMap result = Arguments.createMap();
         result.putString("test", Arrays.toString(bytes));
-        sendEvent(getReactApplicationContext(), "ON_NOTIFICATION_GET", result);
+        sendEvent(getReactApplicationContext(), "NOTIFICATION_EVENT", result);
     }
 
 
