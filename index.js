@@ -1,0 +1,1 @@
+export { default as BleManager } from './src/BleManager'

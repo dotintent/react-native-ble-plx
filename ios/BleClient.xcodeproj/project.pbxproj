@@ -1,0 +1,312 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D73F06EC1D48E17B00AD5963 /* BleClient.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D73F06EB1D48E17B00AD5963 /* BleClient.h */; };
+		D73F06EE1D48E17B00AD5963 /* BleClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D73F06ED1D48E17B00AD5963 /* BleClient.m */; };
+		D73F07961D48FB8600AD5963 /* BleClientManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D73F07931D48FB5400AD5963 /* BleClientManager.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D73F07921D48FB5400AD5963 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D73F078E1D48FB5400AD5963 /* BleClientManager.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D73F06FE1D48E5BB00AD5963;
+			remoteInfo = BleClientManager;
+		};
+		D73F07941D48FB8000AD5963 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D73F078E1D48FB5400AD5963 /* BleClientManager.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D73F06FD1D48E5BB00AD5963;
+			remoteInfo = BleClientManager;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D73F06E61D48E17B00AD5963 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				D73F06EC1D48E17B00AD5963 /* BleClient.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		D73F06E81D48E17B00AD5963 /* libBleClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBleClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D73F06EB1D48E17B00AD5963 /* BleClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BleClient.h; sourceTree = "<group>"; };
+		D73F06ED1D48E17B00AD5963 /* BleClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BleClient.m; sourceTree = "<group>"; };
+		D73F078E1D48FB5400AD5963 /* BleClientManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BleClientManager.xcodeproj; path = BleClientManager/BleClientManager.xcodeproj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D73F06E51D48E17B00AD5963 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D73F07961D48FB8600AD5963 /* BleClientManager.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D73F06DF1D48E17B00AD5963 = {
+			isa = PBXGroup;
+			children = (
+				D73F078E1D48FB5400AD5963 /* BleClientManager.xcodeproj */,
+				D73F06EA1D48E17B00AD5963 /* BleClient */,
+				D73F06E91D48E17B00AD5963 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D73F06E91D48E17B00AD5963 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D73F06E81D48E17B00AD5963 /* libBleClient.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D73F06EA1D48E17B00AD5963 /* BleClient */ = {
+			isa = PBXGroup;
+			children = (
+				D73F06EB1D48E17B00AD5963 /* BleClient.h */,
+				D73F06ED1D48E17B00AD5963 /* BleClient.m */,
+			);
+			path = BleClient;
+			sourceTree = "<group>";
+		};
+		D73F078F1D48FB5400AD5963 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D73F07931D48FB5400AD5963 /* BleClientManager.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D73F06E71D48E17B00AD5963 /* BleClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D73F06F11D48E17B00AD5963 /* Build configuration list for PBXNativeTarget "BleClient" */;
+			buildPhases = (
+				D73F06E41D48E17B00AD5963 /* Sources */,
+				D73F06E51D48E17B00AD5963 /* Frameworks */,
+				D73F06E61D48E17B00AD5963 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D73F07951D48FB8000AD5963 /* PBXTargetDependency */,
+			);
+			name = BleClient;
+			productName = BleClient;
+			productReference = D73F06E81D48E17B00AD5963 /* libBleClient.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D73F06E01D48E17B00AD5963 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0730;
+				ORGANIZATIONNAME = Polidea;
+				TargetAttributes = {
+					D73F06E71D48E17B00AD5963 = {
+						CreatedOnToolsVersion = 7.3;
+					};
+				};
+			};
+			buildConfigurationList = D73F06E31D48E17B00AD5963 /* Build configuration list for PBXProject "BleClient" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D73F06DF1D48E17B00AD5963;
+			productRefGroup = D73F06E91D48E17B00AD5963 /* Products */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D73F078F1D48FB5400AD5963 /* Products */;
+					ProjectRef = D73F078E1D48FB5400AD5963 /* BleClientManager.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				D73F06E71D48E17B00AD5963 /* BleClient */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D73F07931D48FB5400AD5963 /* BleClientManager.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = BleClientManager.framework;
+			remoteRef = D73F07921D48FB5400AD5963 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D73F06E41D48E17B00AD5963 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D73F06EE1D48E17B00AD5963 /* BleClient.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D73F07951D48FB8000AD5963 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = BleClientManager;
+			targetProxy = D73F07941D48FB8000AD5963 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		D73F06EF1D48E17B00AD5963 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		D73F06F01D48E17B00AD5963 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D73F06F21D48E17B00AD5963 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../react-native/React/**";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		D73F06F31D48E17B00AD5963 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../react-native/React/**";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D73F06E31D48E17B00AD5963 /* Build configuration list for PBXProject "BleClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D73F06EF1D48E17B00AD5963 /* Debug */,
+				D73F06F01D48E17B00AD5963 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D73F06F11D48E17B00AD5963 /* Build configuration list for PBXNativeTarget "BleClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D73F06F21D48E17B00AD5963 /* Debug */,
+				D73F06F31D48E17B00AD5963 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D73F06E01D48E17B00AD5963 /* Project object */;
+}

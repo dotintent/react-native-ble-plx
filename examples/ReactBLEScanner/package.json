@@ -1,0 +1,19 @@
+{
+  "name": "ReactBLEScanner",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start"
+  },
+  "dependencies": {
+    "react": "15.2.1",
+    "react-native": "0.30.0",
+    "immutable": "3.8.1",
+    "react-immutable-proptypes": "1.7.1",
+    "react-native-router-flux": "3.32.0",
+    "react-redux": "4.4.5",
+    "redux": "3.5.2",
+    "redux-immutable": "3.0.6",
+    "redux-logger": "2.6.1"
+  }
+}
