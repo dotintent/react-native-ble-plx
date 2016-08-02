@@ -76,13 +76,16 @@ Starts device scanning. When previous scan is in progress it will be stopped bef
 * `listener(error, scannedDevice)` - function which will be called for every scanned device (devices 
    may be scanned multiple times). It's first argument is potential error which is set to non 
    `null` value when scanning failed. You have to start scanning process again if that happens. 
-   Second argument is a scanned device passed as an object with following fields:
+   Second argument is a scanned `device` passed as an object with following fields:
 
 ```javascript
 {
-    "uuid": string, // UUID of scanned device (for iOS it's local identifier)
-    "name": string, // device name if present or null otherwise
-    "rssi": number, // RSSI value during scanning
+    "uuid": string,         // UUID of scanned device (for iOS it's local identifier)
+    "name": string,         // device name if present or null otherwise
+    "rssi": number,         // RSSI value during scanning
+    "connectable": boolean, // Is device connectable
+
+    // Utility functions
 }
 ```
 
@@ -115,13 +118,6 @@ Connects to device with provided UUID.
 ```
 
 * **returns** - promise which will return connected `device` object if successful:
-
-```javascript
-{
-    "uuid": string, // UUID of scanned device (for iOS it's local identifier)
-    ... // Other device fields
-}
-```
 
 ---
 #### `async device.connect([options])`
@@ -178,3 +174,193 @@ Utility function which monitors if device was disconnected due to any errors or 
 
 **TODOs**:
 * Should utility functions be mutating or pure?
+
+### Discovery
+
+#### `async discoverAllServicesAndCharacteristicsForDevice(identifier)`
+Discovers all services and characteristics for device.
+
+*Parameters*:
+* `identifier` - device UUID.
+* **returns** - `device` object if all available services and characteristics have been discovered.
+
+---
+#### `async device.discoverAllServicesAndCharacteristics()`
+Discovers all services and characteristics for device.
+
+*Parameters*:
+* Look above.
+
+### Services
+
+#### `servicesForDevice(identifier)`
+Get list of discovered services for device.
+
+*Parameters*:
+* `identifier` - device UUID.
+* **returns** - array of `service` objects which are discovered for a device:
+
+```javascript
+{
+    "uuid": string,       // Service UUID
+    "isPrimary": boolean, // Is service primary 
+
+    // Utility functions
+}
+```
+
+#### `device.services()`
+Utility function to get list of discovered services for device.
+
+*Parameters*:
+* Look above.
+
+### Characteristics
+
+#### `characteristicsForDevice(identifier, serviceUUID)`
+Get list of discovered characteristics.
+
+*Parameters*:
+* `identifier` - device UUID.
+* `serviceUUID` - service UUID.
+* **returns** - array of `characteristic` objects which are discovered for a device in specified service:
+
+```javascript
+{
+    "uuid": string,                         // Characteristic UUID
+    "isReadable": boolean,                  // Is characteristic readable
+    "isWriteableWithResponse": boolean,     // Is characteristic writeable when writing with response
+    "isWriteableWithoutResponse": boolean,  // Is characteristic writeable when writing without response
+    "isNotifiable": boolean,                // Is characteristic notifiable
+    "isIndictable": boolean,                // Is characteristic indictable
+    "value": string,                        // Base64 value, may be null 
+}
+```
+
+---
+#### `device.characteristicsForService(serviceUUID)`
+Utility function to get list of discovered characteristics in specified service for device.
+
+*Parameters*:
+* Look above.
+
+---
+#### `service.characteristics()`
+Utility function to get list of discovered characteristics for a service.
+
+*Parameters*:
+* Look above.
+
+---
+#### `async readCharacteristicForDevice(identifier, serviceUUID, characteristicUUID)`
+Read characteristic value.
+
+*Parameters*:
+* `identifier` - device UUID.
+* `serviceUUID` - service UUID.
+* `characteristicUUID` - characteristic UUID.
+* **returns** - promise which emits first `characteristic` object matching specified UUID paths. 
+                Latest value of characteristic will be stored.  
+
+```javascript
+{
+    "uuid": string,                         // Characteristic UUID
+    "isReadable": boolean,                  // Is characteristic readable
+    "isWriteableWithResponse": boolean,     // Is characteristic writeable when writing with response
+    "isWriteableWithoutResponse": boolean,  // Is characteristic writeable when writing without response
+    "isNotifiable": boolean,                // Is characteristic notifiable
+    "isIndictable": boolean,                // Is characteristic indictable
+    "value": string,                        // Base64 value, may be null 
+}
+```
+
+---
+#### `async device.readCharacteristicForService(serviceUUID, characteristicUUID)`
+Read characteristic value.
+
+*Parameters*:
+* Look above.
+
+---
+#### `async service.readCharacteristic(characteristicUUID)`
+Read characteristic value.
+
+*Parameters*:
+* Look above.
+
+---
+#### `async characteristic.read()`
+Read characteristic value.
+
+*Parameters*:
+* Look above.
+
+---
+#### `async writeCharacteristicWithResponseForDevice(identifier, serviceUUID, characteristicUUID)`
+Write characteristic value with response.
+
+*Parameters*:
+* `identifier` - device UUID.
+* `serviceUUID` - service UUID.
+* `characteristicUUID` - characteristic UUID.
+* **returns** - promise which emits first `characteristic` object matching specified UUID paths. 
+                Latest value of characteristic will be stored.  
+
+---
+#### `async device.writeCharacteristicWithResponseForService(serviceUUID, characteristicUUID)`
+Write characteristic value with response.
+
+*Parameters*:
+* Look above.
+
+---
+#### `async service.writeCharacteristicWithResponse(characteristicUUID)`
+Write characteristic value with response.
+
+*Parameters*:
+* Look above.
+
+---
+#### `async characteristic.writeWithResponse()`
+Write characteristic value with response.
+
+*Parameters*:
+* Look above.
+
+---
+#### `async writeCharacteristicWithoutResponseForDevice(identifier, serviceUUID, characteristicUUID)`
+Write characteristic value without response.
+
+*Parameters*:
+* `identifier` - device UUID.
+* `serviceUUID` - service UUID.
+* `characteristicUUID` - characteristic UUID.
+* **returns** - promise which emits first `characteristic` object matching specified UUID paths. 
+                Latest value of characteristic will be stored.
+
+---
+#### `async device.writeCharacteristicWithoutResponseForService(serviceUUID, characteristicUUID)`
+Write characteristic value without response.
+
+*Parameters*:
+* Look above.
+
+---
+#### `async service.writeCharacteristicWithoutResponse(characteristicUUID)`
+Write characteristic value without response.
+
+*Parameters*:
+* Look above.
+
+---
+#### `async characteristic.writeWithoutResponse()`
+Write characteristic value without response.
+
+*Parameters*:
+* Look above.
+
+**TODOs:**
+* In the future to support multiple characteristics with the same UUID we can add "id" attribute and "id" based
+  functions to directly read/write/discover. 
+* Should objects contain parent UUID?
+* Should we support transactionId parameter for every async operation as an optional value?
