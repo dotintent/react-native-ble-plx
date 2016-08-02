@@ -296,64 +296,66 @@ Read characteristic value.
 * Look above.
 
 ---
-#### `async writeCharacteristicWithResponseForDevice(identifier, serviceUUID, characteristicUUID)`
+#### `async writeCharacteristicWithResponseForDevice(identifier, serviceUUID, characteristicUUID, valueBase64)`
 Write characteristic value with response.
 
 *Parameters*:
 * `identifier` - device UUID.
 * `serviceUUID` - service UUID.
 * `characteristicUUID` - characteristic UUID.
+* `valueBase64` - value in Base64 format.
 * **returns** - promise which emits first `characteristic` object matching specified UUID paths. 
                 Latest value of characteristic will be stored.  
 
 ---
-#### `async device.writeCharacteristicWithResponseForService(serviceUUID, characteristicUUID)`
+#### `async device.writeCharacteristicWithResponseForService(serviceUUID, characteristicUUID, valueBase64)`
 Write characteristic value with response.
 
 *Parameters*:
 * Look above.
 
 ---
-#### `async service.writeCharacteristicWithResponse(characteristicUUID)`
+#### `async service.writeCharacteristicWithResponse(characteristicUUID, valueBase64)`
 Write characteristic value with response.
 
 *Parameters*:
 * Look above.
 
 ---
-#### `async characteristic.writeWithResponse()`
+#### `async characteristic.writeWithResponse(valueBase64)`
 Write characteristic value with response.
 
 *Parameters*:
 * Look above.
 
 ---
-#### `async writeCharacteristicWithoutResponseForDevice(identifier, serviceUUID, characteristicUUID)`
+#### `async writeCharacteristicWithoutResponseForDevice(identifier, serviceUUID, characteristicUUID, valueBase64)`
 Write characteristic value without response.
 
 *Parameters*:
 * `identifier` - device UUID.
 * `serviceUUID` - service UUID.
 * `characteristicUUID` - characteristic UUID.
+* `valueBase64` - value in Base64 format.
 * **returns** - promise which emits first `characteristic` object matching specified UUID paths. 
                 Latest value of characteristic will be stored.
 
 ---
-#### `async device.writeCharacteristicWithoutResponseForService(serviceUUID, characteristicUUID)`
+#### `async device.writeCharacteristicWithoutResponseForService(serviceUUID, characteristicUUID, valueBase64)`
 Write characteristic value without response.
 
 *Parameters*:
 * Look above.
 
 ---
-#### `async service.writeCharacteristicWithoutResponse(characteristicUUID)`
+#### `async service.writeCharacteristicWithoutResponse(characteristicUUID, valueBase64)`
 Write characteristic value without response.
 
 *Parameters*:
 * Look above.
 
 ---
-#### `async characteristic.writeWithoutResponse()`
+#### `async characteristic.writeWithoutResponse(valueBase64)`
 Write characteristic value without response.
 
 *Parameters*:
