@@ -7,27 +7,28 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D73F07A51D49033A00AD5963 /* BleClientManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D73F07A41D49033A00AD5963 /* BleClientManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D73F07B11D49037B00AD5963 /* BleModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73F07AC1D49037B00AD5963 /* BleModule.swift */; };
-		D73F07B21D49037B00AD5963 /* BleError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73F07AD1D49037B00AD5963 /* BleError.swift */; };
-		D73F07B31D49037B00AD5963 /* BleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73F07AE1D49037B00AD5963 /* BleUtils.swift */; };
-		D73F07B51D49037B00AD5963 /* BleEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73F07B01D49037B00AD5963 /* BleEvent.swift */; };
-		D73F07CF1D49083300AD5963 /* RxBluetoothKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D73F07CE1D49083300AD5963 /* RxBluetoothKit.framework */; };
-		D73F07D11D49083900AD5963 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D73F07D01D49083900AD5963 /* RxSwift.framework */; };
-		D73F07EB1D49F71000AD5963 /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D73F07EA1D49F71000AD5963 /* RxCocoa.framework */; };
+		D7970CC61D4F864B00231A1B /* RxBluetoothKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CC31D4F864B00231A1B /* RxBluetoothKit.framework */; };
+		D7970CC71D4F864B00231A1B /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CC41D4F864B00231A1B /* RxCocoa.framework */; };
+		D7970CC81D4F864B00231A1B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CC51D4F864B00231A1B /* RxSwift.framework */; };
+		D7D202801D4F617C00E10F6A /* BleModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2027A1D4F617C00E10F6A /* BleModule.swift */; };
+		D7D202811D4F617C00E10F6A /* BleEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2027B1D4F617C00E10F6A /* BleEvent.swift */; };
+		D7D202821D4F617C00E10F6A /* BleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2027C1D4F617C00E10F6A /* BleUtils.swift */; };
+		D7D202831D4F617C00E10F6A /* BleClientManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D7D2027D1D4F617C00E10F6A /* BleClientManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D7D202841D4F617C00E10F6A /* BleError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2027E1D4F617C00E10F6A /* BleError.swift */; };
+		D7D202851D4F617C00E10F6A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7D2027F1D4F617C00E10F6A /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D73F07A11D49033A00AD5963 /* BleClientManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BleClientManager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D73F07A41D49033A00AD5963 /* BleClientManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BleClientManager.h; sourceTree = "<group>"; };
-		D73F07A61D49033A00AD5963 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D73F07AC1D49037B00AD5963 /* BleModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleModule.swift; sourceTree = "<group>"; };
-		D73F07AD1D49037B00AD5963 /* BleError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleError.swift; sourceTree = "<group>"; };
-		D73F07AE1D49037B00AD5963 /* BleUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleUtils.swift; sourceTree = "<group>"; };
-		D73F07B01D49037B00AD5963 /* BleEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleEvent.swift; sourceTree = "<group>"; };
-		D73F07CE1D49083300AD5963 /* RxBluetoothKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBluetoothKit.framework; path = Carthage/Build/iOS/RxBluetoothKit.framework; sourceTree = "<group>"; };
-		D73F07D01D49083900AD5963 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
-		D73F07EA1D49F71000AD5963 /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
+		D7970CC31D4F864B00231A1B /* RxBluetoothKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBluetoothKit.framework; path = Carthage/Build/iOS/RxBluetoothKit.framework; sourceTree = "<group>"; };
+		D7970CC41D4F864B00231A1B /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
+		D7970CC51D4F864B00231A1B /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		D7D2027A1D4F617C00E10F6A /* BleModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleModule.swift; sourceTree = "<group>"; };
+		D7D2027B1D4F617C00E10F6A /* BleEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleEvent.swift; sourceTree = "<group>"; };
+		D7D2027C1D4F617C00E10F6A /* BleUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleUtils.swift; sourceTree = "<group>"; };
+		D7D2027D1D4F617C00E10F6A /* BleClientManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BleClientManager.h; sourceTree = "<group>"; };
+		D7D2027E1D4F617C00E10F6A /* BleError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleError.swift; sourceTree = "<group>"; };
+		D7D2027F1D4F617C00E10F6A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,9 +36,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D73F07CF1D49083300AD5963 /* RxBluetoothKit.framework in Frameworks */,
-				D73F07EB1D49F71000AD5963 /* RxCocoa.framework in Frameworks */,
-				D73F07D11D49083900AD5963 /* RxSwift.framework in Frameworks */,
+				D7970CC61D4F864B00231A1B /* RxBluetoothKit.framework in Frameworks */,
+				D7970CC71D4F864B00231A1B /* RxCocoa.framework in Frameworks */,
+				D7970CC81D4F864B00231A1B /* RxSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,10 +48,15 @@
 		D73F07971D49033A00AD5963 = {
 			isa = PBXGroup;
 			children = (
-				D73F07EA1D49F71000AD5963 /* RxCocoa.framework */,
-				D73F07D01D49083900AD5963 /* RxSwift.framework */,
-				D73F07CE1D49083300AD5963 /* RxBluetoothKit.framework */,
-				D73F07A31D49033A00AD5963 /* BleClientManager */,
+				D7970CC31D4F864B00231A1B /* RxBluetoothKit.framework */,
+				D7970CC41D4F864B00231A1B /* RxCocoa.framework */,
+				D7970CC51D4F864B00231A1B /* RxSwift.framework */,
+				D7D2027A1D4F617C00E10F6A /* BleModule.swift */,
+				D7D2027B1D4F617C00E10F6A /* BleEvent.swift */,
+				D7D2027C1D4F617C00E10F6A /* BleUtils.swift */,
+				D7D2027D1D4F617C00E10F6A /* BleClientManager.h */,
+				D7D2027E1D4F617C00E10F6A /* BleError.swift */,
+				D7D2027F1D4F617C00E10F6A /* Info.plist */,
 				D73F07A21D49033A00AD5963 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,19 +69,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D73F07A31D49033A00AD5963 /* BleClientManager */ = {
-			isa = PBXGroup;
-			children = (
-				D73F07AC1D49037B00AD5963 /* BleModule.swift */,
-				D73F07AD1D49037B00AD5963 /* BleError.swift */,
-				D73F07AE1D49037B00AD5963 /* BleUtils.swift */,
-				D73F07B01D49037B00AD5963 /* BleEvent.swift */,
-				D73F07A41D49033A00AD5963 /* BleClientManager.h */,
-				D73F07A61D49033A00AD5963 /* Info.plist */,
-			);
-			path = BleClientManager;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -83,7 +76,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D73F07A51D49033A00AD5963 /* BleClientManager.h in Headers */,
+				D7D202831D4F617C00E10F6A /* BleClientManager.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,7 +91,6 @@
 				D73F079D1D49033A00AD5963 /* Frameworks */,
 				D73F079E1D49033A00AD5963 /* Headers */,
 				D73F079F1D49033A00AD5963 /* Resources */,
-				D73F07DD1D4908E100AD5963 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -145,38 +137,21 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7D202851D4F617C00E10F6A /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		D73F07DD1D4908E100AD5963 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/RxBluetoothKit.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D73F079C1D49033A00AD5963 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D73F07B51D49037B00AD5963 /* BleEvent.swift in Sources */,
-				D73F07B21D49037B00AD5963 /* BleError.swift in Sources */,
-				D73F07B31D49037B00AD5963 /* BleUtils.swift in Sources */,
-				D73F07B11D49037B00AD5963 /* BleModule.swift in Sources */,
+				D7D202811D4F617C00E10F6A /* BleEvent.swift in Sources */,
+				D7D202821D4F617C00E10F6A /* BleUtils.swift in Sources */,
+				D7D202841D4F617C00E10F6A /* BleError.swift in Sources */,
+				D7D202801D4F617C00E10F6A /* BleModule.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -187,6 +162,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BITCODE_GENERATION_MODE = bitcode;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -236,6 +212,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				BITCODE_GENERATION_MODE = bitcode;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -286,7 +263,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = BleClientManager/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.polidea.BleClientManager;
@@ -308,7 +285,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
-				INFOPLIST_FILE = BleClientManager/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.polidea.BleClientManager;

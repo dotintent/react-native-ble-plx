@@ -3,9 +3,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import BleManager from './BleManager';
+import { BleManager } from 'react-native-ble-plx';
 import * as ble from './BleActions';
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 import * as SceneConst from '../scene/Const'
 
 class BleComponent extends Component {

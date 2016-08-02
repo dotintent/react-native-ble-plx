@@ -31,7 +31,7 @@ local.properties
 # node.js
 #
 node_modules/
-npm-debug.log
+npm-debug.log.*
 
 # BUCK
 buck-out/
@@ -42,6 +42,7 @@ android/keystores/debug.keystore
 # iOS
 ios/Pods
 ios/Podfile.lock
+Carthage
 
 # IDE
 .vscode/

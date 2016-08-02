@@ -23,15 +23,15 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		D7D0F43D1D4A232D00BA9E3E /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D0F4321D4A231600BA9E3E /* libBleClient.a */; };
-		D7D0F4411D4A2BD400BA9E3E /* RxBluetoothKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D0F43E1D4A2BD400BA9E3E /* RxBluetoothKit.framework */; };
-		D7D0F4421D4A2BD400BA9E3E /* RxBluetoothKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D0F43E1D4A2BD400BA9E3E /* RxBluetoothKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D7D0F4431D4A2BD400BA9E3E /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D0F43F1D4A2BD400BA9E3E /* RxCocoa.framework */; };
-		D7D0F4441D4A2BD400BA9E3E /* RxCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D0F43F1D4A2BD400BA9E3E /* RxCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D7D0F4451D4A2BD400BA9E3E /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D0F4401D4A2BD400BA9E3E /* RxSwift.framework */; };
-		D7D0F4461D4A2BD400BA9E3E /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D0F4401D4A2BD400BA9E3E /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D7D0F4491D4A2D1800BA9E3E /* BleClientManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D0F4481D4A2D1800BA9E3E /* BleClientManager.framework */; };
-		D7D0F44A1D4A2D1800BA9E3E /* BleClientManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D0F4481D4A2D1800BA9E3E /* BleClientManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D7970CF11D4F94A300231A1B /* BleClientManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CED1D4F94A200231A1B /* BleClientManager.framework */; };
+		D7970CF21D4F94A300231A1B /* BleClientManager.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CED1D4F94A200231A1B /* BleClientManager.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D7970CF31D4F94A300231A1B /* RxBluetoothKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CEE1D4F94A200231A1B /* RxBluetoothKit.framework */; };
+		D7970CF41D4F94A300231A1B /* RxBluetoothKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CEE1D4F94A200231A1B /* RxBluetoothKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D7970CF51D4F94A300231A1B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CEF1D4F94A200231A1B /* RxSwift.framework */; };
+		D7970CF61D4F94A300231A1B /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CEF1D4F94A200231A1B /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D7970CF71D4F94A300231A1B /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CF01D4F94A200231A1B /* RxCocoa.framework */; };
+		D7970CF81D4F94A300231A1B /* RxCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CF01D4F94A200231A1B /* RxCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D7D202861D4F618800E10F6A /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D202761D4F612600E10F6A /* libBleClient.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,9 +112,9 @@
 			remoteGlobalIDString = 58B5119B1A9E6C1200147676;
 			remoteInfo = RCTText;
 		};
-		D7D0F4311D4A231600BA9E3E /* PBXContainerItemProxy */ = {
+		D7D202751D4F612600E10F6A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = D7D0F42C1D4A231500BA9E3E /* BleClient.xcodeproj */;
+			containerPortal = D7D202701D4F612600E10F6A /* BleClient.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = D73F06E81D48E17B00AD5963;
 			remoteInfo = BleClient;
@@ -128,10 +128,10 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D7D0F4441D4A2BD400BA9E3E /* RxCocoa.framework in Embed Frameworks */,
-				D7D0F4421D4A2BD400BA9E3E /* RxBluetoothKit.framework in Embed Frameworks */,
-				D7D0F4461D4A2BD400BA9E3E /* RxSwift.framework in Embed Frameworks */,
-				D7D0F44A1D4A2D1800BA9E3E /* BleClientManager.framework in Embed Frameworks */,
+				D7970CF81D4F94A300231A1B /* RxCocoa.framework in Embed Frameworks */,
+				D7970CF41D4F94A300231A1B /* RxBluetoothKit.framework in Embed Frameworks */,
+				D7970CF21D4F94A300231A1B /* BleClientManager.framework in Embed Frameworks */,
+				D7970CF61D4F94A300231A1B /* RxSwift.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -160,11 +160,11 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		D7D0F42C1D4A231500BA9E3E /* BleClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BleClient.xcodeproj; path = ../node_modules/BleClient/BleClient.xcodeproj; sourceTree = "<group>"; };
-		D7D0F43E1D4A2BD400BA9E3E /* RxBluetoothKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBluetoothKit.framework; path = ../node_modules/BleClient/BleClientManager/Carthage/Build/iOS/RxBluetoothKit.framework; sourceTree = "<group>"; };
-		D7D0F43F1D4A2BD400BA9E3E /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = ../node_modules/BleClient/BleClientManager/Carthage/Build/iOS/RxCocoa.framework; sourceTree = "<group>"; };
-		D7D0F4401D4A2BD400BA9E3E /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../node_modules/BleClient/BleClientManager/Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
-		D7D0F4481D4A2D1800BA9E3E /* BleClientManager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = BleClientManager.framework; path = "/Users/cierpliwy/Library/Developer/Xcode/DerivedData/ReactBLEScanner-aunhyrbalgpkjxfxrkikodzyqpuw/Build/Products/Debug-iphoneos/BleClientManager.framework"; sourceTree = "<absolute>"; };
+		D7970CED1D4F94A200231A1B /* BleClientManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BleClientManager.framework; path = "../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/BleClientManager.framework"; sourceTree = "<group>"; };
+		D7970CEE1D4F94A200231A1B /* RxBluetoothKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBluetoothKit.framework; path = "../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/RxBluetoothKit.framework"; sourceTree = "<group>"; };
+		D7970CEF1D4F94A200231A1B /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = "../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/RxSwift.framework"; sourceTree = "<group>"; };
+		D7970CF01D4F94A200231A1B /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = "../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/RxCocoa.framework"; sourceTree = "<group>"; };
+		D7D202701D4F612600E10F6A /* BleClient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BleClient.xcodeproj; path = "../node_modules/react-native-ble-plx/ios/BleClient.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -180,18 +180,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7D0F43D1D4A232D00BA9E3E /* libBleClient.a in Frameworks */,
+				D7D202861D4F618800E10F6A /* libBleClient.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
-				D7D0F4451D4A2BD400BA9E3E /* RxSwift.framework in Frameworks */,
-				D7D0F4431D4A2BD400BA9E3E /* RxCocoa.framework in Frameworks */,
+				D7970CF51D4F94A300231A1B /* RxSwift.framework in Frameworks */,
+				D7970CF71D4F94A300231A1B /* RxCocoa.framework in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
 				00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */,
 				00C302E81ABCBA2D00DB3ED1 /* libRCTImage.a in Frameworks */,
+				D7970CF31D4F94A300231A1B /* RxBluetoothKit.framework in Frameworks */,
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
+				D7970CF11D4F94A300231A1B /* BleClientManager.framework in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
-				D7D0F4491D4A2D1800BA9E3E /* BleClientManager.framework in Frameworks */,
-				D7D0F4411D4A2BD400BA9E3E /* RxBluetoothKit.framework in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
@@ -307,7 +307,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				D7D0F42C1D4A231500BA9E3E /* BleClient.xcodeproj */,
+				D7D202701D4F612600E10F6A /* BleClient.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
 				00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */,
@@ -333,10 +333,10 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				D7D0F4481D4A2D1800BA9E3E /* BleClientManager.framework */,
-				D7D0F43E1D4A2BD400BA9E3E /* RxBluetoothKit.framework */,
-				D7D0F43F1D4A2BD400BA9E3E /* RxCocoa.framework */,
-				D7D0F4401D4A2BD400BA9E3E /* RxSwift.framework */,
+				D7970CED1D4F94A200231A1B /* BleClientManager.framework */,
+				D7970CEE1D4F94A200231A1B /* RxBluetoothKit.framework */,
+				D7970CEF1D4F94A200231A1B /* RxSwift.framework */,
+				D7970CF01D4F94A200231A1B /* RxCocoa.framework */,
 				13B07FAE1A68108700A75B9A /* ReactBLEScanner */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ReactBLEScannerTests */,
@@ -355,10 +355,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		D7D0F42D1D4A231500BA9E3E /* Products */ = {
+		D7D202711D4F612600E10F6A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D7D0F4321D4A231600BA9E3E /* libBleClient.a */,
+				D7D202761D4F612600E10F6A /* libBleClient.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -434,8 +434,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = D7D0F42D1D4A231500BA9E3E /* Products */;
-					ProjectRef = D7D0F42C1D4A231500BA9E3E /* BleClient.xcodeproj */;
+					ProductGroup = D7D202711D4F612600E10F6A /* Products */;
+					ProjectRef = D7D202701D4F612600E10F6A /* BleClient.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
@@ -557,11 +557,11 @@
 			remoteRef = 832341B41AAA6A8300B99B32 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		D7D0F4321D4A231600BA9E3E /* libBleClient.a */ = {
+		D7D202761D4F612600E10F6A /* libBleClient.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libBleClient.a;
-			remoteRef = D7D0F4311D4A231600BA9E3E /* PBXContainerItemProxy */;
+			remoteRef = D7D202751D4F612600E10F6A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -680,7 +680,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEAD_CODE_STRIPPING = NO;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../node_modules/BleClient/**";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-ble-plx/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -706,7 +706,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../node_modules/BleClient/**";
+				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)/../node_modules/react-native-ble-plx/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
