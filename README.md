@@ -19,13 +19,15 @@ Installation description will be available as soon as library will be published 
 
 ## JavaScript API
 
-First of all include `BleModule` in react native project: 
+First of all include `BleModule` in react native project:
+
 ```javascript
 import { BleManager } from 'react-native-ble-plx';
 ```
 
-`BleManager` should be initialized with `new` keyword and method `destroy()` should be called on it's instance when we are done
-with it:
+`BleManager` should be initialized with `new` keyword and method `destroy()` should be called 
+on it's instance when we are done with it:
+
 ```javascript
 const manager = new BleManager()
 // Work with BLE manager
@@ -41,16 +43,18 @@ manager.destroy()
 Checks current manager state.
 
 *Parameters*:
-* `listener(newState)` - callback which emits state changes of BLE Manager. Setting this value to `null` or to other listener will unregister callback. Accepted values passed in parameter are:
+* `listener(newState)` - callback which emits state changes of BLE Manager. 
+  Setting this value to `null` or to other listener will unregister callback. 
+  Accepted values passed in parameter are:
   * `'Unknown'` - the current state of the manager is unknown; an update is imminent.
   * `'Resetting'` - the connection with the system service was momentarily lost; an update is imminent.
   * `'Unsupported'` - the platform does not support Bluetooth low energy.
   * `'Unauthorized'` - the app is not authorized to use Bluetooth low energy.
-  * `'PoweredOff'` - bluetooth is currently powered off.
-  * `'PoweredOn'` - bluetooth is currently powered on and available to use. 
+  * `'PoweredOff'` - Bluetooth is currently powered off.
+  * `'PoweredOn'` - Bluetooth is currently powered on and available to use. 
 
 **TODOs**: 
-* Should we allow registering/deregistering multiple listeners?
+* Should we allow user to register/unregister multiple listeners?
 
 ### Scanning devices
 
@@ -58,8 +62,10 @@ Checks current manager state.
 Starts device scanning. When previous scan is in progress it will be stopped before executing this command.
 
 *Parameters*:
-* `uuids` - array of strings containing UUIDs of services which we would like have in scanned devices. If `null` it will scan all avaiable devices.
-* `options` - object containing platform specific options, which can be enabled for scanning (can be `null`):
+* `uuids` - array of strings containing UUIDs of services which we would like have in 
+  scanned devices. If `null` it will scan all available devices.
+* `options` - object containing platform specific options, which can be enabled for 
+  scanning (can be `null`):
 
 ```javascript
 {
@@ -101,12 +107,15 @@ Connects to device with provided UUID.
 *Parameters*:
 * `identifier` - device UUID
 * `options` - platform specific options for connection establishment (may be `null` or ignored):
+
 ```javascript
 {
     // Not used yet
 }
 ```
+
 * **returns** - promise which will return connected `device` object if successful:
+
 ```javascript
 {
     "uuid": string, // UUID of scanned device (for iOS it's local identifier)
@@ -130,7 +139,7 @@ Disconnects from device if it's connected.
 * **returns** - a promise with `device` object as a result or an error.
 
 ---
-#### `async device.disconnect(identifier)`
+#### `async device.disconnect()`
 Utility function which disconnects from device if it's connected.
 
 *Parameters*:
@@ -158,14 +167,14 @@ Monitors if device was disconnected due to any errors or connection problems.
 *Parameters*:
 * `identifier` - device UUID.
 * `listener(error, device)` - callback returning error as a reason of 
-  disconnection if available and `device` object. Setting listener unregisters previous one.
+  disconnection if available and `device` object. Setting listener removes previous one.
 
 ---
-#### `device.onDisconnected(identifier, listener)`
+#### `device.onDisconnected(listener)`
 Utility function which monitors if device was disconnected due to any errors or connection problems.
 
 *Parameters*:
 * Look above.
 
- **TODOs**:
- * Should utility functions be mutating or pure?
+**TODOs**:
+* Should utility functions be mutating or pure?
