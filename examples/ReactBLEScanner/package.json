@@ -16,6 +16,7 @@
     "redux-immutable": "3.0.6",
     "react-immutable-proptypes": "2.0.0",
     "react-native-button": "1.6.0",
-    "react-native-android-permissions": "0.0.6"
+    "react-native-android-permissions": "0.0.6",
+    "react-native-ble-plx": "Polidea/react-native-ble-plx"
   }
 }
