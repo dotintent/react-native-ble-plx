@@ -1,3 +1,9 @@
 rootProject.name = 'ReactBLEScanner'
 
 include ':app'
+
+include ':react-native-ble-plx'
+project(':react-native-ble-plx').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-ble-plx/android')
+
+include ':RNPermissionsModule'
+project(':RNPermissionsModule').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-android-permissions/android')
