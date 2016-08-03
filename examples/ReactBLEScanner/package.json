@@ -8,12 +8,14 @@
   "dependencies": {
     "react": "~15.2.0",
     "react-native": "0.30.0",
-    "immutable": "3.8.1",
-    "react-immutable-proptypes": "2.0.0",
-    "react-native-router-flux": "3.32.0",
-    "react-redux": "4.4.5",
     "redux": "3.5.2",
+    "react-redux": "4.4.5",
+    "redux-logger": "2.6.1",
+    "react-native-router-flux": "3.32.0",
+    "immutable": "3.8.1",
     "redux-immutable": "3.0.6",
-    "redux-logger": "2.6.1"
+    "react-immutable-proptypes": "2.0.0",
+    "react-native-button": "1.6.0",
+    "react-native-android-permissions": "0.0.6"
   }
 }
