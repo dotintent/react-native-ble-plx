@@ -1,11 +1,8 @@
 package com.polidea.reactnativeble.converter;
 
-import android.util.Base64;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.rxandroidble.RxBleScanResult;
-
-import java.util.UUID;
 
 public class RxBleScanResultConverter implements Converter<RxBleScanResult> {
 

@@ -9,15 +9,10 @@ public class ConverterManager {
 
 
     private final RxBleScanResultConverter rxBleScanResultConverter;
-
     private final RxBleDeviceConverter bleDeviceConverter;
-
     private final RxBleConnectionStateConverter rxBleConnectionStateConverter;
-
     private final RxBleDeviceServicesConverter rxBleDeviceServicesConverter;
-
     private final BluetoothGattServiceConverter bluetoothGattServiceConverter;
-
     private final BluetoothGattCharacteristicConverter bluetoothGattCharacteristicConverter;
 
     public ConverterManager() {

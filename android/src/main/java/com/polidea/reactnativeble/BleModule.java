@@ -314,7 +314,13 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     private void onScanBleDevicesSuccess(RxBleScanResult rxBleScanResult) {
         Log.d(TAG, "onScanBleDevicesSuccess: " + rxBleScanResult.toString());
-        sendEvent(EventKey.SCAN_EVENT, converterManager.convert(rxBleScanResult));
+
+        // TODO: More generic
+        WritableArray result = Arguments.createArray();
+        result.pushNull();
+        result.pushMap(converterManager.convert(rxBleScanResult));
+
+        sendEvent(EventKey.SCAN_EVENT, result);
     }
 
     private void onScanBleDevicesFailure(Throwable throwable) {
@@ -369,10 +375,9 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     //Common support method
-    private void sendEvent(String eventName, @Nullable WritableMap params) {
+    private void sendEvent(String eventName, @Nullable Object params) {
         getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-//                .getJSModule(RCTNativeAppEventEmitter.class)
                 .emit(eventName, params);
     }
 
