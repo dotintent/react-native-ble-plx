@@ -11,6 +11,13 @@ React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github
 * Open Xcode example project in `./examples/ReactBLEScanner/ios/ReactBLEScanner.xcodeproj`.
 * Build and run.
 
+### Android example app installation steps
+* Go to example project folder `cd examples/ReactBLEScanner`.
+* Install standard packages executing: `npm install`.
+* Install local `react-native-ble-plx` module by executing script `./install-ble-lib.sh`.
+* Open Android example project in `./examples/ReactBLEScanner/ios/ReactBLEScanner.xcodeproj`.
+* Build and run.
+
 You can develop native modules directly from example Xcode project. After work is done you can sync your changes to be visible in git by executing `./sync-ble-lib.sh` from `./examples/ReactBLEScanner` folder. *Note*: Your working files in root directory may be deleted by this operation.
 
 ### Installation in fresh react-native project
