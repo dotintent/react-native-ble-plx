@@ -1,28 +1,30 @@
 # react-native-ble-plx
 React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) as it's backend libraries.
 
-### iOS example app installation steps
+## Installing and running example app
 * Go to example project folder `cd examples/ReactBLEScanner`.
-* Install standard packages executing: `npm install`.
-* Install local `react-native-ble-plx` module by executing script `./install-ble-lib.sh`.
-* Go to folder containing native framework in `cd ./node_modules/react-native-ble-plx/ios/BleClientManager`.
-* Fetch required dependencies: `carthage bootstrap --no-build --platform "iOS"`.
-* Build all dependencies including local framework: `carthage build --no-skip-current --platform "iOS"` (it will take a while but it's done only once).
-* Open Xcode example project in `./examples/ReactBLEScanner/ios/ReactBLEScanner.xcodeproj`.
+* Install required packages executing: `npm install`.
+* **iOS**: Open Xcode example project in `./examples/ReactBLEScanner/ios/ReactBLEScanner.xcodeproj`.
+* **Android**: Open Android example project in `./examples/ReactBLEScanner/android`. 
 * Build and run.
 
-### Android example app installation steps
-* Go to example project folder `cd examples/ReactBLEScanner`.
-* Install standard packages executing: `npm install`.
-* Install local `react-native-ble-plx` module by executing script `./install-ble-lib.sh`.
-* Open Android example project in `./examples/ReactBLEScanner/ios/ReactBLEScanner.xcodeproj`.
-* Build and run.
+## Developing modules and example app
 
-You can develop native modules directly from example Xcode project. After work is done you can sync your changes to be visible in git by executing `./sync-ble-lib.sh` from `./examples/ReactBLEScanner` folder. *Note*: Your working files in root directory may be deleted by this operation.
+You can use included scripts to sync files between this repository root and `node_module/react-native-ble-plx` if want to work on local copy of library:
+* `./install-ble-lib.sh` - move files from root to `node_module/react-native-ble-plx`.
+* `./sync-ble-lib.sh` - move files from `node_module/react-native-ble-plx` to root.
 
-### Installation in fresh react-native project
+Scripts are located in `./examples/ReactBLEScanner` folder.
 
-Installation description will be available as soon as library will be published in npm repository. 
+**Warning**: This operation may delete files on destination directory.
+
+### Additional configuration for iOS
+
+**TODO**
+
+## Configuration & installation for new project
+
+**TODO** 
 
 ## JavaScript API
 
