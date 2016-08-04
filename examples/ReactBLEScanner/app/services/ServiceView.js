@@ -40,7 +40,6 @@ var styles = StyleSheet.create({
   background: {
     flexDirection: 'column',
     justifyContent: 'center',
-    borderRadius: 10,
     borderColor: borderColor,
     borderWidth: 2,
     overflow: 'hidden'
