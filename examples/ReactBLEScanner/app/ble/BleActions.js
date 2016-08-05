@@ -6,6 +6,7 @@ export const DEVICE_FOUND = 'DEVICE_FOUND'
 export const CHANGE_DEVICE_STATE = 'CHANGE_DEVICE_STATE'
 export const WRITE_CHARACTERISTIC = 'WRITE_CHARACTERISTIC'
 export const READ_CHARACTERISTIC = 'READ_CHARACTERISTIC'
+export const NOTIFY_CHARACTERISTIC = 'NOTIFY_CHARACTERISTIC'
 export const UPDATE_SERVICES = 'UPDATE_SERVICES'
 export const UPDATE_CHARACTERISTIC = 'UPDATE_CHARACTERISTIC'
 export const SELECT_SERVICE = 'SELECT_SERVICE'
@@ -70,6 +71,17 @@ export function readCharacteristic(deviceId, serviceId, characteristicId, transa
     serviceId: serviceId,
     characteristicId: characteristicId,
     transactionId: transactionId
+  }
+}
+
+export function notifyCharacteristic(deviceId, serviceId, characteristicId, notify, transactionId) {
+  return {
+    type: NOTIFY_CHARACTERISTIC,
+    deviceId,
+    serviceId,
+    characteristicId,
+    notify,
+    transactionId
   }
 }
 

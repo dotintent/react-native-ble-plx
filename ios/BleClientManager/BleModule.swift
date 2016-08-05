@@ -190,6 +190,8 @@ public class BleClientManager : NSObject {
         result["isReadable"] = characteristic.properties.contains(.Read)
         result["isNotifiable"] = characteristic.properties.contains(.Notify)
         result["uuid"] = characteristic.UUID.UUIDString
+        result["value"] = characteristic.valueBase64
+        result["isNotifying"] = characteristic.isNotifying
 
         resolve(result)
     }
@@ -240,7 +242,7 @@ public class BleClientManager : NSObject {
             .flatMap { $0.readValue() }
             .subscribe(
                 onNext: { characteristic in
-                    valueBase64 = characteristic.value?.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+                    valueBase64 = characteristic.valueBase64
                 },
                 onError: { error in
                     error.bleError.callReject(reject)
@@ -253,6 +255,66 @@ public class BleClientManager : NSObject {
             })
 
         operationsInProgress.replaceDisposable(transactionId, disposable: readDisp)
+    }
+
+    public func notifyCharacteristic(deviceIdentifier: String,
+                                    serviceIdentifier: String,
+                                    characteristicIdentifier: String,
+                                    notify: Bool,
+                                    transactionId: String,
+                                    resolve: Resolve,
+                                    reject: Reject) {
+
+        var isNotifying : Bool?
+        let notifyDisp = characteristicObservable(deviceIdentifier,
+                                                  serviceIdentifier: serviceIdentifier,
+                                                  characteristicIdentifier: characteristicIdentifier)
+            .flatMap { $0.setNotifyValue(notify) }
+            .subscribe(
+                onNext: { characteristic in
+                    isNotifying = characteristic.isNotifying
+                },
+                onError: { error in
+                    error.bleError.callReject(reject)
+                },
+                onCompleted: {
+                    resolve(isNotifying ?? false)
+                },
+                onDisposed: {
+                    self.operationsInProgress.removeDisposable(transactionId)
+            })
+
+        operationsInProgress.replaceDisposable(transactionId, disposable: notifyDisp)
+    }
+
+    public func monitorCharacteristic(deviceIdentifier: String,
+                                     serviceIdentifier: String,
+                                     characteristicIdentifier: String,
+                                     transactionId: String,
+                                     resolve: Resolve,
+                                     reject: Reject) {
+
+        let monitorDisp = characteristicObservable(deviceIdentifier,
+                                                   serviceIdentifier: serviceIdentifier,
+                                                   characteristicIdentifier: characteristicIdentifier)
+            .flatMap { $0.monitorValueUpdate() }
+            .subscribe(
+                onNext: { characteristic in
+                    let valueBase64 = characteristic.valueBase64 ?? ""
+                    let value : [AnyObject] = [NSNull(), deviceIdentifier, serviceIdentifier, characteristicIdentifier, valueBase64]
+                    self.dispatchEvent(.notify, value: value)
+                },
+                onError: { error in
+                    error.bleError.callReject(reject)
+                },
+                onCompleted: {
+                    resolve(nil)
+                },
+                onDisposed: {
+                    self.operationsInProgress.removeDisposable(transactionId)
+            })
+
+        operationsInProgress.replaceDisposable(transactionId, disposable: monitorDisp)
     }
 
     public func cancelCharacteristicOperation(transactionId: String) {

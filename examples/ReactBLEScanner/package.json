@@ -18,6 +18,7 @@
     "react-immutable-proptypes": "2.0.0",
     "react-native-button": "1.6.0",
     "react-native-android-permissions": "0.0.6",
+    "buffer": "4.7.1",
     "react-native-ble-plx": "Polidea/react-native-ble-plx"
   }
 }

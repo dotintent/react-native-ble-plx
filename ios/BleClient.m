@@ -23,12 +23,12 @@ RCT_EXPORT_MODULE(BleClientManager);
 
 - (NSArray<NSString *> *)supportedEvents {
     // TODO: More generic
-    return @[@"BleClientManagerScanEvent"];
+    return @[@"BleClientManagerScanEvent", @"BleClientManagerNotifyEvent"];
 }
 
 - (NSDictionary<NSString *,id> *)constantsToExport {
     // TODO: More generic
-    return @{@"ScanEvent": @"BleClientManagerScanEvent"};
+    return @{@"ScanEvent": @"BleClientManagerScanEvent", @"NotifyEvent" : @"BleClientManagerNotifyEvent"};
 }
 
 RCT_EXPORT_METHOD(createClient) {
@@ -117,6 +117,36 @@ RCT_EXPORT_METHOD(      readCharacteristic:(NSString*)deviceIdentifier
                    transactionId:transactionId
                          resolve:resolve
                           reject:reject];
+}
+
+RCT_EXPORT_METHOD(    notifyCharacteristic:(NSString*)deviceIdentifier
+                         serviceIdentifier:(NSString*)serviceIdentifier
+                  characteristicIdentifier:(NSString*)characteristicIdentifier
+                                    notify:(BOOL)notify
+                             transactionId:(NSString*)transactionId
+                                  resolver:(RCTPromiseResolveBlock)resolve
+                                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager notifyCharacteristic:deviceIdentifier
+                 serviceIdentifier:serviceIdentifier
+          characteristicIdentifier:characteristicIdentifier
+                            notify:notify
+                     transactionId:transactionId
+                           resolve:resolve
+                            reject:reject];
+}
+
+RCT_EXPORT_METHOD(    monitorCharacteristic:(NSString*)deviceIdentifier
+                          serviceIdentifier:(NSString*)serviceIdentifier
+                   characteristicIdentifier:(NSString*)characteristicIdentifier
+                              transactionId:(NSString*)transactionId
+                                   resolver:(RCTPromiseResolveBlock)resolve
+                                   rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager monitorCharacteristic:deviceIdentifier
+                  serviceIdentifier:serviceIdentifier
+           characteristicIdentifier:characteristicIdentifier
+                      transactionId:transactionId
+                            resolve:resolve
+                             reject:reject];
 }
 
 RCT_EXPORT_METHOD(cancelCharacteristicOperation:(NSString*)transactionId) {

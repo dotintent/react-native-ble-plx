@@ -39,7 +39,7 @@ export default (state = defaultState, action) => {
     case ble.SELECT_CHARACTERISTIC:
       return state.set('selectedCharacteristicId', action.characteristicId);
     case ble.WRITE_CHARACTERISTIC:
-      return state.setIn(['operations', action.transactionId], {
+      return state.setIn(['operations', action.transactionId], Map({
         type: 'write',
         state: 'new',
         deviceId: action.deviceId,
@@ -47,7 +47,7 @@ export default (state = defaultState, action) => {
         characteristicId: action.characteristicId,
         base64Value: action.base64Value,
         transactionId: action.transactionId
-      })
+      }));
     case ble.READ_CHARACTERISTIC:
       return state.setIn(['operations', action.transactionId], Map({
         type: 'read',
@@ -55,6 +55,16 @@ export default (state = defaultState, action) => {
         deviceId: action.deviceId,
         serviceId: action.serviceId,
         characteristicId: action.characteristicId,
+        transactionId: action.transactionId
+      }));
+    case ble.NOTIFY_CHARACTERISTIC:
+      return state.setIn(['operations', action.transactionId], Map({
+        type: 'notify',
+        state: 'new',
+        deviceId: action.deviceId,
+        serviceId: action.serviceId,
+        characteristicId: action.characteristicId,
+        notify: action.notify,
         transactionId: action.transactionId
       }));
     case ble.EXECUTE_TRANSACTION:

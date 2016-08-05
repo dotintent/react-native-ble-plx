@@ -9,6 +9,7 @@ import Foundation
 
 enum BleEvent: String {
   case scan = "ScanEvent"
+  case notify = "NotifyEvent"
 
   /// Used to export event id as event name global variable
   var name: String {
@@ -21,5 +22,5 @@ enum BleEvent: String {
   }
 
   /// List of all supported events by this module
-  static let supportedEvents = [scan]
+  static let supportedEvents = [scan, notify]
 }

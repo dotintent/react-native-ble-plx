@@ -102,6 +102,7 @@ class BleComponent extends Component {
       const characteristicId = value.get('characteristicId')
       const transactionId = value.get('transactionId')
       const base64Value = value.get('base64Value')
+      const notify = value.get('notify')
       const type = value.get('type')
 
       switch (type) {
@@ -129,6 +130,32 @@ class BleComponent extends Component {
             .then((result) => {
               newProps.completeTransaction(transactionId)
               newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { value: base64Value })
+            }, (rejected) => {
+              newProps.pushError(rejected.message)
+              newProps.completeTransaction(transactionId)
+            });
+          newProps.executeTransaction(transactionId)
+          break;
+
+        case 'notify':
+          this.manager.cancelCharacteristicOperation(transactionId)
+          this.manager.notifyCharacteristic(deviceId,
+                                            serviceId,
+                                            characteristicId,
+                                            notify,
+                                            transactionId)
+            .then((result) => {
+              newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { isNotifying: notify })
+
+              if (notify) return this.manager.monitorCharacteristic(deviceId, serviceId, characteristicId, transactionId, (updatedValue) => {
+                newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { value: updatedValue })
+              });
+
+              this.manager.cancelCharacteristicOperation(transactionId)
+              newProps.completeTransaction(transactionId)
+            })
+            .then((result) => {
+              newProps.completeTransaction(transactionId)  
             }, (rejected) => {
               newProps.pushError(rejected.message)
               newProps.completeTransaction(transactionId)

@@ -2,18 +2,35 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Switch, Text, TextInput, StyleSheet } from 'react-native';
+import { Buffer } from 'buffer';
 import Style from '../view/Style';
 import ButtonView from '../view/ButtonView';
 import * as ble from '../ble/BleActions';
 
 class CharacteristicDetailsComponent extends Component {
+
+  constructor() {
+    super()
+    this.state = { newValue: ''}
+  }
+
   render() {
     const characteristic = this.props.characteristic;
     const uuid = characteristic.get('uuid')
     const isReadable = characteristic.get('isReadable')
-    const isWriteable = characteristic.get('isWriteable')
+    const isWritable = characteristic.get('isWritable')
     const isNotifiable = characteristic.get('isNotifiable')
-    const value = characteristic.get('value')
+    const isNotifying = characteristic.get('isNotifying')
+    var value = characteristic.get('value')
+    var valueAscii = '';
+
+    if (value) {
+      valueAscii = new Buffer(value, "base64").toString('ascii')
+      value = new Buffer(value, "base64").toString('hex')
+    } else {
+      valueAscii = '-'
+      value = '-'
+    }
 
     const read = () => {
       this.props.readCharacteristic(this.props.deviceId,
@@ -22,33 +39,67 @@ class CharacteristicDetailsComponent extends Component {
                                     'id')
     }
 
+    const write = () => {
+      this.props.writeCharacteristic(this.props.deviceId,
+                                    this.props.serviceId,
+                                    this.props.characteristicId,
+                                    new Buffer(this.state.newValue, 'hex').toString('base64'),
+                                    'id')
+    }
+
+    const notify = () => {
+      this.props.notifyCharacteristic(this.props.deviceId,
+                                      this.props.serviceId,
+                                      this.props.characteristicId,
+                                      !isNotifying,
+                                      'id')
+    }
+
     return (
-      <View style={Style.component}>
+      <View style={[Style.component, {flex: 0}]}>
         <Text style={styles.header}>UUID</Text>
         <Text style={{fontSize: 12}}>{uuid}</Text>
+        
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <View>
             <Text style={styles.header}>isReadable: </Text>
             <Text>{isReadable ? 'true' : 'false'}</Text>
           </View>
           <View>
-            <Text style={styles.header}>isWriteable: </Text>
-            <Text>{isWriteable ? 'true' : 'false'}</Text>
+            <Text style={styles.header}>isWritable: </Text>
+            <Text>{isWritable ? 'true' : 'false'}</Text>
           </View>
           <View>
             <Text style={styles.header}>isNotifiable: </Text>
             <Text>{isNotifiable ? 'true' : 'false'}</Text>
           </View>
         </View>
-        <Text style={styles.header}>Notify: </Text>
-        <Switch/>
-        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingTop: 10 }}>
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 10 }}>Value: </Text>
-            <TextInput/>
-            <Text>{value || '-'}</Text>
-          </View>
-          <ButtonView onClick={read} disabled={false} color={'#beffc6'} text={'Read'}/>
+
+        <Text style={styles.header}>Notify:</Text>
+        <Switch 
+          disabled={!isNotifiable}
+          value={isNotifying} 
+          onValueChange={notify}
+        />
+        
+        <Text style={styles.header}>Value HEX:</Text>
+        <View style={{ flex: 1, flexDirection: 'row'}}>
+          <Text style={{flex: 1}}>{value}</Text>
+          <ButtonView onClick={read} disabled={!isReadable} color={'#beffc6'} text={'Read'}/>
+        </View>
+
+        <Text style={styles.header}>Value ASCII:</Text>
+        <Text>{valueAscii}</Text>
+
+        <Text style={styles.header}>New value:</Text>
+        <View style={{ flex: 1, flexDirection: 'row'}}>
+          <TextInput 
+            style={{ height: 40, flex: 1}} 
+            value={this.state.newValue}
+            autoCorrect={false}
+            onChangeText={(text) => this.setState({newValue: text})}
+          />
+          <ButtonView onClick={write} disabled={!isWritable} color={'#ffd0d3'} text={'Write'}/>
         </View>
       </View>
     )
@@ -75,6 +126,8 @@ export default connect((state) => {
   }
 },
 {
-  readCharacteristic: ble.readCharacteristic
+  readCharacteristic: ble.readCharacteristic,
+  writeCharacteristic: ble.writeCharacteristic,
+  notifyCharacteristic: ble.notifyCharacteristic
 }
 )(CharacteristicDetailsComponent)

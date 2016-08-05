@@ -16,7 +16,6 @@ export default class BleManager {
   // Scanning...
 
   startDeviceScan(uuids, listener) {
-    console.log("Start device scan");
     this.stopDeviceScan()
     const scanListener = ([error, scannedDevice]) => {
       listener(error, scannedDevice)
@@ -26,7 +25,6 @@ export default class BleManager {
   }
 
   stopDeviceScan() {
-    console.log("Stop device scan");
     if (this._scanEventSubscription) {
       this._scanEventSubscription.remove()
       delete this._scanEventSubscription
@@ -37,13 +35,11 @@ export default class BleManager {
   // Handling connections
 
   async connectToDevice(identifier) {
-    console.log("Connecting to device: " + identifier)
     var connectedIdentifier = await BleModule.establishConnection(identifier);
     return connectedIdentifier;
   }
 
   async closeConnection(identifier) {
-    console.log("Closing connection to device: " + identifier)
     var closedIdentifier = await BleModule.closeConnection(identifier);
     return closedIdentifier;
   }
@@ -73,14 +69,32 @@ export default class BleManager {
     return characteristicDetails;
   }
 
-  async writeCharacteristic(deviceId, serviceId, characteristicsId, base64Value, transactionId) {  
+  async writeCharacteristic(deviceId, serviceId, characteristicId, base64Value, transactionId) {  
     const writtenValue = await BleModule.writeCharacteristic(deviceId, serviceId, characteristicId, base64Value, transactionId);
     return writtenValue
   }
 
+  async notifyCharacteristic(deviceId, serviceId, characteristicId, notify, transactionId) {
+    const notified = await BleModule.notifyCharacteristic(deviceId, serviceId, characteristicId, notify, transactionId);
+    return notified
+  }
+
   async readCharacteristic(deviceId, serviceId, characteristicId, transactionId) {
-    const bytes = BleModule.readCharacteristic(deviceId, serviceId, characteristicId, transactionId);
+    const bytes = await BleModule.readCharacteristic(deviceId, serviceId, characteristicId, transactionId);
     return bytes
+  }
+
+  async monitorCharacteristic(deviceId, serviceId, characteristicId, transactionId, listener) {
+    const monitorListener = ([error, deviceId2, serviceId2, characteristicId2, valueBase64]) => {
+      console.log(`${error} ${deviceId2} ${serviceId2} ${characteristicId2} ${valueBase64}`)
+      if (deviceId !== deviceId2 || serviceId !== serviceId2 || characteristicId !== characteristicId2) return
+      listener(valueBase64)
+    };
+
+    const subscription = this.eventEmitter.addListener(BleModule.NotifyEvent, monitorListener);
+    await BleModule.monitorCharacteristic(deviceId, serviceId, characteristicId, transactionId);
+
+    subscription.remove()
   }
 
   cancelCharacteristicOperation(transactionId) {
