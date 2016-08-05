@@ -86,7 +86,6 @@ export default class BleManager {
 
   async monitorCharacteristic(deviceId, serviceId, characteristicId, transactionId, listener) {
     const monitorListener = ([error, deviceId2, serviceId2, characteristicId2, valueBase64]) => {
-      console.log(`${error} ${deviceId2} ${serviceId2} ${characteristicId2} ${valueBase64}`)
       if (deviceId !== deviceId2 || serviceId !== serviceId2 || characteristicId !== characteristicId2) return
       listener(valueBase64)
     };

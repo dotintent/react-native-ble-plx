@@ -258,12 +258,12 @@ public class BleClientManager : NSObject {
     }
 
     public func notifyCharacteristic(deviceIdentifier: String,
-                                    serviceIdentifier: String,
-                                    characteristicIdentifier: String,
-                                    notify: Bool,
-                                    transactionId: String,
-                                    resolve: Resolve,
-                                    reject: Reject) {
+                                     serviceIdentifier: String,
+                                     characteristicIdentifier: String,
+                                     notify: Bool,
+                                     transactionId: String,
+                                     resolve: Resolve,
+                                     reject: Reject) {
 
         var isNotifying : Bool?
         let notifyDisp = characteristicObservable(deviceIdentifier,
