@@ -7,20 +7,17 @@
 
 import Foundation
 
-enum BleEvent: String {
-  case scan = "ScanEvent"
-  case notify = "NotifyEvent"
+@objc
+public class BleEvent: NSObject {
+    static public let scanEvent: String = "ScanEvent"
+    static public let readEvent = "ReadEvent"
+    static public let stateChangeEvent = "StateChangeEvent"
+    static public let disconnectionEvent = "DisconnectionEvent"
 
-  /// Used to export event id as event name global variable
-  var name: String {
-    return rawValue
-  }
-
-  /// Unique identifier for an event
-  var id: String {
-    return "BleClientManager" + rawValue
-  }
-
-  /// List of all supported events by this module
-  static let supportedEvents = [scan, notify]
+    static public let events = [
+        scanEvent,
+        readEvent,
+        stateChangeEvent,
+        disconnectionEvent
+    ]
 }

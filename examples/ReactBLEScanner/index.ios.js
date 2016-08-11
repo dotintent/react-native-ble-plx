@@ -22,7 +22,7 @@ const stateTransformer = (state) => {
 };
 
 const logger = createLogger({ stateTransformer });
-const store = createStore(reducer)
+const store = createStore(reducer) //, applyMiddleware(logger))
 
 class ReactBLEScanner extends Component {
   render() {

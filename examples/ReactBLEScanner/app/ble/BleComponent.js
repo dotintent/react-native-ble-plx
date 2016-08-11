@@ -11,6 +11,10 @@ import * as SceneConst from '../scene/Const'
 class BleComponent extends Component {
   componentWillMount() {
     this.manager = new BleManager();
+    this.subscriptions = {}
+    this.manager.onStateChange((newState) => {
+      console.log("State changed: " + newState)
+    })
   }
 
   componentWillUnmount() {
@@ -18,55 +22,68 @@ class BleComponent extends Component {
     delete this.manager;
   }
 
-  async allCharacteristicsForServices(deviceIdentifier, serviceIds) {
-    try {
-      var resultServices = {};
-      for (let serviceId of serviceIds) {
-        var characteristicsIds = await this.manager.characteristicIdsForDevice(deviceIdentifier, serviceId);
+  async fetchServicesAndCharacteristicsForDevice(device) {
+    var servicesMap = {}
+    var services = await device.services()
 
-        var characteristics = {};
-        for (let charId of characteristicsIds) {
-          var characteristicDetails = await this.manager.characteristicDetails(deviceIdentifier, serviceId, charId);
-          characteristics[charId] = characteristicDetails;
+    for (let service of services) {
+      var characteristicsMap = {}
+      var characteristics = await service.characteristics()
+      
+      for (let characteristic of characteristics) {
+        characteristicsMap[characteristic.uuid] = {
+          uuid: characteristic.uuid,
+          isReadable: characteristic.isReadable,
+          isWritable: characteristic.isWritableWithResponse,
+          isNotifiable: characteristic.isNotifiable,
+          isNotifying: characteristic.isNotifying,
+          value: characteristic.value
         }
-        resultServices[serviceId] = {
-          "uuid": serviceId,
-          "isPrimary": false,
-          "characteristicsCount": characteristicsIds.length,
-          "characteristics": characteristics
-        };
       }
-      return resultServices;
-    } catch (e) {
-      this.props.pushError(e.message)
+
+      servicesMap[service.uuid] = {
+        uuid: service.uuid,
+        isPrimary: service.isPrimary,
+        characteristicsCount: characteristics.length,
+        characteristics: characteristicsMap
+      }
     }
-    return null;
+    return servicesMap
   }
 
   componentWillReceiveProps(newProps) {
     // Handle scanning
-    if (newProps.scanning === true) {
-      this.manager.startDeviceScan(null, (error, device) => {
-        if (error) {
-          newProps.pushError(error.message)
-          newProps.stopScan()
-          return
-        }
-        device['services'] = {}
-        newProps.deviceFound(device)
-      })
-    } else {
-      this.manager.stopDeviceScan();
+    if (newProps.scanning !== this.props.scanning) {
+      if (newProps.scanning === true) {
+        this.manager.startDeviceScan(null, null, (error, device) => {
+          if (error) {
+            newProps.pushError(error.message)
+            newProps.stopScan()
+            return
+          }
+          newProps.deviceFound({
+            uuid: device.uuid,
+            name: device.name,
+            rssi: device.rssi,
+            isConnectable: device.isConnectable,
+            services: {}
+          })
+        })
+      } else {
+        this.manager.stopDeviceScan();
+      }
     }
 
     // Handle connection state
     switch (newProps.state) {
       case ble.DEVICE_STATE_DISCONNECT:
-        this.manager.closeConnection(newProps.selectedDeviceId)
+        this.manager.cancelDeviceConnection(newProps.selectedDeviceId)
           .then((successIdentifier) => {
             newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
           }, (rejected) => {
-            newProps.pushError(rejected.message)
+            if (rejected.message !== "Cancelled") {
+              newProps.pushError(rejected.message)
+            }
             newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
           });
         newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTING);
@@ -74,15 +91,24 @@ class BleComponent extends Component {
 
       case ble.DEVICE_STATE_CONNECT:
         this.manager.connectToDevice(newProps.selectedDeviceId)
-          .then((success) => {
-            return this.manager.serviceIdsForDevice(newProps.selectedDeviceId)
+          .then((device) => {
+            this.subscriptions[device.uuid] = device.onDisconnected((error, disconnectedDevice) => {
+              newProps.pushError("Disconnected from " + (disconnectedDevice.name ? disconnectedDevice.name : disconnectedDevice.uuid))
+              newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCONNECTED);
+              this.subscriptions[device.uuid].remove()  
+            })
+
+            newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_DISCOVERING);
+            var promise = device.discoverAllServicesAndCharacteristics() 
+            return promise
           })
-          .then((serviceIds) => {
-            return this.allCharacteristicsForServices(newProps.selectedDeviceId, serviceIds);
+          .then((device) => {
+            newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_FETCHING);
+            return this.fetchServicesAndCharacteristicsForDevice(device)
           })
           .then((services) => {
-            newProps.updateServices(newProps.selectedDeviceId, services);
             newProps.changeDeviceState(newProps.selectedDeviceId, ble.DEVICE_STATE_CONNECTED);
+            newProps.updateServices(newProps.selectedDeviceId, services);
           },
           (rejected) => {
             newProps.pushError(rejected.message)
@@ -95,25 +121,23 @@ class BleComponent extends Component {
 
     // Handle operations
     newProps.operations.forEach((value, key) => {
-      if (value.get('state') !== 'new') return true;
-
-      const deviceId = value.get('deviceId')
-      const serviceId = value.get('serviceId')
-      const characteristicId = value.get('characteristicId')
-      const transactionId = value.get('transactionId')
+      const state = value.get('state')
+      const deviceId = value.get('deviceIdentifier')
+      const serviceId = value.get('serviceUUID')
+      const characteristicId = value.get('characteristicUUID')
       const base64Value = value.get('base64Value')
-      const notify = value.get('notify')
       const type = value.get('type')
+      const transactionId = value.get('transactionId')
 
       switch (type) {
         case 'read':
-          this.manager.readCharacteristic(deviceId,
-                                          serviceId,
-                                          characteristicId,
-                                          transactionId)
-            .then((result) => {
+          if (state !== 'new') return true
+          this.manager.readCharacteristicForDevice(deviceId,
+                                                   serviceId,
+                                                   characteristicId)
+            .then((characteristic) => {
               newProps.completeTransaction(transactionId)
-              newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { value: result })
+              newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { value: characteristic.value })
             }, (rejected) => {
               newProps.pushError(rejected.message)
               newProps.completeTransaction(transactionId)
@@ -122,14 +146,14 @@ class BleComponent extends Component {
           break;
 
         case 'write':
-          this.manager.writeCharacteristic(deviceId,
-                                           serviceId,
-                                           characteristicId,
-                                           base64Value,
-                                           transactionId)
-            .then((result) => {
+          if (state !== 'new') return true
+          this.manager.writeCharacteristicWithResponseForDevice(deviceId,
+                                                                serviceId,
+                                                                characteristicId,
+                                                                base64Value)
+            .then((characteristic) => {
               newProps.completeTransaction(transactionId)
-              newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { value: base64Value })
+              newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { value: characteristic.value })
             }, (rejected) => {
               newProps.pushError(rejected.message)
               newProps.completeTransaction(transactionId)
@@ -137,32 +161,31 @@ class BleComponent extends Component {
           newProps.executeTransaction(transactionId)
           break;
 
-        case 'notify':
-          this.manager.cancelCharacteristicOperation(transactionId)
-          this.manager.notifyCharacteristic(deviceId,
-                                            serviceId,
-                                            characteristicId,
-                                            notify,
-                                            transactionId)
-            .then((result) => {
-              newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { isNotifying: notify })
+        case 'monitor':
+          if (state === 'new') {
+            newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { isNotifying: true })
+            this.manager.monitorCharacteristicForDevice(deviceId,
+                                                        serviceId,
+                                                        characteristicId,
+                                                        (error, characteristic) => {
+              if (error) {
+                newProps.pushError(error.message)
+                newProps.completeTransaction(transactionId)
+                return
+              }
 
-              if (notify) return this.manager.monitorCharacteristic(deviceId, serviceId, characteristicId, transactionId, (updatedValue) => {
-                newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { value: updatedValue })
-              });
-
-              this.manager.cancelCharacteristicOperation(transactionId)
-              newProps.completeTransaction(transactionId)
-            })
-            .then((result) => {
-              newProps.completeTransaction(transactionId)  
-            }, (rejected) => {
-              newProps.pushError(rejected.message)
-              newProps.completeTransaction(transactionId)
-            });
-          newProps.executeTransaction(transactionId)
+              newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { value: characteristic.value })
+            }, transactionId)
+            newProps.executeTransaction(transactionId)
+          } else if (state === 'cancel') {
+            this.manager.cancelTransaction(transactionId)
+            newProps.updateCharacteristic(deviceId, serviceId, characteristicId, { isNotifying: false })
+            newProps.completeTransaction(transactionId)
+          }
           break;
       }
+
+      return true
     })
   }
 

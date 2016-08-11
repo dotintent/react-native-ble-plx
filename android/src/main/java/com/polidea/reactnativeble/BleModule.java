@@ -286,6 +286,7 @@ public class BleModule extends ReactContextBaseJavaModule {
             String error = "Write characteristic error!";
             promise.reject(error, error);
             return;
+            
         }
         final Subscription subscription = rxBleConnection
                 // TODO: later user also serviceIdentifier to be sure that we are reading to the correct characteristic

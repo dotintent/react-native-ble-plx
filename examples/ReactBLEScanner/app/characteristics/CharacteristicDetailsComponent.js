@@ -35,24 +35,21 @@ class CharacteristicDetailsComponent extends Component {
     const read = () => {
       this.props.readCharacteristic(this.props.deviceId,
                                     this.props.serviceId,
-                                    this.props.characteristicId,
-                                    'id')
+                                    this.props.characteristicId)
     }
 
     const write = () => {
       this.props.writeCharacteristic(this.props.deviceId,
                                     this.props.serviceId,
                                     this.props.characteristicId,
-                                    new Buffer(this.state.newValue, 'hex').toString('base64'),
-                                    'id')
+                                    new Buffer(this.state.newValue, 'hex').toString('base64'))
     }
 
     const notify = () => {
-      this.props.notifyCharacteristic(this.props.deviceId,
-                                      this.props.serviceId,
-                                      this.props.characteristicId,
-                                      !isNotifying,
-                                      'id')
+      this.props.monitorCharacteristic(this.props.deviceId,
+                                       this.props.serviceId,
+                                       this.props.characteristicId,
+                                       !isNotifying)
     }
 
     return (
@@ -128,6 +125,6 @@ export default connect((state) => {
 {
   readCharacteristic: ble.readCharacteristic,
   writeCharacteristic: ble.writeCharacteristic,
-  notifyCharacteristic: ble.notifyCharacteristic
+  monitorCharacteristic: ble.monitorCharacteristic
 }
 )(CharacteristicDetailsComponent)

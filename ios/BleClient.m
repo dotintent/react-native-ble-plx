@@ -15,6 +15,8 @@
 
 @implementation BleModule
 
+@synthesize methodQueue = _methodQueue;
+
 RCT_EXPORT_MODULE(BleClientManager);
 
 - (void)dispatchEvent:(NSString * _Nonnull)name value:(id _Nonnull)value {
@@ -22,18 +24,19 @@ RCT_EXPORT_MODULE(BleClientManager);
 }
 
 - (NSArray<NSString *> *)supportedEvents {
-    // TODO: More generic
-    return @[@"BleClientManagerScanEvent", @"BleClientManagerNotifyEvent"];
+    return BleEvent.events;
 }
 
 - (NSDictionary<NSString *,id> *)constantsToExport {
-    // TODO: More generic
-    return @{@"ScanEvent": @"BleClientManagerScanEvent", @"NotifyEvent" : @"BleClientManagerNotifyEvent"};
+    NSMutableDictionary* consts = [NSMutableDictionary new];
+    for (NSString* event in BleEvent.events) {
+        [consts setValue:event forKey:event];
+    }
+    return consts;
 }
 
 RCT_EXPORT_METHOD(createClient) {
-    // TODO: Method queue
-    _manager = [[BleClientManager alloc] initWithQueue:dispatch_get_main_queue()];
+    _manager = [[BleClientManager alloc] initWithQueue:self.methodQueue];
     _manager.delegate = self;
 }
 
@@ -41,116 +44,133 @@ RCT_EXPORT_METHOD(destroyClient) {
     _manager = nil;
 }
 
-RCT_EXPORT_METHOD(scanBleDevices:(NSArray*)filteredUUIDs) {
-    [_manager scanBleDevices:filteredUUIDs];
+// Mark: Monitoring state ----------------------------------------------------------------------------------------------
+
+RCT_EXPORT_METHOD(   state:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager state:resolve
+             reject:reject];
 }
 
-RCT_EXPORT_METHOD(stopScanBleDevices) {
-    [_manager stopScanBleDevices];
+// Mark: Scanning ------------------------------------------------------------------------------------------------------
+
+RCT_EXPORT_METHOD(startDeviceScan:(NSArray*)filteredUUIDs
+                          options:(NSDictionary*)options) {
+    [_manager startDeviceScan:filteredUUIDs options:options];
 }
 
-RCT_EXPORT_METHOD(establishConnection:(NSString*)deviceIdentifier
-                             resolver:(RCTPromiseResolveBlock)resolve
-                             rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager establishConnection:deviceIdentifier resolve:resolve reject:reject];
+RCT_EXPORT_METHOD(stopDeviceScan) {
+    [_manager stopDeviceScan];
 }
 
-RCT_EXPORT_METHOD(closeConnection:(NSString*)deviceIdentifier
+// Mark: Connection management -----------------------------------------------------------------------------------------
+
+RCT_EXPORT_METHOD(connectToDevice:(NSString*)deviceIdentifier
+                          options:(NSDictionary*)options
                          resolver:(RCTPromiseResolveBlock)resolve
                          rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager closeConnection:deviceIdentifier resolve:resolve reject:reject];
+    [_manager connectToDevice:deviceIdentifier
+                      options:options
+                      resolve:resolve
+                       reject:reject];
 }
 
-RCT_EXPORT_METHOD(serviceIdsForDevice:(NSString*)deviceIdentifier
-                             resolver:(RCTPromiseResolveBlock)resolve
-                             rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager serviceIdsForDevice:deviceIdentifier resolve:resolve reject:reject];
+RCT_EXPORT_METHOD(cancelDeviceConnection:(NSString*)deviceIdentifier
+                                resolver:(RCTPromiseResolveBlock)resolve
+                                rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager cancelDeviceConnection:deviceIdentifier
+                             resolve:resolve
+                              reject:reject];
 }
 
-RCT_EXPORT_METHOD(characteristicIdsForDevice:(NSString*)deviceIdentifier
-                           serviceIdentifier:(NSString*)serviceIdentifier
-                                    resolver:(RCTPromiseResolveBlock)resolve
-                                    rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager characteristicIdsForDevice:deviceIdentifier
-                       serviceIdentifier:serviceIdentifier
-                                 resolve:resolve
-                                  reject:reject];
+RCT_EXPORT_METHOD(isDeviceConnected:(NSString*)deviceIdentifier
+                           resolver:(RCTPromiseResolveBlock)resolve
+                           rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager isDeviceConnected:deviceIdentifier
+                        resolve:resolve
+                         reject:reject];
 }
 
-RCT_EXPORT_METHOD(detailsForCharacteristic:(NSString*)deviceIdentifier
-                         serviceIdentifier:(NSString*)serviceIdentifier
-                  characteristicIdentifier:(NSString*)characteristicIdentifier
+// Mark: Discovery -----------------------------------------------------------------------------------------------------
+
+RCT_EXPORT_METHOD(discoverAllServicesAndCharacteristicsForDevice:(NSString*)deviceIdentifier
+                                                        resolver:(RCTPromiseResolveBlock)resolve
+                                                        rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager discoverAllServicesAndCharacteristicsForDevice:deviceIdentifier
+                                                     resolve:resolve
+                                                      reject:reject];
+}
+
+// Mark: Service and characteristic getters ----------------------------------------------------------------------------
+
+RCT_EXPORT_METHOD(servicesForDevice:(NSString*)deviceIdentifier
+                           resolver:(RCTPromiseResolveBlock)resolve
+                           rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager servicesForDevice:deviceIdentifier
+                        resolve:resolve
+                         reject:reject];
+}
+
+RCT_EXPORT_METHOD(characteristicsForDevice:(NSString*)deviceIdentifier
+                               serviceUUID:(NSString*)serviceUUID
                                   resolver:(RCTPromiseResolveBlock)resolve
                                   rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager detailsForCharacteristic:deviceIdentifier
-                     serviceIdentifier:serviceIdentifier
-              characteristicIdentifier:characteristicIdentifier
+    [_manager characteristicsForDevice:deviceIdentifier
+                           serviceUUID:serviceUUID
                                resolve:resolve
                                 reject:reject];
 }
 
-RCT_EXPORT_METHOD(     writeCharacteristic:(NSString*)deviceIdentifier
-                         serviceIdentifier:(NSString*)serviceIdentifier
-                  characteristicIdentifier:(NSString*)characteristicIdentifier
-                               valueBase64:(NSString*)valueBase64
-                             transactionId:(NSString*)transactionId
-                                  resolver:(RCTPromiseResolveBlock)resolve
-                                  rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager writeCharacteristic:deviceIdentifier
-                serviceIdentifier:serviceIdentifier
-         characteristicIdentifier:characteristicIdentifier
-                      valueBase64:valueBase64
-                    transactionId:transactionId
-                          resolve:resolve
-                           reject:reject];
+// Mark: Characteristics operations ------------------------------------------------------------------------------------
+
+RCT_EXPORT_METHOD(readCharacteristicForDevice:(NSString*)deviceIdentifier
+                                  serviceUUID:(NSString*)serviceUUID
+                           characteristicUUID:(NSString*)characteristicUUID
+                                transactionId:(NSString*)transactionId
+                                     resolver:(RCTPromiseResolveBlock)resolve
+                                     rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager readCharacteristicForDevice:deviceIdentifier
+                              serviceUUID:serviceUUID
+                       characteristicUUID:characteristicUUID
+                            transactionId:transactionId
+                                  resolve:resolve
+                                   reject:reject];
 }
 
-RCT_EXPORT_METHOD(      readCharacteristic:(NSString*)deviceIdentifier
-                         serviceIdentifier:(NSString*)serviceIdentifier
-                  characteristicIdentifier:(NSString*)characteristicIdentifier
-                             transactionId:(NSString*)transactionId
-                                  resolver:(RCTPromiseResolveBlock)resolve
-                                  rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager readCharacteristic:deviceIdentifier
-               serviceIdentifier:serviceIdentifier
-        characteristicIdentifier:characteristicIdentifier
-                   transactionId:transactionId
-                         resolve:resolve
-                          reject:reject];
+RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSString*)deviceIdentifier
+                                   serviceUUID:(NSString*)serviceUUID
+                            characteristicUUID:(NSString*)characteristicUUID
+                                   valueBase64:(NSString*)valueBase64
+                                  withResponse:(BOOL)response
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager writeCharacteristicForDevice:deviceIdentifier
+                               serviceUUID:serviceUUID
+                        characteristicUUID:characteristicUUID
+                               valueBase64:valueBase64
+                                  response:response
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
 }
 
-RCT_EXPORT_METHOD(    notifyCharacteristic:(NSString*)deviceIdentifier
-                         serviceIdentifier:(NSString*)serviceIdentifier
-                  characteristicIdentifier:(NSString*)characteristicIdentifier
-                                    notify:(BOOL)notify
-                             transactionId:(NSString*)transactionId
-                                  resolver:(RCTPromiseResolveBlock)resolve
-                                  rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager notifyCharacteristic:deviceIdentifier
-                 serviceIdentifier:serviceIdentifier
-          characteristicIdentifier:characteristicIdentifier
-                            notify:notify
-                     transactionId:transactionId
-                           resolve:resolve
-                            reject:reject];
+RCT_EXPORT_METHOD(monitorCharacteristicForDevice:(NSString*)deviceIdentifier
+                                     serviceUUID:(NSString*)serviceUUID
+                              characteristicUUID:(NSString*)characteristicUUID
+                                   transactionID:(NSString*)transactionId
+                                        resolver:(RCTPromiseResolveBlock)resolve
+                                        rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager monitorCharacteristicForDevice:deviceIdentifier
+                                 serviceUUID:serviceUUID
+                          characteristicUUID:characteristicUUID
+                               transactionId:transactionId
+                                     resolve:resolve
+                                      reject:reject];
 }
 
-RCT_EXPORT_METHOD(    monitorCharacteristic:(NSString*)deviceIdentifier
-                          serviceIdentifier:(NSString*)serviceIdentifier
-                   characteristicIdentifier:(NSString*)characteristicIdentifier
-                              transactionId:(NSString*)transactionId
-                                   resolver:(RCTPromiseResolveBlock)resolve
-                                   rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager monitorCharacteristic:deviceIdentifier
-                  serviceIdentifier:serviceIdentifier
-           characteristicIdentifier:characteristicIdentifier
-                      transactionId:transactionId
-                            resolve:resolve
-                             reject:reject];
-}
-
-RCT_EXPORT_METHOD(cancelCharacteristicOperation:(NSString*)transactionId) {
-    [_manager cancelCharacteristicOperation:transactionId];
+RCT_EXPORT_METHOD(cancelTransaction:(NSString*)transactionId) {
+    [_manager cancelTransaction:transactionId];
 }
 
 @end
