@@ -1,37 +1,23 @@
 package com.polidea.reactnativeble.converter;
 
-import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
-import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableMap;
-import java.util.List;
 
-class BluetoothGattServiceConverter implements Converter<BluetoothGattService> {
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
+
+public class BluetoothGattServiceConverter extends JSObjectConverter<BluetoothGattService> {
+
 
     private interface Metadata {
-
-        String UUID = "UUID";
-        String CHARACTERISTICS = "CHARACTERISTICS";
-    }
-
-    private final BluetoothGattCharacteristicConverter bluetoothGattCharacteristicConverter;
-
-    BluetoothGattServiceConverter(BluetoothGattCharacteristicConverter bluetoothGattCharacteristicConverter) {
-
-        this.bluetoothGattCharacteristicConverter = bluetoothGattCharacteristicConverter;
+        String UUID = "uuid";
+        String IS_PRIMARY = "isPrimary";
     }
 
     @Override
-    public WritableMap convert(BluetoothGattService bluetoothGattService) {
+    public WritableMap toJSObject(BluetoothGattService value) {
         WritableMap result = Arguments.createMap();
-        result.putString(Metadata.UUID, bluetoothGattService.getUuid().toString());
-        final List<BluetoothGattCharacteristic> bluetoothGattCharacteristics = bluetoothGattService.getCharacteristics();
-        WritableArray characteristics = Arguments.createArray();
-        for (BluetoothGattCharacteristic bluetoothGattCharacteristic : bluetoothGattCharacteristics) {
-            characteristics.pushMap(bluetoothGattCharacteristicConverter.convert(bluetoothGattCharacteristic));
-        }
-        result.putArray(Metadata.CHARACTERISTICS, characteristics);
+        result.putString(Metadata.UUID, value.getUuid().toString());
+        result.putBoolean(Metadata.IS_PRIMARY, value.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY);
         return result;
     }
 }

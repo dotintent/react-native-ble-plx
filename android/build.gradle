@@ -4,12 +4,10 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.5'
     }
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 23
@@ -32,5 +30,5 @@ repositories {
 
 dependencies {
     compile "com.facebook.react:react-native:0.20.1"
-    compile "com.polidea.rxandroidble:rxandroidble:1.0.1"
+    compile "com.polidea.rxandroidble:rxandroidble:1.0.2"
 }

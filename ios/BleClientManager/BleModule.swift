@@ -31,7 +31,7 @@ public class BleClientManager : NSObject {
 
     // MARK: Public interface
 
-    // Lifecycle -------------------------------
+    // Lifecycle -------------------------------------------------------------------------------------------------------
 
     public init(queue: dispatch_queue_t) {
         manager = BluetoothManager(queue: queue)
@@ -139,6 +139,7 @@ public class BleClientManager : NSObject {
                 }
             );
 
+        // TODO: Call reject when cancelled.
         connectingDevices.replaceDisposable(deviceIdentifier, disposable: connectionDisposable)
     }
 

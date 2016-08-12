@@ -4,26 +4,23 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.rxandroidble.RxBleScanResult;
 
-public class RxBleScanResultConverter implements Converter<RxBleScanResult> {
+public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult> {
 
     interface Metadata {
         String UUID = "uuid";
         String NAME = "name";
         String RSSI = "rssi";
-    }
-
-    private final RxBleDeviceConverter bleDeviceConverter;
-
-    RxBleScanResultConverter(RxBleDeviceConverter bleDeviceConverter) {
-        this.bleDeviceConverter = bleDeviceConverter;
+        String CONNECTABLE = "isConnectable";
     }
 
     @Override
-    public WritableMap convert(RxBleScanResult rxBleScanResult) {
+    public WritableMap toJSObject(RxBleScanResult value) {
         WritableMap result = Arguments.createMap();
-        result.putString(Metadata.UUID, rxBleScanResult.getBleDevice().getMacAddress());
-        result.putString(Metadata.NAME, rxBleScanResult.getBleDevice().getName());
-        result.putInt(Metadata.RSSI, rxBleScanResult.getRssi());
+        result.putString(Metadata.UUID, value.getBleDevice().getMacAddress());
+        result.putString(Metadata.NAME, value.getBleDevice().getName());
+        result.putInt(Metadata.RSSI, value.getRssi());
+        // TODO: Implement
+        result.putNull(Metadata.CONNECTABLE);
         return result;
     }
 }

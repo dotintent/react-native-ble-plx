@@ -169,6 +169,8 @@ class BleComponent extends Component {
                                                         characteristicId,
                                                         (error, characteristic) => {
               if (error) {
+                if (error.message === "Cancelled") return
+                
                 newProps.pushError(error.message)
                 newProps.completeTransaction(transactionId)
                 return
