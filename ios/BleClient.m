@@ -44,6 +44,10 @@ RCT_EXPORT_METHOD(destroyClient) {
     _manager = nil;
 }
 
+- (void)invalidate {
+    [self destroyClient];
+}
+
 // Mark: Monitoring state ----------------------------------------------------------------------------------------------
 
 RCT_EXPORT_METHOD(   state:(RCTPromiseResolveBlock)resolve

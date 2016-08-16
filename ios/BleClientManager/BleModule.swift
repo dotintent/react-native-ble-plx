@@ -37,8 +37,8 @@ public class BleClientManager : NSObject {
         manager = BluetoothManager(queue: queue)
         super.init()
 
-        disposeBag.addDisposable(manager.rx_state.subscribeNext { [unowned self] newState in
-            self.onStateChange(newState)
+        disposeBag.addDisposable(manager.rx_state.subscribeNext { [weak self] newState in
+            self?.onStateChange(newState)
         })
     }
 
@@ -59,7 +59,7 @@ public class BleClientManager : NSObject {
     }
 
     private func onStateChange(state: CBCentralManagerState) {
-        self.dispatchEvent(BleEvent.stateChangeEvent, value: state.asJSObject)
+        dispatchEvent(BleEvent.stateChangeEvent, value: state.asJSObject)
     }
 
     // Mark: Scanning --------------------------------------------------------------------------------------------------
@@ -76,17 +76,17 @@ public class BleClientManager : NSObject {
         var uuids: [CBUUID]? = nil
         if let filteredUUIDs = filteredUUIDs {
             guard let cbuuids = filteredUUIDs.toCBUUIDS() else {
-                self.dispatchEvent(BleEvent.scanEvent, value: BleError.invalidUUIDs(filteredUUIDs).toJSResult)
+                dispatchEvent(BleEvent.scanEvent, value: BleError.invalidUUIDs(filteredUUIDs).toJSResult)
                 return
             }
             uuids = cbuuids
         }
 
-        scanSubscription.disposable = self.manager.scanForPeripherals(uuids, options: rxOptions)
-            .subscribe(onNext: { scannedPeripheral in
-                self.dispatchEvent(BleEvent.scanEvent, value: [NSNull(), scannedPeripheral.asJSObject])
-            }, onError: { errorType in
-                self.dispatchEvent(BleEvent.scanEvent, value: errorType.bleError.toJSResult)
+        scanSubscription.disposable = manager.scanForPeripherals(uuids, options: rxOptions)
+            .subscribe(onNext: { [weak self] scannedPeripheral in
+                self?.dispatchEvent(BleEvent.scanEvent, value: [NSNull(), scannedPeripheral.asJSObject])
+            }, onError: { [weak self] errorType in
+                self?.dispatchEvent(BleEvent.scanEvent, value: errorType.bleError.toJSResult)
             })
     }
 
@@ -115,18 +115,18 @@ public class BleClientManager : NSObject {
             }
             .flatMap { $0.connect() }
             .subscribe(
-                onNext: { [unowned self] peripheral in
-                    self.connectedDevices[deviceIdentifier] = peripheral
+                onNext: { [weak self] peripheral in
+                    self?.connectedDevices[deviceIdentifier] = peripheral
                 },
                 onError: { error in
                     error.bleError.callReject(reject)
                 },
-                onCompleted: { [unowned self] in
-                    if let device = self.connectedDevices[deviceIdentifier] {
-                        _ = self.manager.monitorPeripheralDisconnection(device)
+                onCompleted: { [weak self] in
+                    if let device = self?.connectedDevices[deviceIdentifier] {
+                        _ = self?.manager.monitorPeripheralDisconnection(device)
                             .take(1)
                             .subscribeNext { peripheral in
-                                self.onDeviceDisconnected(peripheral)
+                                self?.onDeviceDisconnected(peripheral)
                             }
 
                         resolve(device.asJSObject)
@@ -134,8 +134,8 @@ public class BleClientManager : NSObject {
                         BleError.peripheralNotFound(deviceIdentifier).callReject(reject)
                     }
                 },
-                onDisposed: { [unowned self] in
-                    self.connectingDevices.removeDisposable(deviceIdentifier)
+                onDisposed: { [weak self] in
+                    self?.connectingDevices.removeDisposable(deviceIdentifier)
                 }
             );
 
@@ -144,7 +144,7 @@ public class BleClientManager : NSObject {
     }
 
     private func onDeviceDisconnected(device: Peripheral) {
-        self.dispatchEvent(BleEvent.disconnectionEvent, value: [NSNull(), device.asJSObject])
+        dispatchEvent(BleEvent.disconnectionEvent, value: [NSNull(), device.asJSObject])
     }
 
     public func cancelDeviceConnection(deviceIdentifier: String, resolve: Resolve, reject: Reject) {
@@ -158,8 +158,8 @@ public class BleClientManager : NSObject {
                     onCompleted: {
                         resolve(device.asJSObject)
                     },
-                    onDisposed: {
-                        self.connectedDevices[deviceIdentifier] = nil
+                    onDisposed: { [weak self] in
+                        self?.connectedDevices[deviceIdentifier] = nil
                     }
             );
         } else {
@@ -258,8 +258,8 @@ public class BleClientManager : NSObject {
                     }
                     finished = true
                 },
-                onDisposed: {
-                    self.transactions.removeDisposable(transactionId)
+                onDisposed: { [weak self] in
+                    self?.transactions.removeDisposable(transactionId)
                     if (!finished) {
                         BleError.cancelled().callReject(reject)
                     }
@@ -306,8 +306,8 @@ public class BleClientManager : NSObject {
                     }
                     finished = true
                 },
-                onDisposed: {
-                    self.transactions.removeDisposable(transactionId)
+                onDisposed: { [weak self] in
+                    self?.transactions.removeDisposable(transactionId)
                     if (!finished) {
                         BleError.cancelled().callReject(reject)
                     }
@@ -334,20 +334,20 @@ public class BleClientManager : NSObject {
             observable = characteristicObservable(deviceIdentifier,
                 serviceUUID: serviceUUID,
                 characteristicUUID: characteristicUUID)
-                .flatMap { characteristic -> Observable<Characteristic> in
+                .flatMap { [weak self] characteristic -> Observable<Characteristic> in
                     return Observable.using({
                         return AnonymousDisposable {
                             characteristic.setNotifyValue(false).subscribe()
-                            self.monitoredCharacteristics[id] = nil
+                            self?.monitoredCharacteristics[id] = nil
                         }
                         }, observableFactory: { _ in
                             return characteristic.setNotificationAndMonitorUpdates()
                     })
                 }
-                .doOn(onNext: { characteristic in
-                        self.dispatchEvent(BleEvent.readEvent, value: [NSNull(), characteristic.asJSObject])
-                    }, onError: { error in
-                        self.dispatchEvent(BleEvent.readEvent, value: error.bleError.toJSResult)
+                .doOn(onNext: { [weak self] characteristic in
+                        self?.dispatchEvent(BleEvent.readEvent, value: [NSNull(), characteristic.asJSObject])
+                    }, onError: { [weak self] error in
+                        self?.dispatchEvent(BleEvent.readEvent, value: error.bleError.toJSResult)
                     })
                 .publish()
                 .refCount()
@@ -355,7 +355,8 @@ public class BleClientManager : NSObject {
         }
 
         let disposable = observable.subscribe(onNext: nil, onError: nil, onCompleted: nil, onDisposed: {
-            self.transactions.removeDisposable(transactionId)
+            [weak self] in
+            self?.transactions.removeDisposable(transactionId)
             resolve(nil)
         })
 
@@ -371,8 +372,8 @@ public class BleClientManager : NSObject {
     private func characteristicObservable(deviceIdentifier: String,
                                           serviceUUID: String,
                                           characteristicUUID: String) -> Observable<Characteristic> {
-        return Observable.deferred {
-            guard let device = self.connectedDevices[deviceIdentifier] else {
+        return Observable.deferred { [weak self] in
+            guard let device = self?.connectedDevices[deviceIdentifier] else {
                 return Observable.error(BleError.peripheralNotConnected(deviceIdentifier))
             }
 
