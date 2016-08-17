@@ -30,13 +30,9 @@ import com.polidea.rxandroidble.RxBleDeviceServices;
 import com.polidea.rxandroidble.RxBleScanResult;
 import com.polidea.rxandroidble.exceptions.BleCharacteristicNotFoundException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 import rx.Observable;
 import rx.Observer;
@@ -182,8 +178,8 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-                        onDeviceDisconnected(device);
                         BleError.cancelled().reject(promise);
+                        onDeviceDisconnected(device);
                     }
                 })
                 .subscribe(new Observer<RxBleConnection>() {
@@ -194,6 +190,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                     @Override
                     public void onError(Throwable e) {
                         errorConverter.toError(e).reject(promise);
+                        onDeviceDisconnected(device);
                     }
 
                     @Override
@@ -478,28 +475,28 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-                        transactions.removeSubscription(transactionId);
                         BleError.cancelled().reject(promise);
+                        transactions.removeSubscription(transactionId);
                     }
                 })
                 .subscribe(new Observer<Pair<BluetoothGattCharacteristic, byte[]>>() {
                     @Override
                     public void onCompleted() {
+                        transactions.removeSubscription(transactionId);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        transactions.removeSubscription(transactionId);
                         if (e instanceof BleCharacteristicNotFoundException) {
                             BleError.characteristicNotFound(characteristicUUID.toString()).reject(promise);
                             return;
                         }
                         errorConverter.toError(e).reject(promise);
+                        transactions.removeSubscription(transactionId);
                     }
 
                     @Override
                     public void onNext(Pair<BluetoothGattCharacteristic, byte[]> result) {
-                        transactions.removeSubscription(transactionId);
                         WritableMap jsObject = converter.characteristic.toJSObject(result.first);
                         jsObject.putString("deviceUUID", device.getMacAddress());
                         jsObject.putString("serviceUUID", serviceUUID.toString());
@@ -574,29 +571,28 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-                        transactions.removeSubscription(transactionId);
                         BleError.cancelled().reject(promise);
+                        transactions.removeSubscription(transactionId);
                     }
                 })
                 .subscribe(new Observer<Pair<BluetoothGattCharacteristic, byte[]>>() {
                     @Override
                     public void onCompleted() {
-
+                        transactions.removeSubscription(transactionId);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        transactions.removeSubscription(transactionId);
                         if (e instanceof BleCharacteristicNotFoundException) {
                             BleError.characteristicNotFound(characteristicUUID.toString()).reject(promise);
                             return;
                         }
                         errorConverter.toError(e).reject(promise);
+                        transactions.removeSubscription(transactionId);
                     }
 
                     @Override
                     public void onNext(Pair<BluetoothGattCharacteristic, byte[]> result) {
-                        transactions.removeSubscription(transactionId);
                         WritableMap jsObject = converter.characteristic.toJSObject(result.first);
                         jsObject.putString("deviceUUID", device.getMacAddress());
                         jsObject.putString("serviceUUID", serviceUUID.toString());
@@ -741,7 +737,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                                     final String transactionId) {
         synchronized (notificationMap) {
             String id = notificationMap.get(characteristicUUID);
-            if (id.equals(transactionId)) {
+            if (id != null && id.equals(transactionId)) {
                 notificationMap.remove(characteristicUUID);
             }
         }

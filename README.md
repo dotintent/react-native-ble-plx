@@ -10,6 +10,7 @@ React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github
   For example `"react-native-ble-plx": "Polidea/react-native-ble-plx"` will install
   latest version from Polidea's Github repository.
 * Execute `npm install` to fetch and install a library.
+* Open iOS project located in `./ios` folder.
 * Move `BleClient.xcodeproj` located in `.node_modules/react-native-ble-plx/ios` 
   using drag & drop to `Libraries` folder in your project.
 * In general settings of a project add `libBleClient.a` to Linked Frameworks and Libraries.
@@ -21,9 +22,38 @@ React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github
 * In `Build Settings`/`Search Paths`/`Framework search paths` add recursive path: `$(SRCROOT)/../node_modules/react-native-ble-plx`.
 * In `Build Settings`/`Search Paths`/`Header search paths` add recursive path: `$(SRCROOT)/../node_modules/react-native/React`.  
 * In `Build Options`/`Embedded Content Contains Swift Code` set to `true`.
+* Minimal supported version of iOS is 8.0
 
 **Android**:
-
+* Add `react-native-ble-plx` to a project as a dependency in `package.json` file. 
+  For example `"react-native-ble-plx": "Polidea/react-native-ble-plx"` will install
+  latest version from Polidea's Github repository.
+* Execute `npm install` to fetch and install a library.
+* Open Android project located in `./android` folder.
+* In `settings.gradle` add following lines:
+``` 
+include ':react-native-ble-plx'
+project(':react-native-ble-plx').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-ble-plx/android')
+```
+* In `build.gradle` of `app` module add following dependency:
+```
+compile project(':react-native-ble-plx')
+```
+* In `MainApplication.getPackages` add BleModule package:
+```
+@Override
+protected List<ReactPackage> getPackages() {
+  return Arrays.<ReactPackage>asList(
+    new MainReactPackage(),
+    new BlePackage()
+  );
+}
+```
+* In `AndroidManifest.xml` add Bluetooth permission: 
+```
+<uses-permission android:name="android.permission.BLUETOOTH" />
+```
+* Minimal supported SDK version is 18.
 
 ## Installing and running example app
 * Go to example project folder `cd examples/ReactBLEScanner`.
@@ -422,7 +452,7 @@ Monitor value changes of a characteristic.
 *Returns:*: Subscription on which `remove()` function can be called to unsubscribe. 
 
 ---
-#### `async service.monitorCharacteristicForService(serviceUUID, characteristicUUID, listener, [transactionId])`
+#### `async device.monitorCharacteristicForService(serviceUUID, characteristicUUID, listener, [transactionId])`
 Monitor value changes of a characteristic.
 
 *Parameters and return value*:
