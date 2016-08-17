@@ -25,7 +25,7 @@ export default class Characteristic {
         }
 
         this.monitor = (listener, transactionId) => {
-            return monitorCharacteristicForDevice(this.deviceUUID, this.serviceUUID, this.uuid, listener, transactionId)
+            return manager.monitorCharacteristicForDevice(this.deviceUUID, this.serviceUUID, this.uuid, listener, transactionId)
         } 
     }
 }

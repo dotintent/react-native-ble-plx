@@ -48,7 +48,7 @@ export default class Device {
         }
 
         this.monitorCharacteristicForService = (serviceUUID, characteristicUUID, listener, transactionId) => {
-            return monitorCharacteristicForDevice(this.uuid, serviceUUID, characteristicUUID, listener, transactionId)
+            return manager.monitorCharacteristicForDevice(this.uuid, serviceUUID, characteristicUUID, listener, transactionId)
         }
     }
 }

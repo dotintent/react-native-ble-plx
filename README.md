@@ -1,6 +1,30 @@
 # react-native-ble-plx
 React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) as it's backend libraries.
 
+
+
+## Configuration & installation for new project
+
+**iOS:**
+* Add `react-native-ble-plx` to a project as a dependency in `package.json` file. 
+  For example `"react-native-ble-plx": "Polidea/react-native-ble-plx"` will install
+  latest version from Polidea's Github repository.
+* Execute `npm install` to fetch and install a library.
+* Move `BleClient.xcodeproj` located in `.node_modules/react-native-ble-plx/ios` 
+  using drag & drop to `Libraries` folder in your project.
+* In general settings of a project add `libBleClient.a` to Linked Frameworks and Libraries.
+* In `Embedded Binaries` add manually frameworks located in `.node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS`: 
+  * `BleClientManager.framework`
+  * `RxBluetoothKit.framework`
+  * `RxSwift.framework`
+  * `RxCocoa.framework`
+* In `Build Settings`/`Search Paths`/`Framework search paths` add recursive path: `$(SRCROOT)/../node_modules/react-native-ble-plx`.
+* In `Build Settings`/`Search Paths`/`Header search paths` add recursive path: `$(SRCROOT)/../node_modules/react-native/React`.  
+* In `Build Options`/`Embedded Content Contains Swift Code` set to `true`.
+
+**Android**:
+
+
 ## Installing and running example app
 * Go to example project folder `cd examples/ReactBLEScanner`.
 * Install required packages executing: `npm install`.
@@ -21,10 +45,6 @@ Scripts are located in `./examples/ReactBLEScanner` folder.
 ### Additional configuration for iOS
 
 **TODO**
-
-## Configuration & installation for new project
-
-**TODO** 
 
 ## JavaScript API
 
@@ -400,3 +420,24 @@ Monitor value changes of a characteristic.
 * `transactionId` - optional transactionId which can be used in `cancelTransaction` function.
 
 *Returns:*: Subscription on which `remove()` function can be called to unsubscribe. 
+
+---
+#### `async service.monitorCharacteristicForService(serviceUUID, characteristicUUID, listener, [transactionId])`
+Monitor value changes of a characteristic.
+
+*Parameters and return value*:
+* Look above.
+
+---
+#### `async service.monitorCharacteristic(characteristicUUID, listener, [transactionId])`
+Monitor value changes of a characteristic.
+
+*Parameters and return value*:
+* Look above.
+
+---
+#### `async characteristic.monitor(listener, [transactionId])`
+Monitor value changes of a characteristic.
+
+*Parameters and return value*:
+* Look above.
