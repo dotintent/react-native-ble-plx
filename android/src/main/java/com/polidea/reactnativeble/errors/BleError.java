@@ -14,17 +14,7 @@ public class BleError {
         return new Error("Cancelled", 1);
     }
 
-    public static Error noClient() {
-        return new Error("BleModule is not initialized", 2);
-    }
-
-    static public Error invalidUUID(@NonNull String uuid) {
-        List<String> list = new ArrayList<>();
-        list.add(uuid);
-        return invalidUUIDs(list);
-    }
-
-    static public Error invalidUUIDs(@NonNull  List<String> uuids) {
+    static public Error invalidUUIDs(@NonNull  String... uuids) {
         String uuidsString = "";
         for (String uuid: uuids) {
             uuidsString += uuid + ", ";
@@ -46,5 +36,9 @@ public class BleError {
 
     static public Error serviceNotFound(String uuid) {
         return new Error("Service " + uuid + " not found", 504);
+    }
+
+    static public Error invalidWriteDataForCharacteristic(String data, String uuid) {
+        return new Error("Invalid base64 write data: " + data + " for characteristic " + uuid, 505);
     }
 }
