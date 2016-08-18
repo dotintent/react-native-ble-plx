@@ -144,9 +144,9 @@ export default class BleManager {
         return
       }
 
-      if (characteristic.deviceUUID !== deviceIdentifier   ||
-          characteristic.serviceUUID !== serviceUUID || 
-          characteristic.uuid !== characteristicUUID) return
+      if (characteristic.deviceUUID.toUpperCase() !== deviceIdentifier.toUpperCase()   ||
+          characteristic.serviceUUID.toUpperCase() !== serviceUUID.toUpperCase() || 
+          characteristic.uuid.toUpperCase() !== characteristicUUID.toUpperCase()) return
 
       listener(null, new Characteristic(characteristic, this))
     };
