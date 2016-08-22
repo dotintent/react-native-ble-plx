@@ -108,7 +108,7 @@ Cancels specified transaction if in progress. Otherwise does nothing.
 
 ### Manager state
 
-#### `async state`
+#### `async state` [for now iOS only]
 Current state of a manager.
 
 *Returns*: Current state of a manager as a string:
@@ -121,7 +121,7 @@ Current state of a manager.
 
 ---
 
-#### `onStateChange(listener)` 
+#### `onStateChange(listener)` [for now iOS only]
 Notifies about state changes of a manager.
 
 *Parameters*:
