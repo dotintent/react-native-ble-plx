@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "build": "./build_ios_frameworks.sh",
+    "postinstall": "./build_ios_frameworks.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
