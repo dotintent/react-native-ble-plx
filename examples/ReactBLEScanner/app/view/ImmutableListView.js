@@ -17,7 +17,7 @@ export default class ImmutableListView extends Component {
       rowHasChanged: (r1, r2) => !Immutable.is(r1, r2)
     });
 
-    this.state = { dataSource: ds.cloneWithRows(this.props.data.toArray()) };
+    this.state = { dataSource: ds.cloneWithRows(this.props.data.toObject()) };
   }
 
   static propTypes = {
@@ -27,7 +27,7 @@ export default class ImmutableListView extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      dataSource: this.state.dataSource.cloneWithRows(nextProps.data.toArray())
+      dataSource: this.state.dataSource.cloneWithRows(nextProps.data.toObject())
     })
   }
 
