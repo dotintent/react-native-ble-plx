@@ -1,4 +1,4 @@
-package com.reactblescanner;
+package com.polidea.sniffator;
 
 import com.burnweb.rnpermissions.RNPermissionsPackage;
 import com.facebook.react.ReactActivity;

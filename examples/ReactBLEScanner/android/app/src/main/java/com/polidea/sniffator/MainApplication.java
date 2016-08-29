@@ -1,4 +1,4 @@
-package com.reactblescanner;
+package com.polidea.sniffator;
 
 import android.app.Application;
 
