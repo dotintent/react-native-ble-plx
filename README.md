@@ -9,6 +9,7 @@ React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github
 * Add `react-native-ble-plx` to a project as a dependency in `package.json` file. 
   For example `"react-native-ble-plx": "Polidea/react-native-ble-plx"` will install
   latest version from Polidea's Github repository.
+* Make sure that you have [Carthage](https://github.com/Carthage/Carthage) installed on your system.
 * Execute `npm install` to fetch and install a library.
 * Open iOS project located in `./ios` folder.
 * Move `BleClient.xcodeproj` located in `.node_modules/react-native-ble-plx/ios` 
@@ -57,6 +58,7 @@ protected List<ReactPackage> getPackages() {
 
 ## Installing and running example app
 * Go to example project folder `cd examples/ReactBLEScanner`.
+* Make sure that you have [Carthage](https://github.com/Carthage/Carthage) installed on your system.
 * Install required packages executing: `npm install`.
 * **iOS**: Open Xcode example project in `./examples/ReactBLEScanner/ios/ReactBLEScanner.xcodeproj`.
 * **Android**: Open Android example project in `./examples/ReactBLEScanner/android`. 
