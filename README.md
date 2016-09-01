@@ -1,21 +1,21 @@
 # react-native-ble-plx
 React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) as it's backend libraries.
 
-
+Example apps are available in [Google Play](https://play.google.com/store/apps/details?id=com.polidea.sniffator) and [App Store](https://itunes.apple.com/us/app/sniffator/id1147266354?ls=1&mt=8)!
 
 ## Configuration & installation for new project
 
 **iOS:**
-* Add `react-native-ble-plx` to a project as a dependency in `package.json` file. 
+* Add `react-native-ble-plx` to a project as a dependency in `package.json` file.
   For example `"react-native-ble-plx": "Polidea/react-native-ble-plx"` will install
   latest version from Polidea's Github repository.
 * Make sure that you have [Carthage](https://github.com/Carthage/Carthage) installed on your system.
 * Execute `npm install` to fetch and install a library.
 * Open iOS project located in `./ios` folder.
-* Move `BleClient.xcodeproj` located in `.node_modules/react-native-ble-plx/ios` 
+* Move `BleClient.xcodeproj` located in `.node_modules/react-native-ble-plx/ios`
   using drag & drop to `Libraries` folder in your project.
 * In general settings of a project add `libBleClient.a` to Linked Frameworks and Libraries.
-* In `Embedded Binaries` add manually frameworks located in `.node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS`: 
+* In `Embedded Binaries` add manually frameworks located in `.node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS`:
   * `BleClientManager.framework`
   * `RxBluetoothKit.framework`
   * `RxSwift.framework`
@@ -26,13 +26,13 @@ React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github
 * Minimal supported version of iOS is 8.0
 
 **Android**:
-* Add `react-native-ble-plx` to a project as a dependency in `package.json` file. 
+* Add `react-native-ble-plx` to a project as a dependency in `package.json` file.
   For example `"react-native-ble-plx": "Polidea/react-native-ble-plx"` will install
   latest version from Polidea's Github repository.
 * Execute `npm install` to fetch and install a library.
 * Open Android project located in `./android` folder.
 * In `settings.gradle` add following lines:
-``` 
+```
 include ':react-native-ble-plx'
 project(':react-native-ble-plx').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-ble-plx/android')
 ```
@@ -50,7 +50,7 @@ protected List<ReactPackage> getPackages() {
   );
 }
 ```
-* In `AndroidManifest.xml` add Bluetooth permission: 
+* In `AndroidManifest.xml` add Bluetooth permission:
 ```
 <uses-permission android:name="android.permission.BLUETOOTH" />
 ```
@@ -61,7 +61,7 @@ protected List<ReactPackage> getPackages() {
 * Make sure that you have [Carthage](https://github.com/Carthage/Carthage) installed on your system.
 * Install required packages executing: `npm install`.
 * **iOS**: Open Xcode example project in `./examples/ReactBLEScanner/ios/ReactBLEScanner.xcodeproj`.
-* **Android**: Open Android example project in `./examples/ReactBLEScanner/android`. 
+* **Android**: Open Android example project in `./examples/ReactBLEScanner/android`.
 * Build and run.
 
 ## Developing modules and example app
@@ -86,7 +86,7 @@ First of all include `BleModule` in react native project:
 import { BleManager } from 'react-native-ble-plx';
 ```
 
-`BleManager` should be initialized with `new` keyword and method `destroy()` should be called 
+`BleManager` should be initialized with `new` keyword and method `destroy()` should be called
 on it's instance when we are done with it:
 
 ```javascript
@@ -127,10 +127,10 @@ Current state of a manager.
 Notifies about state changes of a manager.
 
 *Parameters*:
-* `listener(newState)` - callback which emits state changes of BLE Manager. Look above 
+* `listener(newState)` - callback which emits state changes of BLE Manager. Look above
   for possible values.
 
-*Returns*: Subscription on which `remove()` function can be called to unsubscribe. 
+*Returns*: Subscription on which `remove()` function can be called to unsubscribe.
 
 ### Scanning devices
 
@@ -138,9 +138,9 @@ Notifies about state changes of a manager.
 Starts device scanning. When previous scan is in progress it will be stopped before executing this command.
 
 *Parameters*:
-* `uuids` - array of strings containing UUIDs of services which we would like have in 
+* `uuids` - array of strings containing UUIDs of services which we would like have in
   scanned devices. If `null` it will scan all available devices.
-* `options` - object containing platform specific options, which can be enabled for 
+* `options` - object containing platform specific options, which can be enabled for
   scanning (can be `null`):
 
 ```javascript
@@ -150,9 +150,9 @@ Starts device scanning. When previous scan is in progress it will be stopped bef
 }
 ```
 
-* `listener(error, scannedDevice)` - function which will be called for every scanned device (devices 
-   may be scanned multiple times). It's first argument is potential error which is set to non 
-   `null` value when scanning failed. You have to start scanning process again if that happens. 
+* `listener(error, scannedDevice)` - function which will be called for every scanned device (devices
+   may be scanned multiple times). It's first argument is potential error which is set to non
+   `null` value when scanning failed. You have to start scanning process again if that happens.
    Second argument is a scanned `device` passed as an object with following fields:
 
 ```javascript
@@ -172,7 +172,7 @@ Stops scanning if in progress. Does nothing otherwise.
 
 ### Connection management
 
-#### `async connectToDevice(identifier, [options])` 
+#### `async connectToDevice(identifier, [options])`
 Connects to device with provided UUID.
 
 *Parameters*:
@@ -232,14 +232,14 @@ Monitors if device was disconnected due to any errors or connection problems.
 
 *Parameters*:
 * `identifier` - device UUID.
-* `listener(error, device)` - callback returning error as a reason of 
+* `listener(error, device)` - callback returning error as a reason of
   disconnection if available and `device` object.
 
-*Returns*: Subscription on which `remove()` function can be called to unsubscribe. 
+*Returns*: Subscription on which `remove()` function can be called to unsubscribe.
 
 ---
 #### `device.onDisconnected(listener)`
-Utility function which monitors if device was disconnected due to any errors or 
+Utility function which monitors if device was disconnected due to any errors or
 connection problems.
 
 *Parameters and return value*:
@@ -253,7 +253,7 @@ Discovers all services and characteristics for device.
 *Parameters*:
 * `identifier` - device UUID.
 
-*Returns*: promise which emits `device` object if all available services and 
+*Returns*: promise which emits `device` object if all available services and
            characteristics have been discovered.
 
 ---
@@ -277,7 +277,7 @@ Get list of discovered services for device.
 {
     "uuid": string,       // Service UUID
     "deviceUUID": string, // Device identifier which owns this service
-    "isPrimary": boolean, // Is service primary 
+    "isPrimary": boolean, // Is service primary
 
     // Utility functions
 }
@@ -300,7 +300,7 @@ Get list of discovered characteristics.
 * `identifier` - device UUID.
 * `serviceUUID` - service UUID.
 
-*Returns*: Promise which emits array of `characteristic` objects which are discovered 
+*Returns*: Promise which emits array of `characteristic` objects which are discovered
            for a device in specified service:
 
 ```javascript
@@ -314,7 +314,7 @@ Get list of discovered characteristics.
     "isNotifiable": boolean,                // Is characteristic notifiable
     "isNotifying": boolean,                 // Current status of notification for this characteristic
     "isIndictable": boolean,                // Is characteristic indictable
-    "value": string,                        // Base64 value, may be null 
+    "value": string,                        // Base64 value, may be null
 
     // Utility functions
 }
@@ -344,7 +344,7 @@ Read characteristic value.
 * `characteristicUUID` - characteristic UUID.
 * `transactionId` - optional transactionId which can be used in `cancelTransaction` function.
 
-*Returns*: Promise which emits first `characteristic` object matching specified UUID paths. 
+*Returns*: Promise which emits first `characteristic` object matching specified UUID paths.
            Latest value of characteristic will be stored.  
 
 ---
@@ -379,7 +379,7 @@ Write characteristic value with response.
 * `valueBase64` - value in Base64 format.
 * `transactionId` - optional transactionId which can be used in `cancelTransaction` function.
 
-*Returns*: Promise which emits first `characteristic` object matching specified UUID paths. 
+*Returns*: Promise which emits first `characteristic` object matching specified UUID paths.
            Latest value of characteristic may not be stored.  
 
 ---
@@ -414,7 +414,7 @@ Write characteristic value without response.
 * `valueBase64` - value in Base64 format.
 * `transactionId` - optional transactionId which can be used in `cancelTransaction` function.
 
-*Returns*: Promise which emits first `characteristic` object matching specified UUID paths. 
+*Returns*: Promise which emits first `characteristic` object matching specified UUID paths.
            Latest value of characteristic may not be stored.
 
 ---
@@ -447,11 +447,11 @@ Monitor value changes of a characteristic.
 * `identifier` - device identifier.
 * `serviceUUID` - service UUID.
 * `characteristicUUID` - characteristic UUID.
-* `listener(error, characteristic)` - listener which emits characteristic objects which 
+* `listener(error, characteristic)` - listener which emits characteristic objects which
                                       modified value for each notification.
 * `transactionId` - optional transactionId which can be used in `cancelTransaction` function.
 
-*Returns:*: Subscription on which `remove()` function can be called to unsubscribe. 
+*Returns:*: Subscription on which `remove()` function can be called to unsubscribe.
 
 ---
 #### `async device.monitorCharacteristicForService(serviceUUID, characteristicUUID, listener, [transactionId])`
