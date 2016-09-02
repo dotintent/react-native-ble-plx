@@ -3,6 +3,8 @@ React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github
 
 Example apps are available in [Google Play](https://play.google.com/store/apps/details?id=com.polidea.sniffator) and [App Store](https://itunes.apple.com/us/app/sniffator/id1147266354?ls=1&mt=8)!
 
+[![GooglePlay](googleplay.png)](https://play.google.com/store/apps/details?id=com.polidea.sniffator) [![AppStore](appstore.png)](https://itunes.apple.com/us/app/sniffator/id1147266354?ls=1&mt=8)
+
 ## Configuration & installation for new project
 
 **iOS:**
