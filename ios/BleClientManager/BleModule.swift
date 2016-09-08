@@ -21,7 +21,7 @@ public class BleClientManager : NSObject {
     private let manager : BluetoothManager
     public var delegate: BleClientManagerDelegate?
     private var connectedDevices = Dictionary<String, Peripheral>()
-    private var monitoredCharacteristics = Dictionary<String, Observable<Characteristic>>()
+    private var monitoredCharacteristics = Dictionary<CBUUID, Observable<Characteristic>>()
 
     // Disposables
     private let disposeBag = DisposeBag()
@@ -217,7 +217,10 @@ public class BleClientManager : NSObject {
         }
 
         let services = device.services?.filter {
-            serviceUUID.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame
+                if let uuid = serviceUUID.toCBUUID() {
+                    return uuid == $0.UUID
+                }
+                return false
             } ?? []
 
         let characteristics = services
@@ -325,10 +328,14 @@ public class BleClientManager : NSObject {
                                                            reject: Reject) {
 
         // TODO: May be not unique for characteristic
-        let id = "\(deviceIdentifier)-\(serviceUUID)-\(characteristicUUID)"
+        guard let uuid = characteristicUUID.toCBUUID() else {
+            BleError.invalidUUID(characteristicUUID).callReject(reject)
+            return
+        }
+
         let observable: Observable<Characteristic>
 
-        if let monitoringObservable = monitoredCharacteristics[id] {
+        if let monitoringObservable = monitoredCharacteristics[uuid] {
             observable = monitoringObservable
         } else {
             observable = characteristicObservable(deviceIdentifier,
@@ -338,7 +345,7 @@ public class BleClientManager : NSObject {
                     return Observable.using({
                         return AnonymousDisposable {
                             characteristic.setNotifyValue(false).subscribe()
-                            self?.monitoredCharacteristics[id] = nil
+                            self?.monitoredCharacteristics[uuid] = nil
                         }
                         }, observableFactory: { _ in
                             return characteristic.setNotificationAndMonitorUpdates()
@@ -351,7 +358,7 @@ public class BleClientManager : NSObject {
                     })
                 .publish()
                 .refCount()
-            monitoredCharacteristics[id] = observable
+            monitoredCharacteristics[uuid] = observable
         }
 
         let disposable = observable.subscribe(onNext: nil, onError: nil, onCompleted: nil, onDisposed: {
@@ -372,15 +379,20 @@ public class BleClientManager : NSObject {
     private func characteristicObservable(deviceIdentifier: String,
                                           serviceUUID: String,
                                           characteristicUUID: String) -> Observable<Characteristic> {
+        guard let serviceCBUUID = serviceUUID.toCBUUID(),
+              let characteristicCBUUID = characteristicUUID.toCBUUID() else {
+            return Observable.error(BleError.invalidUUIDs([serviceUUID, characteristicUUID]))
+        }
+
         return Observable.deferred { [weak self] in
             guard let device = self?.connectedDevices[deviceIdentifier] else {
                 return Observable.error(BleError.peripheralNotConnected(deviceIdentifier))
             }
 
             let characteristics = device.services?
-                .filter { serviceUUID.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame }
+                .filter { serviceCBUUID == $0.UUID }
                 .flatMap { $0.characteristics ?? [] }
-                .filter { characteristicUUID.caseInsensitiveCompare($0.UUID.UUIDString) == .OrderedSame } ?? []
+                .filter { characteristicCBUUID == $0.UUID } ?? []
             
             guard let characteristic = characteristics.first else {
                 return Observable.error(BleError.characteristicNotFound(characteristicUUID))

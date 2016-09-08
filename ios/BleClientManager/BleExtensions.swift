@@ -35,7 +35,7 @@ extension Peripheral {
 extension Service {
     var asJSObject: [String:AnyObject] {
         return [
-            "uuid": UUID.UUIDString,
+            "uuid": UUID.fullUUIDString,
             "deviceUUID": peripheral.identifier.UUIDString,
             "isPrimary": isPrimary
         ]
@@ -45,8 +45,8 @@ extension Service {
 extension Characteristic {
     var asJSObject: [String:AnyObject] {
         return [
-            "uuid": UUID.UUIDString,
-            "serviceUUID": service.UUID.UUIDString,
+            "uuid": UUID.fullUUIDString,
+            "serviceUUID": service.UUID.fullUUIDString,
             "deviceUUID": service.peripheral.identifier.UUIDString,
             "isReadable": properties.contains(.Read),
             "isWritableWithResponse": properties.contains(.Write),

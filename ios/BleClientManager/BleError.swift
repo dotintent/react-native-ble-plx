@@ -75,20 +75,20 @@ extension BluetoothError {
             return BleError(code: 301, message: "Failed to discover included services for \(peripheral.identifier.UUIDString): \(error?.localizedDescription ?? "Unknown reason")")
 
         case let CharacteristicsDiscoveryFailed(service, error):
-            return BleError(code: 400, message: "Failed to discover characteristics for service \(service.UUID.UUIDString): \(error?.localizedDescription ?? "Unknown reason")")
+            return BleError(code: 400, message: "Failed to discover characteristics for service \(service.UUID.fullUUIDString): \(error?.localizedDescription ?? "Unknown reason")")
         case let CharacteristicWriteFailed(characteristic, error):
-            return BleError(code: 401, message: "Characteristic \(characteristic.UUID.UUIDString) write failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return BleError(code: 401, message: "Characteristic \(characteristic.UUID.fullUUIDString) write failed: \(error?.localizedDescription ?? "Unknown reason")")
         case let CharacteristicReadFailed(characteristic, error):
-            return BleError(code: 402, message: "Characteristic \(characteristic.UUID.UUIDString) read failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return BleError(code: 402, message: "Characteristic \(characteristic.UUID.fullUUIDString) read failed: \(error?.localizedDescription ?? "Unknown reason")")
         case let CharacteristicNotifyChangeFailed(characteristic, error):
-            return BleError(code: 403, message: "Characteristic \(characteristic.UUID.UUIDString) notification change failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return BleError(code: 403, message: "Characteristic \(characteristic.UUID.fullUUIDString) notification change failed: \(error?.localizedDescription ?? "Unknown reason")")
 
         case let DescriptorsDiscoveryFailed(characteristic, error):
-            return BleError(code: 403, message: "Descriptors discovery for characteristic \(characteristic.UUID.UUIDString) failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return BleError(code: 403, message: "Descriptors discovery for characteristic \(characteristic.UUID.fullUUIDString) failed: \(error?.localizedDescription ?? "Unknown reason")")
         case let DescriptorWriteFailed(descriptor, error):
-            return BleError(code: 403, message: "Descriptor \(descriptor.UUID.UUIDString) write failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return BleError(code: 403, message: "Descriptor \(descriptor.UUID.fullUUIDString) write failed: \(error?.localizedDescription ?? "Unknown reason")")
         case let DescriptorReadFailed(descriptor, error):
-            return BleError(code: 403, message: "Descriptor \(descriptor.UUID.UUIDString) read failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return BleError(code: 403, message: "Descriptor \(descriptor.UUID.fullUUIDString) read failed: \(error?.localizedDescription ?? "Unknown reason")")
         }
     }
 }

@@ -4,6 +4,7 @@ import { NativeModules, NativeEventEmitter} from 'react-native';
 import Device from './Device';
 import Service from './Service';
 import Characteristic from './Characteristic';
+import { fullUUID } from './Utils';
 
 const BleModule = NativeModules.BleClientManager;
 
@@ -144,9 +145,9 @@ export default class BleManager {
         return
       }
 
-      if (characteristic.deviceUUID.toUpperCase() !== deviceIdentifier.toUpperCase()   ||
-          characteristic.serviceUUID.toUpperCase() !== serviceUUID.toUpperCase() || 
-          characteristic.uuid.toUpperCase() !== characteristicUUID.toUpperCase()) return
+      if (characteristic.deviceUUID  !== deviceIdentifier           ||
+          characteristic.serviceUUID !== fullUUID(serviceUUID)      || 
+          characteristic.uuid        !== fullUUID(characteristicUUID)) return
 
       listener(null, new Characteristic(characteristic, this))
     };
