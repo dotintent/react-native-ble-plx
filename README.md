@@ -17,14 +17,16 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 * Move `BleClient.xcodeproj` located in `.node_modules/react-native-ble-plx/ios`
   using drag & drop to `Libraries` folder in your project.
 * In general settings of a project add `libBleClient.a` to Linked Frameworks and Libraries.
-* In `Embedded Binaries` add manually frameworks located in `.node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS`:
-  * `BleClientManager.framework`
-  * `RxBluetoothKit.framework`
-  * `RxSwift.framework`
-  * `RxCocoa.framework`
 * In `Build Settings`/`Search Paths`/`Framework search paths` add recursive path: `$(SRCROOT)/../node_modules/react-native-ble-plx`.
 * In `Build Settings`/`Search Paths`/`Header search paths` add recursive path: `$(SRCROOT)/../node_modules/react-native/React`.  
 * In `Build Options`/`Embedded Content Contains Swift Code` set to `true`.
+* In `Build Phases` click on top left button and add `New Run Script Phase`. 
+  * Shell command: `/usr/local/bin/carthage copy-frameworks`
+  * Input Files:
+    * `$(SRCROOT)/../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/BleClientManager.framework`
+    * `$(SRCROOT)/../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/RxSwift.framework`
+    * `$(SRCROOT)/../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/RxCocoa.framework`
+    * `$(SRCROOT)/../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/RxBluetoothKit.framework`
 * Minimal supported version of iOS is 8.0
 
 **Android**:
