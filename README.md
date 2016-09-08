@@ -105,12 +105,21 @@ manager.destroy()
  When cancelled operation is a promise or a callback which registers errors, `"Cancelled"`
  error will be emitted in that case.
 
-
 #### `cancelTransaction(transactionId)`
 Cancels specified transaction if in progress. Otherwise does nothing.
 
 *Parameters*:
 * `transactionId` - Unique ID of a transaction to cancel.
+
+### UUIDs format
+
+Currently React Native allows to transfer only basic types between React Native modules and JS.
+Therefore user needs to pass UUIDs in a form of a string. To make behavior more platform
+independent all UUIDs returned from API calls are lowercase and in full 128bit, like for example: 
+`00002a00-0000-1000-8000-00805f9b34fb`. Only exception are device UUIDs which are MAC 
+addresses on Android and UUIDs on iOS. There is also a convenience function `fullUUID` implemented
+in a library which converts any 16bit or 128bit UUID string to above form. **However all function
+arguments of API functions defined below can receive UUIDs in any valid string form**.
 
 ### Manager state
 
