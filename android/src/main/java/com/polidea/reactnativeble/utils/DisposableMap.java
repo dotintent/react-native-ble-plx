@@ -24,4 +24,13 @@ public class DisposableMap {
         }
         return true;
     }
+
+    public void removeAllSubscriptions() {
+        for (Subscription subscription: subscriptions.values()) {
+            if (!subscription.isUnsubscribed()) {
+                subscription.unsubscribe();
+            }
+        }
+        subscriptions.clear();
+    }
 }

@@ -6,6 +6,7 @@ import android.util.Base64;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import com.polidea.reactnativeble.utils.UUIDConverter;
 
 import java.util.UUID;
 
@@ -27,7 +28,7 @@ public class BluetoothGattCharacteristicConverter extends JSObjectConverter<Blue
     @Override
     public WritableMap toJSObject(BluetoothGattCharacteristic value) {
         WritableMap js = Arguments.createMap();
-        js.putString(Metadata.UUID, value.getUuid().toString());
+        js.putString(Metadata.UUID, UUIDConverter.fromUUID(value.getUuid()));
         js.putBoolean(Metadata.IS_READABLE, (value.getProperties() & BluetoothGattCharacteristic.PROPERTY_READ) != 0);
         js.putBoolean(Metadata.IS_WRITABLE_WITH_RESPONSE, (value.getProperties() & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0);
         js.putBoolean(Metadata.IS_WRITABLE_WITHOUT_RESPONSE, (value.getProperties() & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) != 0);
