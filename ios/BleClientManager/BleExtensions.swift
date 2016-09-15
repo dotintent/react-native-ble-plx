@@ -59,7 +59,7 @@ extension Characteristic {
     }
 }
 
-extension CBCentralManagerState {
+extension BluetoothState {
     var asJSObject: String {
         switch self {
         case .Unknown: return "Unknown"

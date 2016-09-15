@@ -58,7 +58,7 @@ public class BleClientManager : NSObject {
         resolve(manager.state.asJSObject)
     }
 
-    private func onStateChange(state: CBCentralManagerState) {
+    private func onStateChange(state: BluetoothState) {
         dispatchEvent(BleEvent.stateChangeEvent, value: state.asJSObject)
     }
 
@@ -344,7 +344,7 @@ public class BleClientManager : NSObject {
                 .flatMap { [weak self] characteristic -> Observable<Characteristic> in
                     return Observable.using({
                         return AnonymousDisposable {
-                            characteristic.setNotifyValue(false).subscribe()
+                            _ = characteristic.setNotifyValue(false).subscribe()
                             self?.monitoredCharacteristics[uuid] = nil
                         }
                         }, observableFactory: { _ in
