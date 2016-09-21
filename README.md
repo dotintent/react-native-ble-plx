@@ -469,21 +469,21 @@ Monitor value changes of a characteristic.
 *Returns:*: Subscription on which `remove()` function can be called to unsubscribe.
 
 ---
-#### `async device.monitorCharacteristicForService(serviceUUID, characteristicUUID, listener, [transactionId])`
+#### `device.monitorCharacteristicForService(serviceUUID, characteristicUUID, listener, [transactionId])`
 Monitor value changes of a characteristic.
 
 *Parameters and return value*:
 * Look above.
 
 ---
-#### `async service.monitorCharacteristic(characteristicUUID, listener, [transactionId])`
+#### `service.monitorCharacteristic(characteristicUUID, listener, [transactionId])`
 Monitor value changes of a characteristic.
 
 *Parameters and return value*:
 * Look above.
 
 ---
-#### `async characteristic.monitor(listener, [transactionId])`
+#### `characteristic.monitor(listener, [transactionId])`
 Monitor value changes of a characteristic.
 
 *Parameters and return value*:
