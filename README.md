@@ -1,11 +1,19 @@
-# react-native-ble-plx
-[![NPM](https://nodei.co/npm/react-native-ble-plx.png?downloads=true)](https://nodei.co/npm/react-native-ble-plx/)
+
+<p align="center">
+  <img alt="react-native-ble-plx" src="logo.png" />
+</p>
 
 React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) as it's backend libraries.
 
 Example apps are available in [Google Play](https://play.google.com/store/apps/details?id=com.polidea.sniffator) and [App Store](https://itunes.apple.com/us/app/sniffator/id1147266354?ls=1&mt=8)!
 
 [![GooglePlay](googleplay.png)](https://play.google.com/store/apps/details?id=com.polidea.sniffator) [![AppStore](appstore.png)](https://itunes.apple.com/us/app/sniffator/id1147266354?ls=1&mt=8)
+
+---
+
+[![NPM](https://nodei.co/npm/react-native-ble-plx.png?downloads=true)](https://nodei.co/npm/react-native-ble-plx/)
+
+---
 
 ## Configuration & installation for new project
 
