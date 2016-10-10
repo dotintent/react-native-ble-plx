@@ -12,7 +12,7 @@ export default class Device {
         }
 
         this.cancelConnection = () => {
-            return manager.cancelDeviceConnection(this.uuid, options)
+            return manager.cancelDeviceConnection(this.uuid)
         }
 
         this.isConnected = () => {
