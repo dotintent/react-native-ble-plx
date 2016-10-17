@@ -1,3 +1,4 @@
+// @flow
 'use strict';
 
 import { NativeModules, NativeEventEmitter} from 'react-native';
@@ -8,48 +9,74 @@ import { fullUUID } from './Utils';
 
 const BleModule = NativeModules.BleClientManager;
 
+export type State = 
+    'Unknown'
+  | 'Resetting'
+  | 'Unsupported'
+  | 'Unauthorized'
+  | 'PoweredOff'
+  | 'PoweredOn'
+
+export type Subscription = {
+  remove: () => void
+}
+
+export type ScanOptions = {
+  allowDuplicates?: boolean,
+  autoConnect?: boolean
+}
+
+export type ConnectionOptions = {
+  // Not used for now
+}
+
 export default class BleManager {
+
+  _scanEventSubscription: ?NativeEventEmitter
+  _eventEmitter: NativeEventEmitter
+  _uniqueId: number
+
   constructor() {
     BleModule.createClient();
-    this.eventEmitter = new NativeEventEmitter(BleModule)
-    this.uniqueId = 0
+    this._eventEmitter = new NativeEventEmitter(BleModule)
+    this._uniqueId = 0
   }
 
   destroy() {
     BleModule.destroyClient();
   }
 
-  nextUniqueID() {
-    this.uniqueId += 1
-    return this.uniqueId.toString()
+  _nextUniqueID(): string {
+    this._uniqueId += 1
+    return this._uniqueId.toString()
   }
 
   // Mark: Common --------------------------------------------------------------------------------------------------------
 
-  cancelTransaction(transactionId) {
+  cancelTransaction(transactionId: string) {
     BleModule.cancelTransaction(transactionId)
   }
 
   // Mark: Monitoring state ----------------------------------------------------------------------------------------------
 
-  state() {
+  state(): State {
     return BleModule.state()
   }
 
-  onStateChange(listener) {
-    const subscription = this.eventEmitter.addListener(BleModule.StateChangeEvent, listener);
+  onStateChange(listener: (newState: State) => void): Subscription {
+    const subscription = this._eventEmitter.addListener(BleModule.StateChangeEvent, listener);
     return subscription
   }
 
   // Mark: Scanning ------------------------------------------------------------------------------------------------------
 
-  startDeviceScan(uuids, options, listener) {
+  startDeviceScan(UUIDs: string[], options: ?ScanOptions, listener: (error: ?Error, scannedDevice: ?Device) => void) {
     this.stopDeviceScan()
     const scanListener = ([error, device]) => {
       listener(error, device ? new Device(device, this) : null)
     };
-    this._scanEventSubscription = this.eventEmitter.addListener(BleModule.ScanEvent, scanListener);
-    BleModule.startDeviceScan(uuids, options);
+    this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener);
+    BleModule.startDeviceScan(UUIDs, options);
   }
 
   stopDeviceScan() {
@@ -62,81 +89,109 @@ export default class BleManager {
 
   // Mark: Connection management -----------------------------------------------------------------------------------------
 
-  async connectToDevice(deviceIdentifier, options) {
+  async connectToDevice(deviceIdentifier: string, options: ?ConnectionOptions): Promise<Device> {
     const deviceProps = await BleModule.connectToDevice(deviceIdentifier, options);
     return new Device(deviceProps, this);
   }
 
-  async cancelDeviceConnection(deviceIdentifier) {
+  async cancelDeviceConnection(deviceIdentifier: string): Promise<Device> {
     const deviceProps = await BleModule.cancelDeviceConnection(deviceIdentifier);
     return new Device(deviceProps, this);
   }
 
-  onDeviceDisconnected(deviceIdentifier, listener) {
+  onDeviceDisconnected(deviceIdentifier: string, listener: (error: ?Error, device: ?Device) => void): Subscription {
     const disconnectionListener = ([error, device]) => {
       if (deviceIdentifier !== device.uuid) return
       listener(error, device)
     };    
 
-    const subscription = this.eventEmitter.addListener(BleModule.DisconnectionEvent, disconnectionListener);
+    const subscription = this._eventEmitter.addListener(BleModule.DisconnectionEvent, disconnectionListener);
     return subscription
   }
 
-  isDeviceConnected(deviceIdentifier) {
+  async isDeviceConnected(deviceIdentifier: string): Promise<boolean> {
     return BleModule.isDeviceConnected(deviceIdentifier)
   }
 
   // Mark: Discovery -------------------------------------------------------------------------------------------------
 
-  async discoverAllServicesAndCharacteristicsForDevice(identifier) {
+  async discoverAllServicesAndCharacteristicsForDevice(identifier: string): Promise<Device> {
     const deviceProps = await BleModule.discoverAllServicesAndCharacteristicsForDevice(identifier)
     return new Device(deviceProps, this)
   }
 
   // Mark: Service and characteristic getters ------------------------------------------------------------------------
 
-  async servicesForDevice(deviceIdentifier) {
+  async servicesForDevice(deviceIdentifier: string): Promise<Service[]> {
     const services = await BleModule.servicesForDevice(deviceIdentifier)
     return services.map((serviceProps) => { return new Service(serviceProps, this) })
   }
 
-  async characteristicsForDevice(deviceIdentifier, serviceUUID) {
+  async characteristicsForDevice(deviceIdentifier: string, serviceUUID: string): Promise<Characteristic[]> {
     const characteristics = await BleModule.characteristicsForDevice(deviceIdentifier, serviceUUID);
     return characteristics.map((characteristicProps) => { return new Characteristic(characteristicProps, this)});
   }
 
   // Mark: Characteristics operations --------------------------------------------------------------------------------
 
-  async readCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, transactionId) {
+  async readCharacteristicForDevice(deviceIdentifier: string, 
+                                    serviceUUID: string, 
+                                    characteristicUUID: string, 
+                                    transactionId: ?string): Promise<Characteristic> {
     if (!transactionId) {
-      transactionId = this.nextUniqueID()
+      transactionId = this._nextUniqueID()
     }
 
-    const characteristicProps = await BleModule.readCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, transactionId);
+    const characteristicProps = await BleModule.readCharacteristicForDevice(deviceIdentifier, 
+                                                                            serviceUUID, 
+                                                                            characteristicUUID, 
+                                                                            transactionId);
     return new Characteristic(characteristicProps, this)
   }
 
-  async writeCharacteristicWithResponseForDevice(deviceIdentifier, serviceUUID, characteristicUUID, base64Value, transactionId) {
+  async writeCharacteristicWithResponseForDevice(deviceIdentifier: string, 
+                                                 serviceUUID: string, 
+                                                 characteristicUUID: string, 
+                                                 base64Value: string, 
+                                                 transactionId: ?string): Promise<Characteristic> {
     if (!transactionId) {
-      transactionId = this.nextUniqueID()
+      transactionId = this._nextUniqueID()
     }
 
-    const characteristicProps = await BleModule.writeCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, base64Value, true, transactionId);
+    const characteristicProps = await BleModule.writeCharacteristicForDevice(deviceIdentifier,
+                                                                             serviceUUID,
+                                                                             characteristicUUID,
+                                                                             base64Value,
+                                                                             true,
+                                                                             transactionId);
     return new Characteristic(characteristicProps, this)
   }
 
-  async writeCharacteristicWithoutResponseForDevice(deviceIdentifier, serviceUUID, characteristicUUID, base64Value, transactionId) {
+  async writeCharacteristicWithoutResponseForDevice(deviceIdentifier: string, 
+                                                    serviceUUID: string, 
+                                                    characteristicUUID: string, 
+                                                    base64Value: string,
+                                                    transactionId: ?string): Promise<Characteristic> {
     if (!transactionId) {
-      transactionId = this.nextUniqueID()
+      transactionId = this._nextUniqueID()
     }
 
-    const characteristicProps = await BleModule.writeCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, base64Value, false, transactionId);
+    const characteristicProps = await BleModule.writeCharacteristicForDevice(deviceIdentifier, 
+                                                                             serviceUUID,
+                                                                             characteristicUUID,
+                                                                             base64Value,
+                                                                             false,
+                                                                             transactionId);
     return new Characteristic(characteristicProps, this)
   }
 
-  monitorCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, listener, transactionId) {
+  monitorCharacteristicForDevice(deviceIdentifier: string, 
+                                 serviceUUID: string, 
+                                 characteristicUUID: string, 
+                                 listener: (error: ?Error, characteristic: ?Characteristic) => void, 
+                                 transactionId: ?string): Subscription {
     if (!transactionId) {
-      transactionId = this.nextUniqueID()
+      transactionId = this._nextUniqueID()
     }
 
     const monitorListener = ([error, characteristic]) => {
@@ -152,7 +207,7 @@ export default class BleManager {
       listener(null, new Characteristic(characteristic, this))
     };
 
-    const subscription = this.eventEmitter.addListener(BleModule.ReadEvent, monitorListener);
+    const subscription = this._eventEmitter.addListener(BleModule.ReadEvent, monitorListener);
     BleModule.monitorCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, transactionId)
       .then((finished) => {
         subscription.remove()
