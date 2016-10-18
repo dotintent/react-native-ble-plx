@@ -59,8 +59,8 @@ export default class Device {
     }
 
     async readCharacteristicForService(serviceUUID: string, 
-                                 characteristicUUID: string,
-                                 transactionId: ?string): Promise<Characteristic> {
+                                       characteristicUUID: string,
+                                       transactionId: ?string): Promise<Characteristic> {
         return this._manager.readCharacteristicForDevice(this.uuid, serviceUUID, characteristicUUID, transactionId)
     }
 

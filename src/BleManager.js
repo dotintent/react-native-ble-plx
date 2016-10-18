@@ -70,7 +70,7 @@ export default class BleManager {
 
   // Mark: Scanning ------------------------------------------------------------------------------------------------------
 
-  startDeviceScan(UUIDs: string[], options: ?ScanOptions, listener: (error: ?Error, scannedDevice: ?Device) => void) {
+  startDeviceScan(UUIDs: ?string[], options: ?ScanOptions, listener: (error: ?Error, scannedDevice: ?Device) => void) {
     this.stopDeviceScan()
     const scanListener = ([error, device]) => {
       listener(error, device ? new Device(device, this) : null)
