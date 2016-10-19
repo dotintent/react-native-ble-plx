@@ -52,3 +52,5 @@ Carthage
 # IDE
 .vscode/
 
+# Graphics
+*.png
