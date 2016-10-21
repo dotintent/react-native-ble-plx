@@ -13,6 +13,9 @@ public class UUIDConverter {
         if (sUUID.length() == 4) {
             sUUID = baseUUIDPrefix + sUUID + baseUUIDSuffix;
         }
+        if (sUUID.length() == 8) {
+            sUUID = sUUID + baseUUIDPrefix;
+        }
         try {
             return UUID.fromString(sUUID);
         } catch (Throwable e) {
