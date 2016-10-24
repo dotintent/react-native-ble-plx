@@ -17,9 +17,10 @@ class AdvertisementDataSpec extends Specification {
     def "solicited service UUIDs should be parsed properly"(String advData, String[] uuids) {
         when:
         def data = AdvertisementData.parseScanResponseData(_(advData))
+        def ssUUIDs = uuids == null ? null : uuids.collect { UUID.fromString(it) }
 
         then:
-        data.solicitedServiceUUIDs.equals(uuids.collect { UUID.fromString(it) })
+        data.solicitedServiceUUIDs == ssUUIDs
 
         where:
         advData                                | uuids
@@ -35,9 +36,10 @@ class AdvertisementDataSpec extends Specification {
     def "service UUIDs should be parsed properly"(String advData, String[] uuids) {
         when:
         def data = AdvertisementData.parseScanResponseData(_(advData))
+        def sUUIDs = uuids == null ? null : uuids.collect { UUID.fromString(it) }
 
         then:
-        data.serviceUUIDs.equals(uuids.collect { UUID.fromString(it) })
+        data.serviceUUIDs == sUUIDs
 
         where:
         advData                                | uuids
@@ -56,13 +58,15 @@ class AdvertisementDataSpec extends Specification {
     def "service data should be parsed properly"(String advData, Map<String, byte[]> serviceData) {
         when:
         def data = AdvertisementData.parseScanResponseData(_(advData))
+        def sData = serviceData == null ? null : serviceData.collectEntries { key, value -> [UUID.fromString(key), value] }
 
         then:
-        data.serviceData.equals(serviceData.collectEntries { key, value -> [UUID.fromString(key), value] })
+        data.serviceData == sData
 
         where:
         advData                                  | serviceData
-        "0116"                                   | [:]
+        "0116"                                   | null
+        "0216ff"                                 | null
         "05160a180704"                           | ["0000180a-0000-1000-8000-00805f9b34fb": _("0704")]
         "05160a180704ffaa"                       | ["0000180a-0000-1000-8000-00805f9b34fb": _("0704")]
         "03160a18"                               | ["0000180a-0000-1000-8000-00805f9b34fb": _("")]
@@ -79,7 +83,7 @@ class AdvertisementDataSpec extends Specification {
         def data = AdvertisementData.parseScanResponseData(_(advData))
 
         then:
-        (value == null && data.txPowerLevel == null) || value.equals(data.txPowerLevel)
+        value == data.txPowerLevel
 
         where:
         advData    | value
@@ -96,11 +100,13 @@ class AdvertisementDataSpec extends Specification {
         def data = AdvertisementData.parseScanResponseData(_(advData))
 
         then:
-        (manuData == null && data.manufacturerData == null) || Arrays.equals(manuData, data.manufacturerData)
+        manuData == data.manufacturerData
 
         where:
         advData         | manuData
-        "01ff"          | _("")
+        "01ff"          | null
+        "02ffaa"        | null
+        "03ff0102"      | _("0102")
         "05ff01020304"  | _("01020304")
         "04ff01020304"  | _("010203")
     }
@@ -111,8 +117,8 @@ class AdvertisementDataSpec extends Specification {
 
         then:
         data.txPowerLevel == 127
-        data.solicitedServiceUUIDs.equals([UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")])
-        data.serviceData.equals([(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")])
+        data.solicitedServiceUUIDs == [UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")]
+        data.serviceData == [(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")]
     }
 
     def "unknown advertisement data should be skipped"() {
@@ -121,8 +127,8 @@ class AdvertisementDataSpec extends Specification {
 
         then:
         data.txPowerLevel == 127
-        data.solicitedServiceUUIDs.equals([UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")])
-        data.serviceData.equals([(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")])
+        data.solicitedServiceUUIDs == [UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")]
+        data.serviceData == [(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")]
     }
 
     def "corrupted advertisement data should be ignored"() {
@@ -131,7 +137,7 @@ class AdvertisementDataSpec extends Specification {
 
         then:
         data.txPowerLevel == 127
-        data.solicitedServiceUUIDs.equals([UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")])
-        data.serviceData.equals([(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")])
+        data.solicitedServiceUUIDs == [UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")]
+        data.serviceData == [(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")]
     }
 }

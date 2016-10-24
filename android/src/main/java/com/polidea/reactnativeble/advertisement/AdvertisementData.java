@@ -134,11 +134,12 @@ public class AdvertisementData {
     }
 
     private static void parseServiceData(AdvertisementData advData, int adLength, ByteBuffer data, int uuidLength) {
+        if (adLength < uuidLength) return;
         if (advData.serviceData == null) advData.serviceData = new HashMap<>();
-        if (data.remaining() < uuidLength || uuidLength > adLength) return;
         UUID serviceUUID = parseUUID(data, uuidLength);
-        byte[] serviceData = new byte[adLength - uuidLength];
-        data.get(serviceData, 0, adLength - uuidLength);
+        int serviceDataLength = adLength - uuidLength;
+        byte[] serviceData = new byte[serviceDataLength];
+        data.get(serviceData, 0, serviceDataLength);
         advData.serviceData.put(serviceUUID, serviceData);
     }
 
@@ -148,7 +149,7 @@ public class AdvertisementData {
     }
 
     private static void parseManufacturerData(AdvertisementData advData, int adLength, ByteBuffer data) {
-        if (data.remaining() < adLength) return;
+        if (adLength < 2) return;
         advData.manufacturerData = new byte[adLength];
         data.get(advData.manufacturerData, 0, adLength);
     }
