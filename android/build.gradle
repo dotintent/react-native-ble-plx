@@ -1,13 +1,15 @@
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'org.codehaus.groovy:groovy-android-gradle-plugin:1.1.0'
     }
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'groovyx.android'
 
 android {
     compileSdkVersion 23
@@ -31,4 +33,6 @@ repositories {
 dependencies {
     compile "com.facebook.react:react-native:0.20.1"
     compile "com.polidea.rxandroidble:rxandroidble:1.0.2"
+
+    testCompile 'org.robospock:robospock:1.0.1'
 }

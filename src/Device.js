@@ -6,28 +6,30 @@ import Characteristic from './Characteristic'
 import Service from './Service'
 import type { Subscription, ConnectionOptions } from './BleManager'
 
-interface NativeDevice {
-    uuid: string,
-    name: ?string,
-    rssi: ?number,
-    isConnectable: ?boolean
-}
-
-export default class Device {
-
+class NativeDevice {
     uuid: string
     name: ?string
     rssi: ?number
+
+    // Advertisement
+    manufacturerData: ?string
+    serviceData: ?{[service: string]: string}
+    serviceUUIDs: ?string[]
+    txPowerLevel: ?number
+    solicitedServiceUUIDs: ?string[]
     isConnectable: ?boolean
+    overflowServiceUUIDs: ?string[]
+}
+
+export default class Device extends NativeDevice {
 
     _manager: BleManager
 
     constructor(props: NativeDevice, manager: BleManager) {
+        super()
         this._manager = manager
-        this.uuid = props.uuid
-        this.name = props.name
-        this.rssi = props.rssi
-        this.isConnectable = props.isConnectable
+        // $FlowFixMe: this should be ok
+        Object.assign(this, props)
     }
 
     async connect(options: ?ConnectionOptions): Promise<Device> {

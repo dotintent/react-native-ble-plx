@@ -58,6 +58,9 @@ extension CBUUID {
         if (native.characters.count == 4) {
             return "0000\(native)-0000-1000-8000-00805f9b34fb"
         }
+        if (native.characters.count == 8) {
+            return "\(native)-0000-1000-8000-00805f9b34fb"
+        }
         return native
     }
 }

@@ -12,11 +12,43 @@ import CoreBluetooth
 
 extension ScannedPeripheral {
     var asJSObject: [String:AnyObject] {
+        var serviceData: [String:String]?
+        if let advServiceData = advertisementData.serviceData {
+            var data = [String:String]()
+            for (key, value) in advServiceData {
+                data[key.fullUUIDString] = value.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+            }
+            serviceData = data
+        }
+
+        let manufacturerData = advertisementData
+            .manufacturerData?
+            .base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn) ?? NSNull()
+
+        let serviceUUIDs: AnyObject = advertisementData
+            .serviceUUIDs?
+            .map { (uuid: CBUUID) in uuid.fullUUIDString } ?? NSNull()
+
+        let overflowServiceUUIDs: AnyObject = advertisementData
+            .overflowServiceUUIDs?
+            .map { (uuid: CBUUID) in uuid.fullUUIDString } ?? NSNull()
+
+        let solicitedServiceUUIDs: AnyObject = advertisementData
+            .solicitedServiceUUIDs?
+            .map { (uuid: CBUUID) in uuid.fullUUIDString } ?? NSNull()
+
         return [
             "uuid": peripheral.identifier.UUIDString,
             "name": peripheral.name ?? NSNull(),
             "rssi": RSSI,
-            "isConnectable": advertisementData.isConnectable ?? NSNull()
+
+            "manufacturerData": manufacturerData,
+            "serviceData": serviceData ?? NSNull(),
+            "serviceUUIDs": serviceUUIDs,
+            "txPowerLevel": advertisementData.txPowerLevel ?? NSNull(),
+            "solicitedServiceUUIDs": solicitedServiceUUIDs,
+            "isConnectable": advertisementData.isConnectable ?? NSNull(),
+            "overflowServiceUUIDs": overflowServiceUUIDs
         ]
     }
 }
@@ -27,7 +59,14 @@ extension Peripheral {
             "uuid": identifier.UUIDString,
             "name": name ?? NSNull(),
             "rssi": NSNull(),
-            "isConnectable": NSNull()
+
+            "manufacturerData": NSNull(),
+            "serviceData": NSNull(),
+            "serviceUUIDs": NSNull(),
+            "txPowerLevel": NSNull(),
+            "solicitedServiceUUIDs": NSNull(),
+            "isConnectable": NSNull(),
+            "overflowServiceUUIDs": NSNull()
         ]
     }
 }

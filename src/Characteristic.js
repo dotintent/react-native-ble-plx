@@ -4,24 +4,10 @@
 import BleManager from './BleManager'
 import type { Subscription } from './BleManager'
 
-interface NativeCharacteristic {
-    uuid: string,
-    serviceUUID: string,
-    deviceUUID: string,
-    isReadable: boolean,
-    isWritableWithResponse: boolean,
-    isWritableWithoutResponse: boolean,
-    isNotifiable: boolean,
-    isNotifying: boolean,
-    isIndictable: boolean,
-    value: ?string
-}
-
-export default class Characteristic {
-
+class NativeCharacteristic {
     uuid: string
-    deviceUUID: string
     serviceUUID: string
+    deviceUUID: string
     isReadable: boolean
     isWritableWithResponse: boolean
     isWritableWithoutResponse: boolean
@@ -29,8 +15,18 @@ export default class Characteristic {
     isNotifying: boolean
     isIndictable: boolean
     value: ?string
+}
+
+export default class Characteristic extends NativeCharacteristic {
 
     _manager: BleManager
+
+    constructor(props: NativeCharacteristic, manager: BleManager) {
+        super()
+        this._manager = manager
+        // $FlowFixMe: this should be ok
+        Object.assign(this, props)
+    }
 
     async read(transactionId: string): Promise<Characteristic> {
         return this._manager.readCharacteristicForDevice(this.deviceUUID, this.serviceUUID, this.uuid, transactionId)
@@ -46,20 +42,5 @@ export default class Characteristic {
 
     monitor(listener: (error: ?Error, characteristic: ?Characteristic) => void, transactionId: ?string): Subscription {
         return this._manager.monitorCharacteristicForDevice(this.deviceUUID, this.serviceUUID, this.uuid, listener, transactionId)
-    }
-
-    constructor(props: NativeCharacteristic, manager: BleManager) {
-        this._manager = manager
-
-        this.uuid = props.uuid
-        this.deviceUUID = props.deviceUUID
-        this.serviceUUID = props.serviceUUID
-        this.isReadable = props.isReadable
-        this.isWritableWithResponse = props.isWritableWithResponse
-        this.isWritableWithoutResponse = props.isWritableWithoutResponse
-        this.isNotifiable = props.isNotifiable
-        this.isNotifying = props.isNotifying
-        this.isIndictable = props.isIndictable
-        this.value = props.value
     }
 }

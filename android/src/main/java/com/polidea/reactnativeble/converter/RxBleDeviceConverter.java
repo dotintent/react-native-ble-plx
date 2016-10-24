@@ -10,7 +10,14 @@ public class RxBleDeviceConverter extends JSObjectConverter<RxBleDevice> {
         String UUID = "uuid";
         String NAME = "name";
         String RSSI = "rssi";
-        String CONNECTABLE = "isConnectable";
+
+        String MANUFACTURER_DATA = "manufacturerData";
+        String SERVICE_DATA = "serviceData";
+        String SERVICE_UUIDS = "serviceUUIDs";
+        String TX_POWER_LEVEL = "txPowerLevel";
+        String SOLICITED_SERVICE_UUIDS = "solicitedServiceUUIDs";
+        String IS_CONNECTABLE = "isConnectable";
+        String OVERFLOW_SERVICE_UUIDS = "overflowServiceUUIDs";
     }
 
     @Override
@@ -18,9 +25,17 @@ public class RxBleDeviceConverter extends JSObjectConverter<RxBleDevice> {
         WritableMap result = Arguments.createMap();
         result.putString(Metadata.UUID, value.getMacAddress());
         result.putString(Metadata.NAME, value.getName());
+
+        // Advertisement data is not set
         result.putNull(Metadata.RSSI);
-        // TODO: Get if it's connectable?
-        result.putNull(Metadata.CONNECTABLE);
+        result.putNull(Metadata.MANUFACTURER_DATA);
+        result.putNull(Metadata.SERVICE_DATA);
+        result.putNull(Metadata.SERVICE_UUIDS);
+        result.putNull(Metadata.TX_POWER_LEVEL);
+        result.putNull(Metadata.SOLICITED_SERVICE_UUIDS);
+        result.putNull(Metadata.IS_CONNECTABLE);
+        result.putNull(Metadata.OVERFLOW_SERVICE_UUIDS);
+
         return result;
     }
 }

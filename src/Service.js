@@ -5,25 +5,21 @@ import BleManager from './BleManager'
 import Characteristic from './Characteristic'
 import type { Subscription } from './BleManager'
 
-interface NativeService {
-    uuid: string,
-    deviceUUID: string,
-    isPrimary: boolean
-}
-
-export default class Service {
-    
+class NativeService {
     uuid: string
     deviceUUID: string
     isPrimary: boolean
+}
+
+export default class Service extends NativeService {
 
     _manager: BleManager
 
     constructor(props: NativeService, manager: BleManager) {
+        super()
         this._manager = manager
-        this.uuid = props.uuid
-        this.deviceUUID = props.deviceUUID
-        this.isPrimary = props.isPrimary
+        // $FlowFixMe: this should be ok
+        Object.assign(this, props)
     }
 
     async characteristics(): Promise<Characteristic[]> {
