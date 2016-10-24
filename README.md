@@ -3,7 +3,7 @@
   <img alt="react-native-ble-plx" src="logo.png" />
 </p>
 
-React Native Bluetooth Low Energry library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) as it's backend libraries.
+React Native Bluetooth Low Energy library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) as it's backend libraries.
 
 Example apps are available in [Google Play](https://play.google.com/store/apps/details?id=com.polidea.sniffator) and [App Store](https://itunes.apple.com/us/app/sniffator/id1147266354?ls=1&mt=8)!
 
@@ -180,10 +180,18 @@ Starts device scanning. When previous scan is in progress it will be stopped bef
 
 ```javascript
 {
-    "uuid": string,           // UUID of scanned device (for iOS it's local identifier)
-    "name": string,           // device name if present or null otherwise
-    "rssi": number,           // RSSI value during scanning
-    "isConnectable": boolean, // Is device connectable (Not supported yet)
+    "uuid": string,            // UUID of scanned device (for iOS it's local identifier)
+    "name": ?string,           // device name if present or null otherwise
+    "rssi": ?number,           // RSSI value during scanning
+
+    "manufacturerData": ?string,                 // Manufacturer specific data
+    "serviceData": ?{[service: string]: string}, // Data related to service
+    "serviceUUIDs": ?string[],                   // UUIDs of advertised services
+    "txPowerLevel": ?number,                     // Transmitted power level
+    "solicitedServiceUUIDs": ?string[],          // Solicited service UUIDs
+
+    "isConnectable": ?boolean,                   // Is device connectable (iOS only)
+    "overflowServiceUUIDs": ?string[]            // Overflow service UUIDs (iOS only)
 
     // Utility functions
 }
