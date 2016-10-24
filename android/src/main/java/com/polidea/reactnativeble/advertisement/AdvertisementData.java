@@ -42,7 +42,9 @@ public class AdvertisementData {
         AdvertisementData advData = new AdvertisementData();
         ByteBuffer rawData = ByteBuffer.wrap(advertisement).order(ByteOrder.LITTLE_ENDIAN);
         while (rawData.remaining() >= 2) {
-            int adLength = (rawData.get() & 0xFF) - 1;
+            int adLength = rawData.get() & 0xFF;
+            if (adLength == 0) break;
+            adLength -= 1;
             int adType = rawData.get() & 0xFF;
             if (rawData.remaining() < adLength) break;
             parseAdvertisementData(advData, adType, adLength, rawData.slice().order(ByteOrder.LITTLE_ENDIAN));

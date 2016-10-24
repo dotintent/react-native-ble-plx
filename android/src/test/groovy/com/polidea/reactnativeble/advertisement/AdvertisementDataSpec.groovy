@@ -140,4 +140,12 @@ class AdvertisementDataSpec extends Specification {
         data.solicitedServiceUUIDs == [UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")]
         data.serviceData == [(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")]
     }
+
+    def "corrupted advertisement with 0 length AD data should be ignored"() {
+        when:
+        def data = AdvertisementData.parseScanResponseData(_("000aff00"))
+
+        then:
+        data.txPowerLevel == null
+    }
 }
