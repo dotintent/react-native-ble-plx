@@ -23,40 +23,40 @@ export default class Service extends NativeService {
     }
 
     async characteristics(): Promise<Characteristic[]> {
-        return manager.characteristicsForDevice(this.deviceUUID, this.uuid)
+        return this._manager.characteristicsForDevice(this.deviceUUID, this.uuid)
     }
 
     async readCharacteristic(characteristicUUID: string, transactionId: ?string): Promise<Characteristic> {
-        return manager.readCharacteristic(this.deviceUUID, this.uuid, characteristicUUID, transactionId)
+        return this._manager.readCharacteristic(this.deviceUUID, this.uuid, characteristicUUID, transactionId)
     }
 
     async writeCharacteristicWithResponse(characteristicUUID: string, 
                                           valueBase64: string, 
                                           transactionId: ?string): Promise<Characteristic> {
-        return manager.writeCharacteristicWithResponseForDevice(this.deviceUUID, 
-                                                                this.uuid, 
-                                                                characteristicUUID,
-                                                                valueBase64, 
-                                                                transactionId)
+        return this._manager.writeCharacteristicWithResponseForDevice(this.deviceUUID, 
+                                                                      this.uuid, 
+                                                                      characteristicUUID,
+                                                                      valueBase64, 
+                                                                      transactionId)
     }
 
     async writeCharacteristicWithoutResponse(characteristicUUID: string,
                                              valueBase64: string, 
                                              transactionId: ?string): Promise<Characteristic> {
-        return manager.writeCharacteristicWithoutResponseForDevice(this.deviceUUID,
-                                                                   this.uuid,
-                                                                   characteristicUUID,
-                                                                   valueBase64,
-                                                                   transactionId)
+        return this._manager.writeCharacteristicWithoutResponseForDevice(this.deviceUUID,
+                                                                         this.uuid,
+                                                                         characteristicUUID,
+                                                                         valueBase64,
+                                                                         transactionId)
     }
 
     monitorCharacteristic(characteristicUUID: string,
                           listener: (error: ?Error, characteristic: ?Characteristic) => void,
                           transactionId: ?string): Subscription {
-        return manager.monitorCharacteristicForDevice(this.deviceUUID, 
-                                                      this.uuid, 
-                                                      characteristicUUID, 
-                                                      listener, 
-                                                      transactionId)
+        return this._manager.monitorCharacteristicForDevice(this.deviceUUID, 
+                                                            this.uuid, 
+                                                            characteristicUUID, 
+                                                            listener, 
+                                                            transactionId)
     }
 }
