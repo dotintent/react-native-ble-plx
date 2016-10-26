@@ -194,16 +194,12 @@ export default class BleManager {
       transactionId = this._nextUniqueID()
     }
 
-    const monitorListener = ([error, characteristic]) => {
+    const monitorListener = ([error, characteristic, msgTransactionId]) => {
+      if (transactionId !== msgTransactionId) return
       if (error) {
         listener(error, null)
         return
       }
-
-      if (characteristic.deviceUUID  !== deviceIdentifier           ||
-          characteristic.serviceUUID !== fullUUID(serviceUUID)      || 
-          characteristic.uuid        !== fullUUID(characteristicUUID)) return
-
       listener(null, new Characteristic(characteristic, this))
     };
 

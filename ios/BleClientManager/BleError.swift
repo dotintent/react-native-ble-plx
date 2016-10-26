@@ -33,6 +33,9 @@ extension BleError {
     func callReject(reject: Reject) {
         reject("\(self.code)", self.message, nil)
     }
+    func callReject(promise: SafePromise) {
+        promise.reject(code: "\(self.code)", message: self.message)
+    }
 }
 
 extension ErrorType {

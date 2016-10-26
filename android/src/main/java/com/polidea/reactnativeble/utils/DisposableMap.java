@@ -1,13 +1,14 @@
 package com.polidea.reactnativeble.utils;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import rx.Subscription;
 
 public class DisposableMap {
 
-    private Map<String, Subscription> subscriptions = new HashMap<>();
+    final private Map<String, Subscription> subscriptions = new HashMap<>();
 
     public void replaceSubscription(String key, Subscription subscription) {
         Subscription oldSubscription = subscriptions.put(key, subscription);
@@ -26,11 +27,13 @@ public class DisposableMap {
     }
 
     public void removeAllSubscriptions() {
-        for (Subscription subscription: subscriptions.values()) {
+        Iterator<Map.Entry<String, Subscription>> it = subscriptions.entrySet().iterator();
+        while (it.hasNext()) {
+            Subscription subscription = it.next().getValue();
+            it.remove();
             if (!subscription.isUnsubscribed()) {
                 subscription.unsubscribe();
             }
         }
-        subscriptions.clear();
     }
 }
