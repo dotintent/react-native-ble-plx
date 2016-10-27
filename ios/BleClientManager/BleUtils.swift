@@ -24,8 +24,19 @@ extension SequenceType where Generator.Element == String {
 
 extension String {
     func toCBUUID() -> CBUUID? {
-        let value = self.characters.count == 4 ? "0000\(self)-0000-1000-8000-00805f9b34fb" : self
-        return CBUUID(string: value)
+        let uuid: String
+        switch self.characters.count {
+        case 4:
+            uuid = "0000\(self)-0000-1000-8000-00805f9b34fb"
+        case 8:
+            uuid = "\(self)-0000-1000-8000-00805f9b34fb"
+        default:
+            uuid = self
+        }
+        guard let nsuuid = NSUUID(UUIDString: uuid) else {
+            return nil
+        }
+        return CBUUID(NSUUID: nsuuid)
     }
 }
 
