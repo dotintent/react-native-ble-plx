@@ -688,7 +688,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-                        BleError.cancelled().reject(promise);
+                        promise.resolve(null);
                         transactions.removeSubscription(transactionId);
                     }
                 })
