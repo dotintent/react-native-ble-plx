@@ -4,7 +4,6 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.support.annotation.Nullable;
 import android.support.v4.util.Pair;
-import android.util.Base64;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -19,6 +18,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.reactnativeble.converter.JSObjectConverterManager;
 import com.polidea.reactnativeble.errors.BleError;
 import com.polidea.reactnativeble.errors.ErrorConverter;
+import com.polidea.reactnativeble.utils.Base64Converter;
 import com.polidea.reactnativeble.utils.DisposableMap;
 import com.polidea.reactnativeble.utils.ReadableArrayConverter;
 import com.polidea.reactnativeble.utils.SafePromise;
@@ -437,7 +437,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final byte[] value;
         try {
-            value = Base64.decode(valueBase64, Base64.DEFAULT);
+            value = Base64Converter.decode(valueBase64);
         } catch (Throwable e) {
             BleError.invalidWriteDataForCharacteristic(valueBase64, characteristicUUID).reject(safePromise);
             return;
@@ -512,7 +512,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                         WritableMap jsObject = converter.characteristic.toJSObject(result.first);
                         jsObject.putString("deviceUUID", device.getMacAddress());
                         jsObject.putString("serviceUUID", UUIDConverter.fromUUID(serviceUUID));
-                        jsObject.putString("value", Base64.encodeToString(result.second, Base64.DEFAULT));
+                        jsObject.putString("value", Base64Converter.encode(result.second));
                         promise.resolve(jsObject);
                     }
                 });
@@ -608,7 +608,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                         WritableMap jsObject = converter.characteristic.toJSObject(result.first);
                         jsObject.putString("deviceUUID", device.getMacAddress());
                         jsObject.putString("serviceUUID", UUIDConverter.fromUUID(serviceUUID));
-                        jsObject.putString("value", Base64.encodeToString(result.second, Base64.DEFAULT));
+                        jsObject.putString("value", Base64Converter.encode(result.second));
                         promise.resolve(jsObject);
                     }
                 });
@@ -736,7 +736,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         WritableMap jsObject = converter.characteristic.toJSObject(characteristic);
         jsObject.putString("deviceUUID", deviceId);
         jsObject.putString("serviceUUID", serviceUUID);
-        jsObject.putString("value", Base64.encodeToString(value, Base64.DEFAULT));
+        jsObject.putString("value", Base64Converter.encode(value));
 
         WritableArray jsResult = Arguments.createArray();
         jsResult.pushNull();
