@@ -45,13 +45,11 @@ import rx.functions.Func2;
 public class BleModule extends ReactContextBaseJavaModule {
 
     private static final String NAME = "BleClientManager";
-    private static final String TAG = BleModule.class.getSimpleName();
     private final ErrorConverter errorConverter = new ErrorConverter();
     private final JSObjectConverterManager converter = new JSObjectConverterManager();
 
     private RxBleClient rxBleClient;
     private HashMap<String, RxBleConnection> connectionMap = new HashMap<>();
-    private final HashMap<String, String> notificationMap = new HashMap<>();
 
     private Subscription scanSubscription;
     private final DisposableMap transactions = new DisposableMap();
@@ -94,7 +92,6 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         // Clear all data structures
         connectionMap.clear();
-        notificationMap.clear();
 
         // Clear client
         rxBleClient = null;
@@ -691,21 +688,21 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-                        removeNotification(UUIDConverter.fromUUID(characteristicUUID), transactionId);
-                        BleError.cancelled().reject(promise);
+                        promise.resolve(null);
+                        transactions.removeSubscription(transactionId);
                     }
                 })
                 .subscribe(new Observer<Pair<BluetoothGattCharacteristic, byte[]>>() {
                     @Override
                     public void onCompleted() {
-                        removeNotification(UUIDConverter.fromUUID(characteristicUUID), transactionId);
                         promise.resolve(null);
+                        transactions.removeSubscription(transactionId);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        removeNotification(UUIDConverter.fromUUID(characteristicUUID), transactionId);
                         errorConverter.toError(e).reject(promise);
+                        transactions.removeSubscription(transactionId);
                     }
 
                     @Override
@@ -713,7 +710,6 @@ public class BleModule extends ReactContextBaseJavaModule {
                         sendNotification(
                                 device.getMacAddress(),
                                 UUIDConverter.fromUUID(serviceUUID),
-                                UUIDConverter.fromUUID(characteristicUUID),
                                 result.second,
                                 transactionId,
                                 result.first);
@@ -723,47 +719,30 @@ public class BleModule extends ReactContextBaseJavaModule {
         transactions.replaceSubscription(transactionId, subscription);
     }
 
-    private void sendNotification(final String deviceId,
-                                  final String serviceUUID,
-                                  final String characteristicUUID,
-                                  final byte[] value,
-                                  final String transactionId,
-                                  final BluetoothGattCharacteristic characteristic) {
-        synchronized (notificationMap) {
-            String id = notificationMap.get(characteristicUUID);
-            if (id == null || id.equals(transactionId)) {
-                notificationMap.put(characteristicUUID, transactionId);
-
-                WritableMap jsObject = converter.characteristic.toJSObject(characteristic);
-                jsObject.putString("deviceUUID", deviceId);
-                jsObject.putString("serviceUUID", serviceUUID);
-                jsObject.putString("value", Base64.encodeToString(value, Base64.DEFAULT));
-
-                WritableArray jsResult = Arguments.createArray();
-                jsResult.pushNull();
-                jsResult.pushMap(jsObject);
-
-                sendEvent(Event.ReadEvent, jsResult);
-            }
-        }
-    }
-
-    private void removeNotification(final String characteristicUUID,
-                                    final String transactionId) {
-        synchronized (notificationMap) {
-            String id = notificationMap.get(characteristicUUID);
-            if (id != null && id.equals(transactionId)) {
-                notificationMap.remove(characteristicUUID);
-            }
-        }
-    }
-
     // Mark: Private -------------------------------------------------------------------------------
 
-    //Common support method
     private void sendEvent(Event event, @Nullable Object params) {
         getReactApplicationContext()
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(event.name, params);
+    }
+
+    private void sendNotification(final String deviceId,
+                                  final String serviceUUID,
+                                  final byte[] value,
+                                  final String transactionId,
+                                  final BluetoothGattCharacteristic characteristic) {
+
+        WritableMap jsObject = converter.characteristic.toJSObject(characteristic);
+        jsObject.putString("deviceUUID", deviceId);
+        jsObject.putString("serviceUUID", serviceUUID);
+        jsObject.putString("value", Base64.encodeToString(value, Base64.DEFAULT));
+
+        WritableArray jsResult = Arguments.createArray();
+        jsResult.pushNull();
+        jsResult.pushMap(jsObject);
+        jsResult.pushString(transactionId);
+
+        sendEvent(Event.ReadEvent, jsResult);
     }
 }
