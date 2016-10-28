@@ -437,7 +437,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final byte[] value;
         try {
-            value = Base64Converter.fromString(valueBase64);
+            value = Base64Converter.decode(valueBase64);
         } catch (Throwable e) {
             BleError.invalidWriteDataForCharacteristic(valueBase64, characteristicUUID).reject(safePromise);
             return;
@@ -512,7 +512,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                         WritableMap jsObject = converter.characteristic.toJSObject(result.first);
                         jsObject.putString("deviceUUID", device.getMacAddress());
                         jsObject.putString("serviceUUID", UUIDConverter.fromUUID(serviceUUID));
-                        jsObject.putString("value", Base64Converter.fromBytes(result.second));
+                        jsObject.putString("value", Base64Converter.encode(result.second));
                         promise.resolve(jsObject);
                     }
                 });
@@ -608,7 +608,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                         WritableMap jsObject = converter.characteristic.toJSObject(result.first);
                         jsObject.putString("deviceUUID", device.getMacAddress());
                         jsObject.putString("serviceUUID", UUIDConverter.fromUUID(serviceUUID));
-                        jsObject.putString("value", Base64Converter.fromBytes(result.second));
+                        jsObject.putString("value", Base64Converter.encode(result.second));
                         promise.resolve(jsObject);
                     }
                 });
@@ -736,7 +736,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         WritableMap jsObject = converter.characteristic.toJSObject(characteristic);
         jsObject.putString("deviceUUID", deviceId);
         jsObject.putString("serviceUUID", serviceUUID);
-        jsObject.putString("value", Base64Converter.fromBytes(value));
+        jsObject.putString("value", Base64Converter.encode(value));
 
         WritableArray jsResult = Arguments.createArray();
         jsResult.pushNull();
