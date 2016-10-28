@@ -26,9 +26,9 @@ public class BleClientManager : NSObject {
 
     // Disposables
     private let disposeBag = DisposeBag()
-    private var scanSubscription = SerialDisposable()
-    private var connectingDevices = DisposableMap<NSUUID>()
-    private var transactions = DisposableMap<String>()
+    private let scanSubscription = SerialDisposable()
+    private let connectingDevices = DisposableMap<NSUUID>()
+    private let transactions = DisposableMap<String>()
 
     // MARK: Public interface
 
@@ -422,8 +422,7 @@ public class BleClientManager : NSObject {
                         return characteristic.setNotificationAndMonitorUpdates()
                     })
                 }
-                .publish()
-                .refCount()
+                .share()
 
             monitoredCharacteristics[key] = observable
         }
