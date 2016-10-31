@@ -52,23 +52,46 @@ project(':react-native-ble-plx').projectDir = new File(rootProject.projectDir, '
 ```
 * In `build.gradle` of `app` module add following dependency:
 ```
-compile project(':react-native-ble-plx')
+dependencies {
+   ...
+   compile project(':react-native-ble-plx')
+   ...
 ```
-* In `MainApplication.getPackages` add BleModule package:
+* Additionaly make sure that min SDK version is at least 18:
 ```
-@Override
-protected List<ReactPackage> getPackages() {
-  return Arrays.<ReactPackage>asList(
-    new MainReactPackage(),
-    new BlePackage()
-  );
+android {
+    ...
+    defaultConfig {
+        minSdkVersion 18
+        ...
+```
+
+* In `MainApplication.getPackages` import and add BleModule package:
+```
+import com.polidea.reactnativeble.BlePackage;
+...
+
+public class MainApplication extends Application implements ReactApplication {
+    ...
+
+    @Override
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+        new MainReactPackage(),
+        new BlePackage()
+      );
 }
 ```
-* In `AndroidManifest.xml` add Bluetooth permission:
+* In `AndroidManifest.xml` add Bluetooth permission and update or remove `<uses-sdk/>`:
 ```
-<uses-permission android:name="android.permission.BLUETOOTH" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    ...
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+
+    <uses-sdk
+        android:minSdkVersion="18"
+        ...
 ```
-* Minimal supported SDK version is 18.
 
 ## Installing and running example app
 * Go to example project folder `cd examples/ReactBLEScanner`.
