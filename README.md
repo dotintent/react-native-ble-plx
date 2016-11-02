@@ -26,10 +26,9 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 * Open iOS project located in `./ios` folder.
 * Move `BleClient.xcodeproj` located in `.node_modules/react-native-ble-plx/ios`
   using drag & drop to `Libraries` folder in your project.
-* In general settings of a project add `libBleClient.a` to Linked Frameworks and Libraries.
-* In `Build Settings`/`Search Paths`/`Framework search paths` add recursive path: `$(SRCROOT)/../node_modules/react-native-ble-plx`.
-* In `Build Settings`/`Search Paths`/`Header search paths` add recursive path: `$(SRCROOT)/../node_modules/react-native/React`.  
-* In `Build Options`/`Embedded Content Contains Swift Code` set to `true`.
+* In general settings of a target add `libBleClient.a` to Linked Frameworks and Libraries.
+* In `Build Settings`/`Search Paths`/`Framework search paths` add path: `$(SRCROOT)/../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS`.  
+* In `Build Settings`/`Build Options`/`Always Embed Swift Standard Libraries` set to `Yes`.
 * In `Build Phases` click on top left button and add `New Run Script Phase`. 
   * Shell command: `/usr/local/bin/carthage copy-frameworks`
   * Input Files:
