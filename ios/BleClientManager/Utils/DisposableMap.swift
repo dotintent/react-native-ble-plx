@@ -20,10 +20,15 @@ class DisposableMap<T: Hashable> {
         replaceDisposable(key, disposable: nil)
     }
 
-    deinit {
+    func dispose() {
         disposables.forEach {
             (_, disposable) in
             disposable.dispose()
         }
+        disposables.removeAll()
+    }
+
+    deinit {
+        dispose()
     }
 }

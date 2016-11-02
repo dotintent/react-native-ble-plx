@@ -43,6 +43,17 @@ public class BleClientManager : NSObject {
         })
     }
 
+    public func invalidate() {
+        scanSubscription.disposable = NopDisposable.instance
+        transactions.dispose()
+        connectingDevices.dispose()
+        connectedDevices.forEach { (_, device) in
+            _ = device.cancelConnection().subscribe()
+        }
+        connectedDevices.removeAll()
+        monitoredCharacteristics.removeAll()
+    }
+
     deinit {
         scanSubscription.disposable = NopDisposable.instance
     }
