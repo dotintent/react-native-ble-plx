@@ -41,6 +41,7 @@ RCT_EXPORT_METHOD(createClient) {
 }
 
 RCT_EXPORT_METHOD(destroyClient) {
+    [_manager invalidate];
     _manager = nil;
 }
 
