@@ -2,13 +2,16 @@ package com.polidea.reactnativeble;
 
 import static com.polidea.reactnativeble.Constants.*;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 
 import com.facebook.react.bridge.Arguments;
@@ -154,11 +157,18 @@ public class BleModule extends ReactContextBaseJavaModule {
     private String getCurrentState() {
         if (!supportsBluetoothLowEnergy()) {
             return BluetoothState.UNSUPPORTED;
-        } else {
-            final BluetoothManager bluetoothManager = (BluetoothManager) getReactApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
-            final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
-            return nativeAdapterStateToReactNativeBluetoothState(bluetoothAdapter.getState());
         }
+
+        final ReactApplicationContext context = getReactApplicationContext();
+        final int coarseLocationPermissionState = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION);
+        final boolean hasPermission = coarseLocationPermissionState == PackageManager.PERMISSION_GRANTED;
+        if (!hasPermission) {
+            return BluetoothState.UNAUTHORIZED;
+        }
+
+        final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+        final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+        return nativeAdapterStateToReactNativeBluetoothState(bluetoothAdapter.getState());
     }
 
     private boolean supportsBluetoothLowEnergy() {
