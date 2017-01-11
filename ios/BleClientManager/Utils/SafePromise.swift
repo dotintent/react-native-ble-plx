@@ -8,8 +8,8 @@
 
 import Foundation
 
-public typealias Resolve = (AnyObject?) -> ()
-public typealias Reject = (NSString?, NSString?, NSError?) -> ()
+public typealias Resolve = (Any?) -> ()
+public typealias Reject = (String?, String?, NSError?) -> ()
 
 class SafePromise {
     let resolveFunc: Resolve
@@ -21,7 +21,7 @@ class SafePromise {
         self.rejectFunc = reject
     }
 
-    func resolve(_ value: AnyObject? = nil) {
+    func resolve(_ value: Any? = nil) {
         if (!finished) {
             self.resolveFunc(value)
             finished = true
@@ -30,7 +30,7 @@ class SafePromise {
 
     func reject(code: String? = nil, message: String? = nil, error: NSError? = nil) {
         if (!finished) {
-            rejectFunc(code as NSString?, message as NSString?, error)
+            rejectFunc(code, message, error)
             finished = true
         }
     }

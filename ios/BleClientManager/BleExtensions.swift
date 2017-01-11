@@ -11,7 +11,7 @@ import RxBluetoothKit
 import CoreBluetooth
 
 extension ScannedPeripheral {
-    var asJSObject: [String:AnyObject] {
+    var asJSObject: [String: AnyObject] {
 
         var serviceData: [String:String]?
 
@@ -33,7 +33,7 @@ extension ScannedPeripheral {
             .map { (uuid: CBUUID) in uuid.fullUUIDString }
 
         return [
-            "uuid": peripheral.identifier.uuidString as AnyObject,
+            "id": peripheral.identifier.uuidString as AnyObject,
             "name": peripheral.name as AnyObject,
             "rssi": rssi,
 
@@ -49,7 +49,7 @@ extension ScannedPeripheral {
 }
 
 extension Peripheral {
-    var asJSObject: AnyObject {
+    var asJSObject: [String: AnyObject] {
         return [
             "id": identifier.uuidString as AnyObject,
             "name": name as AnyObject,
@@ -62,22 +62,22 @@ extension Peripheral {
             "solicitedServiceUUIDs": NSNull(),
             "isConnectable": NSNull(),
             "overflowServiceUUIDs": NSNull()
-        ] as AnyObject
+        ]
     }
 }
 
 extension Service {
-    var asJSObject: AnyObject {
+    var asJSObject: [String: AnyObject] {
         return [
             "uuid": uuid.fullUUIDString as AnyObject,
             "deviceID": peripheral.identifier.uuidString as AnyObject,
             "isPrimary": isPrimary as AnyObject
-        ] as AnyObject
+        ]
     }
 }
 
 extension Characteristic {
-    var asJSObject: AnyObject {
+    var asJSObject: [String: AnyObject] {
         return [
             "uuid": uuid.fullUUIDString as AnyObject,
             "serviceUUID": service.uuid.fullUUIDString as AnyObject,
@@ -89,7 +89,7 @@ extension Characteristic {
             "isNotifying": isNotifying as AnyObject,
             "isIndictable": properties.contains(.indicate) as AnyObject,
             "value": valueBase64 as AnyObject
-        ] as AnyObject
+        ]
     }
 }
 

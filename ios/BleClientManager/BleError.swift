@@ -21,17 +21,17 @@ struct BleError: Error {
 }
 
 extension BleError {
-    var toJSResult: AnyObject {
-        return [self.toJS, NSNull()] as AnyObject
+    var toJSResult: Any {
+        return [self.toJS, NSNull()]
     }
-    var toJS: AnyObject {
+    var toJS: Any {
         if isCancelled {
-            return ["name": "BleClientModule", "code": code, "message": message, "isCancelled": true] as AnyObject
+            return ["name": "BleClientModule", "code": code, "message": message, "isCancelled": true]
         }
         return ["name": "BleClientModule", "code": code, "message": message] as AnyObject
     }
     func callReject(_ reject: Reject) {
-        reject("\(self.code)" as NSString?, self.message as NSString?, nil)
+        reject("\(self.code)", self.message, nil)
     }
     func callReject(_ promise: SafePromise) {
         promise.reject(code: "\(self.code)", message: self.message)

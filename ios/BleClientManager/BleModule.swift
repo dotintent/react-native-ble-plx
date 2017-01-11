@@ -453,8 +453,8 @@ public class BleClientManager : NSObject {
 
     // MARK: Private interface -----------------------------------------------------------------------------------------
 
-    fileprivate func dispatchEvent(_ event: String, value: AnyObject) {
-        delegate?.dispatchEvent(event, value: value)
+    fileprivate func dispatchEvent(_ event: String, value: Any) {
+        delegate?.dispatchEvent(event, value: value as AnyObject)
     }
 
     fileprivate func characteristicObservable(_ deviceId: UUID,
