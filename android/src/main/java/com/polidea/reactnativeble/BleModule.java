@@ -1,8 +1,17 @@
 package com.polidea.reactnativeble;
 
+import static com.polidea.reactnativeble.Constants.*;
+
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.bluetooth.BluetoothManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 
 import com.facebook.react.bridge.Arguments;
@@ -23,6 +32,7 @@ import com.polidea.reactnativeble.utils.DisposableMap;
 import com.polidea.reactnativeble.utils.ReadableArrayConverter;
 import com.polidea.reactnativeble.utils.SafePromise;
 import com.polidea.reactnativeble.utils.UUIDConverter;
+import com.polidea.rxandroidble.RxBleAdapterStateObservable;
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
@@ -55,6 +65,8 @@ public class BleModule extends ReactContextBaseJavaModule {
     private final DisposableMap transactions = new DisposableMap();
     private final DisposableMap connectingDevices = new DisposableMap();
 
+    private Subscription adapterStateChangesSubscription;
+
     public BleModule(ReactApplicationContext reactContext) {
         super(reactContext);
     }
@@ -77,7 +89,9 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void createClient() {
-        rxBleClient = RxBleClient.create(getReactApplicationContext());
+        final ReactApplicationContext context = getReactApplicationContext();
+        rxBleClient = RxBleClient.create(context);
+        adapterStateChangesSubscription = monitorAdapterStateChanges(context);
     }
 
     @ReactMethod
@@ -95,6 +109,12 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         // Clear client
         rxBleClient = null;
+
+        // Stop monitoring adapter changes
+        if (adapterStateChangesSubscription != null) {
+            adapterStateChangesSubscription.unsubscribe();
+            adapterStateChangesSubscription = null;
+        }
     }
 
     @Override
@@ -114,11 +134,74 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void state(Promise promise) {
-        // TODO: Implement when RxAndroidBle is ready
-
+        promise.resolve(getCurrentState());
     }
 
-    // TODO: implement onStateChanged by sending StateChange events
+    private Subscription monitorAdapterStateChanges(Context context) {
+        return new RxBleAdapterStateObservable(context)
+                .map(new Func1<RxBleAdapterStateObservable.BleAdapterState, String>() {
+                    @Override
+                    public String call(RxBleAdapterStateObservable.BleAdapterState bleAdapterState) {
+                        return rxAndroidBleAdapterStateToReactNativeBluetoothState(bleAdapterState);
+                    }
+                })
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String state) {
+                        sendEvent(Event.StateChangeEvent, state);
+                    }
+                });
+    }
+
+    @BluetoothState
+    private String getCurrentState() {
+        if (!supportsBluetoothLowEnergy()) {
+            return BluetoothState.UNSUPPORTED;
+        }
+
+        final ReactApplicationContext context = getReactApplicationContext();
+        final int coarseLocationPermissionState = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION);
+        final boolean hasPermission = coarseLocationPermissionState == PackageManager.PERMISSION_GRANTED;
+        if (!hasPermission) {
+            return BluetoothState.UNAUTHORIZED;
+        }
+
+        final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+        final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+        return nativeAdapterStateToReactNativeBluetoothState(bluetoothAdapter.getState());
+    }
+
+    private boolean supportsBluetoothLowEnergy() {
+        return getReactApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+    }
+
+    @BluetoothState
+    private String nativeAdapterStateToReactNativeBluetoothState(int adapterState) {
+        switch (adapterState) {
+
+            case BluetoothAdapter.STATE_OFF:
+                return BluetoothState.POWERED_OFF;
+            case BluetoothAdapter.STATE_ON:
+                return BluetoothState.POWERED_ON;
+            case BluetoothAdapter.STATE_TURNING_OFF:
+                // fallthrough
+            case BluetoothAdapter.STATE_TURNING_ON:
+                return BluetoothState.RESETTING;
+            default:
+                return BluetoothState.UNKNOWN;
+        }
+    }
+
+    @BluetoothState
+    private String rxAndroidBleAdapterStateToReactNativeBluetoothState(RxBleAdapterStateObservable.BleAdapterState rxBleAdapterState) {
+        if (rxBleAdapterState == RxBleAdapterStateObservable.BleAdapterState.STATE_ON) {
+            return BluetoothState.POWERED_ON;
+        } else if (rxBleAdapterState == RxBleAdapterStateObservable.BleAdapterState.STATE_OFF) {
+            return BluetoothState.POWERED_OFF;
+        } else {
+            return BluetoothState.RESETTING;
+        }
+    }
 
     // Mark: Scanning ------------------------------------------------------------------------------
 
