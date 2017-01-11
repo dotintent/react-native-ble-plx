@@ -12,52 +12,47 @@ import CoreBluetooth
 
 extension ScannedPeripheral {
     var asJSObject: [String:AnyObject] {
+
         var serviceData: [String:String]?
+
         if let advServiceData = advertisementData.serviceData {
             var data = [String:String]()
             for (key, value) in advServiceData {
-                data[key.fullUUIDString] = value.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+                data[key.fullUUIDString] = value.base64
             }
             serviceData = data
         }
 
-        let manufacturerData = advertisementData
-            .manufacturerData?
-            .base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn) ?? NSNull()
-
-        let serviceUUIDs: AnyObject = advertisementData
-            .serviceUUIDs?
-            .map { (uuid: CBUUID) in uuid.fullUUIDString } ?? NSNull()
-
-        let overflowServiceUUIDs: AnyObject = advertisementData
+        let manufacturerData = advertisementData.manufacturerData?.base64
+        let serviceUUIDs = advertisementData.serviceUUIDs?.map { (uuid: CBUUID) in uuid.fullUUIDString }
+        let overflowServiceUUIDs = advertisementData
             .overflowServiceUUIDs?
-            .map { (uuid: CBUUID) in uuid.fullUUIDString } ?? NSNull()
-
-        let solicitedServiceUUIDs: AnyObject = advertisementData
+            .map { (uuid: CBUUID) in uuid.fullUUIDString }
+        let solicitedServiceUUIDs = advertisementData
             .solicitedServiceUUIDs?
-            .map { (uuid: CBUUID) in uuid.fullUUIDString } ?? NSNull()
+            .map { (uuid: CBUUID) in uuid.fullUUIDString }
 
         return [
-            "uuid": peripheral.identifier.UUIDString,
-            "name": peripheral.name ?? NSNull(),
-            "rssi": RSSI,
+            "uuid": peripheral.identifier.uuidString as AnyObject,
+            "name": peripheral.name as AnyObject,
+            "rssi": rssi,
 
-            "manufacturerData": manufacturerData,
-            "serviceData": serviceData ?? NSNull(),
-            "serviceUUIDs": serviceUUIDs,
-            "txPowerLevel": advertisementData.txPowerLevel ?? NSNull(),
-            "solicitedServiceUUIDs": solicitedServiceUUIDs,
-            "isConnectable": advertisementData.isConnectable ?? NSNull(),
-            "overflowServiceUUIDs": overflowServiceUUIDs
+            "manufacturerData": manufacturerData as AnyObject,
+            "serviceData": serviceData as AnyObject,
+            "serviceUUIDs": serviceUUIDs as AnyObject,
+            "txPowerLevel": advertisementData.txPowerLevel as AnyObject,
+            "solicitedServiceUUIDs": solicitedServiceUUIDs as AnyObject,
+            "isConnectable": advertisementData.isConnectable as AnyObject,
+            "overflowServiceUUIDs": overflowServiceUUIDs as AnyObject
         ]
     }
 }
 
 extension Peripheral {
-    var asJSObject: [String:AnyObject] {
+    var asJSObject: AnyObject {
         return [
-            "uuid": identifier.UUIDString,
-            "name": name ?? NSNull(),
+            "id": identifier.uuidString as AnyObject,
+            "name": name as AnyObject,
             "rssi": NSNull(),
 
             "manufacturerData": NSNull(),
@@ -67,52 +62,52 @@ extension Peripheral {
             "solicitedServiceUUIDs": NSNull(),
             "isConnectable": NSNull(),
             "overflowServiceUUIDs": NSNull()
-        ]
+        ] as AnyObject
     }
 }
 
 extension Service {
-    var asJSObject: [String:AnyObject] {
+    var asJSObject: AnyObject {
         return [
-            "uuid": UUID.fullUUIDString,
-            "deviceUUID": peripheral.identifier.UUIDString,
-            "isPrimary": isPrimary
-        ]
+            "uuid": uuid.fullUUIDString as AnyObject,
+            "deviceID": peripheral.identifier.uuidString as AnyObject,
+            "isPrimary": isPrimary as AnyObject
+        ] as AnyObject
     }
 }
 
 extension Characteristic {
-    var asJSObject: [String:AnyObject] {
+    var asJSObject: AnyObject {
         return [
-            "uuid": UUID.fullUUIDString,
-            "serviceUUID": service.UUID.fullUUIDString,
-            "deviceUUID": service.peripheral.identifier.UUIDString,
-            "isReadable": properties.contains(.Read),
-            "isWritableWithResponse": properties.contains(.Write),
-            "isWritableWithoutResponse": properties.contains(.WriteWithoutResponse),
-            "isNotifiable": properties.contains(.Notify),
-            "isNotifying": isNotifying,
-            "isIndictable": properties.contains(.Indicate),
-            "value": valueBase64 ?? NSNull()
-        ]
+            "uuid": uuid.fullUUIDString as AnyObject,
+            "serviceUUID": service.uuid.fullUUIDString as AnyObject,
+            "deviceID": service.peripheral.identifier.uuidString as AnyObject,
+            "isReadable": properties.contains(.read) as AnyObject,
+            "isWritableWithResponse": properties.contains(.write) as AnyObject,
+            "isWritableWithoutResponse": properties.contains(.writeWithoutResponse) as AnyObject,
+            "isNotifiable": properties.contains(.notify) as AnyObject,
+            "isNotifying": isNotifying as AnyObject,
+            "isIndictable": properties.contains(.indicate) as AnyObject,
+            "value": valueBase64 as AnyObject
+        ] as AnyObject
     }
 }
 
 extension BluetoothState {
     var asJSObject: String {
         switch self {
-        case .Unknown: return "Unknown"
-        case .Resetting: return "Resetting"
-        case .Unsupported: return "Unsupported"
-        case .Unauthorized: return "Unauthorized"
-        case .PoweredOff: return "PoweredOff"
-        case .PoweredOn: return "PoweredOn"
+        case .unknown: return "Unknown"
+        case .resetting: return "Resetting"
+        case .unsupported: return "Unsupported"
+        case .unauthorized: return "Unauthorized"
+        case .poweredOff: return "PoweredOff"
+        case .poweredOn: return "PoweredOn"
         }
     }
 }
 
 extension Characteristic {
     var valueBase64: String? {
-        return value?.base64EncodedStringWithOptions(.EncodingEndLineWithCarriageReturn)
+        return value?.base64
     }
 }

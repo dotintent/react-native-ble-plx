@@ -8,13 +8,13 @@
 import Foundation
 
 @objc
-public class BleEvent: NSObject {
-    static public let scanEvent: String = "ScanEvent"
-    static public let readEvent = "ReadEvent"
-    static public let stateChangeEvent = "StateChangeEvent"
-    static public let disconnectionEvent = "DisconnectionEvent"
+open class BleEvent: NSObject {
+    static open let scanEvent: String = "ScanEvent"
+    static open let readEvent = "ReadEvent"
+    static open let stateChangeEvent = "StateChangeEvent"
+    static open let disconnectionEvent = "DisconnectionEvent"
 
-    static public let events = [
+    static open let events = [
         scanEvent,
         readEvent,
         stateChangeEvent,

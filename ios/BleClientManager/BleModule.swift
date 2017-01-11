@@ -12,7 +12,7 @@ import RxSwift
 
 @objc
 public protocol BleClientManagerDelegate {
-    func dispatchEvent(name: String, value: AnyObject)
+    func dispatchEvent(_ name: String, value: AnyObject)
 }
 
 @objc
@@ -20,31 +20,31 @@ public class BleClientManager : NSObject {
 
     public var delegate: BleClientManagerDelegate?
 
-    private let manager : BluetoothManager
-    private var connectedDevices = Dictionary<NSUUID, Peripheral>()
-    private var monitoredCharacteristics = Dictionary<CharacteristicKey, Observable<Characteristic>>()
+    fileprivate let manager : BluetoothManager
+    fileprivate var connectedDevices = Dictionary<UUID, Peripheral>()
+    fileprivate var monitoredCharacteristics = Dictionary<CharacteristicKey, Observable<Characteristic>>()
 
     // Disposables
-    private let disposeBag = DisposeBag()
-    private let scanSubscription = SerialDisposable()
-    private let connectingDevices = DisposableMap<NSUUID>()
-    private let transactions = DisposableMap<String>()
+    fileprivate let disposeBag = DisposeBag()
+    fileprivate let scanSubscription = SerialDisposable()
+    fileprivate let connectingDevices = DisposableMap<UUID>()
+    fileprivate let transactions = DisposableMap<String>()
 
     // MARK: Public interface
 
     // Lifecycle -------------------------------------------------------------------------------------------------------
 
-    public init(queue: dispatch_queue_t) {
+    public init(queue: DispatchQueue) {
         manager = BluetoothManager(queue: queue)
         super.init()
 
-        disposeBag.addDisposable(manager.rx_state.subscribeNext { [weak self] newState in
+        disposeBag.insert(manager.rx_state.subscribe(onNext: { [weak self] newState in
             self?.onStateChange(newState)
-        })
+        }))
     }
 
-    public func invalidate() {
-        scanSubscription.disposable = NopDisposable.instance
+    open func invalidate() {
+        scanSubscription.disposable = Disposables.create()
         transactions.dispose()
         connectingDevices.dispose()
         connectedDevices.forEach { (_, device) in
@@ -55,33 +55,33 @@ public class BleClientManager : NSObject {
     }
 
     deinit {
-        scanSubscription.disposable = NopDisposable.instance
+        scanSubscription.disposable = Disposables.create()
     }
 
     // Mark: Common ----------------------------------------------------------------------------------------------------
 
-    public func cancelTransaction(transactionId: String) {
+    open func cancelTransaction(_ transactionId: String) {
         transactions.removeDisposable(transactionId)
     }
 
     // Mark: Monitoring state ------------------------------------------------------------------------------------------
 
-    public func state(resolve: Resolve, reject: Reject) {
-        resolve(manager.state.asJSObject)
+    open func state(_ resolve: Resolve, reject: Reject) {
+        resolve(manager.state.asJSObject as AnyObject?)
     }
 
-    private func onStateChange(state: BluetoothState) {
-        dispatchEvent(BleEvent.stateChangeEvent, value: state.asJSObject)
+    fileprivate func onStateChange(_ state: BluetoothState) {
+        dispatchEvent(BleEvent.stateChangeEvent, value: state.asJSObject as AnyObject)
     }
 
     // Mark: Scanning --------------------------------------------------------------------------------------------------
 
-    public func startDeviceScan(filteredUUIDs: [String]?, options:[String:AnyObject]?) {
+    open func startDeviceScan(_ filteredUUIDs: [String]?, options:[String:AnyObject]?) {
 
         var rxOptions = [String:AnyObject]()
         if let options = options {
-            if ((options["allowDuplicates"]?.isEqualToNumber(NSNumber(bool: true))) ?? false) {
-                rxOptions[CBCentralManagerScanOptionAllowDuplicatesKey] = true
+            if ((options["allowDuplicates"]?.isEqual(to: NSNumber(value: true as Bool))) ?? false) {
+                rxOptions[CBCentralManagerScanOptionAllowDuplicatesKey] = true as AnyObject?
             }
         }
 
@@ -94,26 +94,26 @@ public class BleClientManager : NSObject {
             uuids = cbuuids
         }
 
-        scanSubscription.disposable = manager.scanForPeripherals(uuids, options: rxOptions)
+        scanSubscription.disposable = manager.scanForPeripherals(withServices: uuids, options: rxOptions)
             .subscribe(onNext: { [weak self] scannedPeripheral in
-                self?.dispatchEvent(BleEvent.scanEvent, value: [NSNull(), scannedPeripheral.asJSObject])
+                self?.dispatchEvent(BleEvent.scanEvent, value: [NSNull(), scannedPeripheral.asJSObject] as AnyObject)
             }, onError: { [weak self] errorType in
                 self?.dispatchEvent(BleEvent.scanEvent, value: errorType.bleError.toJSResult)
             })
     }
 
-    public func stopDeviceScan() {
-        scanSubscription.disposable = NopDisposable.instance
+    open func stopDeviceScan() {
+        scanSubscription.disposable = Disposables.create()
     }
 
     // Mark: Connection management -------------------------------------------------------------------------------------
 
-    public func connectToDevice(deviceIdentifier: String,
+    open func connectToDevice(_ deviceIdentifier: String,
                                          options:[String: AnyObject]?,
-                                         resolve: Resolve,
-                                          reject: Reject) {
+                                          resolve: @escaping Resolve,
+                                          reject: @escaping Reject) {
 
-        guard let deviceId = NSUUID(UUIDString: deviceIdentifier) else {
+        guard let deviceId = UUID(uuidString: deviceIdentifier) else {
             BleError.invalidUUID(deviceIdentifier).callReject(reject)
             return
         }
@@ -121,14 +121,14 @@ public class BleClientManager : NSObject {
         safeConnectToDevice(deviceId, options: options, promise: SafePromise(resolve: resolve, reject: reject))
     }
 
-    private func safeConnectToDevice(deviceId: NSUUID,
+    fileprivate func safeConnectToDevice(_ deviceId: UUID,
                                       options: [String:AnyObject]?,
                                       promise: SafePromise) {
 
-        let connectionDisposable = manager.retrievePeripheralsWithIdentifiers([deviceId])
+        let connectionDisposable = manager.retrievePeripherals(withIdentifiers: [deviceId])
             .flatMap { devices -> Observable<Peripheral> in
                 guard let device = devices.first else {
-                    return Observable.error(BleError.peripheralNotFound(deviceId.UUIDString))
+                    return Observable.error(BleError.peripheralNotFound(deviceId.uuidString))
                 }
                 return Observable.just(device)
             }
@@ -142,14 +142,14 @@ public class BleClientManager : NSObject {
                 },
                 onCompleted: { [weak self] in
                     if let device = self?.connectedDevices[deviceId] {
-                        _ = self?.manager.monitorPeripheralDisconnection(device)
+                        _ = self?.manager.monitorDisconnection(for: device)
                             .take(1)
-                            .subscribeNext { peripheral in
+                            .subscribe(onNext: { peripheral in
                                 self?.onDeviceDisconnected(peripheral)
-                        }
+                            })
                         promise.resolve(device.asJSObject)
                     } else {
-                        BleError.peripheralNotFound(deviceId.UUIDString).callReject(promise)
+                        BleError.peripheralNotFound(deviceId.uuidString).callReject(promise)
                     }
                 },
                 onDisposed: { [weak self] in
@@ -161,13 +161,13 @@ public class BleClientManager : NSObject {
         connectingDevices.replaceDisposable(deviceId, disposable: connectionDisposable)
     }
 
-    private func onDeviceDisconnected(device: Peripheral) {
+    fileprivate func onDeviceDisconnected(_ device: Peripheral) {
         self.connectedDevices[device.identifier] = nil
-        dispatchEvent(BleEvent.disconnectionEvent, value: [NSNull(), device.asJSObject])
+        dispatchEvent(BleEvent.disconnectionEvent, value: [NSNull(), device.asJSObject] as AnyObject)
     }
 
-    public func cancelDeviceConnection(deviceIdentifier: String, resolve: Resolve, reject: Reject) {
-        guard let deviceId = NSUUID(UUIDString: deviceIdentifier) else {
+    open func cancelDeviceConnection(_ deviceIdentifier: String, resolve: @escaping Resolve, reject: @escaping Reject) {
+        guard let deviceId = UUID(uuidString: deviceIdentifier) else {
             BleError.invalidUUID(deviceIdentifier).callReject(reject)
             return
         }
@@ -192,26 +192,26 @@ public class BleClientManager : NSObject {
         }
     }
 
-    public func isDeviceConnected(deviceIdentifier: String, resolve: Resolve, reject: Reject) {
-        guard let deviceId = NSUUID(UUIDString: deviceIdentifier) else {
+    open func isDeviceConnected(_ deviceIdentifier: String, resolve: Resolve, reject: Reject) {
+        guard let deviceId = UUID(uuidString: deviceIdentifier) else {
             BleError.invalidUUID(deviceIdentifier).callReject(reject)
             return
         }
 
         if let device = connectedDevices[deviceId] {
-            resolve(device.isConnected)
+            resolve(device.isConnected as AnyObject?)
         } else {
-            resolve(false)
+            resolve(false as AnyObject?)
         }
     }
 
     // Mark: Discovery -------------------------------------------------------------------------------------------------
 
-    public func discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: String,
-                                                                        resolve: Resolve,
-                                                                         reject: Reject) {
+    open func discoverAllServicesAndCharacteristicsForDevice(_ deviceIdentifier: String,
+                                                                        resolve: @escaping Resolve,
+                                                                         reject: @escaping Reject) {
 
-        guard let deviceId = NSUUID(UUIDString: deviceIdentifier) else {
+        guard let deviceId = UUID(uuidString: deviceIdentifier) else {
             BleError.invalidUUID(deviceIdentifier).callReject(reject)
             return
         }
@@ -221,8 +221,9 @@ public class BleClientManager : NSObject {
             return
         }
 
-        _ = Observable.from(device.discoverServices(nil))
-            .flatMap { Observable.from($0.discoverCharacteristics(nil)) }
+        _ = device.discoverServices(nil)
+            .flatMap { Observable.from($0) }
+            .flatMap { $0.discoverCharacteristics(nil) }
             .subscribe(
                 onNext: nil,
                 onError: { error in error.bleError.callReject(reject) },
@@ -232,9 +233,9 @@ public class BleClientManager : NSObject {
 
     // Mark: Service and characteristic getters ------------------------------------------------------------------------
 
-    public func servicesForDevice(deviceIdentifier: String, resolve: Resolve, reject: Reject) {
+    open func servicesForDevice(_ deviceIdentifier: String, resolve: Resolve, reject: Reject) {
 
-        guard let deviceId = NSUUID(UUIDString: deviceIdentifier) else {
+        guard let deviceId = UUID(uuidString: deviceIdentifier) else {
             BleError.invalidUUID(deviceIdentifier).callReject(reject)
             return
         }
@@ -245,16 +246,16 @@ public class BleClientManager : NSObject {
         }
 
         let services = device.services?.map { $0.asJSObject } ?? []
-        resolve(services)
+        resolve(services as AnyObject?)
     }
 
-    public func characteristicsForDevice(deviceIdentifier: String,
+    open func characteristicsForDevice(_ deviceIdentifier: String,
                                               serviceUUID: String,
                                                   resolve: Resolve,
                                                    reject: Reject) {
 
-        guard let deviceId = NSUUID(UUIDString: deviceIdentifier),
-                  serviceId = serviceUUID.toCBUUID() else {
+        guard let deviceId = UUID(uuidString: deviceIdentifier),
+                  let serviceId = serviceUUID.toCBUUID() else {
             BleError.invalidUUIDs([deviceIdentifier, serviceUUID]).callReject(reject)
             return
         }
@@ -264,23 +265,23 @@ public class BleClientManager : NSObject {
             return
         }
 
-        let services = device.services?.filter { serviceId == $0.UUID } ?? []
+        let services = device.services?.filter { serviceId == $0.uuid } ?? []
         let characteristics = services
             .flatMap { $0.characteristics ?? [] }
             .map { $0.asJSObject }
 
-        resolve(characteristics)
+        resolve(characteristics as AnyObject)
     }
 
     // Mark: Reading ---------------------------------------------------------------------------------------------------
 
-    public func readCharacteristicForDevice(deviceIdentifier: String,
+    open func readCharacteristicForDevice(_ deviceIdentifier: String,
                                                  serviceUUID: String,
                                           characteristicUUID: String,
                                                transactionId: String,
-                                                     resolve: Resolve,
-                                                      reject: Reject) {
-        guard let deviceId = NSUUID(UUIDString: deviceIdentifier),
+                                                     resolve: @escaping Resolve,
+                                                      reject: @escaping Reject) {
+        guard let deviceId = UUID(uuidString: deviceIdentifier),
             let serviceId = serviceUUID.toCBUUID(),
             let characteristicId = characteristicUUID.toCBUUID() else {
                 BleError.invalidUUIDs([deviceIdentifier, serviceUUID, characteristicUUID]).callReject(reject)
@@ -294,7 +295,7 @@ public class BleClientManager : NSObject {
                                         promise: SafePromise(resolve: resolve, reject: reject))
     }
 
-    private func safeReadCharacteristicForDevice(deviceId: NSUUID,
+    fileprivate func safeReadCharacteristicForDevice(_ deviceId: UUID,
                                                  serviceId: CBUUID,
                                                  characteristicId: CBUUID,
                                                  transactionId: String,
@@ -323,22 +324,22 @@ public class BleClientManager : NSObject {
 
     // MARK: Writing ---------------------------------------------------------------------------------------------------
 
-    public func writeCharacteristicForDevice(  deviceIdentifier: String,
+    open func writeCharacteristicForDevice(  _ deviceIdentifier: String,
                                                     serviceUUID: String,
                                              characteristicUUID: String,
                                                     valueBase64: String,
                                                        response: Bool,
                                                   transactionId: String,
-                                                        resolve: Resolve,
-                                                         reject: Reject) {
-        guard let deviceId = NSUUID(UUIDString: deviceIdentifier),
+                                                        resolve: @escaping Resolve,
+                                                         reject: @escaping Reject) {
+        guard let deviceId = UUID(uuidString: deviceIdentifier),
               let serviceId = serviceUUID.toCBUUID(),
               let characteristicId = characteristicUUID.toCBUUID() else {
                 BleError.invalidUUIDs([deviceIdentifier, serviceUUID, characteristicUUID]).callReject(reject)
                 return
         }
 
-        guard let value = NSData(base64EncodedString: valueBase64, options: .IgnoreUnknownCharacters) else {
+        guard let value = Data(base64Encoded: valueBase64, options: .ignoreUnknownCharacters) else {
             return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
         }
 
@@ -351,10 +352,10 @@ public class BleClientManager : NSObject {
                                          promise: SafePromise(resolve: resolve, reject: reject))
     }
 
-    private func safeWriteCharacteristicForDevice(deviceId: NSUUID,
+    fileprivate func safeWriteCharacteristicForDevice(_ deviceId: UUID,
                                                   serviceId: CBUUID,
                                                   characteristicId: CBUUID,
-                                                  value: NSData,
+                                                  value: Data,
                                                   response: Bool,
                                                   transactionId: String,
                                                   promise: SafePromise) {
@@ -363,7 +364,7 @@ public class BleClientManager : NSObject {
                                                   serviceId: serviceId,
                                                   characteristicId: characteristicId)
             .flatMap {
-                $0.writeValue(value, type: response ? .WithResponse : .WithoutResponse)
+                $0.writeValue(value, type: response ? .withResponse : .withoutResponse)
             }
             .subscribe(
                 onNext: { characteristic in
@@ -384,14 +385,14 @@ public class BleClientManager : NSObject {
 
     // MARK: Monitoring ------------------------------------------------------------------------------------------------
 
-    public func monitorCharacteristicForDevice(  deviceIdentifier: String,
+    open func monitorCharacteristicForDevice(  _ deviceIdentifier: String,
                                                       serviceUUID: String,
                                                characteristicUUID: String,
                                                     transactionId: String,
-                                                          resolve: Resolve,
-                                                           reject: Reject) {
+                                                          resolve: @escaping Resolve,
+                                                           reject: @escaping Reject) {
 
-        guard let deviceId = NSUUID(UUIDString: deviceIdentifier),
+        guard let deviceId = UUID(uuidString: deviceIdentifier),
               let serviceId = serviceUUID.toCBUUID(),
               let characteristicId = characteristicUUID.toCBUUID() else {
             BleError.invalidUUIDs([deviceIdentifier, serviceUUID, characteristicUUID]).callReject(reject)
@@ -405,7 +406,7 @@ public class BleClientManager : NSObject {
                                            promise: SafePromise(resolve: resolve, reject: reject))
     }
 
-    private func safeMonitorCharacteristicForDevice(deviceId: NSUUID,
+    fileprivate func safeMonitorCharacteristicForDevice(_ deviceId: UUID,
                                                     serviceId: CBUUID,
                                                     characteristicId: CBUUID,
                                                     transactionId: String,
@@ -424,14 +425,11 @@ public class BleClientManager : NSObject {
                                                   serviceId: serviceId,
                                                   characteristicId: characteristicId)
                 .flatMap { [weak self] characteristic -> Observable<Characteristic> in
-                    return Observable.using({
-                        return AnonymousDisposable {
+                    return characteristic.setNotificationAndMonitorUpdates()
+                        .do(onNext: nil, onError: nil, onCompleted: nil, onSubscribe: nil, onDispose: {
                             _ = characteristic.setNotifyValue(false).subscribe()
                             self?.monitoredCharacteristics[key] = nil
-                        }
-                    }, observableFactory: { _ in
-                        return characteristic.setNotificationAndMonitorUpdates()
-                    })
+                        })
                 }
                 .share()
 
@@ -440,9 +438,9 @@ public class BleClientManager : NSObject {
 
         let disposable = observable.subscribe(
             onNext: { [weak self] characteristic in
-                self?.dispatchEvent(BleEvent.readEvent, value: [NSNull(), characteristic.asJSObject, transactionId])
+                self?.dispatchEvent(BleEvent.readEvent, value: [NSNull(), characteristic.asJSObject, transactionId] as AnyObject)
             }, onError: { [weak self] error in
-                self?.dispatchEvent(BleEvent.readEvent, value: [error.bleError.toJS, NSNull(), transactionId])
+                self?.dispatchEvent(BleEvent.readEvent, value: [error.bleError.toJS, NSNull(), transactionId] as AnyObject)
             }, onCompleted: {
 
             }, onDisposed: { [weak self] in
@@ -455,26 +453,26 @@ public class BleClientManager : NSObject {
 
     // MARK: Private interface -----------------------------------------------------------------------------------------
 
-    private func dispatchEvent(event: String, value: AnyObject) {
+    fileprivate func dispatchEvent(_ event: String, value: AnyObject) {
         delegate?.dispatchEvent(event, value: value)
     }
 
-    private func characteristicObservable(deviceId: NSUUID,
-                                          serviceId: CBUUID,
-                                          characteristicId: CBUUID) -> Observable<Characteristic> {
+    fileprivate func characteristicObservable(_ deviceId: UUID,
+                                               serviceId: CBUUID,
+                                        characteristicId: CBUUID) -> Observable<Characteristic> {
 
         return Observable.deferred { [weak self] in
-            guard let device = self?.connectedDevices[deviceId] else {
-                return Observable.error(BleError.peripheralNotConnected(deviceId.UUIDString))
+            guard let device = self?.connectedDevices[deviceId as UUID] else {
+                return Observable.error(BleError.peripheralNotConnected(deviceId.uuidString))
             }
 
             let characteristics = device.services?
-                .filter { serviceId == $0.UUID }
+                .filter { serviceId == $0.uuid }
                 .flatMap { $0.characteristics ?? [] }
-                .filter { characteristicId == $0.UUID } ?? []
+                .filter { characteristicId == $0.uuid } ?? []
             
             guard let characteristic = characteristics.first else {
-                return Observable.error(BleError.characteristicNotFound(characteristicId.UUIDString))
+                return Observable.error(BleError.characteristicNotFound(characteristicId.uuidString))
             }
             
             return Observable.just(characteristic)

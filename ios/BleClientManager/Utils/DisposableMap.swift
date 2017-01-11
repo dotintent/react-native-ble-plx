@@ -9,14 +9,14 @@
 import RxSwift
 
 class DisposableMap<T: Hashable> {
-    private var disposables = Dictionary<T, Disposable>()
+    fileprivate var disposables = Dictionary<T, Disposable>()
 
-    func replaceDisposable(key: T, disposable: Disposable?) {
+    func replaceDisposable(_ key: T, disposable: Disposable?) {
         disposables[key]?.dispose()
         disposables[key] = disposable
     }
 
-    func removeDisposable(key: T) {
+    func removeDisposable(_ key: T) {
         replaceDisposable(key, disposable: nil)
     }
 

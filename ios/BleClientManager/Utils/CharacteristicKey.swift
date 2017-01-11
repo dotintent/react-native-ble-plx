@@ -9,7 +9,7 @@
 import CoreBluetooth
 
 struct CharacteristicKey: Hashable {
-    let deviceId: NSUUID
+    let deviceId: UUID
     let serviceId: CBUUID
     let characteristicId: CBUUID
 

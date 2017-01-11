@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import CoreBluetooth
 
-extension SequenceType where Generator.Element == String {
+extension Sequence where Iterator.Element == String {
     func toCBUUIDS() -> [CBUUID]? {
         var newUUIDS: [CBUUID] = []
         for uuid in self {
@@ -33,16 +33,16 @@ extension String {
         default:
             uuid = self
         }
-        guard let nsuuid = NSUUID(UUIDString: uuid) else {
+        guard let nsuuid = UUID(uuidString: uuid) else {
             return nil
         }
-        return CBUUID(NSUUID: nsuuid)
+        return CBUUID(nsuuid: nsuuid)
     }
 }
 
 extension CBUUID {
     var fullUUIDString: String {
-        let native = self.UUIDString.lowercaseString
+        let native = self.uuidString.lowercased()
         if (native.characters.count == 4) {
             return "0000\(native)-0000-1000-8000-00805f9b34fb"
         }
@@ -50,5 +50,11 @@ extension CBUUID {
             return "\(native)-0000-1000-8000-00805f9b34fb"
         }
         return native
+    }
+}
+
+extension Data {
+    var base64: String {
+        return self.base64EncodedString(options: .endLineWithCarriageReturn)
     }
 }
