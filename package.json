@@ -1,6 +1,6 @@
 {
   "name": "react-native-ble-plx",
-  "version": "0.3.3",
+  "version": "0.4.0",
   "description": "React Native Bluetooth Low Energy library",
   "main": "index.js",
   "directories": {
@@ -13,6 +13,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Polidea/react-native-ble-plx.git"
+  },
+  "devDependencies": {
+    "react": "15.4.2",
+    "react-native": "0.40.0"
   },
   "keywords": [
     "React",

@@ -1,4 +1,4 @@
-// @Flow
+// @flow
 "use strict"
 
 import BleManager from './BleManager'
@@ -7,7 +7,7 @@ import type { Subscription } from './BleManager'
 
 class NativeService {
     uuid: string
-    deviceUUID: string
+    deviceID: string
     isPrimary: boolean
 }
 
@@ -23,40 +23,43 @@ export default class Service extends NativeService {
     }
 
     async characteristics(): Promise<Characteristic[]> {
-        return this._manager.characteristicsForDevice(this.deviceUUID, this.uuid)
+        return this._manager.characteristicsForDevice(this.deviceID, this.uuid)
     }
 
     async readCharacteristic(characteristicUUID: string, transactionId: ?string): Promise<Characteristic> {
-        return this._manager.readCharacteristic(this.deviceUUID, this.uuid, characteristicUUID, transactionId)
+        return this._manager.readCharacteristicForDevice(this.deviceID, this.uuid, characteristicUUID, transactionId)
     }
 
-    async writeCharacteristicWithResponse(characteristicUUID: string, 
-                                          valueBase64: string, 
-                                          transactionId: ?string): Promise<Characteristic> {
-        return this._manager.writeCharacteristicWithResponseForDevice(this.deviceUUID, 
-                                                                      this.uuid, 
-                                                                      characteristicUUID,
-                                                                      valueBase64, 
-                                                                      transactionId)
+    async writeCharacteristicWithResponse(
+        characteristicUUID: string,
+        valueBase64: string,
+        transactionId: ?string): Promise<Characteristic> {
+        return this._manager.writeCharacteristicWithResponseForDevice(this.deviceID,
+            this.uuid,
+            characteristicUUID,
+            valueBase64,
+            transactionId)
     }
 
-    async writeCharacteristicWithoutResponse(characteristicUUID: string,
-                                             valueBase64: string, 
-                                             transactionId: ?string): Promise<Characteristic> {
-        return this._manager.writeCharacteristicWithoutResponseForDevice(this.deviceUUID,
-                                                                         this.uuid,
-                                                                         characteristicUUID,
-                                                                         valueBase64,
-                                                                         transactionId)
+    async writeCharacteristicWithoutResponse(
+        characteristicUUID: string,
+        valueBase64: string,
+        transactionId: ?string): Promise<Characteristic> {
+        return this._manager.writeCharacteristicWithoutResponseForDevice(this.deviceID,
+            this.uuid,
+            characteristicUUID,
+            valueBase64,
+            transactionId)
     }
 
-    monitorCharacteristic(characteristicUUID: string,
-                          listener: (error: ?Error, characteristic: ?Characteristic) => void,
-                          transactionId: ?string): Subscription {
-        return this._manager.monitorCharacteristicForDevice(this.deviceUUID, 
-                                                            this.uuid, 
-                                                            characteristicUUID, 
-                                                            listener, 
-                                                            transactionId)
+    monitorCharacteristic(
+        characteristicUUID: string,
+        listener: (error: ?Error, characteristic: ?Characteristic) => void,
+        transactionId: ?string): Subscription {
+        return this._manager.monitorCharacteristicForDevice(this.deviceID,
+            this.uuid,
+            characteristicUUID,
+            listener,
+            transactionId)
     }
 }

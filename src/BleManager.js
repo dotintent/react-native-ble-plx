@@ -1,7 +1,7 @@
 // @flow
 'use strict';
 
-import { NativeModules, NativeEventEmitter} from 'react-native';
+import { NativeModules, NativeEventEmitter } from 'react-native';
 import Device from './Device';
 import Service from './Service';
 import Characteristic from './Characteristic';
@@ -9,8 +9,8 @@ import { fullUUID } from './Utils';
 
 const BleModule = NativeModules.BleClientManager;
 
-export type State = 
-    'Unknown'
+export type State =
+  'Unknown'
   | 'Resetting'
   | 'Unsupported'
   | 'Unauthorized'
@@ -103,7 +103,7 @@ export default class BleManager {
     const disconnectionListener = ([error, device]) => {
       if (deviceIdentifier !== device.uuid) return
       listener(error, device)
-    };    
+    };
 
     const subscription = this._eventEmitter.addListener(BleModule.DisconnectionEvent, disconnectionListener);
     return subscription
@@ -129,67 +129,68 @@ export default class BleManager {
 
   async characteristicsForDevice(deviceIdentifier: string, serviceUUID: string): Promise<Characteristic[]> {
     const characteristics = await BleModule.characteristicsForDevice(deviceIdentifier, serviceUUID);
-    return characteristics.map((characteristicProps) => { return new Characteristic(characteristicProps, this)});
+    return characteristics.map((characteristicProps) => { return new Characteristic(characteristicProps, this) });
   }
 
   // Mark: Characteristics operations --------------------------------------------------------------------------------
 
-  async readCharacteristicForDevice(deviceIdentifier: string, 
-                                    serviceUUID: string, 
-                                    characteristicUUID: string, 
-                                    transactionId: ?string): Promise<Characteristic> {
+  async readCharacteristicForDevice(
+    deviceIdentifier: string,
+    serviceUUID: string,
+    characteristicUUID: string,
+    transactionId: ?string): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
 
-    const characteristicProps = await BleModule.readCharacteristicForDevice(deviceIdentifier, 
-                                                                            serviceUUID, 
-                                                                            characteristicUUID, 
-                                                                            transactionId);
+    const characteristicProps = await BleModule.readCharacteristicForDevice(deviceIdentifier,
+      serviceUUID,
+      characteristicUUID,
+      transactionId);
     return new Characteristic(characteristicProps, this)
   }
 
-  async writeCharacteristicWithResponseForDevice(deviceIdentifier: string, 
-                                                 serviceUUID: string, 
-                                                 characteristicUUID: string, 
-                                                 base64Value: string, 
-                                                 transactionId: ?string): Promise<Characteristic> {
+  async writeCharacteristicWithResponseForDevice(deviceIdentifier: string,
+    serviceUUID: string,
+    characteristicUUID: string,
+    base64Value: string,
+    transactionId: ?string): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
 
     const characteristicProps = await BleModule.writeCharacteristicForDevice(deviceIdentifier,
-                                                                             serviceUUID,
-                                                                             characteristicUUID,
-                                                                             base64Value,
-                                                                             true,
-                                                                             transactionId);
+      serviceUUID,
+      characteristicUUID,
+      base64Value,
+      true,
+      transactionId);
     return new Characteristic(characteristicProps, this)
   }
 
-  async writeCharacteristicWithoutResponseForDevice(deviceIdentifier: string, 
-                                                    serviceUUID: string, 
-                                                    characteristicUUID: string, 
-                                                    base64Value: string,
-                                                    transactionId: ?string): Promise<Characteristic> {
+  async writeCharacteristicWithoutResponseForDevice(deviceIdentifier: string,
+    serviceUUID: string,
+    characteristicUUID: string,
+    base64Value: string,
+    transactionId: ?string): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
 
-    const characteristicProps = await BleModule.writeCharacteristicForDevice(deviceIdentifier, 
-                                                                             serviceUUID,
-                                                                             characteristicUUID,
-                                                                             base64Value,
-                                                                             false,
-                                                                             transactionId);
+    const characteristicProps = await BleModule.writeCharacteristicForDevice(deviceIdentifier,
+      serviceUUID,
+      characteristicUUID,
+      base64Value,
+      false,
+      transactionId);
     return new Characteristic(characteristicProps, this)
   }
 
-  monitorCharacteristicForDevice(deviceIdentifier: string, 
-                                 serviceUUID: string, 
-                                 characteristicUUID: string, 
-                                 listener: (error: ?Error, characteristic: ?Characteristic) => void, 
-                                 transactionId: ?string): Subscription {
+  monitorCharacteristicForDevice(deviceIdentifier: string,
+    serviceUUID: string,
+    characteristicUUID: string,
+    listener: (error: ?Error, characteristic: ?Characteristic) => void,
+    transactionId: ?string): Subscription {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }

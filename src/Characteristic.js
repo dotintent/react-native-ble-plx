@@ -7,7 +7,7 @@ import type { Subscription } from './BleManager'
 class NativeCharacteristic {
     uuid: string
     serviceUUID: string
-    deviceUUID: string
+    deviceID: string
     isReadable: boolean
     isWritableWithResponse: boolean
     isWritableWithoutResponse: boolean
@@ -29,18 +29,18 @@ export default class Characteristic extends NativeCharacteristic {
     }
 
     async read(transactionId: string): Promise<Characteristic> {
-        return this._manager.readCharacteristicForDevice(this.deviceUUID, this.serviceUUID, this.uuid, transactionId)
+        return this._manager.readCharacteristicForDevice(this.deviceID, this.serviceUUID, this.uuid, transactionId)
     }
 
     async writeWithResponse(valueBase64: string, transactionId: ?string): Promise<Characteristic> {
-        return this._manager.writeCharacteristicWithResponseForDevice(this.deviceUUID, this.serviceUUID, this.uuid, valueBase64, transactionId)
+        return this._manager.writeCharacteristicWithResponseForDevice(this.deviceID, this.serviceUUID, this.uuid, valueBase64, transactionId)
     }
 
     async writeWithoutResponse(valueBase64: string, transactionId: ?string): Promise<Characteristic> {
-        return this._manager.writeCharacteristicWithoutResponseForDevice(this.deviceUUID, this.serviceUUID, this.uuid, valueBase64, transactionId)
+        return this._manager.writeCharacteristicWithoutResponseForDevice(this.deviceID, this.serviceUUID, this.uuid, valueBase64, transactionId)
     }
 
     monitor(listener: (error: ?Error, characteristic: ?Characteristic) => void, transactionId: ?string): Subscription {
-        return this._manager.monitorCharacteristicForDevice(this.deviceUUID, this.serviceUUID, this.uuid, listener, transactionId)
+        return this._manager.monitorCharacteristicForDevice(this.deviceID, this.serviceUUID, this.uuid, listener, transactionId)
     }
 }
