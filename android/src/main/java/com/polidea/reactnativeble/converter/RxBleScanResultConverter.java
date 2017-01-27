@@ -15,7 +15,7 @@ import java.util.UUID;
 public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult> {
 
     interface Metadata {
-        String UUID = "uuid";
+        String ID = "id";
         String NAME = "name";
         String RSSI = "rssi";
 
@@ -31,7 +31,7 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
     @Override
     public WritableMap toJSObject(RxBleScanResult value) {
         WritableMap result = Arguments.createMap();
-        result.putString(Metadata.UUID, value.getBleDevice().getMacAddress());
+        result.putString(Metadata.ID, value.getBleDevice().getMacAddress());
         result.putString(Metadata.NAME, value.getBleDevice().getName());
         result.putInt(Metadata.RSSI, value.getRssi());
 

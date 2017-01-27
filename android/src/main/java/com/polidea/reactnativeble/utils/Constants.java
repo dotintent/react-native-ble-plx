@@ -1,4 +1,4 @@
-package com.polidea.reactnativeble;
+package com.polidea.reactnativeble.utils;
 
 
 import android.support.annotation.StringDef;

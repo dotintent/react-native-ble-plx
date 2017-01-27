@@ -26,7 +26,12 @@ project.xcworkspace
 #
 .idea
 .gradle
+gradlew
+*.iml
+*.swp
+*.bat
 local.properties
+android/gradle/wrapper
 
 # node.js
 #

@@ -7,7 +7,7 @@ import com.polidea.rxandroidble.RxBleDevice;
 public class RxBleDeviceConverter extends JSObjectConverter<RxBleDevice> {
 
     private interface Metadata {
-        String UUID = "uuid";
+        String ID = "id";
         String NAME = "name";
         String RSSI = "rssi";
 
@@ -23,7 +23,7 @@ public class RxBleDeviceConverter extends JSObjectConverter<RxBleDevice> {
     @Override
     public WritableMap toJSObject(RxBleDevice value) {
         WritableMap result = Arguments.createMap();
-        result.putString(Metadata.UUID, value.getMacAddress());
+        result.putString(Metadata.ID, value.getMacAddress());
         result.putString(Metadata.NAME, value.getName());
 
         // Advertisement data is not set

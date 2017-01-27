@@ -1,6 +1,6 @@
 package com.polidea.reactnativeble;
 
-import static com.polidea.reactnativeble.Constants.*;
+import static com.polidea.reactnativeble.utils.Constants.*;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
@@ -9,7 +9,6 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
@@ -412,7 +411,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                         WritableArray jsServices = Arguments.createArray();
                         for (BluetoothGattService service : bluetoothGattServices.getBluetoothGattServices()) {
                             WritableMap jsService = converter.service.toJSObject(service);
-                            jsService.putString("deviceUUID", device.getMacAddress());
+                            jsService.putString("deviceID", device.getMacAddress());
                             jsServices.pushMap(jsService);
                         }
                         promise.resolve(jsServices);
@@ -477,7 +476,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                         WritableArray jsCharacteristics = Arguments.createArray();
                         for (BluetoothGattCharacteristic characteristic : foundService.getCharacteristics()) {
                             WritableMap value = converter.characteristic.toJSObject(characteristic);
-                            value.putString("deviceUUID", device.getMacAddress());
+                            value.putString("deviceID", device.getMacAddress());
                             value.putString("serviceUUID", UUIDConverter.fromUUID(serviceUUID));
                             jsCharacteristics.pushMap(value);
                         }
@@ -593,7 +592,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                     @Override
                     public void onNext(Pair<BluetoothGattCharacteristic, byte[]> result) {
                         WritableMap jsObject = converter.characteristic.toJSObject(result.first);
-                        jsObject.putString("deviceUUID", device.getMacAddress());
+                        jsObject.putString("deviceID", device.getMacAddress());
                         jsObject.putString("serviceUUID", UUIDConverter.fromUUID(serviceUUID));
                         jsObject.putString("value", Base64Converter.encode(result.second));
                         promise.resolve(jsObject);
@@ -689,7 +688,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                     @Override
                     public void onNext(Pair<BluetoothGattCharacteristic, byte[]> result) {
                         WritableMap jsObject = converter.characteristic.toJSObject(result.first);
-                        jsObject.putString("deviceUUID", device.getMacAddress());
+                        jsObject.putString("deviceID", device.getMacAddress());
                         jsObject.putString("serviceUUID", UUIDConverter.fromUUID(serviceUUID));
                         jsObject.putString("value", Base64Converter.encode(result.second));
                         promise.resolve(jsObject);
@@ -817,7 +816,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                                   final BluetoothGattCharacteristic characteristic) {
 
         WritableMap jsObject = converter.characteristic.toJSObject(characteristic);
-        jsObject.putString("deviceUUID", deviceId);
+        jsObject.putString("deviceID", deviceId);
         jsObject.putString("serviceUUID", serviceUUID);
         jsObject.putString("value", Base64Converter.encode(value));
 
