@@ -1,0 +1,3590 @@
+[
+  {
+    "__docId__": 0,
+    "kind": "file",
+    "name": "react-native-ble-plx/index.js",
+    "content": "",
+    "static": true,
+    "longname": "react-native-ble-plx/index.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 1,
+    "kind": "file",
+    "name": "react-native-ble-plx/src/BleManager.js",
+    "content": "",
+    "static": true,
+    "longname": "react-native-ble-plx/src/BleManager.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 2,
+    "kind": "variable",
+    "name": "BleModule",
+    "memberof": "react-native-ble-plx/src/BleManager.js",
+    "static": true,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleModule",
+    "access": null,
+    "export": false,
+    "importPath": "react-native-ble-plx/react-native-ble-plx/src/BleManager.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 9,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 3,
+    "kind": "class",
+    "name": "BleManager",
+    "memberof": "react-native-ble-plx/src/BleManager.js",
+    "static": true,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "access": null,
+    "export": true,
+    "importPath": "react-native-ble-plx/react-native-ble-plx/src/BleManager.js",
+    "importStyle": "BleManager",
+    "description": "\nBleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with\n{@link Device} instances. It should be initialized only once with new keyword and method {@link destroy} should be called \non its instance when user wants to deallocate all resources.",
+    "examples": [
+      "const manager = new BleManager();\n// ... work with BLE manager ...\nmanager.destroy(); "
+    ],
+    "lineNumber": 25,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "BleManager"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 4,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#constructor",
+    "access": null,
+    "description": null,
+    "lineNumber": 27,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": []
+  },
+  {
+    "__docId__": 5,
+    "kind": "member",
+    "name": "_eventEmitter",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#_eventEmitter",
+    "access": null,
+    "description": null,
+    "lineNumber": 29,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 6,
+    "kind": "member",
+    "name": "_uniqueId",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#_uniqueId",
+    "access": null,
+    "description": null,
+    "lineNumber": 30,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "number"
+      ]
+    }
+  },
+  {
+    "__docId__": 7,
+    "kind": "method",
+    "name": "destroy",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#destroy",
+    "access": null,
+    "description": "Destroys BleManager instance. A new instance needs to be created to continue working with react-native-ble-plx.",
+    "lineNumber": 38,
+    "unknown": [
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": []
+  },
+  {
+    "__docId__": 8,
+    "kind": "method",
+    "name": "_nextUniqueID",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#_nextUniqueID",
+    "access": null,
+    "description": null,
+    "lineNumber": 42,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 9,
+    "kind": "member",
+    "name": "_uniqueId",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#_uniqueId",
+    "access": null,
+    "description": null,
+    "lineNumber": 43,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "number"
+      ]
+    }
+  },
+  {
+    "__docId__": 10,
+    "kind": "method",
+    "name": "cancelTransaction",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#cancelTransaction",
+    "access": null,
+    "description": "Cancels pending transaction.\n\nFew operations such as monitoring characteristic's value changes can be cancelled by a user. Basically every API \nentry which accepts `transactionId` allows to call `cancelTransaction` function. When cancelled operation is a \npromise or a callback which registers errors, `\"Cancelled\"` error will be emitted in that case.\n\nCancelling transaction which doesn't exist is ignored.",
+    "lineNumber": 63,
+    "unknown": [
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "Id of pending transactions."
+      }
+    ]
+  },
+  {
+    "__docId__": 11,
+    "kind": "method",
+    "name": "state",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#state",
+    "access": null,
+    "description": "Current state of a manager.\n\nAvailable states:\n- `Unknown` - the current state of the manager is unknown; an update is imminent.\n- `Resetting` - the connection with the system service was momentarily lost; an update is imminent.\n- `Unsupported` - the platform does not support Bluetooth low energy.\n- `Unauthorized` - the app is not authorized to use Bluetooth low energy.\n- `PoweredOff` - Bluetooth is currently powered off.\n- `PoweredOn` - Bluetooth is currently powered on and available to use.",
+    "lineNumber": 85,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{State} Current state of BleManager."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "State"
+      ],
+      "spread": false,
+      "description": "Current state of BleManager."
+    }
+  },
+  {
+    "__docId__": 12,
+    "kind": "method",
+    "name": "onStateChange",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#onStateChange",
+    "access": null,
+    "description": "\nNotifies about state changes of a manager.",
+    "lineNumber": 100,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Subscription} Subscription on which remove() function can be called to unsubscribe."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "function(newState: State)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "listener",
+        "description": "Callback which emits state changes of BLE Manager. \nLook at {@link state} for possible values."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Subscription"
+      ],
+      "spread": false,
+      "description": "Subscription on which remove() function can be called to unsubscribe."
+    }
+  },
+  {
+    "__docId__": 13,
+    "kind": "method",
+    "name": "startDeviceScan",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#startDeviceScan",
+    "access": null,
+    "description": "Starts device scanning. \n\nWhen previous scan is in progress it will be stopped before executing this command.",
+    "lineNumber": 125,
+    "unknown": [
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": true,
+        "types": [
+          "string[]"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "UUIDs",
+        "description": "Array of strings containing UUIDs of services which are registered in scanned devices. \nIf null is passed all available devices will be scanned."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "ScanOptions"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": "Optional configuration for scanning operation. Scan option object contains two\noptional fields: `allowDuplicates` for iOS when set to true scanned {@link Device}s will be emitted more\nfrequently, `autoConnect` for Android - allows to connect to devices which are not in range."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "function(error: ?Error, scannedDevice: ?Device)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "listener",
+        "description": "Function which will be called for every scanned \n{@link Device} (devices may be scanned multiple times). It's first argument is potential {@link Error} which is set \nto non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument \nis a scanned {@link Device}."
+      }
+    ]
+  },
+  {
+    "__docId__": 14,
+    "kind": "member",
+    "name": "_scanEventSubscription",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#_scanEventSubscription",
+    "access": null,
+    "description": null,
+    "lineNumber": 130,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 15,
+    "kind": "method",
+    "name": "stopDeviceScan",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#stopDeviceScan",
+    "access": null,
+    "description": "\nStops device scan if in progress.",
+    "lineNumber": 140,
+    "unknown": [
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": []
+  },
+  {
+    "__docId__": 16,
+    "kind": "method",
+    "name": "connectToDevice",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#connectToDevice",
+    "access": null,
+    "description": "Connects to {@link Device} with provided ID.",
+    "lineNumber": 159,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Device>} Connected {@link Device} object if successful."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "ConnectionOptions"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": "Platform specific options for connection establishment. Not used currently."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Device>"
+      ],
+      "spread": false,
+      "description": "Connected {@link Device} object if successful."
+    }
+  },
+  {
+    "__docId__": 17,
+    "kind": "method",
+    "name": "cancelDeviceConnection",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#cancelDeviceConnection",
+    "access": null,
+    "description": "Disconnects from device if it's connected or cancels pending connection.",
+    "lineNumber": 172,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Device>} Returns closed {@link Device} when operation is successful."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier to be closed."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Device>"
+      ],
+      "spread": false,
+      "description": "Returns closed {@link Device} when operation is successful."
+    }
+  },
+  {
+    "__docId__": 18,
+    "kind": "method",
+    "name": "onDeviceDisconnected",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#onDeviceDisconnected",
+    "access": null,
+    "description": "Monitors if device was disconnected due to any errors or connection problems.",
+    "lineNumber": 187,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Subscription} Subscription on which `remove()` function can be called to unsubscribe."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier to be monitored."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "function(error: ?Error, device: ?Device)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "listener",
+        "description": "callback returning error as a reason of disconnection \nif available and {@link Device} object."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Subscription"
+      ],
+      "spread": false,
+      "description": "Subscription on which `remove()` function can be called to unsubscribe."
+    }
+  },
+  {
+    "__docId__": 19,
+    "kind": "method",
+    "name": "isDeviceConnected",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#isDeviceConnected",
+    "access": null,
+    "description": "Check connection state of a device.",
+    "lineNumber": 205,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<boolean>} - Promise which emits `true` if device is connected, and `false` otherwise."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<boolean>"
+      ],
+      "spread": false,
+      "description": "Promise which emits `true` if device is connected, and `false` otherwise."
+    }
+  },
+  {
+    "__docId__": 20,
+    "kind": "method",
+    "name": "discoverAllServicesAndCharacteristicsForDevice",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#discoverAllServicesAndCharacteristicsForDevice",
+    "access": null,
+    "description": "Discovers all services and characteristics for {@link Device}.",
+    "lineNumber": 220,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Device>} - Promise which emits {@link Device} object if all available services and \ncharacteristics have been discovered."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "identifier",
+        "description": "{@link Device} identifier."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Device>"
+      ],
+      "spread": false,
+      "description": "Promise which emits {@link Device} object if all available services and \ncharacteristics have been discovered."
+    }
+  },
+  {
+    "__docId__": 21,
+    "kind": "method",
+    "name": "servicesForDevice",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#servicesForDevice",
+    "access": null,
+    "description": "List of discovered services for device.",
+    "lineNumber": 236,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Service[]>} - Promise which emits array of {@link Service} objects which are discovered for a \n{@link Device}."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Service[]>"
+      ],
+      "spread": false,
+      "description": "Promise which emits array of {@link Service} objects which are discovered for a \n{@link Device}."
+    }
+  },
+  {
+    "__docId__": 22,
+    "kind": "method",
+    "name": "characteristicsForDevice",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#characteristicsForDevice",
+    "access": null,
+    "description": "List of discovered characteristics for given {@link Device} and {@link Service}.",
+    "lineNumber": 253,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic[]>} - Promise which emits array of {@link Characteristic} objects which are \ndiscovered for a {@link Device} in specified {@link Service}."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic[]>"
+      ],
+      "spread": false,
+      "description": "Promise which emits array of {@link Characteristic} objects which are \ndiscovered for a {@link Device} in specified {@link Service}."
+    }
+  },
+  {
+    "__docId__": 23,
+    "kind": "method",
+    "name": "readCharacteristicForDevice",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#readCharacteristicForDevice",
+    "access": null,
+    "description": "Read characteristic value.",
+    "lineNumber": 274,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of {@link Characteristic} will be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of {@link Characteristic} will be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 24,
+    "kind": "method",
+    "name": "writeCharacteristicWithResponseForDevice",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#writeCharacteristicWithResponseForDevice",
+    "access": null,
+    "description": "Write characteristic value with response.",
+    "lineNumber": 296,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of characteristic may not be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "base64Value",
+        "description": "Value in Base64 format."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of characteristic may not be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 25,
+    "kind": "method",
+    "name": "writeCharacteristicWithoutResponseForDevice",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#writeCharacteristicWithoutResponseForDevice",
+    "access": null,
+    "description": "Write characteristic value without response.",
+    "lineNumber": 318,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of characteristic may not be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "base64Value",
+        "description": "Value in Base64 format."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of characteristic may not be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 26,
+    "kind": "method",
+    "name": "monitorCharacteristicForDevice",
+    "memberof": "react-native-ble-plx/src/BleManager.js~BleManager",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/BleManager.js~BleManager#monitorCharacteristicForDevice",
+    "access": null,
+    "description": "Monitor value changes of a characteristic.",
+    "lineNumber": 340,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Subscription} Subscription on which `remove()` function can be called to unsubscribe."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "BleManager"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "deviceIdentifier",
+        "description": "{@link Device} identifier."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "function(error: ?Error, characteristic: ?Characteristic)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "listener",
+        "description": "callback which emits \n{@link Characteristic} objects with modified value for each notification."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Subscription"
+      ],
+      "spread": false,
+      "description": "Subscription on which `remove()` function can be called to unsubscribe."
+    }
+  },
+  {
+    "__docId__": 27,
+    "kind": "file",
+    "name": "react-native-ble-plx/src/Characteristic.js",
+    "content": "",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Characteristic.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 28,
+    "kind": "class",
+    "name": "NativeCharacteristic",
+    "memberof": "react-native-ble-plx/src/Characteristic.js",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Characteristic.js~NativeCharacteristic",
+    "access": "private",
+    "export": false,
+    "importPath": "react-native-ble-plx/react-native-ble-plx/src/Characteristic.js",
+    "importStyle": null,
+    "description": "Internal class describing Characteristic format which\nis exchanged between native modules and react native.",
+    "lineNumber": 13,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "NativeCharacteristic"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 29,
+    "kind": "class",
+    "name": "Characteristic",
+    "memberof": "react-native-ble-plx/src/Characteristic.js",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "access": null,
+    "export": true,
+    "importPath": "react-native-ble-plx/react-native-ble-plx/src/Characteristic.js",
+    "importStyle": "Characteristic",
+    "description": "Characteristic object.",
+    "lineNumber": 21,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "Characteristic"
+      }
+    ],
+    "interface": false,
+    "extends": [
+      "NativeCharacteristic"
+    ]
+  },
+  {
+    "__docId__": 30,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#constructor",
+    "access": "private",
+    "description": "Private {@link Characteristic} constructor.",
+    "lineNumber": 32,
+    "unknown": [
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Characteristic"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "NativeCharacteristic"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "props",
+        "description": "NativeCharacteristic properties to be copied."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "BleManager"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "manager",
+        "description": "Current BleManager instance."
+      }
+    ]
+  },
+  {
+    "__docId__": 31,
+    "kind": "member",
+    "name": "_manager",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#_manager",
+    "access": null,
+    "description": null,
+    "lineNumber": 34,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 32,
+    "kind": "member",
+    "name": "uuid",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#uuid",
+    "access": null,
+    "description": "{@link Characteristic} UUID.",
+    "lineNumber": 37,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 33,
+    "kind": "member",
+    "name": "serviceUUID",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#serviceUUID",
+    "access": null,
+    "description": "{@link Service} UUID which owns this characteristic.",
+    "lineNumber": 40,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 34,
+    "kind": "member",
+    "name": "deviceID",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#deviceID",
+    "access": null,
+    "description": "{@link Device} identifier which owns this characteristic.",
+    "lineNumber": 43,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 35,
+    "kind": "member",
+    "name": "isReadable",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#isReadable",
+    "access": null,
+    "description": "True if characteristic is readable.",
+    "lineNumber": 46,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 36,
+    "kind": "member",
+    "name": "isWritableWithResponse",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#isWritableWithResponse",
+    "access": null,
+    "description": "True if characteristic is writable when writing with response.",
+    "lineNumber": 49,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 37,
+    "kind": "member",
+    "name": "isWritableWithoutResponse",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#isWritableWithoutResponse",
+    "access": null,
+    "description": "True if characteristic is writable when writing without response.",
+    "lineNumber": 52,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 38,
+    "kind": "member",
+    "name": "isNotifiable",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#isNotifiable",
+    "access": null,
+    "description": "True if characteristic is notifiable",
+    "lineNumber": 55,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 39,
+    "kind": "member",
+    "name": "isNotifying",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#isNotifying",
+    "access": null,
+    "description": "Current status of notification for this characteristic.",
+    "lineNumber": 58,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 40,
+    "kind": "member",
+    "name": "isIndictable",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#isIndictable",
+    "access": null,
+    "description": "True if characteristic is indictable",
+    "lineNumber": 61,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 41,
+    "kind": "member",
+    "name": "value",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#value",
+    "access": null,
+    "description": "Current characteristic value in Base64 encoding, may be `null` when not read.",
+    "lineNumber": 64,
+    "type": {
+      "nullable": true,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 42,
+    "kind": "method",
+    "name": "read",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#read",
+    "access": null,
+    "description": "{@link BleManager.readCharacteristicForDevice} with partially filled arguments.",
+    "lineNumber": 76,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} Promise which emits this characteristic. Latest value will be stored inside \nreturned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Characteristic"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits this characteristic. Latest value will be stored inside \nreturned object."
+    }
+  },
+  {
+    "__docId__": 43,
+    "kind": "method",
+    "name": "writeWithResponse",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#writeWithResponse",
+    "access": null,
+    "description": "{@link BleManager.writeCharacteristicWithResponseForDevice} with partially filled arguments.",
+    "lineNumber": 90,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} Promise which emits this characteristic. Latest value of characteristic may \nnot be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Characteristic"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "valueBase64",
+        "description": "Value in Base64 format."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits this characteristic. Latest value of characteristic may \nnot be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 44,
+    "kind": "method",
+    "name": "writeWithoutResponse",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#writeWithoutResponse",
+    "access": null,
+    "description": "{@link BleManager.writeCharacteristicWithoutResponseForDevice} with partially filled arguments.",
+    "lineNumber": 104,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} Promise which emits this characteristic. Latest value of characteristic may \nnot be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Characteristic"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "valueBase64",
+        "description": "Value in Base64 format."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits this characteristic. Latest value of characteristic may \nnot be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 45,
+    "kind": "method",
+    "name": "monitor",
+    "memberof": "react-native-ble-plx/src/Characteristic.js~Characteristic",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Characteristic.js~Characteristic#monitor",
+    "access": null,
+    "description": "{@link BleManager.monitorCharacteristicForDevice} with partially filled arguments.",
+    "lineNumber": 118,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Subscription} Subscription on which `remove()` function can be called to unsubscribe."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Characteristic"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "function(error: ?Error, characteristic: ?Characteristic)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "listener",
+        "description": "callback which emits \nthis characteristic with modified value for each notification."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Subscription"
+      ],
+      "spread": false,
+      "description": "Subscription on which `remove()` function can be called to unsubscribe."
+    }
+  },
+  {
+    "__docId__": 46,
+    "kind": "file",
+    "name": "react-native-ble-plx/src/Device.js",
+    "content": "",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Device.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 47,
+    "kind": "class",
+    "name": "NativeDevice",
+    "memberof": "react-native-ble-plx/src/Device.js",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Device.js~NativeDevice",
+    "access": "private",
+    "export": false,
+    "importPath": "react-native-ble-plx/react-native-ble-plx/src/Device.js",
+    "importStyle": null,
+    "description": "Internal class describing Device format which\nis exchanged between native modules and react native.",
+    "lineNumber": 15,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "NativeDevice"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 48,
+    "kind": "class",
+    "name": "Device",
+    "memberof": "react-native-ble-plx/src/Device.js",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Device.js~Device",
+    "access": null,
+    "export": true,
+    "importPath": "react-native-ble-plx/react-native-ble-plx/src/Device.js",
+    "importStyle": "Device",
+    "description": "Device object.",
+    "lineNumber": 24,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "Device"
+      }
+    ],
+    "interface": false,
+    "extends": [
+      "NativeDevice"
+    ]
+  },
+  {
+    "__docId__": 49,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#constructor",
+    "access": "private",
+    "description": "Private {@link Device} constructor.",
+    "lineNumber": 35,
+    "unknown": [
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "NativeDevice"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "props",
+        "description": "NativeDevice properties to be copied."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "BleManager"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "manager",
+        "description": "Current BleManager instance."
+      }
+    ]
+  },
+  {
+    "__docId__": 50,
+    "kind": "member",
+    "name": "_manager",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#_manager",
+    "access": null,
+    "description": null,
+    "lineNumber": 37,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 51,
+    "kind": "member",
+    "name": "id",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#id",
+    "access": null,
+    "description": "Device identifier.",
+    "lineNumber": 40,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 52,
+    "kind": "member",
+    "name": "name",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#name",
+    "access": null,
+    "description": "Device name, may be `null`.",
+    "lineNumber": 43,
+    "type": {
+      "nullable": true,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 53,
+    "kind": "member",
+    "name": "rssi",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#rssi",
+    "access": null,
+    "description": "Device Received Signal Strength Indication value, may be `null`.",
+    "lineNumber": 46,
+    "type": {
+      "nullable": true,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 54,
+    "kind": "member",
+    "name": "manufacturerData",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#manufacturerData",
+    "access": null,
+    "description": "Device Manufacturer Data in Base64 format, may be `null`.",
+    "lineNumber": 49,
+    "type": {
+      "nullable": true,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 55,
+    "kind": "member",
+    "name": "serviceUUIDs",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#serviceUUIDs",
+    "access": null,
+    "description": "UUIDs of advertised {@link Service}s, may be `null`.",
+    "lineNumber": 52,
+    "type": {
+      "nullable": true,
+      "types": [
+        "string[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 56,
+    "kind": "member",
+    "name": "txPowerLevel",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#txPowerLevel",
+    "access": null,
+    "description": "Transmitted power level, may be `null`.",
+    "lineNumber": 55,
+    "type": {
+      "nullable": true,
+      "types": [
+        "number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 57,
+    "kind": "member",
+    "name": "solicitedServiceUUIDs",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#solicitedServiceUUIDs",
+    "access": null,
+    "description": "Solicited {@link Service} UUIDs, may be `null`.",
+    "lineNumber": 58,
+    "type": {
+      "nullable": true,
+      "types": [
+        "string[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 58,
+    "kind": "member",
+    "name": "isConnectable",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#isConnectable",
+    "access": null,
+    "description": "Is Device connectable (iOS only), may be `null`.",
+    "lineNumber": 61,
+    "type": {
+      "nullable": true,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 59,
+    "kind": "member",
+    "name": "overflowServiceUUIDs",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#overflowServiceUUIDs",
+    "access": null,
+    "description": "Overflow {@link Service} UUIDs (iOS only), may be `null`.",
+    "lineNumber": 64,
+    "type": {
+      "nullable": true,
+      "types": [
+        "string[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 60,
+    "kind": "member",
+    "name": "serviceData",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#serviceData",
+    "access": null,
+    "description": "Data related to specific {@link Service}, may be `null`.",
+    "lineNumber": 67,
+    "type": {
+      "nullable": true,
+      "types": [
+        "{[service:string]:string}"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 61,
+    "kind": "method",
+    "name": "connect",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#connect",
+    "access": null,
+    "description": "{@link BleManager.connectToDevice} with partially filled arguments.",
+    "lineNumber": 78,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Device>} Connected {@link Device} object if successful.\n "
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [
+      {
+        "nullable": true,
+        "types": [
+          "ConnectionOptions"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "options",
+        "description": "Platform specific options for connection establishment. Not used currently."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Device>"
+      ],
+      "spread": false,
+      "description": "Connected {@link Device} object if successful."
+    }
+  },
+  {
+    "__docId__": 62,
+    "kind": "method",
+    "name": "cancelConnection",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#cancelConnection",
+    "access": null,
+    "description": "{@link BleManager.cancelDeviceConnection} with partially filled arguments.",
+    "lineNumber": 89,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Device>} Returns closed {@link Device} when operation is successful."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Device>"
+      ],
+      "spread": false,
+      "description": "Returns closed {@link Device} when operation is successful."
+    }
+  },
+  {
+    "__docId__": 63,
+    "kind": "method",
+    "name": "isConnected",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#isConnected",
+    "access": null,
+    "description": "{@link BleManager.isDeviceConnected} with partially filled arguments.",
+    "lineNumber": 100,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<boolean>} - Promise which emits `true` if device is connected, and `false` otherwise."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<boolean>"
+      ],
+      "spread": false,
+      "description": "Promise which emits `true` if device is connected, and `false` otherwise."
+    }
+  },
+  {
+    "__docId__": 64,
+    "kind": "method",
+    "name": "onDisconnected",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#onDisconnected",
+    "access": null,
+    "description": "{@link BleManager.onDeviceDisconnected} with partially filled arguments.",
+    "lineNumber": 113,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Subscription} Subscription on which `remove()` function can be called to unsubscribe."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "function(error: ?Error, device: ?Device)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "listener",
+        "description": "callback returning error as a reason of disconnection \nif available and {@link Device} object."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Subscription"
+      ],
+      "spread": false,
+      "description": "Subscription on which `remove()` function can be called to unsubscribe."
+    }
+  },
+  {
+    "__docId__": 65,
+    "kind": "method",
+    "name": "discoverAllServicesAndCharacteristics",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#discoverAllServicesAndCharacteristics",
+    "access": null,
+    "description": "{@link BleManager.discoverAllServicesAndCharacteristicsForDevice} with partially filled arguments.",
+    "lineNumber": 125,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Device>} - Promise which emits {@link Device} object if all available services and \ncharacteristics have been discovered."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Device>"
+      ],
+      "spread": false,
+      "description": "Promise which emits {@link Device} object if all available services and \ncharacteristics have been discovered."
+    }
+  },
+  {
+    "__docId__": 66,
+    "kind": "method",
+    "name": "services",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#services",
+    "access": null,
+    "description": "{@link BleManager.servicesForDevice} with partially filled arguments.",
+    "lineNumber": 137,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Service[]>} - Promise which emits array of {@link Service} objects which are discovered by this\ndevice."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Service[]>"
+      ],
+      "spread": false,
+      "description": "Promise which emits array of {@link Service} objects which are discovered by this\ndevice."
+    }
+  },
+  {
+    "__docId__": 67,
+    "kind": "method",
+    "name": "characteristicsForService",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#characteristicsForService",
+    "access": null,
+    "description": "{@link BleManager.characteristicsForDevice} with partially filled arguments.",
+    "lineNumber": 150,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic[]>} - Promise which emits array of {@link Characteristic} objects which are \ndiscovered for a {@link Device} in specified {@link Service}."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic[]>"
+      ],
+      "spread": false,
+      "description": "Promise which emits array of {@link Characteristic} objects which are \ndiscovered for a {@link Device} in specified {@link Service}."
+    }
+  },
+  {
+    "__docId__": 68,
+    "kind": "method",
+    "name": "readCharacteristicForService",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#readCharacteristicForService",
+    "access": null,
+    "description": "{@link BleManager.readCharacteristicForDevice} with partially filled arguments.",
+    "lineNumber": 165,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of {@link Characteristic} will be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of {@link Characteristic} will be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 69,
+    "kind": "method",
+    "name": "writeCharacteristicWithResponseForService",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#writeCharacteristicWithResponseForService",
+    "access": null,
+    "description": "{@link BleManager.writeCharacteristicWithResponseForDevice} with partially filled arguments.",
+    "lineNumber": 181,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of characteristic may not be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "valueBase64",
+        "description": "Value in Base64 format."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of characteristic may not be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 70,
+    "kind": "method",
+    "name": "writeCharacteristicWithoutResponseForService",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#writeCharacteristicWithoutResponseForService",
+    "access": null,
+    "description": "{@link BleManager.writeCharacteristicWithoutResponseForDevice} with partially filled arguments.",
+    "lineNumber": 197,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of characteristic may not be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "valueBase64",
+        "description": "Value in Base64 format."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits first {@link Characteristic} object matching specified \nUUID paths. Latest value of characteristic may not be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 71,
+    "kind": "method",
+    "name": "monitorCharacteristicForService",
+    "memberof": "react-native-ble-plx/src/Device.js~Device",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Device.js~Device#monitorCharacteristicForService",
+    "access": null,
+    "description": "{@link BleManager.monitorCharacteristicForDevice} with partially filled arguments.",
+    "lineNumber": 213,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Subscription} Subscription on which `remove()` function can be called to unsubscribe."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "serviceUUID",
+        "description": "{@link Service} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "function(error: ?Error, characteristic: ?Characteristic)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "listener",
+        "description": "callback which emits \n{@link Characteristic} objects with modified value for each notification."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Subscription"
+      ],
+      "spread": false,
+      "description": "Subscription on which `remove()` function can be called to unsubscribe."
+    }
+  },
+  {
+    "__docId__": 72,
+    "kind": "file",
+    "name": "react-native-ble-plx/src/Service.js",
+    "content": "",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Service.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 73,
+    "kind": "class",
+    "name": "NativeService",
+    "memberof": "react-native-ble-plx/src/Service.js",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Service.js~NativeService",
+    "access": "private",
+    "export": false,
+    "importPath": "react-native-ble-plx/react-native-ble-plx/src/Service.js",
+    "importStyle": null,
+    "description": "Internal class describing Service format which\nis exchanged between native modules and react native.",
+    "lineNumber": 14,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "NativeService"
+      }
+    ],
+    "interface": false
+  },
+  {
+    "__docId__": 74,
+    "kind": "class",
+    "name": "Service",
+    "memberof": "react-native-ble-plx/src/Service.js",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Service.js~Service",
+    "access": null,
+    "export": true,
+    "importPath": "react-native-ble-plx/react-native-ble-plx/src/Service.js",
+    "importStyle": "Service",
+    "description": "Service object.",
+    "lineNumber": 23,
+    "unknown": [
+      {
+        "tagName": "@class",
+        "tagValue": "Service"
+      }
+    ],
+    "interface": false,
+    "extends": [
+      "NativeService"
+    ]
+  },
+  {
+    "__docId__": 75,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#constructor",
+    "access": "private",
+    "description": "Private {@link Service} constructor.",
+    "lineNumber": 34,
+    "unknown": [
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Device"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "NativeService"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "props",
+        "description": "NativeService properties to be copied."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "BleManager"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "manager",
+        "description": "Current BleManager instance."
+      }
+    ]
+  },
+  {
+    "__docId__": 76,
+    "kind": "member",
+    "name": "_manager",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#_manager",
+    "access": null,
+    "description": null,
+    "lineNumber": 36,
+    "undocument": true,
+    "unknown": [
+      {
+        "tagName": "@_undocument",
+        "tagValue": ""
+      }
+    ],
+    "type": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 77,
+    "kind": "member",
+    "name": "uuid",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#uuid",
+    "access": null,
+    "description": "{@link Service} UUID.",
+    "lineNumber": 40,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 78,
+    "kind": "member",
+    "name": "deviceID",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#deviceID",
+    "access": null,
+    "description": "{@link Device} ID who owns this {@link Service}.",
+    "lineNumber": 43,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 79,
+    "kind": "member",
+    "name": "isPrimary",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#isPrimary",
+    "access": null,
+    "description": "True if service is primary.",
+    "lineNumber": 46,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 80,
+    "kind": "method",
+    "name": "characteristics",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#characteristics",
+    "access": null,
+    "description": "{@link BleManager.characteristicsForDevice} with partially filled arguments.",
+    "lineNumber": 57,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic[]>} - Promise which emits array of {@link Characteristic} objects which are \ndiscovered for this service."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Service"
+      }
+    ],
+    "params": [],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic[]>"
+      ],
+      "spread": false,
+      "description": "Promise which emits array of {@link Characteristic} objects which are \ndiscovered for this service."
+    }
+  },
+  {
+    "__docId__": 81,
+    "kind": "method",
+    "name": "readCharacteristic",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#readCharacteristic",
+    "access": null,
+    "description": "{@link BleManager.readCharacteristicForDevice} with partially filled arguments.",
+    "lineNumber": 71,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \nUUID path. Latest value of {@link Characteristic} will be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Service"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits first {@link Characteristic} object matching specified \nUUID path. Latest value of {@link Characteristic} will be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 82,
+    "kind": "method",
+    "name": "writeCharacteristicWithResponse",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#writeCharacteristicWithResponse",
+    "access": null,
+    "description": "{@link BleManager.writeCharacteristicWithResponseForDevice} with partially filled arguments.",
+    "lineNumber": 86,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \nUUID path. Latest value of characteristic may not be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Service"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "valueBase64",
+        "description": "Value in Base64 format."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits first {@link Characteristic} object matching specified \nUUID path. Latest value of characteristic may not be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 83,
+    "kind": "method",
+    "name": "writeCharacteristicWithoutResponse",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#writeCharacteristicWithoutResponse",
+    "access": null,
+    "description": "{@link BleManager.writeCharacteristicWithoutResponseForDevice} with partially filled arguments.",
+    "lineNumber": 101,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \nUUID path. Latest value of characteristic may not be stored inside returned object."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Service"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "valueBase64",
+        "description": "Value in Base64 format."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Promise<Characteristic>"
+      ],
+      "spread": false,
+      "description": "Promise which emits first {@link Characteristic} object matching specified \nUUID path. Latest value of characteristic may not be stored inside returned object."
+    }
+  },
+  {
+    "__docId__": 84,
+    "kind": "method",
+    "name": "monitorCharacteristic",
+    "memberof": "react-native-ble-plx/src/Service.js~Service",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "react-native-ble-plx/src/Service.js~Service#monitorCharacteristic",
+    "access": null,
+    "description": "{@link BleManager.monitorCharacteristicForDevice} with partially filled arguments.",
+    "lineNumber": 116,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{Subscription} Subscription on which `remove()` function can be called to unsubscribe."
+      },
+      {
+        "tagName": "@memberOf",
+        "tagValue": "Service"
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "characteristicUUID",
+        "description": "{@link Characteristic} UUID."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "function(error: ?Error, characteristic: ?Characteristic)"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "listener",
+        "description": "callback which emits \n{@link Characteristic} objects with modified value for each notification."
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "transactionId",
+        "description": "optional `transactionId` which can be used in {@link cancelTransaction} function."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "Subscription"
+      ],
+      "spread": false,
+      "description": "Subscription on which `remove()` function can be called to unsubscribe."
+    }
+  },
+  {
+    "__docId__": 85,
+    "kind": "file",
+    "name": "react-native-ble-plx/src/Utils.js",
+    "content": "",
+    "static": true,
+    "longname": "react-native-ble-plx/src/Utils.js",
+    "access": null,
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 86,
+    "kind": "function",
+    "name": "fullUUID",
+    "memberof": "react-native-ble-plx/src/Utils.js",
+    "generator": false,
+    "async": false,
+    "static": true,
+    "longname": "react-native-ble-plx/src/Utils.js~fullUUID",
+    "access": null,
+    "export": true,
+    "importPath": "react-native-ble-plx/react-native-ble-plx/src/Utils.js",
+    "importStyle": "{fullUUID}",
+    "description": "Converts UUID to full 128bit, lowercase format which should be used to compare UUID values.",
+    "lineNumber": 11,
+    "unknown": [
+      {
+        "tagName": "@returns",
+        "tagValue": "{string} 128bit lowercase UUID."
+      }
+    ],
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "uuid",
+        "description": "16bit, 32bit or 128bit UUID."
+      }
+    ],
+    "return": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": "128bit lowercase UUID."
+    }
+  },
+  {
+    "__docId__": 88,
+    "kind": "external",
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Infinity",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 89,
+    "kind": "external",
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~NaN",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 90,
+    "kind": "external",
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~undefined",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 91,
+    "kind": "external",
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~null",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 92,
+    "kind": "external",
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 93,
+    "kind": "external",
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~object",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 94,
+    "kind": "external",
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 95,
+    "kind": "external",
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~function",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 96,
+    "kind": "external",
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 97,
+    "kind": "external",
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~boolean",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 98,
+    "kind": "external",
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Symbol",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 99,
+    "kind": "external",
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Error",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 100,
+    "kind": "external",
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~EvalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 101,
+    "kind": "external",
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~InternalError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 102,
+    "kind": "external",
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RangeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 103,
+    "kind": "external",
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ReferenceError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 104,
+    "kind": "external",
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~SyntaxError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 105,
+    "kind": "external",
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~TypeError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 106,
+    "kind": "external",
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~URIError",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 107,
+    "kind": "external",
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 108,
+    "kind": "external",
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~number",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 109,
+    "kind": "external",
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Date",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 110,
+    "kind": "external",
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~String",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 111,
+    "kind": "external",
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~string",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 112,
+    "kind": "external",
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~RegExp",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 113,
+    "kind": "external",
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 114,
+    "kind": "external",
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 115,
+    "kind": "external",
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 116,
+    "kind": "external",
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint8ClampedArray",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 117,
+    "kind": "external",
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 118,
+    "kind": "external",
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint16Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 119,
+    "kind": "external",
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Int32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 120,
+    "kind": "external",
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Uint32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 121,
+    "kind": "external",
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float32Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 122,
+    "kind": "external",
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Float64Array",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 123,
+    "kind": "external",
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Map",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 124,
+    "kind": "external",
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Set",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 125,
+    "kind": "external",
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakMap",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 126,
+    "kind": "external",
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~WeakSet",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 127,
+    "kind": "external",
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~ArrayBuffer",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 128,
+    "kind": "external",
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~DataView",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 129,
+    "kind": "external",
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~JSON",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 130,
+    "kind": "external",
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Promise",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 131,
+    "kind": "external",
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Generator",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 132,
+    "kind": "external",
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~GeneratorFunction",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 133,
+    "kind": "external",
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Reflect",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 134,
+    "kind": "external",
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "BuiltinExternal/ECMAScriptExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/ECMAScriptExternal.js~Proxy",
+    "access": null,
+    "description": "",
+    "lineNumber": 193,
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 136,
+    "kind": "external",
+    "name": "CanvasRenderingContext2D",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~CanvasRenderingContext2D",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 137,
+    "kind": "external",
+    "name": "DocumentFragment",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~DocumentFragment",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 138,
+    "kind": "external",
+    "name": "Element",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Element",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~Element",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 139,
+    "kind": "external",
+    "name": "Event",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Event",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~Event",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 140,
+    "kind": "external",
+    "name": "Node",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/Node",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~Node",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 141,
+    "kind": "external",
+    "name": "NodeList",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/API/NodeList",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~NodeList",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 142,
+    "kind": "external",
+    "name": "XMLHttpRequest",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/XMLHttpRequest",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~XMLHttpRequest",
+    "access": null,
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 143,
+    "kind": "external",
+    "name": "AudioContext",
+    "externalLink": "https://developer.mozilla.org/en/docs/Web/API/AudioContext",
+    "memberof": "BuiltinExternal/WebAPIExternal.js",
+    "static": true,
+    "longname": "BuiltinExternal/WebAPIExternal.js~AudioContext",
+    "access": null,
+    "description": "",
+    "lineNumber": 34,
+    "builtinExternal": true
+  }
+]

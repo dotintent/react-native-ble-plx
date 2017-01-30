@@ -2,6 +2,7 @@
   "source": ".",
   "excludes": ["node_modules", "examples", "\\.vscode", "doc"],
   "destination": "./doc",
+  "includeSource": false,
   "coverage": false,
   "plugins": [{
     "name": "esdoc-flow-plugin"
