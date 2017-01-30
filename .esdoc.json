@@ -1,0 +1,19 @@
+{
+  "source": ".",
+  "excludes": ["node_modules", "examples", "\\.vscode", "doc"],
+  "destination": "./doc",
+  "coverage": false,
+  "plugins": [{
+    "name": "esdoc-flow-plugin"
+  }],
+  "experimentalProposal": {
+    "classProperties": true,
+    "objectRestSpread": true,
+    "decorators": true,
+    "doExpressions": true,
+    "functionBind": true,
+    "asyncGenerators": true,
+    "exportExtensions": true,
+    "dynamicImport": true
+  }
+}
