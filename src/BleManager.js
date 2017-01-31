@@ -105,11 +105,11 @@ export default class BleManager {
    * - `PoweredOff` - Bluetooth is currently powered off.
    * - `PoweredOn` - Bluetooth is currently powered on and available to use.
    * 
-   * @returns {State} Current state of BleManager.
+   * @returns {Promise<State>} Promise which emits current state of BleManager.
    * 
    * @memberOf BleManager
    */
-  state(): State {
+  state(): Promise<State> {
     return BleModule.state()
   }
 
