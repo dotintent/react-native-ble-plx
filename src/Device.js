@@ -121,13 +121,13 @@ export default class Device extends NativeDevice {
     /**
      * {@link BleManager.onDeviceDisconnected} with partially filled arguments.
      * 
-     * @param {function(error: ?Error, device: ?Device)} listener - callback returning error as a reason of disconnection 
+     * @param {function(error: ?Error, device: Device)} listener - callback returning error as a reason of disconnection 
      * if available and {@link Device} object.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      * 
      * @memberOf Device
      */
-    onDisconnected(listener: (error: ?Error, device: ?Device) => void): Subscription {
+    onDisconnected(listener: (error: ?Error, device: Device) => void): Subscription {
         return this._manager.onDeviceDisconnected(this.id, listener)
     }
 

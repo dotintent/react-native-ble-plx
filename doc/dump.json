@@ -539,7 +539,7 @@
       {
         "nullable": null,
         "types": [
-          "function(error: ?Error, device: ?Device)"
+          "function(error: ?Error, device: Device)"
         ],
         "spread": false,
         "optional": false,
@@ -2015,7 +2015,7 @@
       {
         "nullable": null,
         "types": [
-          "function(error: ?Error, device: ?Device)"
+          "function(error: ?Error, device: Device)"
         ],
         "spread": false,
         "optional": false,

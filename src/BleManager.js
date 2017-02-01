@@ -209,15 +209,15 @@ export default class BleManager {
    * Monitors if device was disconnected due to any errors or connection problems.
    * 
    * @param {string} deviceIdentifier - {@link Device} identifier to be monitored.
-   * @param {function(error: ?Error, device: ?Device)} listener - callback returning error as a reason of disconnection 
+   * @param {function(error: ?Error, device: Device)} listener - callback returning error as a reason of disconnection 
    * if available and {@link Device} object.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    * 
    * @memberOf BleManager
    */
-  onDeviceDisconnected(deviceIdentifier: string, listener: (error: ?Error, device: ?Device) => void): Subscription {
+  onDeviceDisconnected(deviceIdentifier: string, listener: (error: ?Error, device: Device) => void): Subscription {
     const disconnectionListener = ([error, device]) => {
-      if (deviceIdentifier !== device.uuid) return
+      if (deviceIdentifier !== device.id) return
       listener(error, device)
     };
 

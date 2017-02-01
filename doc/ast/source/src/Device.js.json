@@ -1,7 +1,7 @@
 {
   "type": "File",
   "start": 0,
-  "end": 8436,
+  "end": 8435,
   "loc": {
     "start": {
       "line": 1,
@@ -15,7 +15,7 @@
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 8436,
+    "end": 8435,
     "loc": {
       "start": {
         "line": 1,
@@ -344,7 +344,7 @@
       {
         "type": "ExportDefaultDeclaration",
         "start": 404,
-        "end": 8436,
+        "end": 8435,
         "loc": {
           "start": {
             "line": 24,
@@ -358,7 +358,7 @@
         "declaration": {
           "type": "ClassDeclaration",
           "start": 419,
-          "end": 8436,
+          "end": 8435,
           "loc": {
             "start": {
               "line": 24,
@@ -407,7 +407,7 @@
           "body": {
             "type": "ClassBody",
             "start": 453,
-            "end": 8436,
+            "end": 8435,
             "loc": {
               "start": {
                 "line": 24,
@@ -3159,9 +3159,9 @@
                 "trailingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * {@link BleManager.onDeviceDisconnected} with partially filled arguments.\n   * \n   * @param {function(error: ?Error, device: ?Device)} listener - callback returning error as a reason of disconnection \n   * if available and {@link Device} object.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
+                    "value": "*\n   * {@link BleManager.onDeviceDisconnected} with partially filled arguments.\n   * \n   * @param {function(error: ?Error, device: Device)} listener - callback returning error as a reason of disconnection \n   * if available and {@link Device} object.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
                     "start": 3163,
-                    "end": 3551,
+                    "end": 3550,
                     "loc": {
                       "start": {
                         "line": 104,
@@ -3177,8 +3177,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 3554,
-                "end": 3650,
+                "start": 3553,
+                "end": 3649,
                 "loc": {
                   "start": {
                     "line": 113,
@@ -3192,8 +3192,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 3554,
-                  "end": 3568,
+                  "start": 3553,
+                  "end": 3567,
                   "loc": {
                     "start": {
                       "line": 113,
@@ -3217,8 +3217,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 3569,
-                    "end": 3577,
+                    "start": 3568,
+                    "end": 3576,
                     "loc": {
                       "start": {
                         "line": 113,
@@ -3235,8 +3235,8 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 3579,
-                  "end": 3650,
+                  "start": 3578,
+                  "end": 3649,
                   "loc": {
                     "start": {
                       "line": 113,
@@ -3250,8 +3250,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 3585,
-                      "end": 3646,
+                      "start": 3584,
+                      "end": 3645,
                       "loc": {
                         "start": {
                           "line": 114,
@@ -3264,8 +3264,8 @@
                       },
                       "argument": {
                         "type": "CallExpression",
-                        "start": 3592,
-                        "end": 3645,
+                        "start": 3591,
+                        "end": 3644,
                         "loc": {
                           "start": {
                             "line": 114,
@@ -3278,8 +3278,8 @@
                         },
                         "callee": {
                           "type": "MemberExpression",
-                          "start": 3592,
-                          "end": 3626,
+                          "start": 3591,
+                          "end": 3625,
                           "loc": {
                             "start": {
                               "line": 114,
@@ -3292,8 +3292,8 @@
                           },
                           "object": {
                             "type": "MemberExpression",
-                            "start": 3592,
-                            "end": 3605,
+                            "start": 3591,
+                            "end": 3604,
                             "loc": {
                               "start": {
                                 "line": 114,
@@ -3306,8 +3306,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 3592,
-                              "end": 3596,
+                              "start": 3591,
+                              "end": 3595,
                               "loc": {
                                 "start": {
                                   "line": 114,
@@ -3321,8 +3321,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 3597,
-                              "end": 3605,
+                              "start": 3596,
+                              "end": 3604,
                               "loc": {
                                 "start": {
                                   "line": 114,
@@ -3340,8 +3340,8 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "start": 3606,
-                            "end": 3626,
+                            "start": 3605,
+                            "end": 3625,
                             "loc": {
                               "start": {
                                 "line": 114,
@@ -3360,8 +3360,8 @@
                         "arguments": [
                           {
                             "type": "MemberExpression",
-                            "start": 3627,
-                            "end": 3634,
+                            "start": 3626,
+                            "end": 3633,
                             "loc": {
                               "start": {
                                 "line": 114,
@@ -3374,8 +3374,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 3627,
-                              "end": 3631,
+                              "start": 3626,
+                              "end": 3630,
                               "loc": {
                                 "start": {
                                   "line": 114,
@@ -3389,8 +3389,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 3632,
-                              "end": 3634,
+                              "start": 3631,
+                              "end": 3633,
                               "loc": {
                                 "start": {
                                   "line": 114,
@@ -3408,8 +3408,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 3636,
-                            "end": 3644,
+                            "start": 3635,
+                            "end": 3643,
                             "loc": {
                               "start": {
                                 "line": 114,
@@ -3433,9 +3433,9 @@
                 "leadingComments": [
                   {
                     "type": "CommentBlock",
-                    "value": "*\n   * {@link BleManager.onDeviceDisconnected} with partially filled arguments.\n   * \n   * @param {function(error: ?Error, device: ?Device)} listener - callback returning error as a reason of disconnection \n   * if available and {@link Device} object.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
+                    "value": "*\n   * {@link BleManager.onDeviceDisconnected} with partially filled arguments.\n   * \n   * @param {function(error: ?Error, device: Device)} listener - callback returning error as a reason of disconnection \n   * if available and {@link Device} object.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
                     "start": 3163,
-                    "end": 3551,
+                    "end": 3550,
                     "loc": {
                       "start": {
                         "line": 104,
@@ -3452,8 +3452,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.discoverAllServicesAndCharacteristicsForDevice} with partially filled arguments.\n   * \n   * @returns {Promise<Device>} - Promise which emits {@link Device} object if all available services and \n   * characteristics have been discovered.\n   * \n   * @memberOf Device\n   ",
-                    "start": 3654,
-                    "end": 3951,
+                    "start": 3653,
+                    "end": 3950,
                     "loc": {
                       "start": {
                         "line": 117,
@@ -3469,8 +3469,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 3954,
-                "end": 4087,
+                "start": 3953,
+                "end": 4086,
                 "loc": {
                   "start": {
                     "line": 125,
@@ -3484,8 +3484,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 3960,
-                  "end": 3997,
+                  "start": 3959,
+                  "end": 3996,
                   "loc": {
                     "start": {
                       "line": 125,
@@ -3508,8 +3508,8 @@
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 4000,
-                  "end": 4087,
+                  "start": 3999,
+                  "end": 4086,
                   "loc": {
                     "start": {
                       "line": 125,
@@ -3523,8 +3523,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 4006,
-                      "end": 4083,
+                      "start": 4005,
+                      "end": 4082,
                       "loc": {
                         "start": {
                           "line": 126,
@@ -3537,8 +3537,8 @@
                       },
                       "argument": {
                         "type": "CallExpression",
-                        "start": 4013,
-                        "end": 4082,
+                        "start": 4012,
+                        "end": 4081,
                         "loc": {
                           "start": {
                             "line": 126,
@@ -3551,8 +3551,8 @@
                         },
                         "callee": {
                           "type": "MemberExpression",
-                          "start": 4013,
-                          "end": 4073,
+                          "start": 4012,
+                          "end": 4072,
                           "loc": {
                             "start": {
                               "line": 126,
@@ -3565,8 +3565,8 @@
                           },
                           "object": {
                             "type": "MemberExpression",
-                            "start": 4013,
-                            "end": 4026,
+                            "start": 4012,
+                            "end": 4025,
                             "loc": {
                               "start": {
                                 "line": 126,
@@ -3579,8 +3579,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 4013,
-                              "end": 4017,
+                              "start": 4012,
+                              "end": 4016,
                               "loc": {
                                 "start": {
                                   "line": 126,
@@ -3594,8 +3594,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 4018,
-                              "end": 4026,
+                              "start": 4017,
+                              "end": 4025,
                               "loc": {
                                 "start": {
                                   "line": 126,
@@ -3613,8 +3613,8 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "start": 4027,
-                            "end": 4073,
+                            "start": 4026,
+                            "end": 4072,
                             "loc": {
                               "start": {
                                 "line": 126,
@@ -3633,8 +3633,8 @@
                         "arguments": [
                           {
                             "type": "MemberExpression",
-                            "start": 4074,
-                            "end": 4081,
+                            "start": 4073,
+                            "end": 4080,
                             "loc": {
                               "start": {
                                 "line": 126,
@@ -3647,8 +3647,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 4074,
-                              "end": 4078,
+                              "start": 4073,
+                              "end": 4077,
                               "loc": {
                                 "start": {
                                   "line": 126,
@@ -3662,8 +3662,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 4079,
-                              "end": 4081,
+                              "start": 4078,
+                              "end": 4080,
                               "loc": {
                                 "start": {
                                   "line": 126,
@@ -3690,8 +3690,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.discoverAllServicesAndCharacteristicsForDevice} with partially filled arguments.\n   * \n   * @returns {Promise<Device>} - Promise which emits {@link Device} object if all available services and \n   * characteristics have been discovered.\n   * \n   * @memberOf Device\n   ",
-                    "start": 3654,
-                    "end": 3951,
+                    "start": 3653,
+                    "end": 3950,
                     "loc": {
                       "start": {
                         "line": 117,
@@ -3708,8 +3708,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.servicesForDevice} with partially filled arguments.\n   * \n   * @returns {Promise<Service[]>} - Promise which emits array of {@link Service} objects which are discovered by this\n   * device.\n   * \n   * @memberOf Device\n   ",
-                    "start": 4091,
-                    "end": 4341,
+                    "start": 4090,
+                    "end": 4340,
                     "loc": {
                       "start": {
                         "line": 129,
@@ -3725,8 +3725,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 4344,
-                "end": 4419,
+                "start": 4343,
+                "end": 4418,
                 "loc": {
                   "start": {
                     "line": 137,
@@ -3740,8 +3740,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 4350,
-                  "end": 4358,
+                  "start": 4349,
+                  "end": 4357,
                   "loc": {
                     "start": {
                       "line": 137,
@@ -3764,8 +3764,8 @@
                 "params": [],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 4361,
-                  "end": 4419,
+                  "start": 4360,
+                  "end": 4418,
                   "loc": {
                     "start": {
                       "line": 137,
@@ -3779,8 +3779,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 4367,
-                      "end": 4415,
+                      "start": 4366,
+                      "end": 4414,
                       "loc": {
                         "start": {
                           "line": 138,
@@ -3793,8 +3793,8 @@
                       },
                       "argument": {
                         "type": "CallExpression",
-                        "start": 4374,
-                        "end": 4414,
+                        "start": 4373,
+                        "end": 4413,
                         "loc": {
                           "start": {
                             "line": 138,
@@ -3807,8 +3807,8 @@
                         },
                         "callee": {
                           "type": "MemberExpression",
-                          "start": 4374,
-                          "end": 4405,
+                          "start": 4373,
+                          "end": 4404,
                           "loc": {
                             "start": {
                               "line": 138,
@@ -3821,8 +3821,8 @@
                           },
                           "object": {
                             "type": "MemberExpression",
-                            "start": 4374,
-                            "end": 4387,
+                            "start": 4373,
+                            "end": 4386,
                             "loc": {
                               "start": {
                                 "line": 138,
@@ -3835,8 +3835,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 4374,
-                              "end": 4378,
+                              "start": 4373,
+                              "end": 4377,
                               "loc": {
                                 "start": {
                                   "line": 138,
@@ -3850,8 +3850,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 4379,
-                              "end": 4387,
+                              "start": 4378,
+                              "end": 4386,
                               "loc": {
                                 "start": {
                                   "line": 138,
@@ -3869,8 +3869,8 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "start": 4388,
-                            "end": 4405,
+                            "start": 4387,
+                            "end": 4404,
                             "loc": {
                               "start": {
                                 "line": 138,
@@ -3889,8 +3889,8 @@
                         "arguments": [
                           {
                             "type": "MemberExpression",
-                            "start": 4406,
-                            "end": 4413,
+                            "start": 4405,
+                            "end": 4412,
                             "loc": {
                               "start": {
                                 "line": 138,
@@ -3903,8 +3903,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 4406,
-                              "end": 4410,
+                              "start": 4405,
+                              "end": 4409,
                               "loc": {
                                 "start": {
                                   "line": 138,
@@ -3918,8 +3918,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 4411,
-                              "end": 4413,
+                              "start": 4410,
+                              "end": 4412,
                               "loc": {
                                 "start": {
                                   "line": 138,
@@ -3946,8 +3946,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.servicesForDevice} with partially filled arguments.\n   * \n   * @returns {Promise<Service[]>} - Promise which emits array of {@link Service} objects which are discovered by this\n   * device.\n   * \n   * @memberOf Device\n   ",
-                    "start": 4091,
-                    "end": 4341,
+                    "start": 4090,
+                    "end": 4340,
                     "loc": {
                       "start": {
                         "line": 129,
@@ -3964,8 +3964,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.characteristicsForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @returns {Promise<Characteristic[]>} - Promise which emits array of {@link Characteristic} objects which are \n   * discovered for a {@link Device} in specified {@link Service}.\n   * \n   * @memberOf Device\n   ",
-                    "start": 4423,
-                    "end": 4787,
+                    "start": 4422,
+                    "end": 4786,
                     "loc": {
                       "start": {
                         "line": 141,
@@ -3981,8 +3981,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 4790,
-                "end": 4913,
+                "start": 4789,
+                "end": 4912,
                 "loc": {
                   "start": {
                     "line": 150,
@@ -3996,8 +3996,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 4796,
-                  "end": 4821,
+                  "start": 4795,
+                  "end": 4820,
                   "loc": {
                     "start": {
                       "line": 150,
@@ -4020,8 +4020,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 4822,
-                    "end": 4833,
+                    "start": 4821,
+                    "end": 4832,
                     "loc": {
                       "start": {
                         "line": 150,
@@ -4038,8 +4038,8 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 4835,
-                  "end": 4913,
+                  "start": 4834,
+                  "end": 4912,
                   "loc": {
                     "start": {
                       "line": 150,
@@ -4053,8 +4053,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 4841,
-                      "end": 4909,
+                      "start": 4840,
+                      "end": 4908,
                       "loc": {
                         "start": {
                           "line": 151,
@@ -4067,8 +4067,8 @@
                       },
                       "argument": {
                         "type": "CallExpression",
-                        "start": 4848,
-                        "end": 4908,
+                        "start": 4847,
+                        "end": 4907,
                         "loc": {
                           "start": {
                             "line": 151,
@@ -4081,8 +4081,8 @@
                         },
                         "callee": {
                           "type": "MemberExpression",
-                          "start": 4848,
-                          "end": 4886,
+                          "start": 4847,
+                          "end": 4885,
                           "loc": {
                             "start": {
                               "line": 151,
@@ -4095,8 +4095,8 @@
                           },
                           "object": {
                             "type": "MemberExpression",
-                            "start": 4848,
-                            "end": 4861,
+                            "start": 4847,
+                            "end": 4860,
                             "loc": {
                               "start": {
                                 "line": 151,
@@ -4109,8 +4109,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 4848,
-                              "end": 4852,
+                              "start": 4847,
+                              "end": 4851,
                               "loc": {
                                 "start": {
                                   "line": 151,
@@ -4124,8 +4124,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 4853,
-                              "end": 4861,
+                              "start": 4852,
+                              "end": 4860,
                               "loc": {
                                 "start": {
                                   "line": 151,
@@ -4143,8 +4143,8 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "start": 4862,
-                            "end": 4886,
+                            "start": 4861,
+                            "end": 4885,
                             "loc": {
                               "start": {
                                 "line": 151,
@@ -4163,8 +4163,8 @@
                         "arguments": [
                           {
                             "type": "MemberExpression",
-                            "start": 4887,
-                            "end": 4894,
+                            "start": 4886,
+                            "end": 4893,
                             "loc": {
                               "start": {
                                 "line": 151,
@@ -4177,8 +4177,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 4887,
-                              "end": 4891,
+                              "start": 4886,
+                              "end": 4890,
                               "loc": {
                                 "start": {
                                   "line": 151,
@@ -4192,8 +4192,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 4892,
-                              "end": 4894,
+                              "start": 4891,
+                              "end": 4893,
                               "loc": {
                                 "start": {
                                   "line": 151,
@@ -4211,8 +4211,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 4896,
-                            "end": 4907,
+                            "start": 4895,
+                            "end": 4906,
                             "loc": {
                               "start": {
                                 "line": 151,
@@ -4237,8 +4237,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.characteristicsForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @returns {Promise<Characteristic[]>} - Promise which emits array of {@link Characteristic} objects which are \n   * discovered for a {@link Device} in specified {@link Service}.\n   * \n   * @memberOf Device\n   ",
-                    "start": 4423,
-                    "end": 4787,
+                    "start": 4422,
+                    "end": 4786,
                     "loc": {
                       "start": {
                         "line": 141,
@@ -4255,8 +4255,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.readCharacteristicForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-                    "start": 4917,
-                    "end": 5506,
+                    "start": 4916,
+                    "end": 5505,
                     "loc": {
                       "start": {
                         "line": 154,
@@ -4272,8 +4272,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 5509,
-                "end": 5708,
+                "start": 5508,
+                "end": 5707,
                 "loc": {
                   "start": {
                     "line": 165,
@@ -4287,8 +4287,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 5515,
-                  "end": 5543,
+                  "start": 5514,
+                  "end": 5542,
                   "loc": {
                     "start": {
                       "line": 165,
@@ -4311,8 +4311,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 5544,
-                    "end": 5555,
+                    "start": 5543,
+                    "end": 5554,
                     "loc": {
                       "start": {
                         "line": 165,
@@ -4328,8 +4328,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 5557,
-                    "end": 5575,
+                    "start": 5556,
+                    "end": 5574,
                     "loc": {
                       "start": {
                         "line": 165,
@@ -4345,8 +4345,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 5577,
-                    "end": 5590,
+                    "start": 5576,
+                    "end": 5589,
                     "loc": {
                       "start": {
                         "line": 165,
@@ -4363,8 +4363,8 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 5592,
-                  "end": 5708,
+                  "start": 5591,
+                  "end": 5707,
                   "loc": {
                     "start": {
                       "line": 165,
@@ -4378,8 +4378,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 5598,
-                      "end": 5704,
+                      "start": 5597,
+                      "end": 5703,
                       "loc": {
                         "start": {
                           "line": 166,
@@ -4392,8 +4392,8 @@
                       },
                       "argument": {
                         "type": "CallExpression",
-                        "start": 5605,
-                        "end": 5703,
+                        "start": 5604,
+                        "end": 5702,
                         "loc": {
                           "start": {
                             "line": 166,
@@ -4406,8 +4406,8 @@
                         },
                         "callee": {
                           "type": "MemberExpression",
-                          "start": 5605,
-                          "end": 5646,
+                          "start": 5604,
+                          "end": 5645,
                           "loc": {
                             "start": {
                               "line": 166,
@@ -4420,8 +4420,8 @@
                           },
                           "object": {
                             "type": "MemberExpression",
-                            "start": 5605,
-                            "end": 5618,
+                            "start": 5604,
+                            "end": 5617,
                             "loc": {
                               "start": {
                                 "line": 166,
@@ -4434,8 +4434,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 5605,
-                              "end": 5609,
+                              "start": 5604,
+                              "end": 5608,
                               "loc": {
                                 "start": {
                                   "line": 166,
@@ -4449,8 +4449,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 5610,
-                              "end": 5618,
+                              "start": 5609,
+                              "end": 5617,
                               "loc": {
                                 "start": {
                                   "line": 166,
@@ -4468,8 +4468,8 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "start": 5619,
-                            "end": 5646,
+                            "start": 5618,
+                            "end": 5645,
                             "loc": {
                               "start": {
                                 "line": 166,
@@ -4488,8 +4488,8 @@
                         "arguments": [
                           {
                             "type": "MemberExpression",
-                            "start": 5647,
-                            "end": 5654,
+                            "start": 5646,
+                            "end": 5653,
                             "loc": {
                               "start": {
                                 "line": 166,
@@ -4502,8 +4502,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 5647,
-                              "end": 5651,
+                              "start": 5646,
+                              "end": 5650,
                               "loc": {
                                 "start": {
                                   "line": 166,
@@ -4517,8 +4517,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 5652,
-                              "end": 5654,
+                              "start": 5651,
+                              "end": 5653,
                               "loc": {
                                 "start": {
                                   "line": 166,
@@ -4536,8 +4536,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 5656,
-                            "end": 5667,
+                            "start": 5655,
+                            "end": 5666,
                             "loc": {
                               "start": {
                                 "line": 166,
@@ -4553,8 +4553,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 5669,
-                            "end": 5687,
+                            "start": 5668,
+                            "end": 5686,
                             "loc": {
                               "start": {
                                 "line": 166,
@@ -4570,8 +4570,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 5689,
-                            "end": 5702,
+                            "start": 5688,
+                            "end": 5701,
                             "loc": {
                               "start": {
                                 "line": 166,
@@ -4596,8 +4596,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.readCharacteristicForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-                    "start": 4917,
-                    "end": 5506,
+                    "start": 4916,
+                    "end": 5505,
                     "loc": {
                       "start": {
                         "line": 154,
@@ -4614,8 +4614,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.writeCharacteristicWithResponseForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {string} valueBase64 - Value in Base64 format.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of characteristic may not be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-                    "start": 5712,
-                    "end": 6368,
+                    "start": 5711,
+                    "end": 6367,
                     "loc": {
                       "start": {
                         "line": 169,
@@ -4631,8 +4631,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 6371,
-                "end": 6622,
+                "start": 6370,
+                "end": 6621,
                 "loc": {
                   "start": {
                     "line": 181,
@@ -4646,8 +4646,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 6377,
-                  "end": 6418,
+                  "start": 6376,
+                  "end": 6417,
                   "loc": {
                     "start": {
                       "line": 181,
@@ -4670,8 +4670,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 6419,
-                    "end": 6430,
+                    "start": 6418,
+                    "end": 6429,
                     "loc": {
                       "start": {
                         "line": 181,
@@ -4687,8 +4687,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 6432,
-                    "end": 6450,
+                    "start": 6431,
+                    "end": 6449,
                     "loc": {
                       "start": {
                         "line": 181,
@@ -4704,8 +4704,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 6452,
-                    "end": 6463,
+                    "start": 6451,
+                    "end": 6462,
                     "loc": {
                       "start": {
                         "line": 181,
@@ -4721,8 +4721,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 6465,
-                    "end": 6478,
+                    "start": 6464,
+                    "end": 6477,
                     "loc": {
                       "start": {
                         "line": 181,
@@ -4739,8 +4739,8 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 6480,
-                  "end": 6622,
+                  "start": 6479,
+                  "end": 6621,
                   "loc": {
                     "start": {
                       "line": 181,
@@ -4754,8 +4754,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 6486,
-                      "end": 6618,
+                      "start": 6485,
+                      "end": 6617,
                       "loc": {
                         "start": {
                           "line": 182,
@@ -4768,8 +4768,8 @@
                       },
                       "argument": {
                         "type": "CallExpression",
-                        "start": 6493,
-                        "end": 6617,
+                        "start": 6492,
+                        "end": 6616,
                         "loc": {
                           "start": {
                             "line": 182,
@@ -4782,8 +4782,8 @@
                         },
                         "callee": {
                           "type": "MemberExpression",
-                          "start": 6493,
-                          "end": 6547,
+                          "start": 6492,
+                          "end": 6546,
                           "loc": {
                             "start": {
                               "line": 182,
@@ -4796,8 +4796,8 @@
                           },
                           "object": {
                             "type": "MemberExpression",
-                            "start": 6493,
-                            "end": 6506,
+                            "start": 6492,
+                            "end": 6505,
                             "loc": {
                               "start": {
                                 "line": 182,
@@ -4810,8 +4810,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 6493,
-                              "end": 6497,
+                              "start": 6492,
+                              "end": 6496,
                               "loc": {
                                 "start": {
                                   "line": 182,
@@ -4825,8 +4825,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 6498,
-                              "end": 6506,
+                              "start": 6497,
+                              "end": 6505,
                               "loc": {
                                 "start": {
                                   "line": 182,
@@ -4844,8 +4844,8 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "start": 6507,
-                            "end": 6547,
+                            "start": 6506,
+                            "end": 6546,
                             "loc": {
                               "start": {
                                 "line": 182,
@@ -4864,8 +4864,8 @@
                         "arguments": [
                           {
                             "type": "MemberExpression",
-                            "start": 6548,
-                            "end": 6555,
+                            "start": 6547,
+                            "end": 6554,
                             "loc": {
                               "start": {
                                 "line": 182,
@@ -4878,8 +4878,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 6548,
-                              "end": 6552,
+                              "start": 6547,
+                              "end": 6551,
                               "loc": {
                                 "start": {
                                   "line": 182,
@@ -4893,8 +4893,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 6553,
-                              "end": 6555,
+                              "start": 6552,
+                              "end": 6554,
                               "loc": {
                                 "start": {
                                   "line": 182,
@@ -4912,8 +4912,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 6557,
-                            "end": 6568,
+                            "start": 6556,
+                            "end": 6567,
                             "loc": {
                               "start": {
                                 "line": 182,
@@ -4929,8 +4929,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 6570,
-                            "end": 6588,
+                            "start": 6569,
+                            "end": 6587,
                             "loc": {
                               "start": {
                                 "line": 182,
@@ -4946,8 +4946,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 6590,
-                            "end": 6601,
+                            "start": 6589,
+                            "end": 6600,
                             "loc": {
                               "start": {
                                 "line": 182,
@@ -4963,8 +4963,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 6603,
-                            "end": 6616,
+                            "start": 6602,
+                            "end": 6615,
                             "loc": {
                               "start": {
                                 "line": 182,
@@ -4989,8 +4989,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.writeCharacteristicWithResponseForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {string} valueBase64 - Value in Base64 format.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of characteristic may not be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-                    "start": 5712,
-                    "end": 6368,
+                    "start": 5711,
+                    "end": 6367,
                     "loc": {
                       "start": {
                         "line": 169,
@@ -5007,8 +5007,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.writeCharacteristicWithoutResponseForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {string} valueBase64 - Value in Base64 format.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of characteristic may not be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-                    "start": 6626,
-                    "end": 7285,
+                    "start": 6625,
+                    "end": 7284,
                     "loc": {
                       "start": {
                         "line": 185,
@@ -5024,8 +5024,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 7288,
-                "end": 7545,
+                "start": 7287,
+                "end": 7544,
                 "loc": {
                   "start": {
                     "line": 197,
@@ -5039,8 +5039,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 7294,
-                  "end": 7338,
+                  "start": 7293,
+                  "end": 7337,
                   "loc": {
                     "start": {
                       "line": 197,
@@ -5063,8 +5063,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 7339,
-                    "end": 7350,
+                    "start": 7338,
+                    "end": 7349,
                     "loc": {
                       "start": {
                         "line": 197,
@@ -5080,8 +5080,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 7352,
-                    "end": 7370,
+                    "start": 7351,
+                    "end": 7369,
                     "loc": {
                       "start": {
                         "line": 197,
@@ -5097,8 +5097,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 7372,
-                    "end": 7383,
+                    "start": 7371,
+                    "end": 7382,
                     "loc": {
                       "start": {
                         "line": 197,
@@ -5114,8 +5114,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 7385,
-                    "end": 7398,
+                    "start": 7384,
+                    "end": 7397,
                     "loc": {
                       "start": {
                         "line": 197,
@@ -5132,8 +5132,8 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 7400,
-                  "end": 7545,
+                  "start": 7399,
+                  "end": 7544,
                   "loc": {
                     "start": {
                       "line": 197,
@@ -5147,8 +5147,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 7406,
-                      "end": 7541,
+                      "start": 7405,
+                      "end": 7540,
                       "loc": {
                         "start": {
                           "line": 198,
@@ -5161,8 +5161,8 @@
                       },
                       "argument": {
                         "type": "CallExpression",
-                        "start": 7413,
-                        "end": 7540,
+                        "start": 7412,
+                        "end": 7539,
                         "loc": {
                           "start": {
                             "line": 198,
@@ -5175,8 +5175,8 @@
                         },
                         "callee": {
                           "type": "MemberExpression",
-                          "start": 7413,
-                          "end": 7470,
+                          "start": 7412,
+                          "end": 7469,
                           "loc": {
                             "start": {
                               "line": 198,
@@ -5189,8 +5189,8 @@
                           },
                           "object": {
                             "type": "MemberExpression",
-                            "start": 7413,
-                            "end": 7426,
+                            "start": 7412,
+                            "end": 7425,
                             "loc": {
                               "start": {
                                 "line": 198,
@@ -5203,8 +5203,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 7413,
-                              "end": 7417,
+                              "start": 7412,
+                              "end": 7416,
                               "loc": {
                                 "start": {
                                   "line": 198,
@@ -5218,8 +5218,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 7418,
-                              "end": 7426,
+                              "start": 7417,
+                              "end": 7425,
                               "loc": {
                                 "start": {
                                   "line": 198,
@@ -5237,8 +5237,8 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "start": 7427,
-                            "end": 7470,
+                            "start": 7426,
+                            "end": 7469,
                             "loc": {
                               "start": {
                                 "line": 198,
@@ -5257,8 +5257,8 @@
                         "arguments": [
                           {
                             "type": "MemberExpression",
-                            "start": 7471,
-                            "end": 7478,
+                            "start": 7470,
+                            "end": 7477,
                             "loc": {
                               "start": {
                                 "line": 198,
@@ -5271,8 +5271,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 7471,
-                              "end": 7475,
+                              "start": 7470,
+                              "end": 7474,
                               "loc": {
                                 "start": {
                                   "line": 198,
@@ -5286,8 +5286,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 7476,
-                              "end": 7478,
+                              "start": 7475,
+                              "end": 7477,
                               "loc": {
                                 "start": {
                                   "line": 198,
@@ -5305,8 +5305,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 7480,
-                            "end": 7491,
+                            "start": 7479,
+                            "end": 7490,
                             "loc": {
                               "start": {
                                 "line": 198,
@@ -5322,8 +5322,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 7493,
-                            "end": 7511,
+                            "start": 7492,
+                            "end": 7510,
                             "loc": {
                               "start": {
                                 "line": 198,
@@ -5339,8 +5339,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 7513,
-                            "end": 7524,
+                            "start": 7512,
+                            "end": 7523,
                             "loc": {
                               "start": {
                                 "line": 198,
@@ -5356,8 +5356,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 7526,
-                            "end": 7539,
+                            "start": 7525,
+                            "end": 7538,
                             "loc": {
                               "start": {
                                 "line": 198,
@@ -5382,8 +5382,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.writeCharacteristicWithoutResponseForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {string} valueBase64 - Value in Base64 format.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of characteristic may not be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-                    "start": 6626,
-                    "end": 7285,
+                    "start": 6625,
+                    "end": 7284,
                     "loc": {
                       "start": {
                         "line": 185,
@@ -5400,8 +5400,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.monitorCharacteristicForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits \n   * {@link Characteristic} objects with modified value for each notification.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
-                    "start": 7549,
-                    "end": 8212,
+                    "start": 7548,
+                    "end": 8211,
                     "loc": {
                       "start": {
                         "line": 201,
@@ -5417,8 +5417,8 @@
               },
               {
                 "type": "ClassMethod",
-                "start": 8215,
-                "end": 8434,
+                "start": 8214,
+                "end": 8433,
                 "loc": {
                   "start": {
                     "line": 213,
@@ -5432,8 +5432,8 @@
                 "computed": false,
                 "key": {
                   "type": "Identifier",
-                  "start": 8215,
-                  "end": 8246,
+                  "start": 8214,
+                  "end": 8245,
                   "loc": {
                     "start": {
                       "line": 213,
@@ -5457,8 +5457,8 @@
                 "params": [
                   {
                     "type": "Identifier",
-                    "start": 8247,
-                    "end": 8258,
+                    "start": 8246,
+                    "end": 8257,
                     "loc": {
                       "start": {
                         "line": 213,
@@ -5474,8 +5474,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 8260,
-                    "end": 8278,
+                    "start": 8259,
+                    "end": 8277,
                     "loc": {
                       "start": {
                         "line": 213,
@@ -5491,8 +5491,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 8280,
-                    "end": 8288,
+                    "start": 8279,
+                    "end": 8287,
                     "loc": {
                       "start": {
                         "line": 213,
@@ -5508,8 +5508,8 @@
                   },
                   {
                     "type": "Identifier",
-                    "start": 8290,
-                    "end": 8303,
+                    "start": 8289,
+                    "end": 8302,
                     "loc": {
                       "start": {
                         "line": 213,
@@ -5526,8 +5526,8 @@
                 ],
                 "body": {
                   "type": "BlockStatement",
-                  "start": 8305,
-                  "end": 8434,
+                  "start": 8304,
+                  "end": 8433,
                   "loc": {
                     "start": {
                       "line": 213,
@@ -5541,8 +5541,8 @@
                   "body": [
                     {
                       "type": "ReturnStatement",
-                      "start": 8311,
-                      "end": 8430,
+                      "start": 8310,
+                      "end": 8429,
                       "loc": {
                         "start": {
                           "line": 214,
@@ -5555,8 +5555,8 @@
                       },
                       "argument": {
                         "type": "CallExpression",
-                        "start": 8318,
-                        "end": 8429,
+                        "start": 8317,
+                        "end": 8428,
                         "loc": {
                           "start": {
                             "line": 214,
@@ -5569,8 +5569,8 @@
                         },
                         "callee": {
                           "type": "MemberExpression",
-                          "start": 8318,
-                          "end": 8362,
+                          "start": 8317,
+                          "end": 8361,
                           "loc": {
                             "start": {
                               "line": 214,
@@ -5583,8 +5583,8 @@
                           },
                           "object": {
                             "type": "MemberExpression",
-                            "start": 8318,
-                            "end": 8331,
+                            "start": 8317,
+                            "end": 8330,
                             "loc": {
                               "start": {
                                 "line": 214,
@@ -5597,8 +5597,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 8318,
-                              "end": 8322,
+                              "start": 8317,
+                              "end": 8321,
                               "loc": {
                                 "start": {
                                   "line": 214,
@@ -5612,8 +5612,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 8323,
-                              "end": 8331,
+                              "start": 8322,
+                              "end": 8330,
                               "loc": {
                                 "start": {
                                   "line": 214,
@@ -5631,8 +5631,8 @@
                           },
                           "property": {
                             "type": "Identifier",
-                            "start": 8332,
-                            "end": 8362,
+                            "start": 8331,
+                            "end": 8361,
                             "loc": {
                               "start": {
                                 "line": 214,
@@ -5651,8 +5651,8 @@
                         "arguments": [
                           {
                             "type": "MemberExpression",
-                            "start": 8363,
-                            "end": 8370,
+                            "start": 8362,
+                            "end": 8369,
                             "loc": {
                               "start": {
                                 "line": 214,
@@ -5665,8 +5665,8 @@
                             },
                             "object": {
                               "type": "ThisExpression",
-                              "start": 8363,
-                              "end": 8367,
+                              "start": 8362,
+                              "end": 8366,
                               "loc": {
                                 "start": {
                                   "line": 214,
@@ -5680,8 +5680,8 @@
                             },
                             "property": {
                               "type": "Identifier",
-                              "start": 8368,
-                              "end": 8370,
+                              "start": 8367,
+                              "end": 8369,
                               "loc": {
                                 "start": {
                                   "line": 214,
@@ -5699,8 +5699,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 8372,
-                            "end": 8383,
+                            "start": 8371,
+                            "end": 8382,
                             "loc": {
                               "start": {
                                 "line": 214,
@@ -5716,8 +5716,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 8385,
-                            "end": 8403,
+                            "start": 8384,
+                            "end": 8402,
                             "loc": {
                               "start": {
                                 "line": 214,
@@ -5733,8 +5733,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 8405,
-                            "end": 8413,
+                            "start": 8404,
+                            "end": 8412,
                             "loc": {
                               "start": {
                                 "line": 214,
@@ -5750,8 +5750,8 @@
                           },
                           {
                             "type": "Identifier",
-                            "start": 8415,
-                            "end": 8428,
+                            "start": 8414,
+                            "end": 8427,
                             "loc": {
                               "start": {
                                 "line": 214,
@@ -5775,8 +5775,8 @@
                   {
                     "type": "CommentBlock",
                     "value": "*\n   * {@link BleManager.monitorCharacteristicForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits \n   * {@link Characteristic} objects with modified value for each notification.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
-                    "start": 7549,
-                    "end": 8212,
+                    "start": 7548,
+                    "end": 8211,
                     "loc": {
                       "start": {
                         "line": 201,
@@ -6129,9 +6129,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * {@link BleManager.onDeviceDisconnected} with partially filled arguments.\n   * \n   * @param {function(error: ?Error, device: ?Device)} listener - callback returning error as a reason of disconnection \n   * if available and {@link Device} object.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
+      "value": "*\n   * {@link BleManager.onDeviceDisconnected} with partially filled arguments.\n   * \n   * @param {function(error: ?Error, device: Device)} listener - callback returning error as a reason of disconnection \n   * if available and {@link Device} object.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
       "start": 3163,
-      "end": 3551,
+      "end": 3550,
       "loc": {
         "start": {
           "line": 104,
@@ -6146,8 +6146,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.discoverAllServicesAndCharacteristicsForDevice} with partially filled arguments.\n   * \n   * @returns {Promise<Device>} - Promise which emits {@link Device} object if all available services and \n   * characteristics have been discovered.\n   * \n   * @memberOf Device\n   ",
-      "start": 3654,
-      "end": 3951,
+      "start": 3653,
+      "end": 3950,
       "loc": {
         "start": {
           "line": 117,
@@ -6162,8 +6162,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.servicesForDevice} with partially filled arguments.\n   * \n   * @returns {Promise<Service[]>} - Promise which emits array of {@link Service} objects which are discovered by this\n   * device.\n   * \n   * @memberOf Device\n   ",
-      "start": 4091,
-      "end": 4341,
+      "start": 4090,
+      "end": 4340,
       "loc": {
         "start": {
           "line": 129,
@@ -6178,8 +6178,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.characteristicsForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @returns {Promise<Characteristic[]>} - Promise which emits array of {@link Characteristic} objects which are \n   * discovered for a {@link Device} in specified {@link Service}.\n   * \n   * @memberOf Device\n   ",
-      "start": 4423,
-      "end": 4787,
+      "start": 4422,
+      "end": 4786,
       "loc": {
         "start": {
           "line": 141,
@@ -6194,8 +6194,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.readCharacteristicForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-      "start": 4917,
-      "end": 5506,
+      "start": 4916,
+      "end": 5505,
       "loc": {
         "start": {
           "line": 154,
@@ -6210,8 +6210,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.writeCharacteristicWithResponseForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {string} valueBase64 - Value in Base64 format.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of characteristic may not be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-      "start": 5712,
-      "end": 6368,
+      "start": 5711,
+      "end": 6367,
       "loc": {
         "start": {
           "line": 169,
@@ -6226,8 +6226,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.writeCharacteristicWithoutResponseForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {string} valueBase64 - Value in Base64 format.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of characteristic may not be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-      "start": 6626,
-      "end": 7285,
+      "start": 6625,
+      "end": 7284,
       "loc": {
         "start": {
           "line": 185,
@@ -6242,8 +6242,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.monitorCharacteristicForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits \n   * {@link Characteristic} objects with modified value for each notification.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
-      "start": 7549,
-      "end": 8212,
+      "start": 7548,
+      "end": 8211,
       "loc": {
         "start": {
           "line": 201,
@@ -11319,9 +11319,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n   * {@link BleManager.onDeviceDisconnected} with partially filled arguments.\n   * \n   * @param {function(error: ?Error, device: ?Device)} listener - callback returning error as a reason of disconnection \n   * if available and {@link Device} object.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
+      "value": "*\n   * {@link BleManager.onDeviceDisconnected} with partially filled arguments.\n   * \n   * @param {function(error: ?Error, device: Device)} listener - callback returning error as a reason of disconnection \n   * if available and {@link Device} object.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
       "start": 3163,
-      "end": 3551,
+      "end": 3550,
       "loc": {
         "start": {
           "line": 104,
@@ -11346,8 +11346,8 @@
         "binop": null
       },
       "value": "onDisconnected",
-      "start": 3554,
-      "end": 3568,
+      "start": 3553,
+      "end": 3567,
       "loc": {
         "start": {
           "line": 113,
@@ -11371,8 +11371,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3568,
-      "end": 3569,
+      "start": 3567,
+      "end": 3568,
       "loc": {
         "start": {
           "line": 113,
@@ -11397,8 +11397,8 @@
         "binop": null
       },
       "value": "listener",
-      "start": 3569,
-      "end": 3577,
+      "start": 3568,
+      "end": 3576,
       "loc": {
         "start": {
           "line": 113,
@@ -11422,8 +11422,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3577,
-      "end": 3578,
+      "start": 3576,
+      "end": 3577,
       "loc": {
         "start": {
           "line": 113,
@@ -11447,8 +11447,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3579,
-      "end": 3580,
+      "start": 3578,
+      "end": 3579,
       "loc": {
         "start": {
           "line": 113,
@@ -11475,8 +11475,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 3585,
-      "end": 3591,
+      "start": 3584,
+      "end": 3590,
       "loc": {
         "start": {
           "line": 114,
@@ -11503,8 +11503,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 3592,
-      "end": 3596,
+      "start": 3591,
+      "end": 3595,
       "loc": {
         "start": {
           "line": 114,
@@ -11529,8 +11529,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3596,
-      "end": 3597,
+      "start": 3595,
+      "end": 3596,
       "loc": {
         "start": {
           "line": 114,
@@ -11555,8 +11555,8 @@
         "binop": null
       },
       "value": "_manager",
-      "start": 3597,
-      "end": 3605,
+      "start": 3596,
+      "end": 3604,
       "loc": {
         "start": {
           "line": 114,
@@ -11581,8 +11581,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3605,
-      "end": 3606,
+      "start": 3604,
+      "end": 3605,
       "loc": {
         "start": {
           "line": 114,
@@ -11607,8 +11607,8 @@
         "binop": null
       },
       "value": "onDeviceDisconnected",
-      "start": 3606,
-      "end": 3626,
+      "start": 3605,
+      "end": 3625,
       "loc": {
         "start": {
           "line": 114,
@@ -11632,8 +11632,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3626,
-      "end": 3627,
+      "start": 3625,
+      "end": 3626,
       "loc": {
         "start": {
           "line": 114,
@@ -11660,8 +11660,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 3627,
-      "end": 3631,
+      "start": 3626,
+      "end": 3630,
       "loc": {
         "start": {
           "line": 114,
@@ -11686,8 +11686,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3631,
-      "end": 3632,
+      "start": 3630,
+      "end": 3631,
       "loc": {
         "start": {
           "line": 114,
@@ -11712,8 +11712,8 @@
         "binop": null
       },
       "value": "id",
-      "start": 3632,
-      "end": 3634,
+      "start": 3631,
+      "end": 3633,
       "loc": {
         "start": {
           "line": 114,
@@ -11738,8 +11738,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3634,
-      "end": 3635,
+      "start": 3633,
+      "end": 3634,
       "loc": {
         "start": {
           "line": 114,
@@ -11764,8 +11764,8 @@
         "binop": null
       },
       "value": "listener",
-      "start": 3636,
-      "end": 3644,
+      "start": 3635,
+      "end": 3643,
       "loc": {
         "start": {
           "line": 114,
@@ -11789,8 +11789,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3644,
-      "end": 3645,
+      "start": 3643,
+      "end": 3644,
       "loc": {
         "start": {
           "line": 114,
@@ -11815,8 +11815,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 3645,
-      "end": 3646,
+      "start": 3644,
+      "end": 3645,
       "loc": {
         "start": {
           "line": 114,
@@ -11840,8 +11840,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3649,
-      "end": 3650,
+      "start": 3648,
+      "end": 3649,
       "loc": {
         "start": {
           "line": 115,
@@ -11856,8 +11856,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.discoverAllServicesAndCharacteristicsForDevice} with partially filled arguments.\n   * \n   * @returns {Promise<Device>} - Promise which emits {@link Device} object if all available services and \n   * characteristics have been discovered.\n   * \n   * @memberOf Device\n   ",
-      "start": 3654,
-      "end": 3951,
+      "start": 3653,
+      "end": 3950,
       "loc": {
         "start": {
           "line": 117,
@@ -11882,8 +11882,8 @@
         "binop": null
       },
       "value": "async",
-      "start": 3954,
-      "end": 3959,
+      "start": 3953,
+      "end": 3958,
       "loc": {
         "start": {
           "line": 125,
@@ -11908,8 +11908,8 @@
         "binop": null
       },
       "value": "discoverAllServicesAndCharacteristics",
-      "start": 3960,
-      "end": 3997,
+      "start": 3959,
+      "end": 3996,
       "loc": {
         "start": {
           "line": 125,
@@ -11933,8 +11933,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3997,
-      "end": 3998,
+      "start": 3996,
+      "end": 3997,
       "loc": {
         "start": {
           "line": 125,
@@ -11958,8 +11958,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 3998,
-      "end": 3999,
+      "start": 3997,
+      "end": 3998,
       "loc": {
         "start": {
           "line": 125,
@@ -11983,8 +11983,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4000,
-      "end": 4001,
+      "start": 3999,
+      "end": 4000,
       "loc": {
         "start": {
           "line": 125,
@@ -12011,8 +12011,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 4006,
-      "end": 4012,
+      "start": 4005,
+      "end": 4011,
       "loc": {
         "start": {
           "line": 126,
@@ -12039,8 +12039,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 4013,
-      "end": 4017,
+      "start": 4012,
+      "end": 4016,
       "loc": {
         "start": {
           "line": 126,
@@ -12065,8 +12065,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4017,
-      "end": 4018,
+      "start": 4016,
+      "end": 4017,
       "loc": {
         "start": {
           "line": 126,
@@ -12091,8 +12091,8 @@
         "binop": null
       },
       "value": "_manager",
-      "start": 4018,
-      "end": 4026,
+      "start": 4017,
+      "end": 4025,
       "loc": {
         "start": {
           "line": 126,
@@ -12117,8 +12117,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4026,
-      "end": 4027,
+      "start": 4025,
+      "end": 4026,
       "loc": {
         "start": {
           "line": 126,
@@ -12143,8 +12143,8 @@
         "binop": null
       },
       "value": "discoverAllServicesAndCharacteristicsForDevice",
-      "start": 4027,
-      "end": 4073,
+      "start": 4026,
+      "end": 4072,
       "loc": {
         "start": {
           "line": 126,
@@ -12168,8 +12168,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4073,
-      "end": 4074,
+      "start": 4072,
+      "end": 4073,
       "loc": {
         "start": {
           "line": 126,
@@ -12196,8 +12196,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 4074,
-      "end": 4078,
+      "start": 4073,
+      "end": 4077,
       "loc": {
         "start": {
           "line": 126,
@@ -12222,8 +12222,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4078,
-      "end": 4079,
+      "start": 4077,
+      "end": 4078,
       "loc": {
         "start": {
           "line": 126,
@@ -12248,8 +12248,8 @@
         "binop": null
       },
       "value": "id",
-      "start": 4079,
-      "end": 4081,
+      "start": 4078,
+      "end": 4080,
       "loc": {
         "start": {
           "line": 126,
@@ -12273,8 +12273,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4081,
-      "end": 4082,
+      "start": 4080,
+      "end": 4081,
       "loc": {
         "start": {
           "line": 126,
@@ -12299,8 +12299,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4082,
-      "end": 4083,
+      "start": 4081,
+      "end": 4082,
       "loc": {
         "start": {
           "line": 126,
@@ -12324,8 +12324,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4086,
-      "end": 4087,
+      "start": 4085,
+      "end": 4086,
       "loc": {
         "start": {
           "line": 127,
@@ -12340,8 +12340,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.servicesForDevice} with partially filled arguments.\n   * \n   * @returns {Promise<Service[]>} - Promise which emits array of {@link Service} objects which are discovered by this\n   * device.\n   * \n   * @memberOf Device\n   ",
-      "start": 4091,
-      "end": 4341,
+      "start": 4090,
+      "end": 4340,
       "loc": {
         "start": {
           "line": 129,
@@ -12366,8 +12366,8 @@
         "binop": null
       },
       "value": "async",
-      "start": 4344,
-      "end": 4349,
+      "start": 4343,
+      "end": 4348,
       "loc": {
         "start": {
           "line": 137,
@@ -12392,8 +12392,8 @@
         "binop": null
       },
       "value": "services",
-      "start": 4350,
-      "end": 4358,
+      "start": 4349,
+      "end": 4357,
       "loc": {
         "start": {
           "line": 137,
@@ -12417,8 +12417,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4358,
-      "end": 4359,
+      "start": 4357,
+      "end": 4358,
       "loc": {
         "start": {
           "line": 137,
@@ -12442,8 +12442,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4359,
-      "end": 4360,
+      "start": 4358,
+      "end": 4359,
       "loc": {
         "start": {
           "line": 137,
@@ -12467,8 +12467,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4361,
-      "end": 4362,
+      "start": 4360,
+      "end": 4361,
       "loc": {
         "start": {
           "line": 137,
@@ -12495,8 +12495,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 4367,
-      "end": 4373,
+      "start": 4366,
+      "end": 4372,
       "loc": {
         "start": {
           "line": 138,
@@ -12523,8 +12523,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 4374,
-      "end": 4378,
+      "start": 4373,
+      "end": 4377,
       "loc": {
         "start": {
           "line": 138,
@@ -12549,8 +12549,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4378,
-      "end": 4379,
+      "start": 4377,
+      "end": 4378,
       "loc": {
         "start": {
           "line": 138,
@@ -12575,8 +12575,8 @@
         "binop": null
       },
       "value": "_manager",
-      "start": 4379,
-      "end": 4387,
+      "start": 4378,
+      "end": 4386,
       "loc": {
         "start": {
           "line": 138,
@@ -12601,8 +12601,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4387,
-      "end": 4388,
+      "start": 4386,
+      "end": 4387,
       "loc": {
         "start": {
           "line": 138,
@@ -12627,8 +12627,8 @@
         "binop": null
       },
       "value": "servicesForDevice",
-      "start": 4388,
-      "end": 4405,
+      "start": 4387,
+      "end": 4404,
       "loc": {
         "start": {
           "line": 138,
@@ -12652,8 +12652,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4405,
-      "end": 4406,
+      "start": 4404,
+      "end": 4405,
       "loc": {
         "start": {
           "line": 138,
@@ -12680,8 +12680,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 4406,
-      "end": 4410,
+      "start": 4405,
+      "end": 4409,
       "loc": {
         "start": {
           "line": 138,
@@ -12706,8 +12706,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4410,
-      "end": 4411,
+      "start": 4409,
+      "end": 4410,
       "loc": {
         "start": {
           "line": 138,
@@ -12732,8 +12732,8 @@
         "binop": null
       },
       "value": "id",
-      "start": 4411,
-      "end": 4413,
+      "start": 4410,
+      "end": 4412,
       "loc": {
         "start": {
           "line": 138,
@@ -12757,8 +12757,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4413,
-      "end": 4414,
+      "start": 4412,
+      "end": 4413,
       "loc": {
         "start": {
           "line": 138,
@@ -12783,8 +12783,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4414,
-      "end": 4415,
+      "start": 4413,
+      "end": 4414,
       "loc": {
         "start": {
           "line": 138,
@@ -12808,8 +12808,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4418,
-      "end": 4419,
+      "start": 4417,
+      "end": 4418,
       "loc": {
         "start": {
           "line": 139,
@@ -12824,8 +12824,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.characteristicsForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @returns {Promise<Characteristic[]>} - Promise which emits array of {@link Characteristic} objects which are \n   * discovered for a {@link Device} in specified {@link Service}.\n   * \n   * @memberOf Device\n   ",
-      "start": 4423,
-      "end": 4787,
+      "start": 4422,
+      "end": 4786,
       "loc": {
         "start": {
           "line": 141,
@@ -12850,8 +12850,8 @@
         "binop": null
       },
       "value": "async",
-      "start": 4790,
-      "end": 4795,
+      "start": 4789,
+      "end": 4794,
       "loc": {
         "start": {
           "line": 150,
@@ -12876,8 +12876,8 @@
         "binop": null
       },
       "value": "characteristicsForService",
-      "start": 4796,
-      "end": 4821,
+      "start": 4795,
+      "end": 4820,
       "loc": {
         "start": {
           "line": 150,
@@ -12901,8 +12901,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4821,
-      "end": 4822,
+      "start": 4820,
+      "end": 4821,
       "loc": {
         "start": {
           "line": 150,
@@ -12927,8 +12927,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 4822,
-      "end": 4833,
+      "start": 4821,
+      "end": 4832,
       "loc": {
         "start": {
           "line": 150,
@@ -12952,8 +12952,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4833,
-      "end": 4834,
+      "start": 4832,
+      "end": 4833,
       "loc": {
         "start": {
           "line": 150,
@@ -12977,8 +12977,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4835,
-      "end": 4836,
+      "start": 4834,
+      "end": 4835,
       "loc": {
         "start": {
           "line": 150,
@@ -13005,8 +13005,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 4841,
-      "end": 4847,
+      "start": 4840,
+      "end": 4846,
       "loc": {
         "start": {
           "line": 151,
@@ -13033,8 +13033,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 4848,
-      "end": 4852,
+      "start": 4847,
+      "end": 4851,
       "loc": {
         "start": {
           "line": 151,
@@ -13059,8 +13059,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4852,
-      "end": 4853,
+      "start": 4851,
+      "end": 4852,
       "loc": {
         "start": {
           "line": 151,
@@ -13085,8 +13085,8 @@
         "binop": null
       },
       "value": "_manager",
-      "start": 4853,
-      "end": 4861,
+      "start": 4852,
+      "end": 4860,
       "loc": {
         "start": {
           "line": 151,
@@ -13111,8 +13111,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4861,
-      "end": 4862,
+      "start": 4860,
+      "end": 4861,
       "loc": {
         "start": {
           "line": 151,
@@ -13137,8 +13137,8 @@
         "binop": null
       },
       "value": "characteristicsForDevice",
-      "start": 4862,
-      "end": 4886,
+      "start": 4861,
+      "end": 4885,
       "loc": {
         "start": {
           "line": 151,
@@ -13162,8 +13162,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4886,
-      "end": 4887,
+      "start": 4885,
+      "end": 4886,
       "loc": {
         "start": {
           "line": 151,
@@ -13190,8 +13190,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 4887,
-      "end": 4891,
+      "start": 4886,
+      "end": 4890,
       "loc": {
         "start": {
           "line": 151,
@@ -13216,8 +13216,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4891,
-      "end": 4892,
+      "start": 4890,
+      "end": 4891,
       "loc": {
         "start": {
           "line": 151,
@@ -13242,8 +13242,8 @@
         "binop": null
       },
       "value": "id",
-      "start": 4892,
-      "end": 4894,
+      "start": 4891,
+      "end": 4893,
       "loc": {
         "start": {
           "line": 151,
@@ -13268,8 +13268,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4894,
-      "end": 4895,
+      "start": 4893,
+      "end": 4894,
       "loc": {
         "start": {
           "line": 151,
@@ -13294,8 +13294,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 4896,
-      "end": 4907,
+      "start": 4895,
+      "end": 4906,
       "loc": {
         "start": {
           "line": 151,
@@ -13319,8 +13319,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4907,
-      "end": 4908,
+      "start": 4906,
+      "end": 4907,
       "loc": {
         "start": {
           "line": 151,
@@ -13345,8 +13345,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 4908,
-      "end": 4909,
+      "start": 4907,
+      "end": 4908,
       "loc": {
         "start": {
           "line": 151,
@@ -13370,8 +13370,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 4912,
-      "end": 4913,
+      "start": 4911,
+      "end": 4912,
       "loc": {
         "start": {
           "line": 152,
@@ -13386,8 +13386,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.readCharacteristicForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-      "start": 4917,
-      "end": 5506,
+      "start": 4916,
+      "end": 5505,
       "loc": {
         "start": {
           "line": 154,
@@ -13412,8 +13412,8 @@
         "binop": null
       },
       "value": "async",
-      "start": 5509,
-      "end": 5514,
+      "start": 5508,
+      "end": 5513,
       "loc": {
         "start": {
           "line": 165,
@@ -13438,8 +13438,8 @@
         "binop": null
       },
       "value": "readCharacteristicForService",
-      "start": 5515,
-      "end": 5543,
+      "start": 5514,
+      "end": 5542,
       "loc": {
         "start": {
           "line": 165,
@@ -13463,8 +13463,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 5543,
-      "end": 5544,
+      "start": 5542,
+      "end": 5543,
       "loc": {
         "start": {
           "line": 165,
@@ -13489,8 +13489,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 5544,
-      "end": 5555,
+      "start": 5543,
+      "end": 5554,
       "loc": {
         "start": {
           "line": 165,
@@ -13515,8 +13515,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5555,
-      "end": 5556,
+      "start": 5554,
+      "end": 5555,
       "loc": {
         "start": {
           "line": 165,
@@ -13541,8 +13541,8 @@
         "binop": null
       },
       "value": "characteristicUUID",
-      "start": 5557,
-      "end": 5575,
+      "start": 5556,
+      "end": 5574,
       "loc": {
         "start": {
           "line": 165,
@@ -13567,8 +13567,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5575,
-      "end": 5576,
+      "start": 5574,
+      "end": 5575,
       "loc": {
         "start": {
           "line": 165,
@@ -13593,8 +13593,8 @@
         "binop": null
       },
       "value": "transactionId",
-      "start": 5577,
-      "end": 5590,
+      "start": 5576,
+      "end": 5589,
       "loc": {
         "start": {
           "line": 165,
@@ -13618,8 +13618,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 5590,
-      "end": 5591,
+      "start": 5589,
+      "end": 5590,
       "loc": {
         "start": {
           "line": 165,
@@ -13643,8 +13643,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 5592,
-      "end": 5593,
+      "start": 5591,
+      "end": 5592,
       "loc": {
         "start": {
           "line": 165,
@@ -13671,8 +13671,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 5598,
-      "end": 5604,
+      "start": 5597,
+      "end": 5603,
       "loc": {
         "start": {
           "line": 166,
@@ -13699,8 +13699,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 5605,
-      "end": 5609,
+      "start": 5604,
+      "end": 5608,
       "loc": {
         "start": {
           "line": 166,
@@ -13725,8 +13725,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5609,
-      "end": 5610,
+      "start": 5608,
+      "end": 5609,
       "loc": {
         "start": {
           "line": 166,
@@ -13751,8 +13751,8 @@
         "binop": null
       },
       "value": "_manager",
-      "start": 5610,
-      "end": 5618,
+      "start": 5609,
+      "end": 5617,
       "loc": {
         "start": {
           "line": 166,
@@ -13777,8 +13777,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5618,
-      "end": 5619,
+      "start": 5617,
+      "end": 5618,
       "loc": {
         "start": {
           "line": 166,
@@ -13803,8 +13803,8 @@
         "binop": null
       },
       "value": "readCharacteristicForDevice",
-      "start": 5619,
-      "end": 5646,
+      "start": 5618,
+      "end": 5645,
       "loc": {
         "start": {
           "line": 166,
@@ -13828,8 +13828,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 5646,
-      "end": 5647,
+      "start": 5645,
+      "end": 5646,
       "loc": {
         "start": {
           "line": 166,
@@ -13856,8 +13856,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 5647,
-      "end": 5651,
+      "start": 5646,
+      "end": 5650,
       "loc": {
         "start": {
           "line": 166,
@@ -13882,8 +13882,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5651,
-      "end": 5652,
+      "start": 5650,
+      "end": 5651,
       "loc": {
         "start": {
           "line": 166,
@@ -13908,8 +13908,8 @@
         "binop": null
       },
       "value": "id",
-      "start": 5652,
-      "end": 5654,
+      "start": 5651,
+      "end": 5653,
       "loc": {
         "start": {
           "line": 166,
@@ -13934,8 +13934,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5654,
-      "end": 5655,
+      "start": 5653,
+      "end": 5654,
       "loc": {
         "start": {
           "line": 166,
@@ -13960,8 +13960,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 5656,
-      "end": 5667,
+      "start": 5655,
+      "end": 5666,
       "loc": {
         "start": {
           "line": 166,
@@ -13986,8 +13986,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5667,
-      "end": 5668,
+      "start": 5666,
+      "end": 5667,
       "loc": {
         "start": {
           "line": 166,
@@ -14012,8 +14012,8 @@
         "binop": null
       },
       "value": "characteristicUUID",
-      "start": 5669,
-      "end": 5687,
+      "start": 5668,
+      "end": 5686,
       "loc": {
         "start": {
           "line": 166,
@@ -14038,8 +14038,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5687,
-      "end": 5688,
+      "start": 5686,
+      "end": 5687,
       "loc": {
         "start": {
           "line": 166,
@@ -14064,8 +14064,8 @@
         "binop": null
       },
       "value": "transactionId",
-      "start": 5689,
-      "end": 5702,
+      "start": 5688,
+      "end": 5701,
       "loc": {
         "start": {
           "line": 166,
@@ -14089,8 +14089,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 5702,
-      "end": 5703,
+      "start": 5701,
+      "end": 5702,
       "loc": {
         "start": {
           "line": 166,
@@ -14115,8 +14115,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 5703,
-      "end": 5704,
+      "start": 5702,
+      "end": 5703,
       "loc": {
         "start": {
           "line": 166,
@@ -14140,8 +14140,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 5707,
-      "end": 5708,
+      "start": 5706,
+      "end": 5707,
       "loc": {
         "start": {
           "line": 167,
@@ -14156,8 +14156,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.writeCharacteristicWithResponseForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {string} valueBase64 - Value in Base64 format.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of characteristic may not be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-      "start": 5712,
-      "end": 6368,
+      "start": 5711,
+      "end": 6367,
       "loc": {
         "start": {
           "line": 169,
@@ -14182,8 +14182,8 @@
         "binop": null
       },
       "value": "async",
-      "start": 6371,
-      "end": 6376,
+      "start": 6370,
+      "end": 6375,
       "loc": {
         "start": {
           "line": 181,
@@ -14208,8 +14208,8 @@
         "binop": null
       },
       "value": "writeCharacteristicWithResponseForService",
-      "start": 6377,
-      "end": 6418,
+      "start": 6376,
+      "end": 6417,
       "loc": {
         "start": {
           "line": 181,
@@ -14233,8 +14233,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6418,
-      "end": 6419,
+      "start": 6417,
+      "end": 6418,
       "loc": {
         "start": {
           "line": 181,
@@ -14259,8 +14259,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 6419,
-      "end": 6430,
+      "start": 6418,
+      "end": 6429,
       "loc": {
         "start": {
           "line": 181,
@@ -14285,8 +14285,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6430,
-      "end": 6431,
+      "start": 6429,
+      "end": 6430,
       "loc": {
         "start": {
           "line": 181,
@@ -14311,8 +14311,8 @@
         "binop": null
       },
       "value": "characteristicUUID",
-      "start": 6432,
-      "end": 6450,
+      "start": 6431,
+      "end": 6449,
       "loc": {
         "start": {
           "line": 181,
@@ -14337,8 +14337,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6450,
-      "end": 6451,
+      "start": 6449,
+      "end": 6450,
       "loc": {
         "start": {
           "line": 181,
@@ -14363,8 +14363,8 @@
         "binop": null
       },
       "value": "valueBase64",
-      "start": 6452,
-      "end": 6463,
+      "start": 6451,
+      "end": 6462,
       "loc": {
         "start": {
           "line": 181,
@@ -14389,8 +14389,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6463,
-      "end": 6464,
+      "start": 6462,
+      "end": 6463,
       "loc": {
         "start": {
           "line": 181,
@@ -14415,8 +14415,8 @@
         "binop": null
       },
       "value": "transactionId",
-      "start": 6465,
-      "end": 6478,
+      "start": 6464,
+      "end": 6477,
       "loc": {
         "start": {
           "line": 181,
@@ -14440,8 +14440,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6478,
-      "end": 6479,
+      "start": 6477,
+      "end": 6478,
       "loc": {
         "start": {
           "line": 181,
@@ -14465,8 +14465,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6480,
-      "end": 6481,
+      "start": 6479,
+      "end": 6480,
       "loc": {
         "start": {
           "line": 181,
@@ -14493,8 +14493,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 6486,
-      "end": 6492,
+      "start": 6485,
+      "end": 6491,
       "loc": {
         "start": {
           "line": 182,
@@ -14521,8 +14521,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 6493,
-      "end": 6497,
+      "start": 6492,
+      "end": 6496,
       "loc": {
         "start": {
           "line": 182,
@@ -14547,8 +14547,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6497,
-      "end": 6498,
+      "start": 6496,
+      "end": 6497,
       "loc": {
         "start": {
           "line": 182,
@@ -14573,8 +14573,8 @@
         "binop": null
       },
       "value": "_manager",
-      "start": 6498,
-      "end": 6506,
+      "start": 6497,
+      "end": 6505,
       "loc": {
         "start": {
           "line": 182,
@@ -14599,8 +14599,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6506,
-      "end": 6507,
+      "start": 6505,
+      "end": 6506,
       "loc": {
         "start": {
           "line": 182,
@@ -14625,8 +14625,8 @@
         "binop": null
       },
       "value": "writeCharacteristicWithResponseForDevice",
-      "start": 6507,
-      "end": 6547,
+      "start": 6506,
+      "end": 6546,
       "loc": {
         "start": {
           "line": 182,
@@ -14650,8 +14650,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6547,
-      "end": 6548,
+      "start": 6546,
+      "end": 6547,
       "loc": {
         "start": {
           "line": 182,
@@ -14678,8 +14678,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 6548,
-      "end": 6552,
+      "start": 6547,
+      "end": 6551,
       "loc": {
         "start": {
           "line": 182,
@@ -14704,8 +14704,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6552,
-      "end": 6553,
+      "start": 6551,
+      "end": 6552,
       "loc": {
         "start": {
           "line": 182,
@@ -14730,8 +14730,8 @@
         "binop": null
       },
       "value": "id",
-      "start": 6553,
-      "end": 6555,
+      "start": 6552,
+      "end": 6554,
       "loc": {
         "start": {
           "line": 182,
@@ -14756,8 +14756,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6555,
-      "end": 6556,
+      "start": 6554,
+      "end": 6555,
       "loc": {
         "start": {
           "line": 182,
@@ -14782,8 +14782,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 6557,
-      "end": 6568,
+      "start": 6556,
+      "end": 6567,
       "loc": {
         "start": {
           "line": 182,
@@ -14808,8 +14808,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6568,
-      "end": 6569,
+      "start": 6567,
+      "end": 6568,
       "loc": {
         "start": {
           "line": 182,
@@ -14834,8 +14834,8 @@
         "binop": null
       },
       "value": "characteristicUUID",
-      "start": 6570,
-      "end": 6588,
+      "start": 6569,
+      "end": 6587,
       "loc": {
         "start": {
           "line": 182,
@@ -14860,8 +14860,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6588,
-      "end": 6589,
+      "start": 6587,
+      "end": 6588,
       "loc": {
         "start": {
           "line": 182,
@@ -14886,8 +14886,8 @@
         "binop": null
       },
       "value": "valueBase64",
-      "start": 6590,
-      "end": 6601,
+      "start": 6589,
+      "end": 6600,
       "loc": {
         "start": {
           "line": 182,
@@ -14912,8 +14912,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6601,
-      "end": 6602,
+      "start": 6600,
+      "end": 6601,
       "loc": {
         "start": {
           "line": 182,
@@ -14938,8 +14938,8 @@
         "binop": null
       },
       "value": "transactionId",
-      "start": 6603,
-      "end": 6616,
+      "start": 6602,
+      "end": 6615,
       "loc": {
         "start": {
           "line": 182,
@@ -14963,8 +14963,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6616,
-      "end": 6617,
+      "start": 6615,
+      "end": 6616,
       "loc": {
         "start": {
           "line": 182,
@@ -14989,8 +14989,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 6617,
-      "end": 6618,
+      "start": 6616,
+      "end": 6617,
       "loc": {
         "start": {
           "line": 182,
@@ -15014,8 +15014,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 6621,
-      "end": 6622,
+      "start": 6620,
+      "end": 6621,
       "loc": {
         "start": {
           "line": 183,
@@ -15030,8 +15030,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.writeCharacteristicWithoutResponseForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {string} valueBase64 - Value in Base64 format.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified \n   * UUID paths. Latest value of characteristic may not be stored inside returned object.\n   * \n   * @memberOf Device\n   ",
-      "start": 6626,
-      "end": 7285,
+      "start": 6625,
+      "end": 7284,
       "loc": {
         "start": {
           "line": 185,
@@ -15056,8 +15056,8 @@
         "binop": null
       },
       "value": "async",
-      "start": 7288,
-      "end": 7293,
+      "start": 7287,
+      "end": 7292,
       "loc": {
         "start": {
           "line": 197,
@@ -15082,8 +15082,8 @@
         "binop": null
       },
       "value": "writeCharacteristicWithoutResponseForService",
-      "start": 7294,
-      "end": 7338,
+      "start": 7293,
+      "end": 7337,
       "loc": {
         "start": {
           "line": 197,
@@ -15107,8 +15107,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7338,
-      "end": 7339,
+      "start": 7337,
+      "end": 7338,
       "loc": {
         "start": {
           "line": 197,
@@ -15133,8 +15133,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 7339,
-      "end": 7350,
+      "start": 7338,
+      "end": 7349,
       "loc": {
         "start": {
           "line": 197,
@@ -15159,8 +15159,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7350,
-      "end": 7351,
+      "start": 7349,
+      "end": 7350,
       "loc": {
         "start": {
           "line": 197,
@@ -15185,8 +15185,8 @@
         "binop": null
       },
       "value": "characteristicUUID",
-      "start": 7352,
-      "end": 7370,
+      "start": 7351,
+      "end": 7369,
       "loc": {
         "start": {
           "line": 197,
@@ -15211,8 +15211,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7370,
-      "end": 7371,
+      "start": 7369,
+      "end": 7370,
       "loc": {
         "start": {
           "line": 197,
@@ -15237,8 +15237,8 @@
         "binop": null
       },
       "value": "valueBase64",
-      "start": 7372,
-      "end": 7383,
+      "start": 7371,
+      "end": 7382,
       "loc": {
         "start": {
           "line": 197,
@@ -15263,8 +15263,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7383,
-      "end": 7384,
+      "start": 7382,
+      "end": 7383,
       "loc": {
         "start": {
           "line": 197,
@@ -15289,8 +15289,8 @@
         "binop": null
       },
       "value": "transactionId",
-      "start": 7385,
-      "end": 7398,
+      "start": 7384,
+      "end": 7397,
       "loc": {
         "start": {
           "line": 197,
@@ -15314,8 +15314,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7398,
-      "end": 7399,
+      "start": 7397,
+      "end": 7398,
       "loc": {
         "start": {
           "line": 197,
@@ -15339,8 +15339,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7400,
-      "end": 7401,
+      "start": 7399,
+      "end": 7400,
       "loc": {
         "start": {
           "line": 197,
@@ -15367,8 +15367,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 7406,
-      "end": 7412,
+      "start": 7405,
+      "end": 7411,
       "loc": {
         "start": {
           "line": 198,
@@ -15395,8 +15395,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 7413,
-      "end": 7417,
+      "start": 7412,
+      "end": 7416,
       "loc": {
         "start": {
           "line": 198,
@@ -15421,8 +15421,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7417,
-      "end": 7418,
+      "start": 7416,
+      "end": 7417,
       "loc": {
         "start": {
           "line": 198,
@@ -15447,8 +15447,8 @@
         "binop": null
       },
       "value": "_manager",
-      "start": 7418,
-      "end": 7426,
+      "start": 7417,
+      "end": 7425,
       "loc": {
         "start": {
           "line": 198,
@@ -15473,8 +15473,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7426,
-      "end": 7427,
+      "start": 7425,
+      "end": 7426,
       "loc": {
         "start": {
           "line": 198,
@@ -15499,8 +15499,8 @@
         "binop": null
       },
       "value": "writeCharacteristicWithoutResponseForDevice",
-      "start": 7427,
-      "end": 7470,
+      "start": 7426,
+      "end": 7469,
       "loc": {
         "start": {
           "line": 198,
@@ -15524,8 +15524,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7470,
-      "end": 7471,
+      "start": 7469,
+      "end": 7470,
       "loc": {
         "start": {
           "line": 198,
@@ -15552,8 +15552,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 7471,
-      "end": 7475,
+      "start": 7470,
+      "end": 7474,
       "loc": {
         "start": {
           "line": 198,
@@ -15578,8 +15578,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7475,
-      "end": 7476,
+      "start": 7474,
+      "end": 7475,
       "loc": {
         "start": {
           "line": 198,
@@ -15604,8 +15604,8 @@
         "binop": null
       },
       "value": "id",
-      "start": 7476,
-      "end": 7478,
+      "start": 7475,
+      "end": 7477,
       "loc": {
         "start": {
           "line": 198,
@@ -15630,8 +15630,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7478,
-      "end": 7479,
+      "start": 7477,
+      "end": 7478,
       "loc": {
         "start": {
           "line": 198,
@@ -15656,8 +15656,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 7480,
-      "end": 7491,
+      "start": 7479,
+      "end": 7490,
       "loc": {
         "start": {
           "line": 198,
@@ -15682,8 +15682,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7491,
-      "end": 7492,
+      "start": 7490,
+      "end": 7491,
       "loc": {
         "start": {
           "line": 198,
@@ -15708,8 +15708,8 @@
         "binop": null
       },
       "value": "characteristicUUID",
-      "start": 7493,
-      "end": 7511,
+      "start": 7492,
+      "end": 7510,
       "loc": {
         "start": {
           "line": 198,
@@ -15734,8 +15734,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7511,
-      "end": 7512,
+      "start": 7510,
+      "end": 7511,
       "loc": {
         "start": {
           "line": 198,
@@ -15760,8 +15760,8 @@
         "binop": null
       },
       "value": "valueBase64",
-      "start": 7513,
-      "end": 7524,
+      "start": 7512,
+      "end": 7523,
       "loc": {
         "start": {
           "line": 198,
@@ -15786,8 +15786,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7524,
-      "end": 7525,
+      "start": 7523,
+      "end": 7524,
       "loc": {
         "start": {
           "line": 198,
@@ -15812,8 +15812,8 @@
         "binop": null
       },
       "value": "transactionId",
-      "start": 7526,
-      "end": 7539,
+      "start": 7525,
+      "end": 7538,
       "loc": {
         "start": {
           "line": 198,
@@ -15837,8 +15837,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7539,
-      "end": 7540,
+      "start": 7538,
+      "end": 7539,
       "loc": {
         "start": {
           "line": 198,
@@ -15863,8 +15863,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 7540,
-      "end": 7541,
+      "start": 7539,
+      "end": 7540,
       "loc": {
         "start": {
           "line": 198,
@@ -15888,8 +15888,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 7544,
-      "end": 7545,
+      "start": 7543,
+      "end": 7544,
       "loc": {
         "start": {
           "line": 199,
@@ -15904,8 +15904,8 @@
     {
       "type": "CommentBlock",
       "value": "*\n   * {@link BleManager.monitorCharacteristicForDevice} with partially filled arguments.\n   * \n   * @param {string} serviceUUID - {@link Service} UUID.\n   * @param {string} characteristicUUID - {@link Characteristic} UUID.\n   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits \n   * {@link Characteristic} objects with modified value for each notification.\n   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.\n   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.\n   * \n   * @memberOf Device\n   ",
-      "start": 7549,
-      "end": 8212,
+      "start": 7548,
+      "end": 8211,
       "loc": {
         "start": {
           "line": 201,
@@ -15930,8 +15930,8 @@
         "binop": null
       },
       "value": "monitorCharacteristicForService",
-      "start": 8215,
-      "end": 8246,
+      "start": 8214,
+      "end": 8245,
       "loc": {
         "start": {
           "line": 213,
@@ -15955,8 +15955,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 8246,
-      "end": 8247,
+      "start": 8245,
+      "end": 8246,
       "loc": {
         "start": {
           "line": 213,
@@ -15981,8 +15981,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 8247,
-      "end": 8258,
+      "start": 8246,
+      "end": 8257,
       "loc": {
         "start": {
           "line": 213,
@@ -16007,8 +16007,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8258,
-      "end": 8259,
+      "start": 8257,
+      "end": 8258,
       "loc": {
         "start": {
           "line": 213,
@@ -16033,8 +16033,8 @@
         "binop": null
       },
       "value": "characteristicUUID",
-      "start": 8260,
-      "end": 8278,
+      "start": 8259,
+      "end": 8277,
       "loc": {
         "start": {
           "line": 213,
@@ -16059,8 +16059,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8278,
-      "end": 8279,
+      "start": 8277,
+      "end": 8278,
       "loc": {
         "start": {
           "line": 213,
@@ -16085,8 +16085,8 @@
         "binop": null
       },
       "value": "listener",
-      "start": 8280,
-      "end": 8288,
+      "start": 8279,
+      "end": 8287,
       "loc": {
         "start": {
           "line": 213,
@@ -16111,8 +16111,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8288,
-      "end": 8289,
+      "start": 8287,
+      "end": 8288,
       "loc": {
         "start": {
           "line": 213,
@@ -16137,8 +16137,8 @@
         "binop": null
       },
       "value": "transactionId",
-      "start": 8290,
-      "end": 8303,
+      "start": 8289,
+      "end": 8302,
       "loc": {
         "start": {
           "line": 213,
@@ -16162,8 +16162,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 8303,
-      "end": 8304,
+      "start": 8302,
+      "end": 8303,
       "loc": {
         "start": {
           "line": 213,
@@ -16187,8 +16187,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 8305,
-      "end": 8306,
+      "start": 8304,
+      "end": 8305,
       "loc": {
         "start": {
           "line": 213,
@@ -16215,8 +16215,8 @@
         "updateContext": null
       },
       "value": "return",
-      "start": 8311,
-      "end": 8317,
+      "start": 8310,
+      "end": 8316,
       "loc": {
         "start": {
           "line": 214,
@@ -16243,8 +16243,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 8318,
-      "end": 8322,
+      "start": 8317,
+      "end": 8321,
       "loc": {
         "start": {
           "line": 214,
@@ -16269,8 +16269,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8322,
-      "end": 8323,
+      "start": 8321,
+      "end": 8322,
       "loc": {
         "start": {
           "line": 214,
@@ -16295,8 +16295,8 @@
         "binop": null
       },
       "value": "_manager",
-      "start": 8323,
-      "end": 8331,
+      "start": 8322,
+      "end": 8330,
       "loc": {
         "start": {
           "line": 214,
@@ -16321,8 +16321,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8331,
-      "end": 8332,
+      "start": 8330,
+      "end": 8331,
       "loc": {
         "start": {
           "line": 214,
@@ -16347,8 +16347,8 @@
         "binop": null
       },
       "value": "monitorCharacteristicForDevice",
-      "start": 8332,
-      "end": 8362,
+      "start": 8331,
+      "end": 8361,
       "loc": {
         "start": {
           "line": 214,
@@ -16372,8 +16372,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 8362,
-      "end": 8363,
+      "start": 8361,
+      "end": 8362,
       "loc": {
         "start": {
           "line": 214,
@@ -16400,8 +16400,8 @@
         "updateContext": null
       },
       "value": "this",
-      "start": 8363,
-      "end": 8367,
+      "start": 8362,
+      "end": 8366,
       "loc": {
         "start": {
           "line": 214,
@@ -16426,8 +16426,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8367,
-      "end": 8368,
+      "start": 8366,
+      "end": 8367,
       "loc": {
         "start": {
           "line": 214,
@@ -16452,8 +16452,8 @@
         "binop": null
       },
       "value": "id",
-      "start": 8368,
-      "end": 8370,
+      "start": 8367,
+      "end": 8369,
       "loc": {
         "start": {
           "line": 214,
@@ -16478,8 +16478,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8370,
-      "end": 8371,
+      "start": 8369,
+      "end": 8370,
       "loc": {
         "start": {
           "line": 214,
@@ -16504,8 +16504,8 @@
         "binop": null
       },
       "value": "serviceUUID",
-      "start": 8372,
-      "end": 8383,
+      "start": 8371,
+      "end": 8382,
       "loc": {
         "start": {
           "line": 214,
@@ -16530,8 +16530,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8383,
-      "end": 8384,
+      "start": 8382,
+      "end": 8383,
       "loc": {
         "start": {
           "line": 214,
@@ -16556,8 +16556,8 @@
         "binop": null
       },
       "value": "characteristicUUID",
-      "start": 8385,
-      "end": 8403,
+      "start": 8384,
+      "end": 8402,
       "loc": {
         "start": {
           "line": 214,
@@ -16582,8 +16582,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8403,
-      "end": 8404,
+      "start": 8402,
+      "end": 8403,
       "loc": {
         "start": {
           "line": 214,
@@ -16608,8 +16608,8 @@
         "binop": null
       },
       "value": "listener",
-      "start": 8405,
-      "end": 8413,
+      "start": 8404,
+      "end": 8412,
       "loc": {
         "start": {
           "line": 214,
@@ -16634,8 +16634,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8413,
-      "end": 8414,
+      "start": 8412,
+      "end": 8413,
       "loc": {
         "start": {
           "line": 214,
@@ -16660,8 +16660,8 @@
         "binop": null
       },
       "value": "transactionId",
-      "start": 8415,
-      "end": 8428,
+      "start": 8414,
+      "end": 8427,
       "loc": {
         "start": {
           "line": 214,
@@ -16685,8 +16685,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 8428,
-      "end": 8429,
+      "start": 8427,
+      "end": 8428,
       "loc": {
         "start": {
           "line": 214,
@@ -16711,8 +16711,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8429,
-      "end": 8430,
+      "start": 8428,
+      "end": 8429,
       "loc": {
         "start": {
           "line": 214,
@@ -16736,8 +16736,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 8433,
-      "end": 8434,
+      "start": 8432,
+      "end": 8433,
       "loc": {
         "start": {
           "line": 215,
@@ -16761,8 +16761,8 @@
         "postfix": false,
         "binop": null
       },
-      "start": 8435,
-      "end": 8436,
+      "start": 8434,
+      "end": 8435,
       "loc": {
         "start": {
           "line": 216,
@@ -16787,8 +16787,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 8436,
-      "end": 8436,
+      "start": 8435,
+      "end": 8435,
       "loc": {
         "start": {
           "line": 216,
