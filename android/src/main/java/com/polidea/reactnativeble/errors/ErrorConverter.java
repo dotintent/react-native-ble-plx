@@ -1,5 +1,7 @@
 package com.polidea.reactnativeble.errors;
 
+import com.polidea.reactnativeble.exceptions.CannotMonitorCharacteristicException;
+import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.rxandroidble.exceptions.BleAlreadyConnectedException;
 import com.polidea.rxandroidble.exceptions.BleCannotSetCharacteristicNotificationException;
 import com.polidea.rxandroidble.exceptions.BleCharacteristicNotFoundException;
@@ -10,6 +12,11 @@ import com.polidea.rxandroidble.exceptions.BleScanException;
 public class ErrorConverter {
 
     public Error toError(Throwable throwable) {
+        if (throwable instanceof CannotMonitorCharacteristicException) {
+            CannotMonitorCharacteristicException exception = (CannotMonitorCharacteristicException)throwable;
+            String uuid = UUIDConverter.fromUUID(exception.getCharacteristic().getUuid());
+            return BleError.cannotMonitorCharacteristic(uuid);
+        }
         if (throwable instanceof BleScanException) {
             return toError((BleScanException) throwable);
         }

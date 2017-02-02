@@ -26,6 +26,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.reactnativeble.converter.JSObjectConverterManager;
 import com.polidea.reactnativeble.errors.BleError;
 import com.polidea.reactnativeble.errors.ErrorConverter;
+import com.polidea.reactnativeble.exceptions.CannotMonitorCharacteristicException;
 import com.polidea.reactnativeble.utils.Base64Converter;
 import com.polidea.reactnativeble.utils.DisposableMap;
 import com.polidea.reactnativeble.utils.ReadableArrayConverter;
@@ -748,7 +749,16 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .flatMap(new Func1<BluetoothGattCharacteristic, Observable<Observable<byte[]>>>() {
                     @Override
                     public Observable<Observable<byte[]>> call(BluetoothGattCharacteristic bluetoothGattCharacteristic) {
-                        return connection.setupNotification(bluetoothGattCharacteristic);
+                        int properties = bluetoothGattCharacteristic.getProperties();
+                        if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+                            return connection.setupNotification(bluetoothGattCharacteristic);
+                        }
+
+                        if ((properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+                            return connection.setupIndication(bluetoothGattCharacteristic);
+                        }
+
+                        return Observable.error(new CannotMonitorCharacteristicException(bluetoothGattCharacteristic));
                     }
                 }, new Func2<BluetoothGattCharacteristic, Observable<byte[]>, Pair<BluetoothGattCharacteristic, Observable<byte[]>>>() {
                     @Override

@@ -41,4 +41,8 @@ public class BleError {
     static public Error invalidWriteDataForCharacteristic(String data, String uuid) {
         return new Error("Invalid base64 write data: " + data + " for characteristic " + uuid, 505);
     }
+
+    static public Error cannotMonitorCharacteristic(String uuid) {
+        return new Error("Characteristic " + uuid + " cannot be monitored as it doesn't support notifications or indications", 506);
+    }
 }
