@@ -281,7 +281,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#onStateChange",
     "access": null,
     "description": "\nNotifies about state changes of a manager.",
-    "lineNumber": 100,
+    "lineNumber": 101,
     "unknown": [
       {
         "tagName": "@returns",
@@ -302,6 +302,18 @@
         "optional": false,
         "name": "listener",
         "description": "Callback which emits state changes of BLE Manager. \nLook at {@link state} for possible values."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "false",
+        "defaultRaw": false,
+        "name": "emitCurrentState",
+        "description": "If true, current state will be emitted as well. Defaults to false."
       }
     ],
     "return": {
@@ -324,7 +336,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#startDeviceScan",
     "access": null,
     "description": "Starts device scanning. \n\nWhen previous scan is in progress it will be stopped before executing this command.",
-    "lineNumber": 125,
+    "lineNumber": 143,
     "unknown": [
       {
         "tagName": "@memberOf",
@@ -373,7 +385,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#_scanEventSubscription",
     "access": null,
     "description": null,
-    "lineNumber": 130,
+    "lineNumber": 148,
     "undocument": true,
     "unknown": [
       {
@@ -398,7 +410,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#stopDeviceScan",
     "access": null,
     "description": "\nStops device scan if in progress.",
-    "lineNumber": 140,
+    "lineNumber": 158,
     "unknown": [
       {
         "tagName": "@memberOf",
@@ -418,7 +430,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#connectToDevice",
     "access": null,
     "description": "Connects to {@link Device} with provided ID.",
-    "lineNumber": 159,
+    "lineNumber": 177,
     "unknown": [
       {
         "tagName": "@returns",
@@ -471,7 +483,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#cancelDeviceConnection",
     "access": null,
     "description": "Disconnects from device if it's connected or cancels pending connection.",
-    "lineNumber": 172,
+    "lineNumber": 190,
     "unknown": [
       {
         "tagName": "@returns",
@@ -514,7 +526,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#onDeviceDisconnected",
     "access": null,
     "description": "Monitors if device was disconnected due to any errors or connection problems.",
-    "lineNumber": 187,
+    "lineNumber": 205,
     "unknown": [
       {
         "tagName": "@returns",
@@ -567,7 +579,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#isDeviceConnected",
     "access": null,
     "description": "Check connection state of a device.",
-    "lineNumber": 205,
+    "lineNumber": 223,
     "unknown": [
       {
         "tagName": "@returns",
@@ -610,7 +622,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#discoverAllServicesAndCharacteristicsForDevice",
     "access": null,
     "description": "Discovers all services and characteristics for {@link Device}.",
-    "lineNumber": 220,
+    "lineNumber": 238,
     "unknown": [
       {
         "tagName": "@returns",
@@ -653,7 +665,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#servicesForDevice",
     "access": null,
     "description": "List of discovered services for device.",
-    "lineNumber": 236,
+    "lineNumber": 254,
     "unknown": [
       {
         "tagName": "@returns",
@@ -696,7 +708,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#characteristicsForDevice",
     "access": null,
     "description": "List of discovered characteristics for given {@link Device} and {@link Service}.",
-    "lineNumber": 253,
+    "lineNumber": 271,
     "unknown": [
       {
         "tagName": "@returns",
@@ -749,7 +761,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#readCharacteristicForDevice",
     "access": null,
     "description": "Read characteristic value.",
-    "lineNumber": 274,
+    "lineNumber": 292,
     "unknown": [
       {
         "tagName": "@returns",
@@ -822,7 +834,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#writeCharacteristicWithResponseForDevice",
     "access": null,
     "description": "Write characteristic value with response.",
-    "lineNumber": 296,
+    "lineNumber": 314,
     "unknown": [
       {
         "tagName": "@returns",
@@ -905,7 +917,7 @@
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#writeCharacteristicWithoutResponseForDevice",
     "access": null,
     "description": "Write characteristic value without response.",
-    "lineNumber": 318,
+    "lineNumber": 336,
     "unknown": [
       {
         "tagName": "@returns",
@@ -987,8 +999,8 @@
     "static": false,
     "longname": "react-native-ble-plx/src/BleManager.js~BleManager#monitorCharacteristicForDevice",
     "access": null,
-    "description": "Monitor value changes of a characteristic.",
-    "lineNumber": 340,
+    "description": "Monitor value changes of a characteristic. If notifications are enabled they will be used\nin favour of indications.",
+    "lineNumber": 359,
     "unknown": [
       {
         "tagName": "@returns",

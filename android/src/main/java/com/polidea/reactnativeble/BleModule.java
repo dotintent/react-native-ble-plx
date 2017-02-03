@@ -160,12 +160,6 @@ public class BleModule extends ReactContextBaseJavaModule {
         }
 
         final ReactApplicationContext context = getReactApplicationContext();
-        final int coarseLocationPermissionState = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION);
-        final boolean hasPermission = coarseLocationPermissionState == PackageManager.PERMISSION_GRANTED;
-        if (!hasPermission) {
-            return BluetoothState.UNAUTHORIZED;
-        }
-
         final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
         final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         return nativeAdapterStateToReactNativeBluetoothState(bluetoothAdapter.getState());

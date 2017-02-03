@@ -4,6 +4,7 @@
   "destination": "./doc",
   "includeSource": false,
   "coverage": false,
+  "index": "./INTRO.md",
   "plugins": [{
     "name": "esdoc-flow-plugin"
   }],

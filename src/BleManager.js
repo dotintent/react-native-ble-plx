@@ -113,20 +113,37 @@ export default class BleManager {
     return BleModule.state()
   }
 
-
   /**
-   * 
-   * Notifies about state changes of a manager.
-   * 
-   * @param {function(newState: State)} listener Callback which emits state changes of BLE Manager. 
-   * Look at {@link state} for possible values.
-   * 
-   * @returns {Subscription} Subscription on which remove() function can be called to unsubscribe.
-   * 
-   * @memberOf BleManager
-   */
-  onStateChange(listener: (newState: State) => void): Subscription {
+  * 
+  * Notifies about state changes of a manager.
+  * 
+  * @param {function(newState: State)} listener Callback which emits state changes of BLE Manager. 
+  * Look at {@link state} for possible values.
+  * @param {boolean} [emitCurrentState=false] If true, current state will be emitted as well. Defaults to false.
+  *  
+  * @returns {Subscription} Subscription on which remove() function can be called to unsubscribe.
+  * 
+  * @memberOf BleManager
+  */
+  onStateChange(listener: (newState: State) => void, emitCurrentState: boolean = false): Subscription {
     const subscription = this._eventEmitter.addListener(BleModule.StateChangeEvent, listener);
+
+    if (emitCurrentState) {
+      var cancelled = false;
+      this.state().then((currentState) => {
+        if (!cancelled) {
+          listener(currentState);
+        }
+      });
+
+      return {
+        remove: () => {
+          cancelled = true;
+          subscription.remove();
+        }
+      }
+    }
+
     return subscription
   }
 
@@ -381,7 +398,8 @@ export default class BleManager {
 
 
   /**
-   * Monitor value changes of a characteristic.
+   * Monitor value changes of a characteristic. If notifications are enabled they will be used
+   * in favour of indications.
    * 
    * @param {string} deviceIdentifier - {@link Device} identifier.
    * @param {string} serviceUUID - {@link Service} UUID.
