@@ -59,7 +59,7 @@ scanAndConnect() {
 
             // Proceed with connection.
         }
-    }
+    })
 }
 ```
 
