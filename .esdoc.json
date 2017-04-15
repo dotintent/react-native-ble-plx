@@ -1,7 +1,7 @@
 {
   "source": ".",
-  "excludes": ["node_modules", "examples", "\\.vscode", "doc"],
-  "destination": "./doc",
+  "excludes": ["node_modules", "examples", "\\.vscode", "docs"],
+  "destination": "./docs",
   "includeSource": false,
   "coverage": false,
   "index": "./INTRO.md",
