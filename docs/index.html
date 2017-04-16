@@ -48,10 +48,11 @@ will be based on CC2541 SensorTag.</p>
 <p>First step is to create BleManager instance which is an entry point to all available APIs.
 Make sure to create it after application started its execution. For example we can do it in
 Component&apos;s constructor:</p>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">    constructor() {
-        super()
-        this.manager = new BleManager()
-        ...</code>
+<pre><code class="lang-js"><code class="source-code prettyprint">constructor() {
+    super();
+    this.manager = new BleManager();
+    ...
+}</code>
 </code></pre>
 <p>Only one instance of BleManager is allowed. When you don&apos;t need any BLE functionality you
 can destroy created instance by calling <code>this.manager.destroy()</code> function. You can then
@@ -59,8 +60,8 @@ recreate <code>BleManager</code> later on as we did above.</p>
 <h2 id="waiting-for-powered-on-state">Waiting for Powered On state</h2>
 <p>When iOS application launches BLE stack is not immediately available and we need to check its status.
 To detect current state and following state changes we can use <code>onStateChange()</code> function:</p>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">componentWillMount() {
-    var subscription = this.manager.onStateChange((state) =&gt; {
+<pre><code class="lang-js"><code class="source-code prettyprint">componentWillMount() {
+    const subscription = this.manager.onStateChange((state) =&gt; {
         if (state === &apos;PoweredOn&apos;) {
             this.scanAndConnect();
             subscription.remove();
@@ -71,7 +72,7 @@ To detect current state and following state changes we can use <code>onStateChan
 <h2 id="scanning-devices">Scanning devices</h2>
 <p>Devices needs to be scanned first to be able to connect to them. There is a simple function
 which allows only one callback to be registered to handle detected devices:</p>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">scanAndConnect() {
+<pre><code class="lang-js"><code class="source-code prettyprint">scanAndConnect() {
     this.manager.startDeviceScan(null, null, (error, device) =&gt; {
         if (error) {
             // Handle error (scanning will be stopped automatically)
@@ -88,7 +89,7 @@ which allows only one callback to be registered to handle detected devices:</p>
 
             // Proceed with connection.
         }
-    }
+    });
 }</code>
 </code></pre>
 <p>It is worth to note that scanning function may emit one device multiple times. However 
@@ -105,13 +106,11 @@ capabilities. For example connection may look like this:</p>
         return device.discoverAllServicesAndCharacteristics()
     })
     .then((device) =&gt; {
-        return this.doOtherWork(device)
+       // Do work on device with services and characteristics
     })
-    .then(() =&gt; {
-        // Handle result
-    }, (error) =&gt; {
+    .catch((error) =&gt; {
         // Handle errors
-    })</code>
+    });</code>
 </code></pre>
 <p>Discovery of services and characteristics is required to be executed only once. Additionally
 it can be a long process depending on number of characteristics and services available.</p>
