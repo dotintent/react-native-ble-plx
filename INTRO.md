@@ -9,11 +9,12 @@ First step is to create BleManager instance which is an entry point to all avail
 Make sure to create it after application started its execution. For example we can do it in
 Component's constructor:
 
-```javascript
-    constructor() {
-        super()
-        this.manager = new BleManager()
-        ...
+```js
+constructor() {
+    super();
+    this.manager = new BleManager();
+    ...
+}
 ```
 
 Only one instance of BleManager is allowed. When you don't need any BLE functionality you
@@ -25,9 +26,9 @@ recreate `BleManager` later on as we did above.
 When iOS application launches BLE stack is not immediately available and we need to check its status.
 To detect current state and following state changes we can use `onStateChange()` function:
 
-```javascript
+```js
 componentWillMount() {
-    var subscription = this.manager.onStateChange((state) => {
+    const subscription = this.manager.onStateChange((state) => {
         if (state === 'PoweredOn') {
             this.scanAndConnect();
             subscription.remove();
@@ -41,7 +42,7 @@ componentWillMount() {
 Devices needs to be scanned first to be able to connect to them. There is a simple function
 which allows only one callback to be registered to handle detected devices:
 
-```javascript
+```js
 scanAndConnect() {
     this.manager.startDeviceScan(null, null, (error, device) => {
         if (error) {
@@ -59,7 +60,7 @@ scanAndConnect() {
 
             // Proceed with connection.
         }
-    })
+    });
 }
 ```
 
@@ -81,13 +82,11 @@ device.connect()
         return device.discoverAllServicesAndCharacteristics()
     })
     .then((device) => {
-        return this.doOtherWork(device)
+       // Do work on device with services and characteristics
     })
-    .then(() => {
-        // Handle result
-    }, (error) => {
+    .catch((error) => {
         // Handle errors
-    })
+    });
 ```
 
 Discovery of services and characteristics is required to be executed only once. Additionally
