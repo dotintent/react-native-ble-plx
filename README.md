@@ -41,11 +41,14 @@ Documentation can be found [here](https://polidea.github.io/react-native-ble-plx
 ## Configuration & Installation
 
 ### Automatically
+This should cover you for most uses. Refer to manual setup if any issues are encountered.
 
 ```bash
 npm install --save react-native-ble-plx
 react-native link
 ```
+
+Then refer [below](#android-permissions) to add Android permissions
 
 ### Manually
 
@@ -115,7 +118,11 @@ public class MainApplication extends Application implements ReactApplication {
       );
 }
 ```
-* In `AndroidManifest.xml` add Bluetooth permissions and update `<uses-sdk/>`:
+* Refer [below](#android-permissions) to add permsisions
+
+### Android Permissions
+In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
+
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     ...
