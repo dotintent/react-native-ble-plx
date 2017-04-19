@@ -15,6 +15,7 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 
 ---
 
+
 ## Recent Changes
 
 **0.4.0**
@@ -31,13 +32,28 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 - Fixed `monitorCharacteristicForDevice()` for Android when characteristic accepts indications only.
 - Updated `AndroidManifest.xml` configuration.
 
+
 ## Documentation
 
-Documentation can be found under `./doc` folder.
+Documentation can be found [here](https://polidea.github.io/react-native-ble-plx/).
+
 
 ## Configuration & Installation
 
-**iOS:**
+### Automatically
+This should cover you for most uses. Refer to manual setup if any issues are encountered.
+
+```bash
+npm install --save react-native-ble-plx
+react-native link
+```
+
+Then refer [below](#android-permissions) to add Android permissions
+
+### Manually
+
+#### iOS
+
 * Add `react-native-ble-plx` to a project as a dependency in `package.json` file.
   For example `"react-native-ble-plx": "Polidea/react-native-ble-plx"` will install
   latest version from Polidea's Github repository.
@@ -57,7 +73,9 @@ Documentation can be found under `./doc` folder.
     * `$(SRCROOT)/../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/RxBluetoothKit.framework`
 * Minimal supported version of iOS is 8.0
 
-**Android**:
+
+#### Android
+
 * Add `react-native-ble-plx` to a project as a dependency in `package.json` file.
   For example `"react-native-ble-plx": "Polidea/react-native-ble-plx"` will install
   latest version from Polidea's Github repository.
@@ -100,7 +118,11 @@ public class MainApplication extends Application implements ReactApplication {
       );
 }
 ```
-* In `AndroidManifest.xml` add Bluetooth permissions and update `<uses-sdk/>`:
+* Refer [below](#android-permissions) to add permsisions
+
+### Android Permissions
+In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
+
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     ...
