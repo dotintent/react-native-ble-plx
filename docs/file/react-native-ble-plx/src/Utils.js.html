@@ -42,8 +42,22 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">react-native-ble-plx/src/Utils.js</h1>
-<pre class="source-code line-number raw-source-code"></pre>
-<p data-ice="emptySourceCode">Sorry, this documentation does not provide source code.</p>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">// @flow
+&quot;use strict&quot;
+
+/**
+ * Converts UUID to full 128bit, lowercase format which should be used to compare UUID values.
+ * 
+ * @export
+ * @param {string} uuid 16bit, 32bit or 128bit UUID.
+ * @returns {string} 128bit lowercase UUID.
+ */
+export function fullUUID(uuid: string): string {
+    if (uuid.length === 4) return &quot;0000&quot; + uuid.toLowerCase() + &quot;-0000-1000-8000-00805f9b34fb&quot;
+    if (uuid.length === 8) return uuid.toLowerCase() + &quot;-0000-1000-8000-00805f9b34fb&quot;
+    return uuid.toLowerCase()
+}</code></pre>
+
 </div>
 
 <footer class="footer">
