@@ -1,106 +1,89 @@
 // @flow
 'use strict'
 
-import BleManager from './BleManager'
-import type { Subscription } from './BleManager'
-
-/**
- * Internal class describing Characteristic format which
- * is exchanged between native modules and react native.
- * 
- * @access private
- * @class NativeCharacteristic
- */
-class NativeCharacteristic {
-  uuid: string
-  serviceUUID: string
-  deviceID: string
-  isReadable: boolean
-  isWritableWithResponse: boolean
-  isWritableWithoutResponse: boolean
-  isNotifiable: boolean
-  isNotifying: boolean
-  isIndictable: boolean
-  value: ?string
-}
+import { BleManager } from './BleManager'
+import type { NativeCharacteristic } from './BleModule'
+import type { DeviceId, UUID, TransactionId, Base64, Subscription } from './TypeDefinition'
 
 /**
  * Characteristic object.
- * 
- * @export
- * @class Characteristic
  */
-export default class Characteristic extends NativeCharacteristic {
+export class Characteristic implements NativeCharacteristic {
+  // Internal BLE Manager handle
   _manager: BleManager
+  /**
+   * Characteristic UUID
+   */
+  uuid: UUID
+  /**
+   * Service's UUID to which characteristic belongs
+   */
+  serviceUUID: UUID
+  /**
+   * Device's ID to which characteristic belongs
+   */
+  deviceID: DeviceId
+  /**
+   * True if characteristic can be read
+   */
+  isReadable: boolean
+  /**
+   * True if characteristic can be written with response
+   */
+  isWritableWithResponse: boolean
+  /**
+   * True if characteristic can be written without response
+   */
+  isWritableWithoutResponse: boolean
+  /**
+   * True if characteristic can monitor value changes.
+   */
+  isNotifiable: boolean
+  /**
+   * True if characteristic is monitoring value changes without ACK.
+   */
+  isNotifying: boolean
+  /**
+   * True if characteristic is monitoring value changes with ACK.
+   */
+  isIndictable: boolean
+  /**
+   * Characteristic value if present
+   */
+  value: ?Base64
 
   /**
-     * Private {@link Characteristic} constructor.
-     * 
-     * @param {NativeCharacteristic} props - NativeCharacteristic properties to be copied.
-     * @param {BleManager} manager - Current BleManager instance.
-     * @access private
-     * 
-     * @memberOf Characteristic
-     */
-  constructor(props: NativeCharacteristic, manager: BleManager) {
-    super()
-    this._manager = manager
-    /** @type {string} 
-         *  @desc {@link Characteristic} UUID. */
-    this.uuid = props.uuid
-    /** @type {string} 
-         *  @desc {@link Service} UUID which owns this characteristic. */
-    this.serviceUUID = props.serviceUUID
-    /** @type {string}
-         *  @desc {@link Device} identifier which owns this characteristic. */
-    this.deviceID = props.deviceID
-    /** @type {boolean} 
-         *  @desc True if characteristic is readable. */
-    this.isReadable = props.isReadable
-    /** @type {boolean} 
-         *  @desc True if characteristic is writable when writing with response. */
-    this.isWritableWithResponse = props.isWritableWithResponse
-    /** @type {boolean} 
-         *  @desc True if characteristic is writable when writing without response. */
-    this.isWritableWithoutResponse = props.isWritableWithoutResponse
-    /** @type {boolean} 
-        *   @desc True if characteristic is notifiable */
-    this.isNotifiable = props.isNotifiable
-    /** @type {boolean} 
-        *   @desc Current status of notification for this characteristic. */
-    this.isNotifying = props.isNotifying
-    /** @type {boolean} 
-        *   @desc True if characteristic is indictable */
-    this.isIndictable = props.isIndictable
-    /** @type {?string}
-         *  @desc Current characteristic value in Base64 encoding, may be `null` when not read. */
-    this.value = props.value
+   * Private constructor used to create instance of {@link Characteristic}.
+   * @param {NativeCharacteristic} nativeCharacteristic NativeCharacteristic
+   * @param {BleManager} manager BleManager
+   */
+  constructor(nativeCharacteristic: NativeCharacteristic, manager: BleManager) {
+    // $FlowFixMe Should be fixed in flow 0.46
+    Object.assign(this, nativeCharacteristic, { _manager: manager })
   }
 
   /**
-     * {@link BleManager.readCharacteristicForDevice} with partially filled arguments.
-     * 
-     * @param {string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.
-     * @returns {Promise<Characteristic>} Promise which emits this characteristic. Latest value will be stored inside 
-     * returned object.
-     * 
-     * @memberOf Characteristic
-     */
-  async read(transactionId: string): Promise<Characteristic> {
+   * {@link BleManager#readCharacteristicForDevice} with partially filled arguments.
+   * 
+   * @param {TransactionId} transactionId optional `transactionId` which can be used in 
+   * {@link BleManager#cancelTransaction} function.
+   * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value will be stored 
+   * inside returned object.
+   */
+  read(transactionId: TransactionId): Promise<Characteristic> {
     return this._manager.readCharacteristicForDevice(this.deviceID, this.serviceUUID, this.uuid, transactionId)
   }
 
   /**
-     * {@link BleManager.writeCharacteristicWithResponseForDevice} with partially filled arguments.
-     * 
-     * @param {string} valueBase64 - Value in Base64 format.
-     * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.
-     * @returns {Promise<Characteristic>} Promise which emits this characteristic. Latest value of characteristic may 
-     * not be stored inside returned object.
-     * 
-     * @memberOf Characteristic
-     */
-  async writeWithResponse(valueBase64: string, transactionId: ?string): Promise<Characteristic> {
+   * {@link BleManager#writeCharacteristicWithResponseForDevice} with partially filled arguments.
+   * 
+   * @param {Base64} valueBase64 Value in Base64 format.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * {@link BleManager#cancelTransaction} function.
+   * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value may 
+   * not be stored inside returned object.
+   */
+  writeWithResponse(valueBase64: Base64, transactionId: ?TransactionId): Promise<Characteristic> {
     return this._manager.writeCharacteristicWithResponseForDevice(
       this.deviceID,
       this.serviceUUID,
@@ -111,16 +94,15 @@ export default class Characteristic extends NativeCharacteristic {
   }
 
   /**
-     * {@link BleManager.writeCharacteristicWithoutResponseForDevice} with partially filled arguments.
-     * 
-     * @param {string} valueBase64 - Value in Base64 format.
-     * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.
-     * @returns {Promise<Characteristic>} Promise which emits this characteristic. Latest value of characteristic may 
-     * not be stored inside returned object.
-     * 
-     * @memberOf Characteristic
-     */
-  async writeWithoutResponse(valueBase64: string, transactionId: ?string): Promise<Characteristic> {
+   * {@link BleManager#writeCharacteristicWithoutResponseForDevice} with partially filled arguments.
+   * 
+   * @param {Base64} valueBase64 Value in Base64 format.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * {@link BleManager#cancelTransaction} function.
+   * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value may 
+   * not be stored inside returned object.
+   */
+  writeWithoutResponse(valueBase64: Base64, transactionId: ?TransactionId): Promise<Characteristic> {
     return this._manager.writeCharacteristicWithoutResponseForDevice(
       this.deviceID,
       this.serviceUUID,
@@ -131,16 +113,18 @@ export default class Characteristic extends NativeCharacteristic {
   }
 
   /**
-     * {@link BleManager.monitorCharacteristicForDevice} with partially filled arguments.
-     * 
-     * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
-     * this characteristic with modified value for each notification.
-     * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.
-     * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
-     * 
-     * @memberOf Characteristic
-     */
-  monitor(listener: (error: ?Error, characteristic: ?Characteristic) => void, transactionId: ?string): Subscription {
+   * {@link BleManager#monitorCharacteristicForDevice} with partially filled arguments.
+   * 
+   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener callback which emits 
+   * this {@link Characteristic} with modified value for each notification.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * {@link BleManager#cancelTransaction} function.
+   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   */
+  monitor(
+    listener: (error: ?Error, characteristic: ?Characteristic) => void,
+    transactionId: ?TransactionId
+  ): Subscription {
     return this._manager.monitorCharacteristicForDevice(
       this.deviceID,
       this.serviceUUID,

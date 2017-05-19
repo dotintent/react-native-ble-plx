@@ -1,45 +1,42 @@
 // @flow
 'use strict'
 
-import { NativeModules, NativeEventEmitter } from 'react-native'
-import Device from './Device'
-import Service from './Service'
-import Characteristic from './Characteristic'
-
-const BleModule = NativeModules.BleClientManager
-
-export type State = 'Unknown' | 'Resetting' | 'Unsupported' | 'Unauthorized' | 'PoweredOff' | 'PoweredOn'
-
-export type Subscription = {
-  remove: () => void
-}
-
-export type ScanOptions = {
-  allowDuplicates?: boolean,
-  autoConnect?: boolean
-}
-
-export type ConnectionOptions = {
-  // Not used for now
-}
+import { NativeEventEmitter } from 'react-native'
+import { Device } from './Device'
+import { Service } from './Service'
+import { Characteristic } from './Characteristic'
+import { State } from './TypeDefinition'
+import { BleModule } from './BleModule'
+import type { NativeDevice, NativeCharacteristic } from './BleModule'
+import type {
+  Subscription,
+  DeviceId,
+  UUID,
+  TransactionId,
+  Base64,
+  ScanOptions,
+  ConnectionOptions
+} from './TypeDefinition'
 
 /**
  * 
  * BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
- * {@link Device} instances. It should be initialized only once with new keyword and method {@link destroy} should be called 
- * on its instance when user wants to deallocate all resources.
+ * {@link Device} instances. It should be initialized only once with new keyword and method {@link destroy} should be 
+ * called on its instance when user wants to deallocate all resources.
  * 
  * @example
  * const manager = new BleManager();
  * // ... work with BLE manager ...
  * manager.destroy(); 
  * 
- * @export
  * @class BleManager
  */
-export default class BleManager {
+export class BleManager {
+  // Scan subscriptions
   _scanEventSubscription: ?NativeEventEmitter
+  // Listening to BleModule events
   _eventEmitter: NativeEventEmitter
+  // Unique identifier used to create internal transactionIds
   _uniqueId: number
 
   constructor() {
@@ -50,19 +47,22 @@ export default class BleManager {
 
   /**
    * Destroys BleManager instance. A new instance needs to be created to continue working with react-native-ble-plx.
-   * 
-   * @memberOf BleManager
    */
   destroy() {
     BleModule.destroyClient()
   }
 
+  /**
+   * Generates new unique identifier to be used internally
+   * 
+   * @returns {string} New identifier.
+   */
   _nextUniqueID(): string {
     this._uniqueId += 1
     return this._uniqueId.toString()
   }
 
-  // Mark: Common --------------------------------------------------------------------------------------------------------
+  // Mark: Common ------------------------------------------------------------------------------------------------------
 
   /**
    * Cancels pending transaction.
@@ -74,14 +74,12 @@ export default class BleManager {
    * Cancelling transaction which doesn't exist is ignored.
    * 
    * @param {string} transactionId Id of pending transactions.
-   * 
-   * @memberOf BleManager
    */
-  cancelTransaction(transactionId: string) {
+  cancelTransaction(transactionId: TransactionId) {
     BleModule.cancelTransaction(transactionId)
   }
 
-  // Mark: Monitoring state ----------------------------------------------------------------------------------------------
+  // Mark: Monitoring state --------------------------------------------------------------------------------------------
 
   /**
    * Current state of a manager.
@@ -94,28 +92,23 @@ export default class BleManager {
    * - `PoweredOff` - Bluetooth is currently powered off.
    * - `PoweredOn` - Bluetooth is currently powered on and available to use.
    * 
-   * @returns {Promise<State>} Promise which emits current state of BleManager.
-   * 
-   * @memberOf BleManager
+   * @returns {Promise<$Keys<typeof State>>} Promise which emits current state of BleManager.
    */
-  state(): Promise<State> {
+  state(): Promise<$Keys<typeof State>> {
     return BleModule.state()
   }
 
   /**
-  * 
   * Notifies about state changes of a manager.
   * 
-  * @param {function(newState: State)} listener Callback which emits state changes of BLE Manager. 
+  * @param {function(newState: $Keys<typeof State>)} listener Callback which emits state changes of BLE Manager. 
   * Look at {@link state} for possible values.
   * @param {boolean} [emitCurrentState=false] If true, current state will be emitted as well. Defaults to false.
   *  
-  * @returns {Subscription} Subscription on which remove() function can be called to unsubscribe.
-  * 
-  * @memberOf BleManager
+  * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
   */
-  onStateChange(listener: (newState: State) => void, emitCurrentState: boolean = false): Subscription {
-    const subscription = this._eventEmitter.addListener(BleModule.StateChangeEvent, listener)
+  onStateChange(listener: (newState: $Keys<typeof State>) => void, emitCurrentState: boolean = false): Subscription {
+    const subscription: Subscription = this._eventEmitter.addListener(BleModule.StateChangeEvent, listener)
 
     if (emitCurrentState) {
       var cancelled = false
@@ -136,222 +129,206 @@ export default class BleManager {
     return subscription
   }
 
-  // Mark: Scanning ------------------------------------------------------------------------------------------------------
+  // Mark: Scanning ----------------------------------------------------------------------------------------------------
 
   /**
    * Starts device scanning. 
    * 
    * When previous scan is in progress it will be stopped before executing this command.
    * 
-   * @param {?string[]} UUIDs - Array of strings containing UUIDs of services which are registered in scanned devices. 
+   * @param {?UUID[]} UUIDs Array of strings containing UUIDs of services which are registered in scanned devices. 
    * If null is passed all available devices will be scanned.
-   * @param {?ScanOptions} options - Optional configuration for scanning operation. Scan option object contains two
+   * @param {?ScanOptions} options Optional configuration for scanning operation. Scan option object contains two
    * optional fields: `allowDuplicates` for iOS when set to true scanned {@link Device}s will be emitted more
    * frequently, `autoConnect` for Android - allows to connect to devices which are not in range.
-   * @param {function(error: ?Error, scannedDevice: ?Device)} listener - Function which will be called for every scanned 
+   * @param {function(error: ?Error, scannedDevice: ?Device)} listener Function which will be called for every scanned 
    * {@link Device} (devices may be scanned multiple times). It's first argument is potential {@link Error} which is set 
    * to non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument 
    * is a scanned {@link Device}.
-   * 
-   * @memberOf BleManager
    */
   startDeviceScan(
-    UUIDs: ?(string[]),
+    UUIDs: ?Array<UUID>,
     options: ?ScanOptions,
     listener: (error: ?Error, scannedDevice: ?Device) => void
   ) {
     this.stopDeviceScan()
-    const scanListener = ([error, device]) => {
-      listener(error, device ? new Device(device, this) : null)
+    const scanListener = ([error, nativeDevice]: [?Error, ?NativeDevice]) => {
+      listener(error, nativeDevice ? new Device(nativeDevice, this) : null)
     }
     this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
     BleModule.startDeviceScan(UUIDs, options)
   }
 
   /**
-   * 
    * Stops device scan if in progress.
-   * 
-   * @memberOf BleManager
    */
   stopDeviceScan() {
-    if (this._scanEventSubscription) {
+    if (this._scanEventSubscription != null) {
       this._scanEventSubscription.remove()
       delete this._scanEventSubscription
     }
     BleModule.stopDeviceScan()
   }
 
-  // Mark: Connection management -----------------------------------------------------------------------------------------
+  // Mark: Connection management ---------------------------------------------------------------------------------------
 
   /**
    * Connects to {@link Device} with provided ID.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier.
-   * @param {?ConnectionOptions} options - Platform specific options for connection establishment. Not used currently.
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {?ConnectionOptions} options Platform specific options for connection establishment. Not used currently.
    * @returns {Promise<Device>} Connected {@link Device} object if successful.
-   * 
-   * @memberOf BleManager
    */
-  async connectToDevice(deviceIdentifier: string, options: ?ConnectionOptions): Promise<Device> {
-    const deviceProps = await BleModule.connectToDevice(deviceIdentifier, options)
-    return new Device(deviceProps, this)
+  async connectToDevice(deviceIdentifier: DeviceId, options: ?ConnectionOptions): Promise<Device> {
+    const nativeDevice = await BleModule.connectToDevice(deviceIdentifier, options)
+    return new Device(nativeDevice, this)
   }
 
   /**
-   * Disconnects from device if it's connected or cancels pending connection.
+   * Disconnects from {@link Device} if it's connected or cancels pending connection.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier to be closed. 
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier to be closed. 
    * @returns {Promise<Device>} Returns closed {@link Device} when operation is successful.
-   * 
-   * @memberOf BleManager
    */
-  async cancelDeviceConnection(deviceIdentifier: string): Promise<Device> {
-    const deviceProps = await BleModule.cancelDeviceConnection(deviceIdentifier)
-    return new Device(deviceProps, this)
+  async cancelDeviceConnection(deviceIdentifier: DeviceId): Promise<Device> {
+    const nativeDevice = await BleModule.cancelDeviceConnection(deviceIdentifier)
+    return new Device(nativeDevice, this)
   }
 
   /**
-   * Monitors if device was disconnected due to any errors or connection problems.
+   * Monitors if {@link Device} was disconnected due to any errors or connection problems.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier to be monitored.
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier to be monitored.
    * @param {function(error: ?Error, device: Device)} listener - callback returning error as a reason of disconnection 
    * if available and {@link Device} object.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
-   * 
-   * @memberOf BleManager
    */
-  onDeviceDisconnected(deviceIdentifier: string, listener: (error: ?Error, device: Device) => void): Subscription {
-    const disconnectionListener = ([error, device]) => {
-      if (deviceIdentifier !== device.id) return
-      listener(error, device)
+  onDeviceDisconnected(deviceIdentifier: DeviceId, listener: (error: ?Error, device: Device) => void): Subscription {
+    const disconnectionListener = ([error, nativeDevice]: [?Error, NativeDevice]) => {
+      if (deviceIdentifier !== nativeDevice.id) return
+      listener(error, new Device(nativeDevice, this))
     }
 
-    const subscription = this._eventEmitter.addListener(BleModule.DisconnectionEvent, disconnectionListener)
+    const subscription: Subscription = this._eventEmitter.addListener(
+      BleModule.DisconnectionEvent,
+      disconnectionListener
+    )
+
     return subscription
   }
 
   /**
-   * Check connection state of a device.
+   * Check connection state of a {@link Device}.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier.
-   * @returns {Promise<boolean>} - Promise which emits `true` if device is connected, and `false` otherwise.
-   * 
-   * @memberOf BleManager
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @returns {Promise<boolean>} Promise which emits `true` if device is connected, and `false` otherwise.
    */
-  async isDeviceConnected(deviceIdentifier: string): Promise<boolean> {
+  isDeviceConnected(deviceIdentifier: DeviceId): Promise<boolean> {
     return BleModule.isDeviceConnected(deviceIdentifier)
   }
 
-  // Mark: Discovery -------------------------------------------------------------------------------------------------
+  // Mark: Discovery ---------------------------------------------------------------------------------------------------
 
   /**
-   * Discovers all services and characteristics for {@link Device}.
+   * Discovers all {@link Service}s and {@link Characteristic}s for {@link Device}.
    * 
-   * @param {string} identifier - {@link Device} identifier.
-   * @returns {Promise<Device>} - Promise which emits {@link Device} object if all available services and 
+   * @param {DeviceId} identifier {@link Device} identifier.
+   * @returns {Promise<Device>} Promise which emits {@link Device} object if all available services and 
    * characteristics have been discovered.
-   * 
-   * @memberOf BleManager
    */
-  async discoverAllServicesAndCharacteristicsForDevice(identifier: string): Promise<Device> {
-    const deviceProps = await BleModule.discoverAllServicesAndCharacteristicsForDevice(identifier)
-    return new Device(deviceProps, this)
+  async discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: DeviceId): Promise<Device> {
+    const nativeDevice = await BleModule.discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier)
+    return new Device(nativeDevice, this)
   }
 
-  // Mark: Service and characteristic getters ------------------------------------------------------------------------
+  // Mark: Service and characteristic getters --------------------------------------------------------------------------
 
   /**
-   * List of discovered services for device.
+   * List of discovered {@link Service}s for {@link Device}.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier.
-   * @returns {Promise<Service[]>} - Promise which emits array of {@link Service} objects which are discovered for a 
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @returns {Promise<Array<Service>>} Promise which emits array of {@link Service} objects which are discovered for a 
    * {@link Device}.
-   * 
-   * @memberOf BleManager
    */
-  async servicesForDevice(deviceIdentifier: string): Promise<Service[]> {
+  async servicesForDevice(deviceIdentifier: DeviceId): Promise<Array<Service>> {
     const services = await BleModule.servicesForDevice(deviceIdentifier)
-    return services.map(serviceProps => {
-      return new Service(serviceProps, this)
+    return services.map(nativeService => {
+      return new Service(nativeService, this)
     })
   }
 
   /**
-   * List of discovered characteristics for given {@link Device} and {@link Service}.
+   * List of discovered {@link Characteristic}s for given {@link Device} and {@link Service}.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier.
-   * @param {string} serviceUUID - {@link Service} UUID.
-   * @returns {Promise<Characteristic[]>} - Promise which emits array of {@link Characteristic} objects which are 
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are 
    * discovered for a {@link Device} in specified {@link Service}.
-   * 
-   * @memberOf BleManager
    */
-  async characteristicsForDevice(deviceIdentifier: string, serviceUUID: string): Promise<Characteristic[]> {
+  async characteristicsForDevice(deviceIdentifier: DeviceId, serviceUUID: UUID): Promise<Array<Characteristic>> {
     const characteristics = await BleModule.characteristicsForDevice(deviceIdentifier, serviceUUID)
-    return characteristics.map(characteristicProps => {
-      return new Characteristic(characteristicProps, this)
+    return characteristics.map(nativeCharacteristic => {
+      return new Characteristic(nativeCharacteristic, this)
     })
   }
 
-  // Mark: Characteristics operations --------------------------------------------------------------------------------
+  // Mark: Characteristics operations ----------------------------------------------------------------------------------
 
   /**
-   * Read characteristic value.
+   * Read {@link Characteristic} value.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier.
-   * @param {string} serviceUUID - {@link Service} UUID.
-   * @param {string} characteristicUUID - {@link Characteristic} UUID.
-   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.
-   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified 
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in {@link cancelTransaction} 
+   * function.
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.
-   * 
-   * @memberOf BleManager
    */
   async readCharacteristicForDevice(
-    deviceIdentifier: string,
-    serviceUUID: string,
-    characteristicUUID: string,
-    transactionId: ?string
+    deviceIdentifier: DeviceId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
 
-    const characteristicProps = await BleModule.readCharacteristicForDevice(
+    const nativeCharacteristic = await BleModule.readCharacteristicForDevice(
       deviceIdentifier,
       serviceUUID,
       characteristicUUID,
       transactionId
     )
-    return new Characteristic(characteristicProps, this)
+
+    return new Characteristic(nativeCharacteristic, this)
   }
 
   /**
-   * Write characteristic value with response.
+   * Write {@link Characteristic} value with response.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier.
-   * @param {string} serviceUUID - {@link Service} UUID.
-   * @param {string} characteristicUUID - {@link Characteristic} UUID.
-   * @param {string} base64Value - Value in Base64 format.
-   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.
-   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified 
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {Base64} base64Value Value in Base64 format.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in {@link cancelTransaction} 
+   * function.
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
-   * 
-   * @memberOf BleManager
    */
   async writeCharacteristicWithResponseForDevice(
-    deviceIdentifier: string,
-    serviceUUID: string,
-    characteristicUUID: string,
-    base64Value: string,
-    transactionId: ?string
+    deviceIdentifier: DeviceId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    base64Value: Base64,
+    transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
 
-    const characteristicProps = await BleModule.writeCharacteristicForDevice(
+    const nativeCharacteristic = await BleModule.writeCharacteristicForDevice(
       deviceIdentifier,
       serviceUUID,
       characteristicUUID,
@@ -359,34 +336,34 @@ export default class BleManager {
       true,
       transactionId
     )
-    return new Characteristic(characteristicProps, this)
+
+    return new Characteristic(nativeCharacteristic, this)
   }
 
   /**
-   * Write characteristic value without response.
+   * Write {@link Characteristic} value without response.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier.
-   * @param {string} serviceUUID - {@link Service} UUID.
-   * @param {string} characteristicUUID - {@link Characteristic} UUID.
-   * @param {string} base64Value - Value in Base64 format.
-   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.
-   * @returns {Promise<Characteristic>} - Promise which emits first {@link Characteristic} object matching specified 
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {Base64} base64Value Value in Base64 format.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in {@link cancelTransaction} 
+   * function.
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
-   * 
-   * @memberOf BleManager
    */
   async writeCharacteristicWithoutResponseForDevice(
-    deviceIdentifier: string,
-    serviceUUID: string,
-    characteristicUUID: string,
-    base64Value: string,
-    transactionId: ?string
+    deviceIdentifier: DeviceId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    base64Value: Base64,
+    transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
 
-    const characteristicProps = await BleModule.writeCharacteristicForDevice(
+    const nativeCharacteristic = await BleModule.writeCharacteristicForDevice(
       deviceIdentifier,
       serviceUUID,
       characteristicUUID,
@@ -394,35 +371,35 @@ export default class BleManager {
       false,
       transactionId
     )
-    return new Characteristic(characteristicProps, this)
+
+    return new Characteristic(nativeCharacteristic, this)
   }
 
   /**
-   * Monitor value changes of a characteristic. If notifications are enabled they will be used
+   * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
    * in favour of indications.
    * 
-   * @param {string} deviceIdentifier - {@link Device} identifier.
-   * @param {string} serviceUUID - {@link Service} UUID.
-   * @param {string} characteristicUUID - {@link Characteristic} UUID.
+   * @param {DeviceId} deviceIdentifier - {@link Device} identifier.
+   * @param {UUID} serviceUUID - {@link Service} UUID.
+   * @param {UUID} characteristicUUID - {@link Characteristic} UUID.
    * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
    * {@link Characteristic} objects with modified value for each notification.
-   * @param {?string} transactionId - optional `transactionId` which can be used in {@link cancelTransaction} function.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in {@link cancelTransaction} 
+   * function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
-   * 
-   * @memberOf BleManager
    */
   monitorCharacteristicForDevice(
-    deviceIdentifier: string,
-    serviceUUID: string,
-    characteristicUUID: string,
+    deviceIdentifier: DeviceId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
     listener: (error: ?Error, characteristic: ?Characteristic) => void,
-    transactionId: ?string
+    maybeTransactionId: ?TransactionId
   ): Subscription {
-    if (!transactionId) {
-      transactionId = this._nextUniqueID()
-    }
+    const transactionId = maybeTransactionId || this._nextUniqueID()
 
-    const monitorListener = ([error, characteristic, msgTransactionId]) => {
+    const monitorListener = (
+      [error, characteristic, msgTransactionId]: [?Error, NativeCharacteristic, TransactionId]
+    ) => {
       if (transactionId !== msgTransactionId) return
       if (error) {
         listener(error, null)
@@ -431,12 +408,13 @@ export default class BleManager {
       listener(null, new Characteristic(characteristic, this))
     }
 
-    const subscription = this._eventEmitter.addListener(BleModule.ReadEvent, monitorListener)
+    const subscription: Subscription = this._eventEmitter.addListener(BleModule.ReadEvent, monitorListener)
+
     BleModule.monitorCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, transactionId).then(
-      finished => {
+      () => {
         subscription.remove()
       },
-      error => {
+      (error: Error) => {
         listener(error, null)
         subscription.remove()
       }
