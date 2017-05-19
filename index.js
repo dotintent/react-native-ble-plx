@@ -1,4 +1,4 @@
-// @flow 
+// @flow
 
 export { default as BleManager } from './src/BleManager'
 export { default as Device } from './src/Device'

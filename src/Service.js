@@ -1,5 +1,5 @@
 // @flow
-"use strict"
+'use strict'
 
 import BleManager from './BleManager'
 import Characteristic from './Characteristic'
@@ -13,11 +13,10 @@ import type { Subscription } from './BleManager'
  * @class NativeService
  */
 class NativeService {
-    uuid: string
-    deviceID: string
-    isPrimary: boolean
+  uuid: string
+  deviceID: string
+  isPrimary: boolean
 }
-
 
 /**
  * Service object.
@@ -27,10 +26,9 @@ class NativeService {
  * @extends {NativeService}
  */
 export default class Service extends NativeService {
+  _manager: BleManager
 
-    _manager: BleManager
-
-    /**
+  /**
      * Private {@link Service} constructor.
      * 
      * @param {NativeService} props - NativeService properties to be copied.
@@ -39,22 +37,22 @@ export default class Service extends NativeService {
      *
      * @memberOf Device
      */
-    constructor(props: NativeService, manager: BleManager) {
-        super()
-        this._manager = manager
+  constructor(props: NativeService, manager: BleManager) {
+    super()
+    this._manager = manager
 
-        /** @type {string} 
+    /** @type {string} 
          *  @desc {@link Service} UUID. */
-        this.uuid = props.uuid
-        /** @type {string} 
+    this.uuid = props.uuid
+    /** @type {string} 
          *  @desc {@link Device} ID who owns this {@link Service}. */
-        this.deviceID = props.deviceID
-        /** @type {boolean} 
+    this.deviceID = props.deviceID
+    /** @type {boolean} 
          *  @desc True if service is primary. */
-        this.isPrimary = props.isPrimary
-    }
+    this.isPrimary = props.isPrimary
+  }
 
-    /**
+  /**
      * {@link BleManager.characteristicsForDevice} with partially filled arguments.
      * 
      * @returns {Promise<Characteristic[]>} - Promise which emits array of {@link Characteristic} objects which are 
@@ -62,11 +60,11 @@ export default class Service extends NativeService {
      * 
      * @memberOf Service
      */
-    async characteristics(): Promise<Characteristic[]> {
-        return this._manager.characteristicsForDevice(this.deviceID, this.uuid)
-    }
+  async characteristics(): Promise<Characteristic[]> {
+    return this._manager.characteristicsForDevice(this.deviceID, this.uuid)
+  }
 
-    /**
+  /**
      * {@link BleManager.readCharacteristicForDevice} with partially filled arguments.
      * 
      * @param {string} characteristicUUID - {@link Characteristic} UUID.
@@ -76,11 +74,11 @@ export default class Service extends NativeService {
      * 
      * @memberOf Service
      */
-    async readCharacteristic(characteristicUUID: string, transactionId: ?string): Promise<Characteristic> {
-        return this._manager.readCharacteristicForDevice(this.deviceID, this.uuid, characteristicUUID, transactionId)
-    }
+  async readCharacteristic(characteristicUUID: string, transactionId: ?string): Promise<Characteristic> {
+    return this._manager.readCharacteristicForDevice(this.deviceID, this.uuid, characteristicUUID, transactionId)
+  }
 
-    /**
+  /**
      * {@link BleManager.writeCharacteristicWithResponseForDevice} with partially filled arguments.
      * 
      * @param {string} characteristicUUID - {@link Characteristic} UUID.
@@ -91,18 +89,21 @@ export default class Service extends NativeService {
      * 
      * @memberOf Service
      */
-    async writeCharacteristicWithResponse(
-        characteristicUUID: string,
-        valueBase64: string,
-        transactionId: ?string): Promise<Characteristic> {
-        return this._manager.writeCharacteristicWithResponseForDevice(this.deviceID,
-            this.uuid,
-            characteristicUUID,
-            valueBase64,
-            transactionId)
-    }
+  async writeCharacteristicWithResponse(
+    characteristicUUID: string,
+    valueBase64: string,
+    transactionId: ?string
+  ): Promise<Characteristic> {
+    return this._manager.writeCharacteristicWithResponseForDevice(
+      this.deviceID,
+      this.uuid,
+      characteristicUUID,
+      valueBase64,
+      transactionId
+    )
+  }
 
-    /**
+  /**
      * {@link BleManager.writeCharacteristicWithoutResponseForDevice} with partially filled arguments.
      * 
      * @param {string} characteristicUUID - {@link Characteristic} UUID.
@@ -113,18 +114,21 @@ export default class Service extends NativeService {
      * 
      * @memberOf Service
      */
-    async writeCharacteristicWithoutResponse(
-        characteristicUUID: string,
-        valueBase64: string,
-        transactionId: ?string): Promise<Characteristic> {
-        return this._manager.writeCharacteristicWithoutResponseForDevice(this.deviceID,
-            this.uuid,
-            characteristicUUID,
-            valueBase64,
-            transactionId)
-    }
+  async writeCharacteristicWithoutResponse(
+    characteristicUUID: string,
+    valueBase64: string,
+    transactionId: ?string
+  ): Promise<Characteristic> {
+    return this._manager.writeCharacteristicWithoutResponseForDevice(
+      this.deviceID,
+      this.uuid,
+      characteristicUUID,
+      valueBase64,
+      transactionId
+    )
+  }
 
-    /**
+  /**
      * {@link BleManager.monitorCharacteristicForDevice} with partially filled arguments.
      * 
      * @param {string} characteristicUUID - {@link Characteristic} UUID.
@@ -135,14 +139,17 @@ export default class Service extends NativeService {
      * 
      * @memberOf Service
      */
-    monitorCharacteristic(
-        characteristicUUID: string,
-        listener: (error: ?Error, characteristic: ?Characteristic) => void,
-        transactionId: ?string): Subscription {
-        return this._manager.monitorCharacteristicForDevice(this.deviceID,
-            this.uuid,
-            characteristicUUID,
-            listener,
-            transactionId)
-    }
+  monitorCharacteristic(
+    characteristicUUID: string,
+    listener: (error: ?Error, characteristic: ?Characteristic) => void,
+    transactionId: ?string
+  ): Subscription {
+    return this._manager.monitorCharacteristicForDevice(
+      this.deviceID,
+      this.uuid,
+      characteristicUUID,
+      listener,
+      transactionId
+    )
+  }
 }
