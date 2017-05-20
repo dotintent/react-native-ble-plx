@@ -23,10 +23,13 @@ export type TransactionId = string
 
 /**
  * Subscription
+ * @interface
  */
-export type Subscription = {
+export interface Subscription {
   /**
    * Removes subscription
+   * @memberof Subscription
+   * @ignore
    */
   remove(): void
 }
@@ -34,33 +37,56 @@ export type Subscription = {
 /**
  * Options which can be passed to scanning function
  */
-export type ScanOptions = {
+export interface ScanOptions {
   /**
-   * By allowing duplicates scanning records are received more frequently [iOS]
+   * By allowing duplicates scanning records are received more frequently [iOS only]
+   * @memberof ScanOptions
+   * @instance
    */
   allowDuplicates?: boolean,
   /**
    * Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device 
-   * becomes available (true). [Android]
+   * becomes available (true). [Android only]
+   * @memberof ScanOptions
+   * @instance
    */
   autoConnect?: boolean
 }
 
 /**
- * Connection specific options to be passed before connection happen.
+ * Connection specific options to be passed before connection happen. [Not used]
  */
-export type ConnectionOptions = {
+export interface ConnectionOptions {
   // Not used for now
 }
 
 /**
- * Device Bluetooth Low Energy state.
+ * Device Bluetooth Low Energy state. It's keys are used to check {@link #BleManager#state} values
+ * received by {@link BleManager}
  */
 export const State = {
+  /**
+   * The current state of the manager is unknown; an update is imminent.
+   */
   Unknown: 'Unknown',
+  /**
+   * The connection with the system service was momentarily lost; an update is imminent.
+   */
   Resetting: 'Resetting',
+  /**
+   * The platform does not support Bluetooth low energy.
+   */
   Unsupported: 'Unsupported',
+  /**
+   * The app is not authorized to use Bluetooth low energy.
+   */
   Unauthorized: 'Unauthorized',
+  /**
+   * Bluetooth is currently powered off.
+   */
   PoweredOff: 'PoweredOff',
+  /**
+   * Bluetooth is currently powered on and available to use.
+   */
   PoweredOn: 'PoweredOn'
 }

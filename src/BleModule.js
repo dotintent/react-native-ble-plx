@@ -7,18 +7,22 @@ import type { DeviceId, UUID, TransactionId, Base64, ScanOptions, ConnectionOpti
 
 /**
  * Native device object passed from BleModule.
+ * @private
  */
 export interface NativeDevice {
   /**
    * Device identifier: MAC address on Android and UUID on iOS.
+   * @private
    */
   id: DeviceId,
   /**
    * Device name if present
+   * @private
    */
   name: ?string,
   /**
    * Current Received Signal Strength Indication of device
+   * @private
    */
   rssi: ?number,
 
@@ -26,121 +30,155 @@ export interface NativeDevice {
 
   /**
    * Device's custom manufacturer data. Its format is defined by manufacturer.
+   * @private
    */
   manufacturerData: ?Base64,
 
   /**
    * Map od service UUIDs with associated data.
+   * @private
    */
   serviceData: ?{ [uuid: UUID]: Base64 },
 
   /**
    * List of available services visible during scanning.
+   * @private
    */
   serviceUUIDs: ?Array<UUID>,
 
   /**
    * Transmission power level of device.
+   * @private
    */
   txPowerLevel: ?number,
 
   /**
    * List of solicited service UUIDs.
+   * @private
    */
   solicitedServiceUUIDs: ?Array<UUID>,
 
   /**
    * Is device connectable.
+   * @private
    */
   isConnectable: ?boolean,
 
   /**
    * List of overflow service UUIDs.
+   * @private
    */
   overflowServiceUUIDs: ?Array<UUID>
 }
 
 /**
  * Native service object passed from BleModule.
+ * @private
  */
 export interface NativeService {
   /**
    * Service UUID
+   * @private
    */
   uuid: UUID,
   /**
    * Device's ID to which service belongs
+   * @private
    */
   deviceID: DeviceId,
   /**
    * Value indicating whether the type of service is primary or secondary.
+   * @private
    */
   isPrimary: boolean
 }
 
 /**
  * Native characteristic object passed from BleModule.
+ * @private
  */
 export interface NativeCharacteristic {
   /**
    * Characteristic UUID
+   * @private
    */
   uuid: UUID,
   /**
    * Service's UUID to which characteristic belongs
+   * @private
    */
   serviceUUID: UUID,
   /**
    * Device's ID to which characteristic belongs
+   * @private
    */
   deviceID: DeviceId,
   /**
    * True if characteristic can be read
+   * @private
    */
   isReadable: boolean,
   /**
    * True if characteristic can be written with response
+   * @private
    */
   isWritableWithResponse: boolean,
   /**
    * True if characteristic can be written without response
+   * @private
    */
   isWritableWithoutResponse: boolean,
   /**
    * True if characteristic can monitor value changes.
+   * @private
    */
   isNotifiable: boolean,
   /**
    * True if characteristic is monitoring value changes without ACK.
+   * @private
    */
   isNotifying: boolean,
   /**
    * True if characteristic is monitoring value changes with ACK.
+   * @private
    */
   isIndictable: boolean,
   /**
    * Characteristic value if present
+   * @private
    */
   value: ?Base64
 }
 
+/**
+ * Native BLE Module interface
+ * @private
+ */
 export interface BleModuleInterface {
   // Lifecycle
 
   /**
    * Creates new native module internally. Only one module
    * is allowed to be instantiated.
+   * @private
    */
   createClient(): void,
 
   /**
    * Destroys previously instantiated module. This function is
    * only safe when previously BleModule was created.
+   * @private
    */
   destroyClient(): void,
 
   // Monitoring state
 
+  /**
+   * Current state of BLE device.
+   * 
+   * @returns {Promise<State>} Current state of BLE device.
+   * @private
+   */
   state(): Promise<$Keys<typeof State>>,
 
   // Scanning
@@ -151,11 +189,13 @@ export interface BleModuleInterface {
    * @param {?Array<UUID>} filteredUUIDs List of UUIDs for services which needs to be present to detect device during 
    * scanning.
    * @param {?ScanOptions} options Platform dependent options
+   * @private
   */
   startDeviceScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void,
 
   /**
    * Stops device scan.
+   * @private
    */
   stopDeviceScan(): void,
 
@@ -167,6 +207,7 @@ export interface BleModuleInterface {
    * @param {DeviceId} deviceIdentifier Device identifier to connect to.
    * @param {?ConnectionOptions} options Connection options.
    * @returns {Promise<NativeDevice>} Connected device.
+   * @private
    */
   connectToDevice(deviceIdentifier: DeviceId, options: ?ConnectionOptions): Promise<NativeDevice>,
 
@@ -175,6 +216,7 @@ export interface BleModuleInterface {
    * 
    * @param {DeviceId} deviceIdentifier Device identifier which is already connected.
    * @returns {Promise<NativeDevice>} Disconnected device.
+   * @private
    */
   cancelDeviceConnection(deviceIdentifier: DeviceId): Promise<NativeDevice>,
 
@@ -183,6 +225,7 @@ export interface BleModuleInterface {
    * 
    * @param {DeviceId} deviceIdentifier Device identifier.
    * @returns {Promise<boolean>} True if specified device is connected.
+   * @private
    */
   isDeviceConnected(deviceIdentifier: DeviceId): Promise<boolean>,
 
@@ -193,6 +236,7 @@ export interface BleModuleInterface {
    * 
    * @param {DeviceId} deviceIdentifier Connected device identifier.
    * @returns {Promise<NativeDevice>} Device which has discovered characteristics and services.
+   * @private
    */
   discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: DeviceId): Promise<NativeDevice>,
 
@@ -203,6 +247,7 @@ export interface BleModuleInterface {
    * 
    * @param {DeviceId} deviceIdentifier Connected device identifier.
    * @returns {Promise<Array<NativeService>>} List of services available in device.
+   * @private
    */
   servicesForDevice(deviceIdentifier: DeviceId): Promise<Array<NativeService>>,
 
@@ -212,6 +257,7 @@ export interface BleModuleInterface {
     * @param {DeviceId} deviceIdentifier Connected device identifier.
     * @param {UUID} serviceUUID Service UUID which contains characteristics.
     * @returns {Promise<Array<NativeCharacteristic>>} List of characteristics available in service.
+    * @private
     */
   characteristicsForDevice(deviceIdentifier: DeviceId, serviceUUID: UUID): Promise<Array<NativeCharacteristic>>,
 
@@ -225,6 +271,7 @@ export interface BleModuleInterface {
    * @param {UUID} characteristicUUID Characteristic UUID
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<NativeCharacteristic>} Characteristic for which value was read
+   * @private
    */
   readCharacteristicForDevice(
     deviceIdentifier: DeviceId,
@@ -243,6 +290,7 @@ export interface BleModuleInterface {
    * @param {boolean} withResponse True if write should be with response
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<NativeCharacteristic>} Characteristic which saved passed value
+   * @private
    */
   writeCharacteristicForDevice(
     deviceIdentifier: DeviceId,
@@ -261,6 +309,7 @@ export interface BleModuleInterface {
    * @param {UUID} characteristicUUID Characteristic UUID
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+   * @private
    */
   monitorCharacteristicForDevice(
     deviceIdentifier: DeviceId,
@@ -275,13 +324,35 @@ export interface BleModuleInterface {
    * Cancels specified transaction
    * 
    * @param {TransactionId} transactionId Transaction handle for operation to be cancelled
+   * @private
    */
   cancelTransaction(transactionId: TransactionId): void,
 
   // Events
+
+  /**
+   * New scanned event arrived as [?Error, ?NativeDevice] object.
+   * @private
+   */
   ScanEvent: string,
+
+  /**
+   * Characteristic value update broadcasted due to registered notification as 
+   * [?Error, ?NativeCharacteristic, ?TransactionId].
+   * @private
+   */
   ReadEvent: string,
+
+  /**
+   * BLE Manager changed its state as $Keys<typeof State>
+   * @private
+   */
   StateChangeEvent: string,
+
+  /**
+   * Device disconnected as [Error?, NativeDevice]
+   * @private
+   */
   DisconnectionEvent: string
 }
 

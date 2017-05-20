@@ -8,7 +8,8 @@
   },
   "scripts": {
     "postinstall": "bash build_ios_frameworks.sh",
-    "test": "jest"
+    "test": "jest",
+    "docs": "documentation build index.js -o docs --config documentation.yml -f html"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "documentation": "4.0.0-rc.1",
     "eslint": "^3.19.0",
     "eslint-plugin-flowtype": "^2.33.0",
     "eslint-plugin-import": "^2.2.0",

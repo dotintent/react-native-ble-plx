@@ -8,11 +8,13 @@ import type { NativeDevice } from './BleModule'
 import type { DeviceId, Base64, UUID, Subscription, TransactionId, ConnectionOptions } from './TypeDefinition'
 
 /**
- * Bluetooth device.
+ * Device instance which can be retrieved only by calling 
+ * {@link #BleManager#startDeviceScan|bleManager.startDeviceScan()}.
  */
 export class Device implements NativeDevice {
   /**
-   * Internal manager handle.
+   * Internal BLE Manager handle
+   * @private
    */
   _manager: BleManager
 
@@ -39,7 +41,7 @@ export class Device implements NativeDevice {
   manufacturerData: ?Base64
 
   /**
-   * Map od service UUIDs with associated data.
+   * Map of service UUIDs (as keys) with associated data (as values).
    */
   serviceData: ?{ [uuid: UUID]: Base64 }
 
@@ -59,12 +61,12 @@ export class Device implements NativeDevice {
   solicitedServiceUUIDs: ?Array<UUID>
 
   /**
-   * Is device connectable. [iOS]
+   * Is device connectable. [iOS only]
    */
   isConnectable: ?boolean
 
   /**
-   * List of overflow service UUIDs. [iOS]
+   * List of overflow service UUIDs. [iOS only]
    */
   overflowServiceUUIDs: ?Array<UUID>
 
@@ -72,7 +74,8 @@ export class Device implements NativeDevice {
    * Private constructor used to create {@link Device} object.
    * 
    * @param {NativeDevice} nativeDevice Native device properties
-   * @param {BleManager} manager BLE Manager handle
+   * @param {BleManager} manager {@link BleManager} handle
+   * @private
    */
   constructor(nativeDevice: NativeDevice, manager: BleManager) {
     // $FlowFixMe Should be fixed in flow 0.46
@@ -80,7 +83,7 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#connectToDevice} with partially filled arguments.
+   * {@link #BleManager#connectToDevice|bleManager.connectToDevice()} with partially filled arguments.
    * 
    * @param {?ConnectionOptions} options Platform specific options for connection establishment. Not used currently.
    * @returns {Promise<Device>} Connected {@link Device} object if successful.
@@ -90,7 +93,7 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#cancelDeviceConnection} with partially filled arguments.
+   * {@link #BleManager#cancelDeviceConnection|bleManager.cancelDeviceConnection()} with partially filled arguments.
    * 
    * @returns {Promise<Device>} Returns closed {@link Device} when operation is successful.
    */
@@ -99,7 +102,7 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#isDeviceConnected} with partially filled arguments.
+   * {@link #BleManager#isDeviceConnected|bleManager.isDeviceConnected()} with partially filled arguments.
    * 
    * @returns {Promise<boolean>} Promise which emits `true` if device is connected, and `false` otherwise.
    */
@@ -108,7 +111,7 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#onDeviceDisconnected} with partially filled arguments.
+   * {@link #BleManager#onDeviceDisconnected|bleManager.onDeviceDisconnected()} with partially filled arguments.
    * 
    * @param {function(error: ?Error, device: Device)} listener callback returning error as a reason of disconnection
    *                                                           if available and {@link Device} object.
@@ -119,7 +122,7 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#discoverAllServicesAndCharacteristicsForDevice} with partially filled arguments.
+   * {@link #BleManager#discoverAllServicesAndCharacteristicsForDevice|bleManager.discoverAllServicesAndCharacteristicsForDevice()} with partially filled arguments.
    * 
    * @returns {Promise<Device>} Promise which emits {@link Device} object if all available services and 
    * characteristics have been discovered.
@@ -129,7 +132,7 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#servicesForDevice} with partially filled arguments.
+   * {@link #BleManager#servicesForDevice|bleManager.servicesForDevice()} with partially filled arguments.
    * 
    * @returns {Promise<Service[]>} Promise which emits array of {@link Service} objects which are discovered by this
    * device.
@@ -139,7 +142,7 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#characteristicsForDevice} with partially filled arguments.
+   * {@link #BleManager#characteristicsForDevice|bleManager.characteristicsForDevice()} with partially filled arguments.
    * 
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @returns {Promise<Characteristic[]>} Promise which emits array of {@link Characteristic} objects which are 
@@ -150,12 +153,12 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#readCharacteristicForDevice} with partially filled arguments.
+   * {@link #BleManager#readCharacteristicForDevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
    * 
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link BleManager#cancelTransaction} function.
+   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.
    */
@@ -168,13 +171,13 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#writeCharacteristicWithResponseForDevice} with partially filled arguments.
+   * {@link #BleManager#writeCharacteristicWithResponseForDevice|bleManager.writeCharacteristicWithResponseForDevice()} with partially filled arguments.
    * 
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} valueBase64 Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link BleManager#cancelTransaction} function.
+   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    */
@@ -194,13 +197,13 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#writeCharacteristicWithoutResponseForDevice} with partially filled arguments.
+   * {@link #BleManager#writeCharacteristicWithoutResponseForDevice|bleManager.writeCharacteristicWithoutResponseForDevice()} with partially filled arguments.
    * 
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} valueBase64 Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link BleManager#cancelTransaction} function.
+   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    */
@@ -220,14 +223,14 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link BleManager#monitorCharacteristicForDevice} with partially filled arguments.
+   * {@link #BleManager#monitorCharacteristicForDevice|bleManager.monitorCharacteristicForDevice()} with partially filled arguments.
    * 
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
    * {@link Characteristic} objects with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link BleManager#cancelTransaction} function.
+   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
   monitorCharacteristicForService(

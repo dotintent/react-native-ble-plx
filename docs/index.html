@@ -1,136 +1,6260 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <base data-ice="baseUrl">
-  <title data-ice="title">API Document</title>
-  <link type="text/css" rel="stylesheet" href="css/style.css">
-  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
-  <script src="script/prettify/prettify.js"></script>
-  
-  
-  <script src="script/manual.js"></script>
+  <meta charset='utf-8' />
+  <title>react-native-ble-plx 0.4.0 | Documentation</title>
+  <meta name='viewport' content='width=device-width,initial-scale=1'>
+  <link href='assets/bass.css' type='text/css' rel='stylesheet' />
+  <link href='assets/style.css' type='text/css' rel='stylesheet' />
+  <link href='assets/github.css' type='text/css' rel='stylesheet' />
 </head>
-<body class="layout-container" data-ice="rootContainer">
+<body class='documentation'>
+  <div class='max-width-4 mx-auto'>
+    <div class='clearfix md-mxn2'>
+      <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
+        <div class='py1 px2'>
+          <h3 class='mb0 no-anchor'>react-native-ble-plx</h3>
+          <div class='mb1'><code>0.4.0</code></div>
+          <input
+            placeholder='Filter'
+            id='filter-input'
+            class='col12 block input'
+            type='text' />
+          <div id='toc'>
+            <ul class='list-reset h5 py1-ul'>
+              
+                
+                <li><a
+                  href='#introduction'
+                  class="h5 bold black caps">
+                  Introduction
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#main-classes'
+                  class="h5 bold black caps">
+                  Main Classes
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#blemanager'
+                  class=" toggle-sibling">
+                  BleManager
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#BleManager#constructor'
+                        class='regular pre-open'>
+                        #constructor
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#destroy'
+                        class='regular pre-open'>
+                        #destroy
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#cancelTransaction'
+                        class='regular pre-open'>
+                        #cancelTransaction
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#state'
+                        class='regular pre-open'>
+                        #state
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#onStateChange'
+                        class='regular pre-open'>
+                        #onStateChange
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#startDeviceScan'
+                        class='regular pre-open'>
+                        #startDeviceScan
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#stopDeviceScan'
+                        class='regular pre-open'>
+                        #stopDeviceScan
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#connectToDevice'
+                        class='regular pre-open'>
+                        #connectToDevice
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#cancelDeviceConnection'
+                        class='regular pre-open'>
+                        #cancelDeviceConnection
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#onDeviceDisconnected'
+                        class='regular pre-open'>
+                        #onDeviceDisconnected
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#isDeviceConnected'
+                        class='regular pre-open'>
+                        #isDeviceConnected
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#discoverAllServicesAndCharacteristicsForDevice'
+                        class='regular pre-open'>
+                        #discoverAllServicesAndCharacteristicsForDevice
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#servicesForDevice'
+                        class='regular pre-open'>
+                        #servicesForDevice
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#characteristicsForDevice'
+                        class='regular pre-open'>
+                        #characteristicsForDevice
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#readCharacteristicForDevice'
+                        class='regular pre-open'>
+                        #readCharacteristicForDevice
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#writeCharacteristicWithResponseForDevice'
+                        class='regular pre-open'>
+                        #writeCharacteristicWithResponseForDevice
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#writeCharacteristicWithoutResponseForDevice'
+                        class='regular pre-open'>
+                        #writeCharacteristicWithoutResponseForDevice
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#monitorCharacteristicForDevice'
+                        class='regular pre-open'>
+                        #monitorCharacteristicForDevice
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#device'
+                  class=" toggle-sibling">
+                  Device
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#Device#id'
+                        class='regular pre-open'>
+                        #id
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#name'
+                        class='regular pre-open'>
+                        #name
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#rssi'
+                        class='regular pre-open'>
+                        #rssi
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#manufacturerData'
+                        class='regular pre-open'>
+                        #manufacturerData
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#serviceData'
+                        class='regular pre-open'>
+                        #serviceData
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#serviceUUIDs'
+                        class='regular pre-open'>
+                        #serviceUUIDs
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#txPowerLevel'
+                        class='regular pre-open'>
+                        #txPowerLevel
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#solicitedServiceUUIDs'
+                        class='regular pre-open'>
+                        #solicitedServiceUUIDs
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#isConnectable'
+                        class='regular pre-open'>
+                        #isConnectable
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#overflowServiceUUIDs'
+                        class='regular pre-open'>
+                        #overflowServiceUUIDs
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#connect'
+                        class='regular pre-open'>
+                        #connect
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#cancelConnection'
+                        class='regular pre-open'>
+                        #cancelConnection
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#isConnected'
+                        class='regular pre-open'>
+                        #isConnected
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#onDisconnected'
+                        class='regular pre-open'>
+                        #onDisconnected
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#discoverAllServicesAndCharacteristics'
+                        class='regular pre-open'>
+                        #discoverAllServicesAndCharacteristics
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#services'
+                        class='regular pre-open'>
+                        #services
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#characteristicsForService'
+                        class='regular pre-open'>
+                        #characteristicsForService
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#readCharacteristicForService'
+                        class='regular pre-open'>
+                        #readCharacteristicForService
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#writeCharacteristicWithResponseForService'
+                        class='regular pre-open'>
+                        #writeCharacteristicWithResponseForService
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#writeCharacteristicWithoutResponseForService'
+                        class='regular pre-open'>
+                        #writeCharacteristicWithoutResponseForService
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#monitorCharacteristicForService'
+                        class='regular pre-open'>
+                        #monitorCharacteristicForService
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#service'
+                  class=" toggle-sibling">
+                  Service
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#Service#uuid'
+                        class='regular pre-open'>
+                        #uuid
+                      </a></li>
+                      
+                      <li><a
+                        href='#Service#deviceID'
+                        class='regular pre-open'>
+                        #deviceID
+                      </a></li>
+                      
+                      <li><a
+                        href='#Service#isPrimary'
+                        class='regular pre-open'>
+                        #isPrimary
+                      </a></li>
+                      
+                      <li><a
+                        href='#Service#characteristics'
+                        class='regular pre-open'>
+                        #characteristics
+                      </a></li>
+                      
+                      <li><a
+                        href='#Service#readCharacteristic'
+                        class='regular pre-open'>
+                        #readCharacteristic
+                      </a></li>
+                      
+                      <li><a
+                        href='#Service#writeCharacteristicWithResponse'
+                        class='regular pre-open'>
+                        #writeCharacteristicWithResponse
+                      </a></li>
+                      
+                      <li><a
+                        href='#Service#writeCharacteristicWithoutResponse'
+                        class='regular pre-open'>
+                        #writeCharacteristicWithoutResponse
+                      </a></li>
+                      
+                      <li><a
+                        href='#Service#monitorCharacteristic'
+                        class='regular pre-open'>
+                        #monitorCharacteristic
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#characteristic'
+                  class=" toggle-sibling">
+                  Characteristic
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#Characteristic#uuid'
+                        class='regular pre-open'>
+                        #uuid
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#serviceUUID'
+                        class='regular pre-open'>
+                        #serviceUUID
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#deviceID'
+                        class='regular pre-open'>
+                        #deviceID
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#isReadable'
+                        class='regular pre-open'>
+                        #isReadable
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#isWritableWithResponse'
+                        class='regular pre-open'>
+                        #isWritableWithResponse
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#isWritableWithoutResponse'
+                        class='regular pre-open'>
+                        #isWritableWithoutResponse
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#isNotifiable'
+                        class='regular pre-open'>
+                        #isNotifiable
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#isNotifying'
+                        class='regular pre-open'>
+                        #isNotifying
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#isIndictable'
+                        class='regular pre-open'>
+                        #isIndictable
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#value'
+                        class='regular pre-open'>
+                        #value
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#read'
+                        class='regular pre-open'>
+                        #read
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#writeWithResponse'
+                        class='regular pre-open'>
+                        #writeWithResponse
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#writeWithoutResponse'
+                        class='regular pre-open'>
+                        #writeWithoutResponse
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#monitor'
+                        class='regular pre-open'>
+                        #monitor
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#utils'
+                  class="h5 bold black caps">
+                  Utils
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#fulluuid'
+                  class="">
+                  fullUUID
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#flow-types'
+                  class="h5 bold black caps">
+                  Flow Types
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#state'
+                  class=" toggle-sibling">
+                  State
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#State.Unknown'
+                        class='regular pre-open'>
+                        .Unknown
+                      </a></li>
+                    
+                      <li><a
+                        href='#State.Resetting'
+                        class='regular pre-open'>
+                        .Resetting
+                      </a></li>
+                    
+                      <li><a
+                        href='#State.Unsupported'
+                        class='regular pre-open'>
+                        .Unsupported
+                      </a></li>
+                    
+                      <li><a
+                        href='#State.Unauthorized'
+                        class='regular pre-open'>
+                        .Unauthorized
+                      </a></li>
+                    
+                      <li><a
+                        href='#State.PoweredOff'
+                        class='regular pre-open'>
+                        .PoweredOff
+                      </a></li>
+                    
+                      <li><a
+                        href='#State.PoweredOn'
+                        class='regular pre-open'>
+                        .PoweredOn
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#scanoptions'
+                  class=" toggle-sibling">
+                  ScanOptions
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#ScanOptions#allowDuplicates'
+                        class='regular pre-open'>
+                        #allowDuplicates
+                      </a></li>
+                      
+                      <li><a
+                        href='#ScanOptions#autoConnect'
+                        class='regular pre-open'>
+                        #autoConnect
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#connectionoptions'
+                  class="">
+                  ConnectionOptions
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#deviceid'
+                  class="">
+                  DeviceId
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#uuid'
+                  class="">
+                  UUID
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#transactionid'
+                  class="">
+                  TransactionId
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#subscription'
+                  class="">
+                  Subscription
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#base64'
+                  class="">
+                  Base64
+                  
+                </a>
+                
+                </li>
+              
+            </ul>
+          </div>
+          <div class='mt1 h6 quiet'>
+            <a href='http://documentation.js.org/reading-documentation.html'>Need help reading this?</a>
+          </div>
+        </div>
+      </div>
+      <div class='fix-margin-3'>
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-<header>
-  <a href="./">Home</a>
+  <h2 id='introduction' class='mt0'>
+    Introduction
+  </h2>
+
   
-  <a href="identifiers.html">Reference</a>
-  <a href="source.html">Source</a>
-  
-  <a data-ice="repoURL" href="https://github.com/Polidea/react-native-ble-plx" class="repo-url-github">Repository</a>
-  <div class="search-box">
-  <span>
-    <img src="./image/search.png">
-    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
-  </span>
-    <ul class="search-result"></ul>
-  </div>
-</header>
-
-<nav class="navigation" data-ice="nav"><div>
-  <ul>
-    
-  <li data-ice="doc"><div data-ice="dirPath" class="nav-dir-path">src</div><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/react-native-ble-plx/src/BleManager.js~BleManager.html">BleManager</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/react-native-ble-plx/src/Characteristic.js~Characteristic.html">Characteristic</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/react-native-ble-plx/src/Device.js~Device.html">Device</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/react-native-ble-plx/src/Service.js~Service.html">Service</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-function">F</span><span data-ice="name"><span><a href="function/index.html#static-function-fullUUID">fullUUID</a></span></span></li>
-</ul>
-</div>
-</nav>
-
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="getting-started">Getting started</h1>
+    <p align="center">
+  <a href="https://github.com/Polidea/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
+</p>
 <p>This guide is an introduction to BLE stack and APIs exported by this library. All examples
 will be based on CC2541 SensorTag.</p>
-<h2 id="creating-ble-manager">Creating BLE Manager</h2>
+<h2>Creating BLE Manager</h2>
 <p>First step is to create BleManager instance which is an entry point to all available APIs.
 Make sure to create it after application started its execution. For example we can do it in
-Component&apos;s constructor:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">constructor() {
-    super();
-    this.manager = new BleManager();
+Component's constructor:</p>
+<pre class='hljs'><span class="hljs-keyword">constructor</span>() {
+    <span class="hljs-keyword">super</span>();
+    <span class="hljs-keyword">this</span>.manager = <span class="hljs-keyword">new</span> BleManager();
     ...
-}</code>
-</code></pre>
-<p>Only one instance of BleManager is allowed. When you don&apos;t need any BLE functionality you
+}</pre>
+<p>Only one instance of BleManager is allowed. When you don't need any BLE functionality you
 can destroy created instance by calling <code>this.manager.destroy()</code> function. You can then
 recreate <code>BleManager</code> later on as we did above.</p>
-<h2 id="waiting-for-powered-on-state">Waiting for Powered On state</h2>
+<h2>Waiting for Powered On state</h2>
 <p>When iOS application launches BLE stack is not immediately available and we need to check its status.
 To detect current state and following state changes we can use <code>onStateChange()</code> function:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">componentWillMount() {
-    const subscription = this.manager.onStateChange((state) =&gt; {
-        if (state === &apos;PoweredOn&apos;) {
-            this.scanAndConnect();
+<pre class='hljs'>componentWillMount() {
+    <span class="hljs-keyword">const</span> subscription = <span class="hljs-keyword">this</span>.manager.onStateChange(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+        <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'PoweredOn'</span>) {
+            <span class="hljs-keyword">this</span>.scanAndConnect();
             subscription.remove();
         }
-    }, true);
-}</code>
-</code></pre>
-<h2 id="scanning-devices">Scanning devices</h2>
+    }, <span class="hljs-literal">true</span>);
+}</pre>
+<h2>Scanning devices</h2>
 <p>Devices needs to be scanned first to be able to connect to them. There is a simple function
 which allows only one callback to be registered to handle detected devices:</p>
-<pre><code class="lang-js"><code class="source-code prettyprint">scanAndConnect() {
-    this.manager.startDeviceScan(null, null, (error, device) =&gt; {
-        if (error) {
-            // Handle error (scanning will be stopped automatically)
-            return
+<pre class='hljs'>scanAndConnect() {
+    <span class="hljs-keyword">this</span>.manager.startDeviceScan(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, (error, device) =&gt; {
+        <span class="hljs-keyword">if</span> (error) {
+            <span class="hljs-comment">// Handle error (scanning will be stopped automatically)</span>
+            <span class="hljs-keyword">return</span>
         }
 
-        // Check if it is a device you are looking for based on advertisement data
-        // or other criteria.
-        if (device.name === &apos;TI BLE Sensor Tag&apos; || 
-            device.name === &apos;SensorTag&apos;) {
+        <span class="hljs-comment">// Check if it is a device you are looking for based on advertisement data</span>
+        <span class="hljs-comment">// or other criteria.</span>
+        <span class="hljs-keyword">if</span> (device.name === <span class="hljs-string">'TI BLE Sensor Tag'</span> || 
+            device.name === <span class="hljs-string">'SensorTag'</span>) {
+            
+            <span class="hljs-comment">// Stop scanning as it's not necessary if you are scanning for one device.</span>
+            <span class="hljs-keyword">this</span>.manager.stopDeviceScan();
 
-            // Stop scanning as it&apos;s not necessary if you are scanning for one device.
-            this.manager.stopDeviceScan();
-
-            // Proceed with connection.
+            <span class="hljs-comment">// Proceed with connection.</span>
         }
     });
-}</code>
-</code></pre>
-<p>It is worth to note that scanning function may emit one device multiple times. However 
-when device is connected it won&apos;t broadcast and needs to be disconnected from central 
+}</pre>
+<p>It is worth to note that scanning function may emit one device multiple times. However
+when device is connected it won't broadcast and needs to be disconnected from central
 to be scanned again. Only one scanning listener can be registered.</p>
-<h2 id="connecting-and-discovering-services-and-characteristics">Connecting and discovering services and characteristics</h2>
-<p>Once device is scanned it is in disconnected state. We need to connect to it and discover 
+<h2>Connecting and discovering services and characteristics</h2>
+<p>Once device is scanned it is in disconnected state. We need to connect to it and discover
 all services and characteristics it contains. Services may be understood
 as containers grouping characteristics based on their meaning. Characteristic is a
 container for a value which can be read, written and monitored based on available
 capabilities. For example connection may look like this:</p>
-<pre><code class="lang-javascript"><code class="source-code prettyprint">device.connect()
-    .then((device) =&gt; {
-        return device.discoverAllServicesAndCharacteristics()
+<pre class='hljs'>device.connect()
+    .then(<span class="hljs-function">(<span class="hljs-params">device</span>) =&gt;</span> {
+        <span class="hljs-keyword">return</span> device.discoverAllServicesAndCharacteristics()
     })
-    .then((device) =&gt; {
-       // Do work on device with services and characteristics
+    .then(<span class="hljs-function">(<span class="hljs-params">device</span>) =&gt;</span> {
+       <span class="hljs-comment">// Do work on device with services and characteristics</span>
     })
-    .catch((error) =&gt; {
-        // Handle errors
-    });</code>
-</code></pre>
+    .catch(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
+        <span class="hljs-comment">// Handle errors</span>
+    });</pre>
 <p>Discovery of services and characteristics is required to be executed only once. Additionally
 it can be a long process depending on number of characteristics and services available.</p>
-<h2 id="read-write-and-monitor-values">Read, write and monitor values</h2>
-<p>After successful discovery of services you can call <code>readCharacteristicForDevice()</code>,
-<code>writeCharacteristicWithResponseForDevice()</code>, <code>monitorCharacteristicForDevice()</code> and
-other functions which are described in detail in documentation.</p>
+<h2>Read, write and monitor values</h2>
+<p>After successful discovery of services you can call </p>
+<ul>
+<li><a href="#BleManager#readCharacteristicForDevice">BleManager.readCharacteristicForDevice()</a>,</li>
+<li><a href="#BleManager#writeCharacteristicWithResponseForDevice">BleManager.writeCharacteristicWithResponseForDevice()</a>, </li>
+<li><a href="#BleManager#monitorCharacteristicForDevice">BleManager.monitorCharacteristicForDevice()</a></li>
+</ul>
+<p>and other functions which are described in detail in documentation.</p>
+
+  
+</section>
 </div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='main-classes' class='mt0'>
+    Main Classes
+  </h2>
+
+  
+    <p>Classes described below are main building blocks for your BLE support. They
+are presented in order which aligns them with usage.</p>
+
+  
+</section>
+</div>
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='blemanager'>
+      BleManager
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
+<a href="#device">Device</a> instances. It should be initialized only once with <code>new</code> keyword and method
+<a href="#BleManager#destroy">destroy()</a> should be called on its instance when user wants to deallocate all resources.</p>
+
+
+  <div class='pre p1 fill-light mt0'>new BleManager()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> manager = <span class="hljs-keyword">new</span> BleManager();
+<span class="hljs-comment">// ... work with BLE manager ...</span>
+manager.destroy();</pre>
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='BleManager#constructor'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>constructor()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Creates an instance of <a href="#blemanager">BleManager</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>constructor()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#destroy'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>destroy()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Destroys <a href="#blemanager">BleManager</a> instance. A new instance needs to be created to continue working with
+this library.</p>
+
+
+  <div class='pre p1 fill-light mt0'>destroy()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#cancelTransaction'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>cancelTransaction(transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Cancels pending transaction.</p>
+<p>Few operations such as monitoring characteristic's value changes can be cancelled by a user. Basically every API
+entry which accepts <code>transactionId</code> allows to call <code>cancelTransaction</code> function. When cancelled operation is a
+promise or a callback which registers errors, <code>"Cancelled"</code> error will be emitted in that case. Cancelling
+transaction which doesn't exist is ignored.</p>
+
+
+  <div class='pre p1 fill-light mt0'>cancelTransaction(transactionId: <a href="#transactionid">TransactionId</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>)</code>
+	    Id of pending transactions.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> transactionId = <span class="hljs-string">'monitor_battery'</span>;
+
+<span class="hljs-comment">// Monitor battery notifications</span>
+manager.monitorCharacteristicForDevice(
+  device.id, <span class="hljs-string">'180F'</span>, <span class="hljs-string">'2A19'</span>, 
+  (error, characteristic) =&gt; {
+  <span class="hljs-comment">// Handle battery level changes...</span>
+}, transactionId);
+
+<span class="hljs-comment">// Cancel after specified amount of time</span>
+setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> manager.cancelTransaction(transactionId), <span class="hljs-number">2000</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#state'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>state()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Current, global <a href="#state">State</a> of a <a href="#blemanager">BleManager</a>. All APIs are working only when active state
+is "PoweredOn".</p>
+
+
+  <div class='pre p1 fill-light mt0'>state(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></code>:
+        Promise which emits current state of BleManager.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#onStateChange'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>onStateChange(listener, emitCurrentState)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Notifies about <a href="#state">State</a> changes of a <a href="#blemanager">BleManager</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>onStateChange(listener: function (newState: <a href="#state">State</a>), emitCurrentState: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="#subscription">Subscription</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (newState: <a href="#state">State</a>))</code>
+	    Callback which emits state changes of BLE Manager.
+Look at 
+<a href="#state">State</a>
+ for possible values.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>emitCurrentState</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            = <code>false</code>)</code>
+	    If true, current state will be emitted as well. Defaults to false.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#subscription">Subscription</a></code>:
+        Subscription on which 
+<code>remove()</code>
+ function can be called to unsubscribe.
+
+      
+    
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> subscription = <span class="hljs-keyword">this</span>.manager.onStateChange(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+     <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'PoweredOn'</span>) {
+         <span class="hljs-keyword">this</span>.scanAndConnect();
+         subscription.remove();
+     }
+ }, <span class="hljs-literal">true</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#startDeviceScan'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>startDeviceScan(UUIDs, options, listener)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Starts device scanning. When previous scan is in progress it will be stopped before executing this command.</p>
+
+
+  <div class='pre p1 fill-light mt0'>startDeviceScan(UUIDs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?, options: <a href="#scanoptions">ScanOptions</a>?, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, scannedDevice: <a href="#device">Device</a>?))</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>UUIDs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?)</code>
+	    Array of strings containing 
+<a href="#uuid">UUID</a>
+s of 
+<a href="#service">Service</a>
+s which are registered in
+scanned 
+<a href="#device">Device</a>
+. If 
+<code>null</code>
+ is passed, all available 
+<a href="#device">Device</a>
+s will be scanned.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#scanoptions">ScanOptions</a>?)</code>
+	    Optional configuration for scanning operation.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, scannedDevice: <a href="#device">Device</a>?))</code>
+	    Function which will be called for every scanned
+
+<a href="#device">Device</a>
+ (devices may be scanned multiple times). It's first argument is potential 
+<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>
+ which is set
+to non 
+<code>null</code>
+ value when scanning failed. You have to start scanning process again if that happens. Second argument
+is a scanned 
+<a href="#device">Device</a>
+.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#stopDeviceScan'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>stopDeviceScan()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Stops <a href="#device">Device</a> scan if in progress.</p>
+
+
+  <div class='pre p1 fill-light mt0'>stopDeviceScan()</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#connectToDevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>connectToDevice(deviceIdentifier, options)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Connects to <a href="#device">Device</a> with provided ID.</p>
+
+
+  <div class='pre p1 fill-light mt0'>connectToDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#connectionoptions">ConnectionOptions</a>?)</code>
+	    Platform specific options for connection establishment.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Connected 
+<a href="#device">Device</a>
+ object if successful.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#cancelDeviceConnection'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>cancelDeviceConnection(deviceIdentifier)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Disconnects from <a href="#device">Device</a> if it's connected or cancels pending connection.</p>
+
+
+  <div class='pre p1 fill-light mt0'>cancelDeviceConnection(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier to be closed.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Returns closed 
+<a href="#device">Device</a>
+ when operation is successful.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#onDeviceDisconnected'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>onDeviceDisconnected(deviceIdentifier, listener)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Monitors if <a href="#device">Device</a> was disconnected due to any errors or connection problems.</p>
+
+
+  <div class='pre p1 fill-light mt0'>onDeviceDisconnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier to be monitored.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>))</code>
+	    callback returning error as a reason of disconnection
+if available and 
+<a href="#device">Device</a>
+ object.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#subscription">Subscription</a></code>:
+        Subscription on which 
+<code>remove()</code>
+ function can be called to unsubscribe.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#isDeviceConnected'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isDeviceConnected(deviceIdentifier)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Check connection state of a <a href="#device">Device</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>isDeviceConnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></code>:
+        Promise which emits 
+<code>true</code>
+ if device is connected, and 
+<code>false</code>
+ otherwise.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#discoverAllServicesAndCharacteristicsForDevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Discovers all <a href="#service">Service</a>s and <a href="#characteristic">Characteristic</a>s for <a href="#device">Device</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Promise which emits 
+<a href="#device">Device</a>
+ object if all available services and
+characteristics have been discovered.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#servicesForDevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>servicesForDevice(deviceIdentifier)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>List of discovered <a href="#service">Service</a>s for <a href="#device">Device</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>servicesForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></code>:
+        Promise which emits array of 
+<a href="#service">Service</a>
+ objects which are discovered for a
+
+<a href="#device">Device</a>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#characteristicsForDevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>characteristicsForDevice(deviceIdentifier, serviceUUID)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>List of discovered <a href="#characteristic">Characteristic</a>s for given <a href="#device">Device</a> and <a href="#service">Service</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>characteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></code>:
+        Promise which emits array of 
+<a href="#characteristic">Characteristic</a>
+ objects which are
+discovered for a 
+<a href="#device">Device</a>
+ in specified 
+<a href="#service">Service</a>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#readCharacteristicForDevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>readCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Read <a href="#characteristic">Characteristic</a> value.</p>
+
+
+  <div class='pre p1 fill-light mt0'>readCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits first 
+<a href="#characteristic">Characteristic</a>
+ object matching specified
+UUID paths. Latest value of 
+<a href="#characteristic">Characteristic</a>
+ will be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#writeCharacteristicWithResponseForDevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>writeCharacteristicWithResponseForDevice(deviceIdentifier, serviceUUID, characteristicUUID, base64Value, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Write <a href="#characteristic">Characteristic</a> value with response.</p>
+
+
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>base64Value</span> <code class='quiet'>(<a href="#base64">Base64</a>)</code>
+	    Value in Base64 format.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits first 
+<a href="#characteristic">Characteristic</a>
+ object matching specified
+UUID paths. Latest value of characteristic may not be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#writeCharacteristicWithoutResponseForDevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>writeCharacteristicWithoutResponseForDevice(deviceIdentifier, serviceUUID, characteristicUUID, base64Value, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Write <a href="#characteristic">Characteristic</a> value without response.</p>
+
+
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>base64Value</span> <code class='quiet'>(<a href="#base64">Base64</a>)</code>
+	    Value in Base64 format.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits first 
+<a href="#characteristic">Characteristic</a>
+ object matching specified
+UUID paths. Latest value of characteristic may not be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#monitorCharacteristicForDevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>monitorCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, listener, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Monitor value changes of a <a href="#characteristic">Characteristic</a>. If notifications are enabled they will be used
+in favour of indications.</p>
+
+
+  <div class='pre p1 fill-light mt0'>monitorCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    <a href="#device">Device</a>
+ identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
+	    callback which emits
+
+<a href="#characteristic">Characteristic</a>
+ objects with modified value for each notification.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#subscription">Subscription</a></code>:
+        Subscription on which 
+<code>remove()</code>
+ function can be called to unsubscribe.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
 
-<footer class="footer">
-  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(0.5.2)</span><img src="./image/esdoc-logo-mini-black.png"></a>
-</footer>
+  
 
-<script src="script/search_index.js"></script>
-<script src="script/search.js"></script>
-<script src="script/pretty-print.js"></script>
-<script src="script/inherited-summary.js"></script>
-<script src="script/test-summary.js"></script>
-<script src="script/inner-link.js"></script>
-<script src="script/patch-for-local.js"></script>
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='device'>
+      Device
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Device instance which can be retrieved only by calling
+<a href="#BleManager#startDeviceScan">bleManager.startDeviceScan()</a>.</p>
+
+
+  <div class='pre p1 fill-light mt0'>new Device(nativeDevice: NativeDevice, manager: <a href="#blemanager">BleManager</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>nativeDevice</span> <code class='quiet'>(NativeDevice)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>manager</span> <code class='quiet'>(<a href="#blemanager">BleManager</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='Device#id'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>id</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Device identifier: MAC address on Android and UUID on iOS.</p>
+
+
+  <div class='pre p1 fill-light mt0'>id</div>
+  
+    <p>
+      Type:
+      <a href="#deviceid">DeviceId</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#name'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>name</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Device name if present</p>
+
+
+  <div class='pre p1 fill-light mt0'>name</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#rssi'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>rssi</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Current Received Signal Strength Indication of device</p>
+
+
+  <div class='pre p1 fill-light mt0'>rssi</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#manufacturerData'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>manufacturerData</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Device's custom manufacturer data. Its format is defined by manufacturer.</p>
+
+
+  <div class='pre p1 fill-light mt0'>manufacturerData</div>
+  
+    <p>
+      Type:
+      <a href="#base64">Base64</a>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#serviceData'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>serviceData</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Map of service UUIDs (as keys) with associated data (as values).</p>
+
+
+  <div class='pre p1 fill-light mt0'>serviceData</div>
+  
+    <p>
+      Type:
+      {}?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#serviceUUIDs'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>serviceUUIDs</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>List of available services visible during scanning.</p>
+
+
+  <div class='pre p1 fill-light mt0'>serviceUUIDs</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#txPowerLevel'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>txPowerLevel</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Transmission power level of device.</p>
+
+
+  <div class='pre p1 fill-light mt0'>txPowerLevel</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#solicitedServiceUUIDs'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>solicitedServiceUUIDs</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>List of solicited service UUIDs.</p>
+
+
+  <div class='pre p1 fill-light mt0'>solicitedServiceUUIDs</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#isConnectable'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isConnectable</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Is device connectable. [iOS only]</p>
+
+
+  <div class='pre p1 fill-light mt0'>isConnectable</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#overflowServiceUUIDs'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>overflowServiceUUIDs</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>List of overflow service UUIDs. [iOS only]</p>
+
+
+  <div class='pre p1 fill-light mt0'>overflowServiceUUIDs</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#connect'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>connect(options)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#connectToDevice">bleManager.connectToDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>connect(options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>options</span> <code class='quiet'>(<a href="#connectionoptions">ConnectionOptions</a>?)</code>
+	    Platform specific options for connection establishment. Not used currently.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Connected 
+<a href="#device">Device</a>
+ object if successful.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#cancelConnection'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>cancelConnection()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#cancelDeviceConnection">bleManager.cancelDeviceConnection()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>cancelConnection(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Returns closed 
+<a href="#device">Device</a>
+ when operation is successful.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#isConnected'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isConnected()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#isDeviceConnected">bleManager.isDeviceConnected()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>isConnected(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></code>:
+        Promise which emits 
+<code>true</code>
+ if device is connected, and 
+<code>false</code>
+ otherwise.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#onDisconnected'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>onDisconnected(listener)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#onDeviceDisconnected">bleManager.onDeviceDisconnected()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>onDisconnected(listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>))</code>
+	    callback returning error as a reason of disconnection
+if available and 
+<a href="#device">Device</a>
+ object.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#subscription">Subscription</a></code>:
+        Subscription on which 
+<code>remove()</code>
+ function can be called to unsubscribe.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#discoverAllServicesAndCharacteristics'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>discoverAllServicesAndCharacteristics()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#discoverAllServicesAndCharacteristicsForDevice">bleManager.discoverAllServicesAndCharacteristicsForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristics(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Promise which emits 
+<a href="#device">Device</a>
+ object if all available services and
+characteristics have been discovered.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#services'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>services()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#servicesForDevice">bleManager.servicesForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>services(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></code>:
+        Promise which emits array of 
+<a href="#service">Service</a>
+ objects which are discovered by this
+device.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#characteristicsForService'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>characteristicsForService(serviceUUID)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#characteristicsForDevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>characteristicsForService(serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></code>:
+        Promise which emits array of 
+<a href="#characteristic">Characteristic</a>
+ objects which are
+discovered for a 
+<a href="#device">Device</a>
+ in specified 
+<a href="#service">Service</a>
+.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#readCharacteristicForService'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>readCharacteristicForService(serviceUUID, characteristicUUID, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#readCharacteristicForDevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>readCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits first 
+<a href="#characteristic">Characteristic</a>
+ object matching specified
+UUID paths. Latest value of 
+<a href="#characteristic">Characteristic</a>
+ will be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#writeCharacteristicWithResponseForService'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>writeCharacteristicWithResponseForService(serviceUUID, characteristicUUID, valueBase64, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#writeCharacteristicWithResponseForDevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>valueBase64</span> <code class='quiet'>(<a href="#base64">Base64</a>)</code>
+	    Value in Base64 format.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits first 
+<a href="#characteristic">Characteristic</a>
+ object matching specified
+UUID paths. Latest value of characteristic may not be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#writeCharacteristicWithoutResponseForService'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>writeCharacteristicWithoutResponseForService(serviceUUID, characteristicUUID, valueBase64, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#writeCharacteristicWithoutResponseForDevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>valueBase64</span> <code class='quiet'>(<a href="#base64">Base64</a>)</code>
+	    Value in Base64 format.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits first 
+<a href="#characteristic">Characteristic</a>
+ object matching specified
+UUID paths. Latest value of characteristic may not be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#monitorCharacteristicForService'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>monitorCharacteristicForService(serviceUUID, characteristicUUID, listener, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#monitorCharacteristicForDevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>monitorCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>serviceUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#service">Service</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
+	    callback which emits
+
+<a href="#characteristic">Characteristic</a>
+ objects with modified value for each notification.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#subscription">Subscription</a></code>:
+        Subscription on which 
+<code>remove()</code>
+ function can be called to unsubscribe.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='service'>
+      Service
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Service object.</p>
+
+
+  <div class='pre p1 fill-light mt0'>new Service(nativeService: NativeService, manager: <a href="#blemanager">BleManager</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>nativeService</span> <code class='quiet'>(NativeService)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>manager</span> <code class='quiet'>(<a href="#blemanager">BleManager</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='Service#uuid'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>uuid</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Service UUID</p>
+
+
+  <div class='pre p1 fill-light mt0'>uuid</div>
+  
+    <p>
+      Type:
+      <a href="#uuid">UUID</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Service#deviceID'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>deviceID</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Device's ID to which service belongs</p>
+
+
+  <div class='pre p1 fill-light mt0'>deviceID</div>
+  
+    <p>
+      Type:
+      <a href="#deviceid">DeviceId</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Service#isPrimary'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isPrimary</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Value indicating whether the type of service is primary or secondary.</p>
+
+
+  <div class='pre p1 fill-light mt0'>isPrimary</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Service#characteristics'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>characteristics()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#characteristicsForDevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>characteristics(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></code>:
+        Promise which emits array of 
+<a href="#characteristic">Characteristic</a>
+ objects which are
+discovered for this service.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Service#readCharacteristic'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>readCharacteristic(characteristicUUID, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#readCharacteristicForDevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>readCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits first 
+<a href="#characteristic">Characteristic</a>
+ object matching specified
+UUID path. Latest value of 
+<a href="#characteristic">Characteristic</a>
+ will be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Service#writeCharacteristicWithResponse'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>writeCharacteristicWithResponse(characteristicUUID, valueBase64, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#writeCharacteristicWithResponseForDevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>valueBase64</span> <code class='quiet'>(<a href="#base64">Base64</a>)</code>
+	    Value in Base64 format.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits first 
+<a href="#characteristic">Characteristic</a>
+ object matching specified
+UUID path. Latest value of characteristic may not be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Service#writeCharacteristicWithoutResponse'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>writeCharacteristicWithoutResponse(characteristicUUID, valueBase64, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#writeCharacteristicWithoutResponseForDevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>valueBase64</span> <code class='quiet'>(<a href="#base64">Base64</a>)</code>
+	    Value in Base64 format.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits first 
+<a href="#characteristic">Characteristic</a>
+ object matching specified
+UUID path. Latest value of characteristic may not be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Service#monitorCharacteristic'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>monitorCharacteristic(characteristicUUID, listener, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#monitorCharacteristicForDevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>monitorCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>characteristicUUID</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    <a href="#characteristic">Characteristic</a>
+ UUID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
+	    callback which emits
+
+<a href="#characteristic">Characteristic</a>
+ objects with modified value for each notification.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#subscription">Subscription</a></code>:
+        Subscription on which 
+<code>remove()</code>
+ function can be called to unsubscribe.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='characteristic'>
+      Characteristic
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Characteristic object.</p>
+
+
+  <div class='pre p1 fill-light mt0'>new Characteristic(nativeCharacteristic: NativeCharacteristic, manager: <a href="#blemanager">BleManager</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>nativeCharacteristic</span> <code class='quiet'>(NativeCharacteristic)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>manager</span> <code class='quiet'>(<a href="#blemanager">BleManager</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='Characteristic#uuid'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>uuid</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Characteristic UUID</p>
+
+
+  <div class='pre p1 fill-light mt0'>uuid</div>
+  
+    <p>
+      Type:
+      <a href="#uuid">UUID</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#serviceUUID'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>serviceUUID</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Service's UUID to which characteristic belongs</p>
+
+
+  <div class='pre p1 fill-light mt0'>serviceUUID</div>
+  
+    <p>
+      Type:
+      <a href="#uuid">UUID</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#deviceID'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>deviceID</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Device's ID to which characteristic belongs</p>
+
+
+  <div class='pre p1 fill-light mt0'>deviceID</div>
+  
+    <p>
+      Type:
+      <a href="#deviceid">DeviceId</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#isReadable'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isReadable</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>True if characteristic can be read</p>
+
+
+  <div class='pre p1 fill-light mt0'>isReadable</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#isWritableWithResponse'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isWritableWithResponse</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>True if characteristic can be written with response</p>
+
+
+  <div class='pre p1 fill-light mt0'>isWritableWithResponse</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#isWritableWithoutResponse'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isWritableWithoutResponse</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>True if characteristic can be written without response</p>
+
+
+  <div class='pre p1 fill-light mt0'>isWritableWithoutResponse</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#isNotifiable'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isNotifiable</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>True if characteristic can monitor value changes.</p>
+
+
+  <div class='pre p1 fill-light mt0'>isNotifiable</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#isNotifying'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isNotifying</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>True if characteristic is monitoring value changes without ACK.</p>
+
+
+  <div class='pre p1 fill-light mt0'>isNotifying</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#isIndictable'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>isIndictable</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>True if characteristic is monitoring value changes with ACK.</p>
+
+
+  <div class='pre p1 fill-light mt0'>isIndictable</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#value'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>value</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Characteristic value if present</p>
+
+
+  <div class='pre p1 fill-light mt0'>value</div>
+  
+    <p>
+      Type:
+      <a href="#base64">Base64</a>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#read'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>read(transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#readCharacteristicForDevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>read(transactionId: <a href="#transactionid">TransactionId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits this 
+<a href="#characteristic">Characteristic</a>
+. Latest value will be stored
+inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#writeWithResponse'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>writeWithResponse(valueBase64, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#writeCharacteristicWithResponseForDevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>writeWithResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>valueBase64</span> <code class='quiet'>(<a href="#base64">Base64</a>)</code>
+	    Value in Base64 format.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits this 
+<a href="#characteristic">Characteristic</a>
+. Latest value may
+not be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#writeWithoutResponse'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>writeWithoutResponse(valueBase64, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#writeCharacteristicWithoutResponseForDevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>writeWithoutResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>valueBase64</span> <code class='quiet'>(<a href="#base64">Base64</a>)</code>
+	    Value in Base64 format.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+        Promise which emits this 
+<a href="#characteristic">Characteristic</a>
+. Latest value may
+not be stored inside returned object.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Characteristic#monitor'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>monitor(listener, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#monitorCharacteristicForDevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>monitor(listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
+	    callback which emits
+this 
+<a href="#characteristic">Characteristic</a>
+ with modified value for each notification.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    optional 
+<code>transactionId</code>
+ which can be used in
+
+<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+ function.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#subscription">Subscription</a></code>:
+        Subscription on which 
+<code>remove()</code>
+ function can be called to unsubscribe.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='utils' class='mt0'>
+    Utils
+  </h2>
+
+  
+    <p>Utility functions and classes.</p>
+
+  
+</section>
+</div>
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='fulluuid'>
+      fullUUID
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Converts UUID to full 128bit, lowercase format which should be used to compare UUID values.</p>
+
+
+  <div class='pre p1 fill-light mt0'>fullUUID(uuid: <a href="#uuid">UUID</a>): <a href="#uuid">UUID</a></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>uuid</span> <code class='quiet'>(<a href="#uuid">UUID</a>)</code>
+	    16bit, 32bit or 128bit UUID.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="#uuid">UUID</a></code>:
+        128bit lowercase UUID.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='flow-types' class='mt0'>
+    Flow Types
+  </h2>
+
+  
+    <p>All Flow aliases and Flow types used in this library.</p>
+
+  
+</section>
+</div>
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='state'>
+      State
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Device Bluetooth Low Energy state. It's keys are used to check <a href="#BleManager#state">#BleManager#state</a> values
+received by <a href="#blemanager">BleManager</a></p>
+
+
+  <div class='pre p1 fill-light mt0'>State</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='State.Unknown'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Unknown</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>The current state of the manager is unknown; an update is imminent.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Unknown</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='State.Resetting'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Resetting</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>The connection with the system service was momentarily lost; an update is imminent.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Resetting</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='State.Unsupported'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Unsupported</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>The platform does not support Bluetooth low energy.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Unsupported</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='State.Unauthorized'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Unauthorized</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>The app is not authorized to use Bluetooth low energy.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Unauthorized</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='State.PoweredOff'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>PoweredOff</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Bluetooth is currently powered off.</p>
+
+
+  <div class='pre p1 fill-light mt0'>PoweredOff</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='State.PoweredOn'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>PoweredOn</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Bluetooth is currently powered on and available to use.</p>
+
+
+  <div class='pre p1 fill-light mt0'>PoweredOn</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='scanoptions'>
+      ScanOptions
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Options which can be passed to scanning function</p>
+
+
+  <div class='pre p1 fill-light mt0'>ScanOptions</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>allowDuplicates</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>autoConnect</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='ScanOptions#allowDuplicates'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>allowDuplicates</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>By allowing duplicates scanning records are received more frequently [iOS only]</p>
+
+
+  <div class='pre p1 fill-light mt0'>allowDuplicates</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='ScanOptions#autoConnect'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>autoConnect</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device
+becomes available (true). [Android only]</p>
+
+
+  <div class='pre p1 fill-light mt0'>autoConnect</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='connectionoptions'>
+      ConnectionOptions
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Connection specific options to be passed before connection happen. [Not used]</p>
+
+
+  <div class='pre p1 fill-light mt0'>ConnectionOptions</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='deviceid'>
+      DeviceId
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Bluetooth device id.</p>
+
+
+  <div class='pre p1 fill-light mt0'>DeviceId</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='uuid'>
+      UUID
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Bluetooth UUID</p>
+
+
+  <div class='pre p1 fill-light mt0'>UUID</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='transactionid'>
+      TransactionId
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Transaction identifier</p>
+
+
+  <div class='pre p1 fill-light mt0'>TransactionId</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='subscription'>
+      Subscription
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Subscription</p>
+
+
+  <div class='pre p1 fill-light mt0'>Subscription</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>remove</span> <code class='quiet'>(function (): void)</code>
+          
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='base64'>
+      Base64
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Base64 value</p>
+
+
+  <div class='pre p1 fill-light mt0'>Base64</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+      </div>
+    </div>
+  </div>
+  <script src='assets/anchor.js'></script>
+  <script src='assets/site.js'></script>
 </body>
 </html>

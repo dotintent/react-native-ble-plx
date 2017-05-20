@@ -1,0 +1,26 @@
+toc:
+  - name: Introduction
+    file: INTRO.md
+  - name: Main Classes
+    description: |
+      Classes described below are main building blocks for your BLE support. They
+      are presented in order which aligns them with usage.
+  - BleManager
+  - Device
+  - Service
+  - Characteristic
+  - name: Utils
+    description: |
+      Utility functions and classes.
+  - fullUUID
+  - name: Flow Types
+    description: |
+      All Flow aliases and Flow types used in this library.
+  - State
+  - ScanOptions
+  - ConnectionOptions
+  - DeviceId
+  - UUID
+  - TransactionId
+  - Subscription
+  - Base64

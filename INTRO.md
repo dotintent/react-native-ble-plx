@@ -1,4 +1,6 @@
-# Getting started
+<p align="center">
+  <a href="https://github.com/Polidea/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
+</p>
 
 This guide is an introduction to BLE stack and APIs exported by this library. All examples
 will be based on CC2541 SensorTag.
@@ -94,7 +96,10 @@ it can be a long process depending on number of characteristics and services ava
 
 ## Read, write and monitor values
 
-After successful discovery of services you can call `readCharacteristicForDevice()`,
-`writeCharacteristicWithResponseForDevice()`, `monitorCharacteristicForDevice()` and
-other functions which are described in detail in documentation.
+After successful discovery of services you can call 
+* {@link #BleManager#readCharacteristicForDevice|BleManager.readCharacteristicForDevice()},
+* {@link #BleManager#writeCharacteristicWithResponseForDevice|BleManager.writeCharacteristicWithResponseForDevice()}, 
+* {@link #BleManager#monitorCharacteristicForDevice|BleManager.monitorCharacteristicForDevice()}
+
+and other functions which are described in detail in documentation.
 
