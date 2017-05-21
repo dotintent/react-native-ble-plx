@@ -1,7 +1,7 @@
 // @flow
 'use strict'
 
-import { NativeModules } from 'react-native'
+import { NativeModules, NativeEventEmitter } from 'react-native'
 import { State } from './TypeDefinition'
 import type { DeviceId, UUID, TransactionId, Base64, ScanOptions, ConnectionOptions } from './TypeDefinition'
 
@@ -357,3 +357,4 @@ export interface BleModuleInterface {
 }
 
 export const BleModule: BleModuleInterface = NativeModules.BleClientManager
+export const EventEmitter = NativeEventEmitter

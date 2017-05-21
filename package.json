@@ -17,10 +17,13 @@
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.3",
+    "babel-preset-react-native": "^1.9.2",
     "documentation": "4.0.0-rc.1",
     "eslint": "^3.19.0",
     "eslint-plugin-flowtype": "^2.33.0",
     "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jest": "^20.0.3",
     "eslint-plugin-react": "^7.0.1",
     "flow-bin": "^0.42.0",
     "jest": "^20.0.3",
@@ -37,6 +40,9 @@
     "BLE",
     "Polidea"
   ],
+  "jest": {
+    "preset": "react-native"
+  },
   "author": "Polidea",
   "license": "Apache-2.0",
   "bugs": {

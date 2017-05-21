@@ -986,7 +986,7 @@ babel-preset-jest@^20.0.3:
   dependencies:
     babel-plugin-jest-hoist "^20.0.3"
 
-babel-preset-react-native@^1.9.1:
+babel-preset-react-native@^1.9.1, babel-preset-react-native@^1.9.2:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/babel-preset-react-native/-/babel-preset-react-native-1.9.2.tgz#b22addd2e355ff3b39671b79be807e52dfa145f2"
   dependencies:
@@ -1794,9 +1794,9 @@ doctrine@^2.0.0:
     esutils "^2.0.2"
     isarray "^1.0.0"
 
-"documentation@git://github.com/documentationjs/documentation.git#4ba0a822a2475b36e7a68405391d9841c33c08a0":
+documentation@4.0.0-rc.1:
   version "4.0.0-rc.1"
-  resolved "git://github.com/documentationjs/documentation.git#4ba0a822a2475b36e7a68405391d9841c33c08a0"
+  resolved "https://registry.yarnpkg.com/documentation/-/documentation-4.0.0-rc.1.tgz#f59eaf3927b277fc73597515cf64f3170df1b2ec"
   dependencies:
     ansi-html "^0.0.7"
     babel-core "^6.17.0"
@@ -1816,7 +1816,6 @@ doctrine@^2.0.0:
     disparity "^2.0.0"
     doctrine-temporary-fork "2.0.0-alpha-allowarrayindex"
     get-comments "^1.0.1"
-    get-port "^3.1.0"
     git-url-parse "^6.0.1"
     github-slugger "1.1.1"
     glob "^7.0.0"
@@ -2044,6 +2043,10 @@ eslint-plugin-import@^2.2.0:
     lodash.cond "^4.3.0"
     minimatch "^3.0.3"
     pkg-up "^1.0.0"
+
+eslint-plugin-jest@^20.0.3:
+  version "20.0.3"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-20.0.3.tgz#ec15eba6ac0ab44a67ebf6e02672ca9d7e7cba29"
 
 eslint-plugin-react@^7.0.1:
   version "7.0.1"
@@ -2446,10 +2449,6 @@ get-caller-file@^1.0.1:
 get-comments@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/get-comments/-/get-comments-1.0.1.tgz#196759101bbbc4facf13060caaedd4870dee55be"
-
-get-port@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/get-port/-/get-port-3.1.0.tgz#ef01b18a84ca6486970ff99e54446141a73ffd3e"
 
 get-stdin@5.0.1:
   version "5.0.1"

@@ -62,3 +62,6 @@ Carthage
 
 # Documentation
 docs/
+
+# Tests
+__tests__/

@@ -8,7 +8,8 @@
   "plugins": [
     "react",
     "import",
-    "flowtype"
+    "flowtype",
+    "jest"
   ],
   "rules": {
     "indent": [
@@ -25,6 +26,7 @@
   },
   "env": {
     "node": true,
-    "es6": true
+    "es6": true,
+    "jest": true
   }
 }

@@ -1,12 +1,11 @@
 // @flow
 'use strict'
 
-import { NativeEventEmitter } from 'react-native'
 import { Device } from './Device'
 import { Service } from './Service'
 import { Characteristic } from './Characteristic'
 import { State } from './TypeDefinition'
-import { BleModule } from './BleModule'
+import { BleModule, EventEmitter } from './BleModule'
 import type { NativeDevice, NativeCharacteristic } from './BleModule'
 import type {
   Subscription,
@@ -31,9 +30,9 @@ import type {
  */
 export class BleManager {
   // Scan subscriptions
-  _scanEventSubscription: ?NativeEventEmitter
+  _scanEventSubscription: ?EventEmitter
   // Listening to BleModule events
-  _eventEmitter: NativeEventEmitter
+  _eventEmitter: EventEmitter
   // Unique identifier used to create internal transactionIds
   _uniqueId: number
 
@@ -42,7 +41,7 @@ export class BleManager {
    */
   constructor() {
     BleModule.createClient()
-    this._eventEmitter = new NativeEventEmitter(BleModule)
+    this._eventEmitter = new EventEmitter(BleModule)
     this._uniqueId = 0
   }
 
