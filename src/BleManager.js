@@ -10,6 +10,7 @@ import type { NativeDevice, NativeCharacteristic } from './BleModule'
 import type {
   Subscription,
   DeviceId,
+  Identifier,
   UUID,
   TransactionId,
   Base64,
@@ -276,8 +277,34 @@ export class BleManager {
    * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are 
    * discovered for a {@link Device} in specified {@link Service}.
    */
-  async characteristicsForDevice(deviceIdentifier: DeviceId, serviceUUID: UUID): Promise<Array<Characteristic>> {
-    const characteristics = await BleModule.characteristicsForDevice(deviceIdentifier, serviceUUID)
+  characteristicsForDevice(deviceIdentifier: DeviceId, serviceUUID: UUID): Promise<Array<Characteristic>> {
+    return this._handleCharacteristics(BleModule.characteristicsForDevice(deviceIdentifier, serviceUUID))
+  }
+
+  /**
+   * List of discovered {@link Characteristic}s for unique {@link Service}.
+   * 
+   * @param {Identifier} serviceIdentifier {@link Service} ID.
+   * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are 
+   * discovered in unique {@link Service}.
+   * @private
+   */
+  _characteristicsForService(serviceIdentifier: Identifier): Promise<Array<Characteristic>> {
+    return this._handleCharacteristics(BleModule.characteristicsForService(serviceIdentifier))
+  }
+
+  /**
+   * Common code for handling NativeCharacteristic fetches.
+   * 
+   * @param {Promise<Array<NativeCharacteristic>>} characteristicsPromise Native characteristics.
+   * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are 
+   * discovered in unique {@link Service}.
+   * @private
+   */
+  async _handleCharacteristics(
+    characteristicsPromise: Promise<Array<NativeCharacteristic>>
+  ): Promise<Array<Characteristic>> {
+    const characteristics = await characteristicsPromise
     return characteristics.map(nativeCharacteristic => {
       return new Characteristic(nativeCharacteristic, this)
     })
@@ -305,14 +332,60 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-
     const nativeCharacteristic = await BleModule.readCharacteristicForDevice(
       deviceIdentifier,
       serviceUUID,
       characteristicUUID,
       transactionId
     )
+    return new Characteristic(nativeCharacteristic, this)
+  }
 
+  /**
+   * Read {@link Characteristic} value.
+   * 
+   * @param {Identifier} serviceIdentifier {@link Service} ID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
+   * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.
+   * @private
+   */
+  async _readCharacteristicForService(
+    serviceIdentifier: Identifier,
+    characteristicUUID: UUID,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await BleModule.readCharacteristicForService(
+      serviceIdentifier,
+      characteristicUUID,
+      transactionId
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  /**
+   * Read {@link Characteristic} value.
+   * 
+   * @param {Identifier} characteristicIdentifier {@link Characteristic} ID.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID. 
+   * Latest value of {@link Characteristic} will be stored inside returned object.
+   * @private
+   */
+  async _readCharacteristic(
+    characteristicIdentifier: Identifier,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await BleModule.readCharacteristic(characteristicIdentifier, transactionId)
     return new Characteristic(nativeCharacteristic, this)
   }
 
@@ -338,7 +411,6 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-
     const nativeCharacteristic = await BleModule.writeCharacteristicForDevice(
       deviceIdentifier,
       serviceUUID,
@@ -347,7 +419,65 @@ export class BleManager {
       true,
       transactionId
     )
+    return new Characteristic(nativeCharacteristic, this)
+  }
 
+  /**
+   * Write {@link Characteristic} value with response.
+   * 
+   * @param {Identifier} serviceIdentifier {@link Service} ID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {Base64} base64Value Value in Base64 format.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
+   * UUID paths. Latest value of characteristic may not be stored inside returned object.
+   * @private
+   */
+  async _writeCharacteristicWithResponseForService(
+    serviceIdentifier: Identifier,
+    characteristicUUID: UUID,
+    base64Value: Base64,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await BleModule.writeCharacteristicForService(
+      serviceIdentifier,
+      characteristicUUID,
+      base64Value,
+      true,
+      transactionId
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  /**
+   * Write {@link Characteristic} value with response.
+   * 
+   * @param {Identifier} characteristicIdentifier {@link Characteristic} ID.
+   * @param {Base64} base64Value Value in Base64 format.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID. 
+   * Latest value of characteristic may not be stored inside returned object.
+   * @private
+   */
+  async _writeCharacteristicWithResponse(
+    characteristicIdentifier: Identifier,
+    base64Value: Base64,
+    transactionId: ?TransactionId
+  ) {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await BleModule.writeCharacteristic(
+      characteristicIdentifier,
+      base64Value,
+      true,
+      transactionId
+    )
     return new Characteristic(nativeCharacteristic, this)
   }
 
@@ -373,7 +503,6 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-
     const nativeCharacteristic = await BleModule.writeCharacteristicForDevice(
       deviceIdentifier,
       serviceUUID,
@@ -382,7 +511,65 @@ export class BleManager {
       false,
       transactionId
     )
+    return new Characteristic(nativeCharacteristic, this)
+  }
 
+  /**
+   * Write {@link Characteristic} value without response.
+   * 
+   * @param {Identifier} serviceIdentifier {@link Service} ID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {Base64} base64Value Value in Base64 format.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
+   * UUID paths. Latest value of characteristic may not be stored inside returned object.
+   * @private
+   */
+  async _writeCharacteristicWithoutResponseForService(
+    serviceIdentifier: Identifier,
+    characteristicUUID: UUID,
+    base64Value: Base64,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await BleModule.writeCharacteristicForService(
+      serviceIdentifier,
+      characteristicUUID,
+      base64Value,
+      false,
+      transactionId
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  /**
+   * Write {@link Characteristic} value without response.
+   * 
+   * @param {Identifier} characteristicIdentifier {@link Characteristic} UUID.
+   * @param {Base64} base64Value Value in Base64 format.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID. 
+   * Latest value of characteristic may not be stored inside returned object.
+   * @private
+   */
+  async _writeCharacteristicWithoutResponse(
+    characteristicIdentifier: Identifier,
+    base64Value: Base64,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await BleModule.writeCharacteristic(
+      characteristicIdentifier,
+      base64Value,
+      false,
+      transactionId
+    )
     return new Characteristic(nativeCharacteristic, this)
   }
 
@@ -390,9 +577,9 @@ export class BleManager {
    * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
    * in favour of indications.
    * 
-   * @param {DeviceId} deviceIdentifier - {@link Device} identifier.
-   * @param {UUID} serviceUUID - {@link Service} UUID.
-   * @param {UUID} characteristicUUID - {@link Characteristic} UUID.
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
    * {@link Characteristic} objects with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
@@ -407,11 +594,84 @@ export class BleManager {
     transactionId: ?TransactionId
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
+    return this._handleMonitorCharacteristic(
+      BleModule.monitorCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId),
+      filledTransactionId,
+      listener
+    )
+  }
 
+  /**
+   * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
+   * in favour of indications.
+   * 
+   * @param {Identifier} serviceIdentifier {@link Service} ID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
+   * {@link Characteristic} objects with modified value for each notification.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   * @private
+   */
+  _monitorCharacteristicForService(
+    serviceIdentifier: Identifier,
+    characteristicUUID: UUID,
+    listener: (error: ?Error, characteristic: ?Characteristic) => void,
+    transactionId: ?TransactionId
+  ): Subscription {
+    const filledTransactionId = transactionId || this._nextUniqueID()
+    return this._handleMonitorCharacteristic(
+      BleModule.monitorCharacteristicForService(serviceIdentifier, characteristicUUID, filledTransactionId),
+      filledTransactionId,
+      listener
+    )
+  }
+
+  /**
+   * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
+   * in favour of indications.
+   * 
+   * @param {Identifier} characteristicIdentifier - {@link Characteristic} ID.
+   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
+   * {@link Characteristic} objects with modified value for each notification.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   * @private
+   */
+  _monitorCharacteristic(
+    characteristicIdentifier: Identifier,
+    listener: (error: ?Error, characteristic: ?Characteristic) => void,
+    transactionId: ?TransactionId
+  ): Subscription {
+    const filledTransactionId = transactionId || this._nextUniqueID()
+    return this._handleMonitorCharacteristic(
+      BleModule.monitorCharacteristic(characteristicIdentifier, filledTransactionId),
+      filledTransactionId,
+      listener
+    )
+  }
+
+  /**
+   * Common code to handle characteristic monitoring.
+   * 
+   * @param {Promise<void>} monitorPromise Characteristic monitoring promise
+   * @param {TransactionId} transactionId TransactionId of passed promise
+   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
+   * {@link Characteristic} objects with modified value for each notification.
+   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   * @private
+   */
+  _handleMonitorCharacteristic(
+    monitorPromise: Promise<void>,
+    transactionId: TransactionId,
+    listener: (error: ?Error, characteristic: ?Characteristic) => void
+  ): Subscription {
     const monitorListener = (
       [error, characteristic, msgTransactionId]: [?Error, NativeCharacteristic, TransactionId]
     ) => {
-      if (filledTransactionId !== msgTransactionId) return
+      if (transactionId !== msgTransactionId) return
       if (error) {
         listener(error, null)
         return
@@ -421,12 +681,7 @@ export class BleManager {
 
     const subscription: Subscription = this._eventEmitter.addListener(BleModule.ReadEvent, monitorListener)
 
-    BleModule.monitorCharacteristicForDevice(
-      deviceIdentifier,
-      serviceUUID,
-      characteristicUUID,
-      filledTransactionId
-    ).then(
+    monitorPromise.then(
       () => {
         subscription.remove()
       },
@@ -438,7 +693,7 @@ export class BleManager {
 
     return {
       remove: () => {
-        BleModule.cancelTransaction(filledTransactionId)
+        BleModule.cancelTransaction(transactionId)
       }
     }
   }

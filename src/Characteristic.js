@@ -3,7 +3,7 @@
 
 import { BleManager } from './BleManager'
 import type { NativeCharacteristic } from './BleModule'
-import type { DeviceId, UUID, TransactionId, Base64, Subscription } from './TypeDefinition'
+import type { DeviceId, Identifier, UUID, TransactionId, Base64, Subscription } from './TypeDefinition'
 
 /**
  * Characteristic object.
@@ -14,6 +14,10 @@ export class Characteristic implements NativeCharacteristic {
    * @private
    */
   _manager: BleManager
+  /**
+   * Characteristic unique identifier
+   */
+  id: Identifier
   /**
    * Characteristic UUID
    */
@@ -75,7 +79,7 @@ export class Characteristic implements NativeCharacteristic {
    * inside returned object.
    */
   read(transactionId: TransactionId): Promise<Characteristic> {
-    return this._manager.readCharacteristicForDevice(this.deviceID, this.serviceUUID, this.uuid, transactionId)
+    return this._manager._readCharacteristic(this.id, transactionId)
   }
 
   /**
@@ -88,13 +92,7 @@ export class Characteristic implements NativeCharacteristic {
    * not be stored inside returned object.
    */
   writeWithResponse(valueBase64: Base64, transactionId: ?TransactionId): Promise<Characteristic> {
-    return this._manager.writeCharacteristicWithResponseForDevice(
-      this.deviceID,
-      this.serviceUUID,
-      this.uuid,
-      valueBase64,
-      transactionId
-    )
+    return this._manager._writeCharacteristicWithResponse(this.id, valueBase64, transactionId)
   }
 
   /**
@@ -107,13 +105,7 @@ export class Characteristic implements NativeCharacteristic {
    * not be stored inside returned object.
    */
   writeWithoutResponse(valueBase64: Base64, transactionId: ?TransactionId): Promise<Characteristic> {
-    return this._manager.writeCharacteristicWithoutResponseForDevice(
-      this.deviceID,
-      this.serviceUUID,
-      this.uuid,
-      valueBase64,
-      transactionId
-    )
+    return this._manager._writeCharacteristicWithoutResponse(this.id, valueBase64, transactionId)
   }
 
   /**
@@ -129,12 +121,6 @@ export class Characteristic implements NativeCharacteristic {
     listener: (error: ?Error, characteristic: ?Characteristic) => void,
     transactionId: ?TransactionId
   ): Subscription {
-    return this._manager.monitorCharacteristicForDevice(
-      this.deviceID,
-      this.serviceUUID,
-      this.uuid,
-      listener,
-      transactionId
-    )
+    return this._manager._monitorCharacteristic(this.id, listener, transactionId)
   }
 }

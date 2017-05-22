@@ -3,7 +3,15 @@
 
 import { NativeModules, NativeEventEmitter } from 'react-native'
 import { State } from './TypeDefinition'
-import type { DeviceId, UUID, TransactionId, Base64, ScanOptions, ConnectionOptions } from './TypeDefinition'
+import type {
+  DeviceId,
+  Identifier,
+  UUID,
+  TransactionId,
+  Base64,
+  ScanOptions,
+  ConnectionOptions
+} from './TypeDefinition'
 
 /**
  * Native device object passed from BleModule.
@@ -77,6 +85,11 @@ export interface NativeDevice {
  */
 export interface NativeService {
   /**
+   * Service unique identifier
+   * @private
+   */
+  id: Identifier,
+  /**
    * Service UUID
    * @private
    */
@@ -98,6 +111,11 @@ export interface NativeService {
  * @private
  */
 export interface NativeCharacteristic {
+  /**
+   * Characteristic unique identifier
+   * @private
+   */
+  id: Identifier,
   /**
    * Characteristic UUID
    * @private
@@ -252,7 +270,7 @@ export interface BleModuleInterface {
   servicesForDevice(deviceIdentifier: DeviceId): Promise<Array<NativeService>>,
 
   /**
-    * List of discovered characteristic for specified service.
+    * List of discovered characteristics for specified service.
     * 
     * @param {DeviceId} deviceIdentifier Connected device identifier.
     * @param {UUID} serviceUUID Service UUID which contains characteristics.
@@ -260,6 +278,15 @@ export interface BleModuleInterface {
     * @private
     */
   characteristicsForDevice(deviceIdentifier: DeviceId, serviceUUID: UUID): Promise<Array<NativeCharacteristic>>,
+
+  /**
+    * List of discovered characteristics for specified service.
+    * 
+    * @param {Identifier} serviceIdentifier Service ID which contains characteristics.
+    * @returns {Promise<Array<NativeCharacteristic>>} List of characteristics available in service.
+    * @private
+    */
+  characteristicsForService(serviceIdentifier: Identifier): Promise<Array<NativeCharacteristic>>,
 
   // Characteristics operations
 
@@ -279,6 +306,31 @@ export interface BleModuleInterface {
     characteristicUUID: UUID,
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>,
+
+  /**
+   * Read characteristic's value.
+   * 
+   * @param {Identifier} serviceIdentifier Service ID
+   * @param {UUID} characteristicUUID Characteristic UUID
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeCharacteristic>} Characteristic for which value was read
+   * @private
+   */
+  readCharacteristicForService(
+    serviceIdentifier: Identifier,
+    characteristicUUID: UUID,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>,
+
+  /**
+   * Read characteristic's value.
+   * 
+   * @param {Identifier} characteristicIdentifer Characteristic ID
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeCharacteristic>} Characteristic for which value was read
+   * @private
+   */
+  readCharacteristic(characteristicIdentifer: Identifier, transactionId: TransactionId): Promise<NativeCharacteristic>,
 
   /**
    * Write value to characteristic.
@@ -302,6 +354,42 @@ export interface BleModuleInterface {
   ): Promise<NativeCharacteristic>,
 
   /**
+   * Write value to characteristic.
+   * 
+   * @param {Identifier} serviceIdentifier Service ID
+   * @param {UUID} characteristicUUID Characteristic UUID
+   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {boolean} withResponse True if write should be with response
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeCharacteristic>} Characteristic which saved passed value
+   * @private
+   */
+  writeCharacteristicForService(
+    serviceIdentifier: Identifier,
+    characteristicUUID: UUID,
+    valueBase64: Base64,
+    withResponse: boolean,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>,
+
+  /**
+   * Write value to characteristic.
+   * 
+   * @param {Identifier} characteristicIdentifier Characteristic ID
+   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {boolean} withResponse True if write should be with response
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeCharacteristic>} Characteristic which saved passed value
+   * @private
+   */
+  writeCharacteristic(
+    characteristicIdentifier: Identifier,
+    valueBase64: Base64,
+    withResponse: boolean,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>,
+
+  /**
    * Setup monitoring of characteristic value.
    * 
    * @param {DeviceId} deviceIdentifier Connected device identifier
@@ -317,6 +405,31 @@ export interface BleModuleInterface {
     characteristicUUID: UUID,
     transactionId: TransactionId
   ): Promise<void>,
+
+  /**
+   * Setup monitoring of characteristic value.
+   * 
+   * @param {Identifier} serviceIdentifier Service ID
+   * @param {UUID} characteristicUUID Characteristic UUID
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+   * @private
+   */
+  monitorCharacteristicForService(
+    serviceIdentifier: Identifier,
+    characteristicUUID: UUID,
+    transactionId: TransactionId
+  ): Promise<void>,
+
+  /**
+   * Setup monitoring of characteristic value.
+   * 
+   * @param {Identifier} characteristicIdentifier Characteristic ID
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+   * @private
+   */
+  monitorCharacteristic(characteristicIdentifier: Identifier, transactionId: TransactionId): Promise<void>,
 
   // Other APIs
 

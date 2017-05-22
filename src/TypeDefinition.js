@@ -7,6 +7,11 @@
 export type DeviceId = string
 
 /**
+ * Unique identifier for BLE objects.
+ */
+export type Identifier = number
+
+/**
  * Bluetooth UUID
  */
 export type UUID = string

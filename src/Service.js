@@ -4,7 +4,7 @@
 import { BleManager } from './BleManager'
 import { Characteristic } from './Characteristic'
 import type { NativeService } from './BleModule'
-import type { DeviceId, Base64, UUID, Subscription, TransactionId } from './TypeDefinition'
+import type { DeviceId, Identifier, Base64, UUID, Subscription, TransactionId } from './TypeDefinition'
 
 /**
  * Service object.
@@ -15,6 +15,10 @@ export class Service implements NativeService {
    * @private
    */
   _manager: BleManager
+  /**
+   * Service unique identifier
+   */
+  id: Identifier
   /**
    * Service UUID
    */
@@ -48,7 +52,7 @@ export class Service implements NativeService {
    * discovered for this service.
    */
   characteristics(): Promise<Array<Characteristic>> {
-    return this._manager.characteristicsForDevice(this.deviceID, this.uuid)
+    return this._manager._characteristicsForService(this.id)
   }
 
   /**
@@ -61,7 +65,7 @@ export class Service implements NativeService {
    * UUID path. Latest value of {@link Characteristic} will be stored inside returned object.
    */
   readCharacteristic(characteristicUUID: UUID, transactionId: ?TransactionId): Promise<Characteristic> {
-    return this._manager.readCharacteristicForDevice(this.deviceID, this.uuid, characteristicUUID, transactionId)
+    return this._manager._readCharacteristicForService(this.id, characteristicUUID, transactionId)
   }
 
   /**
@@ -79,9 +83,8 @@ export class Service implements NativeService {
     valueBase64: Base64,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
-    return this._manager.writeCharacteristicWithResponseForDevice(
-      this.deviceID,
-      this.uuid,
+    return this._manager._writeCharacteristicWithResponseForService(
+      this.id,
       characteristicUUID,
       valueBase64,
       transactionId
@@ -103,9 +106,8 @@ export class Service implements NativeService {
     valueBase64: Base64,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
-    return this._manager.writeCharacteristicWithoutResponseForDevice(
-      this.deviceID,
-      this.uuid,
+    return this._manager._writeCharacteristicWithoutResponseForService(
+      this.id,
       characteristicUUID,
       valueBase64,
       transactionId
@@ -127,12 +129,6 @@ export class Service implements NativeService {
     listener: (error: ?Error, characteristic: ?Characteristic) => void,
     transactionId: ?TransactionId
   ): Subscription {
-    return this._manager.monitorCharacteristicForDevice(
-      this.deviceID,
-      this.uuid,
-      characteristicUUID,
-      listener,
-      transactionId
-    )
+    return this._manager._monitorCharacteristicForService(this.id, characteristicUUID, listener, transactionId)
   }
 }
