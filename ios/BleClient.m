@@ -126,6 +126,14 @@ RCT_EXPORT_METHOD(characteristicsForDevice:(NSString*)deviceIdentifier
                                 reject:reject];
 }
 
+RCT_EXPORT_METHOD(characteristicsForService:(NSNumber*)serviceIdentifier
+                                   resolver:(RCTPromiseResolveBlock)resolve
+                                   rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager characteristicsForService:serviceIdentifier
+                                resolve:resolve
+                                 reject:reject];
+}
+
 // Mark: Characteristics operations ------------------------------------------------------------------------------------
 
 RCT_EXPORT_METHOD(readCharacteristicForDevice:(NSString*)deviceIdentifier
@@ -140,6 +148,29 @@ RCT_EXPORT_METHOD(readCharacteristicForDevice:(NSString*)deviceIdentifier
                             transactionId:transactionId
                                   resolve:resolve
                                    reject:reject];
+}
+
+RCT_EXPORT_METHOD(readCharacteristicForService:(NSNumber*)serviceIdentifier
+                            characteristicUUID:(NSString*)characteristicUUID
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager readCharacteristicForService:serviceIdentifier
+                        characteristicUUID:characteristicUUID
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
+RCT_EXPORT_METHOD(readCharacteristic:(NSNumber*)characteristicIdentifier
+                       transactionId:(NSString*)transactionId
+                            resolver:(RCTPromiseResolveBlock)resolve
+                            rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager readCharacteristic:characteristicIdentifier
+              characteristicUUID:characteristicUUID
+                   transactionId:transactionId
+                         resolve:resolve
+                          reject:reject];
 }
 
 RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSString*)deviceIdentifier
@@ -160,6 +191,36 @@ RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSString*)deviceIdentifier
                                     reject:reject];
 }
 
+RCT_EXPORT_METHOD(writeCharacteristicForService:(NSNumber*)serviceIdentifier
+                             characteristicUUID:(NSString*)characteristicUUID
+                                    valueBase64:(NSString*)valueBase64
+                                   withResponse:(BOOL)response
+                                  transactionId:(NSString*)transactionId
+                                       resolver:(RCTPromiseResolveBlock)resolve
+                                       rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager writeCharacteristicForService:serviceIdentifier
+                         characteristicUUID:characteristicUUID
+                                valueBase64:valueBase64
+                                   response:response
+                              transactionId:transactionId
+                                    resolve:resolve
+                                     reject:reject];
+}
+
+RCT_EXPORT_METHOD(writeCharacteristic:(NSNumber*)characteristicIdentifier
+                          valueBase64:(NSString*)valueBase64
+                         withResponse:(BOOL)response
+                        transactionId:(NSString*)transactionId
+                             resolver:(RCTPromiseResolveBlock)resolve
+                             rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager writeCharacteristic:characteristicIdentifier
+                      valueBase64:valueBase64
+                         response:response
+                    transactionId:transactionId
+                          resolve:resolve
+                           reject:reject];
+}
+
 RCT_EXPORT_METHOD(monitorCharacteristicForDevice:(NSString*)deviceIdentifier
                                      serviceUUID:(NSString*)serviceUUID
                               characteristicUUID:(NSString*)characteristicUUID
@@ -172,6 +233,28 @@ RCT_EXPORT_METHOD(monitorCharacteristicForDevice:(NSString*)deviceIdentifier
                                transactionId:transactionId
                                      resolve:resolve
                                       reject:reject];
+}
+
+RCT_EXPORT_METHOD(monitorCharacteristicForService:(NSNumber*)serviceIdentifier
+                               characteristicUUID:(NSString*)characteristicUUID
+                                    transactionID:(NSString*)transactionId
+                                         resolver:(RCTPromiseResolveBlock)resolve
+                                         rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager monitorCharacteristicForService:serviceIdentifier
+                           characteristicUUID:characteristicUUID
+                                transactionId:transactionId
+                                      resolve:resolve
+                                       reject:reject];
+}
+
+RCT_EXPORT_METHOD(monitorCharacteristic:(NSNumber*)characteristicIdentifier
+                          transactionID:(NSString*)transactionId
+                               resolver:(RCTPromiseResolveBlock)resolve
+                               rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager monitorCharacteristic:characteristicIdentifier
+                      transactionId:transactionId
+                            resolve:resolve
+                             reject:reject];
 }
 
 RCT_EXPORT_METHOD(cancelTransaction:(NSString*)transactionId) {

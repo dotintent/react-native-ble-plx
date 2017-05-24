@@ -103,5 +103,10 @@ extension BleError {
     static func peripheralNotFound(_ uuid: String) -> BleError { return BleError(code: 501, message: "Device \(uuid) not found") }
     static func peripheralNotConnected(_ uuid: String) -> BleError { return BleError(code: 502, message: "Device \(uuid) is not connected") }
     static func characteristicNotFound(_ uuid: String) -> BleError { return BleError(code: 503, message: "Characteristic \(uuid) not found") }
+    static func characteristicNotFound(_ id: Double) -> BleError { return BleError(code: 503, message: "Characteristic \(id) not found") }
     static func invalidWriteDataForCharacteristic(_ uuid: String, data: String) -> BleError { return BleError(code: 504, message: "Invalid value data: \(data) for characteristic \(uuid)")}
+    static func invalidWriteDataForCharacteristic(_ id: Double, data: String) -> BleError { return BleError(code: 504, message: "Invalid value data: \(data) for characteristic \(id)")}
+    static func invalidID(_ id: Double) -> BleError { return BleError(code: 505, message: "Invalid ID was passed: \(id)")}
+    static func serviceNotFound(_ uuid: String) -> BleError { return BleError(code: 506, message: "Service \(uuid) not found") }
+    static func serviceNotFound(_ id: Double) -> BleError { return BleError(code: 506, message: "Service \(id) not found") }
 }

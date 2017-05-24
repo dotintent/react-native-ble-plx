@@ -67,8 +67,12 @@ extension Peripheral {
 }
 
 extension Service {
+    var jsIdentifier: Double {
+        return Double(UInt64(objectId) & ((1 << 53) - 1))
+    }
     var asJSObject: [String: AnyObject] {
         return [
+            "id": jsIdentifier as AnyObject,
             "uuid": uuid.fullUUIDString as AnyObject,
             "deviceID": peripheral.identifier.uuidString as AnyObject,
             "isPrimary": isPrimary as AnyObject
@@ -77,8 +81,12 @@ extension Service {
 }
 
 extension Characteristic {
+    var jsIdentifier: Double {
+        return Double(UInt64(objectId) & ((1 << 53) - 1))
+    }
     var asJSObject: [String: AnyObject] {
         return [
+            "id": jsIdentifier as AnyObject,
             "uuid": uuid.fullUUIDString as AnyObject,
             "serviceUUID": service.uuid.fullUUIDString as AnyObject,
             "deviceID": service.peripheral.identifier.uuidString as AnyObject,
