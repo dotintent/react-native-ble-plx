@@ -70,6 +70,18 @@
                       </a></li>
                       
                       <li><a
+                        href='#BleManager#setLogLevel'
+                        class='regular pre-open'>
+                        #setLogLevel
+                      </a></li>
+                      
+                      <li><a
+                        href='#BleManager#logLevel'
+                        class='regular pre-open'>
+                        #logLevel
+                      </a></li>
+                      
+                      <li><a
                         href='#BleManager#cancelTransaction'
                         class='regular pre-open'>
                         #cancelTransaction
@@ -541,6 +553,64 @@
               
                 
                 <li><a
+                  href='#loglevel'
+                  class=" toggle-sibling">
+                  LogLevel
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#LogLevel.None'
+                        class='regular pre-open'>
+                        .None
+                      </a></li>
+                    
+                      <li><a
+                        href='#LogLevel.Verbose'
+                        class='regular pre-open'>
+                        .Verbose
+                      </a></li>
+                    
+                      <li><a
+                        href='#LogLevel.Debug'
+                        class='regular pre-open'>
+                        .Debug
+                      </a></li>
+                    
+                      <li><a
+                        href='#LogLevel.Info'
+                        class='regular pre-open'>
+                        .Info
+                      </a></li>
+                    
+                      <li><a
+                        href='#LogLevel.Warning'
+                        class='regular pre-open'>
+                        .Warning
+                      </a></li>
+                    
+                      <li><a
+                        href='#LogLevel.Error'
+                        class='regular pre-open'>
+                        .Error
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
                   href='#state'
                   class=" toggle-sibling">
                   State
@@ -950,6 +1020,120 @@ this library.</p>
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#setLogLevel'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>setLogLevel(logLevel)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Sets new log level for native module's logging mechanism.</p>
+
+
+  <div class='pre p1 fill-light mt0'>setLogLevel(logLevel: <a href="#loglevel">LogLevel</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>logLevel</span> <code class='quiet'>(<a href="#loglevel">LogLevel</a>)</code>
+	    New log level to be set.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#logLevel'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>logLevel()</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Get current log level for native module's logging mechanism.</p>
+
+
+  <div class='pre p1 fill-light mt0'>logLevel(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></code>:
+        Current log level.
+
+      
+    
   
 
   
@@ -5567,6 +5751,335 @@ this
   
 </section>
 </div>
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='loglevel'>
+      LogLevel
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Native module logging log level. By default it is set to None</p>
+
+
+  <div class='pre p1 fill-light mt0'>LogLevel</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='LogLevel.None'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>None</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Logging in native modules are disabled</p>
+
+
+  <div class='pre p1 fill-light mt0'>None</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='LogLevel.Verbose'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Verbose</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>All logs in native modules are shown</p>
+
+
+  <div class='pre p1 fill-light mt0'>Verbose</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='LogLevel.Debug'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Debug</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Only debug logs and of higher importance are shown in native modules.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Debug</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='LogLevel.Info'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Info</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Only info logs and of higher importance are shown in native modules.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Info</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='LogLevel.Warning'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Warning</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Only warning logs and of higher importance are shown in native modules.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Warning</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='LogLevel.Error'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Error</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Only error logs and of higher importance are shown in native modules.</p>
+
+
+  <div class='pre p1 fill-light mt0'>Error</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
           
         
           

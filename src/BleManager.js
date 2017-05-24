@@ -4,7 +4,7 @@
 import { Device } from './Device'
 import { Service } from './Service'
 import { Characteristic } from './Characteristic'
-import { State } from './TypeDefinition'
+import { State, LogLevel } from './TypeDefinition'
 import { BleModule, EventEmitter } from './BleModule'
 import type { NativeDevice, NativeCharacteristic } from './BleModule'
 import type {
@@ -66,6 +66,22 @@ export class BleManager {
   }
 
   // Mark: Common ------------------------------------------------------------------------------------------------------
+
+  /**
+   * Sets new log level for native module's logging mechanism.
+   * @param {LogLevel} logLevel New log level to be set.
+   */
+  setLogLevel(logLevel: $Keys<typeof LogLevel>) {
+    BleModule.setLogLevel(logLevel)
+  }
+
+  /**
+   * Get current log level for native module's logging mechanism.
+   * @returns {Promise<LogLevel>} Current log level.
+   */
+  logLevel(): Promise<$Keys<typeof LogLevel>> {
+    return BleModule.logLevel()
+  }
 
   /**
    * Cancels pending transaction.

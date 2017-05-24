@@ -16,6 +16,7 @@ toc:
   - name: Flow Types
     description: |
       All Flow aliases and Flow types used in this library.
+  - LogLevel
   - State
   - ScanOptions
   - ConnectionOptions

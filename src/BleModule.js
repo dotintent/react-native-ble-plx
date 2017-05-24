@@ -2,7 +2,7 @@
 'use strict'
 
 import { NativeModules, NativeEventEmitter } from 'react-native'
-import { State } from './TypeDefinition'
+import { State, LogLevel } from './TypeDefinition'
 import type {
   DeviceId,
   Identifier,
@@ -440,6 +440,20 @@ export interface BleModuleInterface {
    * @private
    */
   cancelTransaction(transactionId: TransactionId): void,
+
+  /**
+   * Sets new log level for native module's logging mechanism.
+   * @param {LogLevel} logLevel New log level to be set.
+   * @private
+   */
+  setLogLevel(logLevel: $Keys<typeof LogLevel>): void,
+
+  /**
+   * Get current log level for native module's logging mechanism.
+   * @returns {Promise<LogLevel>} Current log level.
+   * @private
+   */
+  logLevel(): Promise<$Keys<typeof LogLevel>>,
 
   // Events
 

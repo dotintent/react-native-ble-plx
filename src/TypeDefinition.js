@@ -95,3 +95,33 @@ export const State = {
    */
   PoweredOn: 'PoweredOn'
 }
+
+/**
+ * Native module logging log level. By default it is set to None
+ */
+export const LogLevel = {
+  /**
+   * Logging in native module is disabled
+   */
+  None: 'None',
+  /**
+   * All logs in native module are shown
+   */
+  Verbose: 'Verbose',
+  /**
+   * Only debug logs and of higher importance are shown in native module.
+   */
+  Debug: 'Debug',
+  /**
+   * Only info logs and of higher importance are shown in native module.
+   */
+  Info: 'Info',
+  /**
+   * Only warning logs and of higher importance are shown in native module.
+   */
+  Warning: 'Warning',
+  /**
+   * Only error logs and of higher importance are shown in native module.
+   */
+  Error: 'Error'
+}

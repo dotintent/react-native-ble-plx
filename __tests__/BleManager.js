@@ -12,6 +12,8 @@ beforeEach(() => {
     createClient: jest.fn(),
     destroyClient: jest.fn(),
     cancelTransaction: jest.fn(),
+    setLogLevel: jest.fn(),
+    logLevel: jest.fn(),
     state: jest.fn(),
     startDeviceScan: jest.fn(),
     stopDeviceScan: jest.fn(),
@@ -38,10 +40,21 @@ test('BleModule calls create function when BleManager is constructed', () => {
 })
 
 test('BleModule calls destroy function when destroyed', () => {
-  const bleManager = new BleManager()
   bleManager.destroy()
   expect(Native.BleModule.createClient).toBeCalled()
   expect(Native.BleModule.destroyClient).toBeCalled()
+})
+
+test('BleModule calls setLogLevel function when logLevel is modified', () => {
+  bleManager.setLogLevel('Debug')
+  expect(Native.BleModule.setLogLevel).toBeCalledWith('Debug')
+})
+
+test('BleModule calls logLevel function when logLevel is retrieved', async () => {
+  Native.BleModule.logLevel = jest.fn().mockReturnValueOnce(Promise.resolve('Verbose'))
+  const logLevel = await bleManager.logLevel()
+  expect(Native.BleModule.logLevel).toBeCalled()
+  expect(logLevel).toBe('Verbose')
 })
 
 test('BleManager state function should return BleModule state', async () => {
