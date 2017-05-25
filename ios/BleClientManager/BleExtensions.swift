@@ -1,9 +1,7 @@
 //
 //  BleExtensions.swift
-//  BleClientManager
 //
 //  Created by Przemysław Lenart on 05/08/16.
-//  Copyright © 2016 Polidea. All rights reserved.
 //
 
 import Foundation
@@ -11,10 +9,8 @@ import RxBluetoothKit
 import CoreBluetooth
 
 extension ScannedPeripheral {
-    var asJSObject: [String: AnyObject] {
-
+    var asJSObject: Any {
         var serviceData: [String:String]?
-
         if let advServiceData = advertisementData.serviceData {
             var data = [String:String]()
             for (key, value) in advServiceData {
@@ -23,36 +19,43 @@ extension ScannedPeripheral {
             serviceData = data
         }
 
-        let manufacturerData = advertisementData.manufacturerData?.base64
-        let serviceUUIDs = advertisementData.serviceUUIDs?.map { (uuid: CBUUID) in uuid.fullUUIDString }
+        let manufacturerData = advertisementData
+            .manufacturerData?
+            .base64
+
+        let serviceUUIDs = advertisementData
+            .serviceUUIDs?
+            .map { (uuid: CBUUID) in uuid.fullUUIDString }
+
         let overflowServiceUUIDs = advertisementData
             .overflowServiceUUIDs?
             .map { (uuid: CBUUID) in uuid.fullUUIDString }
+
         let solicitedServiceUUIDs = advertisementData
             .solicitedServiceUUIDs?
             .map { (uuid: CBUUID) in uuid.fullUUIDString }
 
         return [
-            "id": peripheral.identifier.uuidString as AnyObject,
-            "name": peripheral.name as AnyObject,
+            "id": peripheral.identifier.uuidString,
+            "name": peripheral.name as Any,
             "rssi": rssi,
 
-            "manufacturerData": manufacturerData as AnyObject,
-            "serviceData": serviceData as AnyObject,
-            "serviceUUIDs": serviceUUIDs as AnyObject,
-            "txPowerLevel": advertisementData.txPowerLevel as AnyObject,
-            "solicitedServiceUUIDs": solicitedServiceUUIDs as AnyObject,
-            "isConnectable": advertisementData.isConnectable as AnyObject,
-            "overflowServiceUUIDs": overflowServiceUUIDs as AnyObject
+            "manufacturerData": manufacturerData as Any,
+            "serviceData": serviceData as Any,
+            "serviceUUIDs": serviceUUIDs as Any,
+            "txPowerLevel": advertisementData.txPowerLevel as Any,
+            "solicitedServiceUUIDs": solicitedServiceUUIDs as Any,
+            "isConnectable": advertisementData.isConnectable as Any,
+            "overflowServiceUUIDs": overflowServiceUUIDs as Any
         ]
     }
 }
 
 extension Peripheral {
-    var asJSObject: [String: AnyObject] {
+    var asJSObject: Any {
         return [
-            "id": identifier.uuidString as AnyObject,
-            "name": name as AnyObject,
+            "id": identifier.uuidString,
+            "name": name as Any,
             "rssi": NSNull(),
 
             "manufacturerData": NSNull(),
@@ -70,12 +73,12 @@ extension Service {
     var jsIdentifier: Double {
         return Double(UInt64(objectId) & ((1 << 53) - 1))
     }
-    var asJSObject: [String: AnyObject] {
+    var asJSObject: Any {
         return [
-            "id": jsIdentifier as AnyObject,
-            "uuid": uuid.fullUUIDString as AnyObject,
-            "deviceID": peripheral.identifier.uuidString as AnyObject,
-            "isPrimary": isPrimary as AnyObject
+            "id": jsIdentifier,
+            "uuid": uuid.fullUUIDString,
+            "deviceID": peripheral.identifier.uuidString,
+            "isPrimary": isPrimary
         ]
     }
 }
@@ -84,25 +87,25 @@ extension Characteristic {
     var jsIdentifier: Double {
         return Double(UInt64(objectId) & ((1 << 53) - 1))
     }
-    var asJSObject: [String: AnyObject] {
+    var asJSObject: Any {
         return [
-            "id": jsIdentifier as AnyObject,
-            "uuid": uuid.fullUUIDString as AnyObject,
-            "serviceUUID": service.uuid.fullUUIDString as AnyObject,
-            "deviceID": service.peripheral.identifier.uuidString as AnyObject,
-            "isReadable": properties.contains(.read) as AnyObject,
-            "isWritableWithResponse": properties.contains(.write) as AnyObject,
-            "isWritableWithoutResponse": properties.contains(.writeWithoutResponse) as AnyObject,
-            "isNotifiable": properties.contains(.notify) as AnyObject,
-            "isNotifying": isNotifying as AnyObject,
-            "isIndictable": properties.contains(.indicate) as AnyObject,
-            "value": valueBase64 as AnyObject
+            "id": jsIdentifier,
+            "uuid": uuid.fullUUIDString,
+            "serviceUUID": service.uuid.fullUUIDString,
+            "deviceID": service.peripheral.identifier.uuidString,
+            "isReadable": properties.contains(.read),
+            "isWritableWithResponse": properties.contains(.write),
+            "isWritableWithoutResponse": properties.contains(.writeWithoutResponse),
+            "isNotifiable": properties.contains(.notify),
+            "isNotifying": isNotifying,
+            "isIndictable": properties.contains(.indicate),
+            "value": valueBase64 as Any
         ]
     }
 }
 
 extension RxBluetoothKitLog.LogLevel {
-    var asJSObject: String {
+    var asJSObject: Any {
         switch self {
         case .none: return "None"
         case .verbose: return "Verbose"
@@ -127,7 +130,7 @@ extension RxBluetoothKitLog.LogLevel {
 }
 
 extension BluetoothState {
-    var asJSObject: String {
+    var asJSObject: Any {
         switch self {
         case .unknown: return "Unknown"
         case .resetting: return "Resetting"

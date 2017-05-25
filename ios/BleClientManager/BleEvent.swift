@@ -1,6 +1,5 @@
 //
 //  BleEvent.swift
-//  EmptyProject
 //
 //  Created by Przemysław Lenart on 25/07/16.
 //

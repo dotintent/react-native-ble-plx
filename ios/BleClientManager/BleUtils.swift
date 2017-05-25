@@ -1,6 +1,5 @@
 //
 //  BleUtils.swift
-//  EmptyProject
 //
 //  Created by Przemysław Lenart on 20/07/16.
 //
