@@ -40,7 +40,7 @@ public class BleClientManager : NSObject {
     // MARK: Disposables -----------------------------------------------------------------------------------------------
 
     // Disposable for detecting state changes of BleManager
-    private let stateDisposable: Disposable
+    private var stateDisposable = Disposables.create()
 
     // Scan disposable which is removed when new scan is created.
     private let scanDisposable = SerialDisposable()
