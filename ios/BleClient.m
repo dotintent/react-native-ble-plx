@@ -257,8 +257,20 @@ RCT_EXPORT_METHOD(monitorCharacteristic:(NSNumber*)characteristicIdentifier
                              reject:reject];
 }
 
+// Mark: Other operations ----------------------------------------------------------------------------------------------
+
 RCT_EXPORT_METHOD(cancelTransaction:(NSString*)transactionId) {
     [_manager cancelTransaction:transactionId];
+}
+
+RCT_EXPORT_METHOD(setLogLevel:(NSString*)logLevel) {
+    [_manager setLogLevel:logLevel]
+}
+
+RCT_EXPORT_METHOD(logLevel:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager logLevel:resolve
+                reject:reject];
 }
 
 @end

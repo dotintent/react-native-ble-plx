@@ -73,6 +73,14 @@ public class BleClientManager : NSObject {
         transactions.removeDisposable(transactionId)
     }
 
+    open func setLogLevel(_ logLevel: String) {
+        RxBluetoothKitLog.setLogLevel(RxBluetoothKitLog.LogLevel(jsObject: logLevel))
+    }
+
+    open func logLevel(_ resolve: Resolve, reject: Reject) {
+        resolve(RxBluetoothKitLog.getLogLevel().asJSObject as AnyObject?)
+    }
+
     // Mark: Monitoring state ------------------------------------------------------------------------------------------
 
     open func state(_ resolve: Resolve, reject: Reject) {

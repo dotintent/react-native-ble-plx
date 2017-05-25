@@ -101,6 +101,31 @@ extension Characteristic {
     }
 }
 
+extension RxBluetoothKitLog.LogLevel {
+    var asJSObject: String {
+        switch self {
+        case .none: return "None"
+        case .verbose: return "Verbose"
+        case .debug: return "Debug"
+        case .info: return "Info"
+        case .warning: return "Warning"
+        case .error: return "Error"
+        }
+    }
+
+    init(jsObject: String) {
+        switch jsObject {
+        case "Verbose": self = .verbose
+        case "Debug": self = .debug
+        case "Info": self = .info
+        case "Warning": self = .warning
+        case "Error": self = .error
+        default:
+            self = .none
+        }
+    }
+}
+
 extension BluetoothState {
     var asJSObject: String {
         switch self {
