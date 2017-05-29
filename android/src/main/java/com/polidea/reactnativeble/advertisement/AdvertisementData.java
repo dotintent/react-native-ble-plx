@@ -15,8 +15,8 @@ public class AdvertisementData {
     private Integer txPowerLevel;
     private ArrayList<UUID> solicitedServiceUUIDs;
 
-    static long BLUETOOTH_BASE_UUID_LSB = 0x800000805F9B34FBL;
-    static int  BLUETOOTH_BASE_UUID_MSB = 0x00001000;
+    private static final long BLUETOOTH_BASE_UUID_LSB = 0x800000805F9B34FBL;
+    private static final int  BLUETOOTH_BASE_UUID_MSB = 0x00001000;
 
     public byte[] getManufacturerData() {
         return manufacturerData;

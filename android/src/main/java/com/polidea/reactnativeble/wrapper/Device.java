@@ -1,10 +1,14 @@
-package com.polidea.reactnativeble.converter;
+package com.polidea.reactnativeble.wrapper;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
 
-public class RxBleDeviceConverter extends JSObjectConverter<RxBleDevice> {
+import java.util.List;
+import java.util.UUID;
+
+public class Device extends JSObject {
 
     private interface Metadata {
         String ID = "id";
@@ -20,11 +24,44 @@ public class RxBleDeviceConverter extends JSObjectConverter<RxBleDevice> {
         String OVERFLOW_SERVICE_UUIDS = "overflowServiceUUIDs";
     }
 
+    private RxBleDevice device;
+    private RxBleConnection connection;
+    private List<Service> services;
+
+    public Device(RxBleDevice device, RxBleConnection connection) {
+        this.device = device;
+        this.connection = connection;
+    }
+
+    public void setServices(List<Service> services) {
+        this.services = services;
+    }
+
+    public List<Service> getServices() {
+        return services;
+    }
+
+    public RxBleDevice getNativeDevice() {
+        return device;
+    }
+
+    public RxBleConnection getConnection() {
+        return connection;
+    }
+
+    public Service getServiceByUUID(UUID uuid) {
+        for(Service service : services) {
+            if (uuid.equals(service.getNativeService().getUuid()))
+                return service;
+        }
+        return null;
+    }
+
     @Override
-    public WritableMap toJSObject(RxBleDevice value) {
+    public WritableMap toJSObject() {
         WritableMap result = Arguments.createMap();
-        result.putString(Metadata.ID, value.getMacAddress());
-        result.putString(Metadata.NAME, value.getName());
+        result.putString(Metadata.ID, device.getMacAddress());
+        result.putString(Metadata.NAME, device.getName());
 
         // Advertisement data is not set
         result.putNull(Metadata.RSSI);

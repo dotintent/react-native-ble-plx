@@ -91,6 +91,7 @@ extension Characteristic {
         return [
             "id": jsIdentifier,
             "uuid": uuid.fullUUIDString,
+            "serviceID": service.jsIdentifier,
             "serviceUUID": service.uuid.fullUUIDString,
             "deviceID": service.peripheral.identifier.uuidString,
             "isReadable": properties.contains(.read),

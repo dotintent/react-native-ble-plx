@@ -122,6 +122,11 @@ export interface NativeCharacteristic {
    */
   uuid: UUID,
   /**
+   * Service's ID to which characteristic belongs
+   * @private
+   */
+  serviceID: Identifier,
+  /**
    * Service's UUID to which characteristic belongs
    * @private
    */

@@ -25,4 +25,23 @@ public interface Constants {
         String POWERED_OFF = "PoweredOff";
         String POWERED_ON = "PoweredOn";
     }
+
+    @StringDef({
+            BluetoothLogLevel.NONE,
+            BluetoothLogLevel.VERBOSE,
+            BluetoothLogLevel.DEBUG,
+            BluetoothLogLevel.INFO,
+            BluetoothLogLevel.WARNING,
+            BluetoothLogLevel.ERROR}
+    )
+    @Retention(RetentionPolicy.SOURCE)
+    @interface BluetoothLogLevel {
+
+        String NONE = "None";
+        String VERBOSE = "Verbose";
+        String DEBUG = "Debug";
+        String INFO = "Info";
+        String WARNING = "Warning";
+        String ERROR = "Error";
+    }
 }

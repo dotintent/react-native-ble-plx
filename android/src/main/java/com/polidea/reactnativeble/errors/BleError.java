@@ -31,11 +31,19 @@ public class BleError {
     }
 
     static public Error characteristicNotFound(String uuid) {
-        return new Error("Characteristic " + uuid + " not found", 503);
+        return new Error("Characteristic with uuid " + uuid + " not found", 503);
+    }
+
+    static public Error characteristicNotFound(int id) {
+        return new Error("Characteristic with id " + id + " not found", 503);
     }
 
     static public Error serviceNotFound(String uuid) {
-        return new Error("Service " + uuid + " not found", 504);
+        return new Error("Service with uuid " + uuid + " not found", 504);
+    }
+
+    static public Error serviceNotFound(int id) {
+        return new Error("Service with id " + id + " not found", 504);
     }
 
     static public Error invalidWriteDataForCharacteristic(String data, String uuid) {

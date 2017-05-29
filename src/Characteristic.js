@@ -23,6 +23,10 @@ export class Characteristic implements NativeCharacteristic {
    */
   uuid: UUID
   /**
+   * Service's ID to which characteristic belongs
+   */
+  serviceID: Identifier
+  /**
    * Service's UUID to which characteristic belongs
    */
   serviceUUID: UUID
