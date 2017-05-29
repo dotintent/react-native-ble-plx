@@ -52,11 +52,11 @@ extension ScannedPeripheral {
 }
 
 extension Peripheral {
-    var asJSObject: Any {
+    func asJSObject(withRssi: Int? = nil) -> Any {
         return [
             "id": identifier.uuidString,
             "name": name as Any,
-            "rssi": NSNull(),
+            "rssi": withRssi as Any,
 
             "manufacturerData": NSNull(),
             "serviceData": NSNull(),

@@ -169,7 +169,7 @@ public class BleClientManager : NSObject {
         let disposable = peripheral.readRSSI()
             .subscribe(
                 onNext: { (peripheral, rssi) in
-                    safePromise.resolve(peripheral.asJSObject)
+                    safePromise.resolve(peripheral.asJSObject(withRssi: rssi))
                 },
                 onError: {error in
                     error.bleError.callReject(safePromise)
@@ -227,7 +227,7 @@ public class BleClientManager : NSObject {
                                 // We are monitoring peripheral disconnections to clean up state.
                                 self?.onPeripheralDisconnected(peripheral)
                             })
-                        promise.resolve(device.asJSObject)
+                        promise.resolve(device.asJSObject())
                     } else {
                         BleError.peripheralNotFound(deviceId.uuidString).callReject(promise)
                     }
@@ -244,7 +244,7 @@ public class BleClientManager : NSObject {
     private func onPeripheralDisconnected(_ peripheral: Peripheral) {
         self.connectedPeripherals[peripheral.identifier] = nil
         clearCacheForPeripheral(peripheral: peripheral)
-        dispatchEvent(BleEvent.disconnectionEvent, value: [NSNull(), peripheral.asJSObject])
+        dispatchEvent(BleEvent.disconnectionEvent, value: [NSNull(), peripheral.asJSObject()])
     }
 
     // User is able to cancel device connection.
@@ -267,7 +267,7 @@ public class BleClientManager : NSObject {
                     onCompleted: { [weak self] in
                         self?.clearCacheForPeripheral(peripheral: peripheral)
                         self?.connectedPeripherals[deviceId] = nil
-                        resolve(peripheral.asJSObject)
+                        resolve(peripheral.asJSObject())
                     }
             );
         } else {
@@ -324,7 +324,7 @@ public class BleClientManager : NSObject {
                     }
                 },
                 onError: { error in error.bleError.callReject(reject) },
-                onCompleted: { resolve(peripheral.asJSObject) }
+                onCompleted: { resolve(peripheral.asJSObject()) }
             )
     }
 
