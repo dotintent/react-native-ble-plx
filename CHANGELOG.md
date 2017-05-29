@@ -4,6 +4,8 @@
   * All utility functions which don't require UUIDs as arguments are using
     internally `id` fields and therefore work faster and properly handle
     services/characteristics with same UUIDs. For example: `characteristic.read()`.
+- New option to enable native modules' logging system via `bleManager.setLogLevel()` function.
+- New function to read RSSI for connected devices: `bleManager.readRSSIForDevice()`.
 - Updated RxBluetoothKit dependency to version 3.0.12
 - Updated RxAndroidBle dependency to 1.2.2
 - Added tests for JS API.
