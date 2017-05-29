@@ -7,7 +7,6 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Pair;
 import android.util.SparseArray;
 
 import com.facebook.react.bridge.Arguments;
@@ -18,7 +17,6 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.reactnativeble.converter.RxBleScanResultConverter;
 import com.polidea.reactnativeble.errors.BleError;
@@ -54,7 +52,6 @@ import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.functions.Func2;
 
 import static com.polidea.reactnativeble.utils.Constants.BluetoothState;
 
@@ -334,8 +331,11 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     private void onDeviceDisconnected(RxBleDevice device, Error error) {
-        connectingDevices.removeSubscription(device.getMacAddress());
         Device jsDevice = connectedDevices.remove(device.getMacAddress());
+        if (jsDevice == null) {
+            return;
+        }
+
         cleanServicesAndCharacteristicsForDevice(jsDevice);
         WritableArray event = Arguments.createArray();
         if (error != null) {
@@ -345,6 +345,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         }
         event.pushMap(jsDevice.toJSObject());
         sendEvent(Event.DisconnectionEvent, event);
+        connectingDevices.removeSubscription(device.getMacAddress());
     }
 
     @ReactMethod
@@ -392,34 +393,34 @@ public class BleModule extends ReactContextBaseJavaModule {
     private void safeDiscoverAllServicesAndCharacteristicsForDevice(final Device device,
                                                                     final SafePromise promise) {
         device.getConnection()
-              .discoverServices()
-              .subscribe(new Observer<RxBleDeviceServices>() {
-            @Override
-            public void onCompleted() {
-                promise.resolve(device.toJSObject());
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                errorConverter.toError(e).reject(promise);
-            }
-
-            @Override
-            public void onNext(RxBleDeviceServices rxBleDeviceServices) {
-                ArrayList<Service> services = new ArrayList<>();
-                for (BluetoothGattService gattService : rxBleDeviceServices.getBluetoothGattServices()) {
-                    Service service = new Service(device, gattService);
-                    discoveredServices.put(gattService.getInstanceId(), service);
-                    services.add(service);
-
-                    for (BluetoothGattCharacteristic gattCharacteristic : gattService.getCharacteristics()) {
-                        Characteristic characteristic = new Characteristic(service, gattCharacteristic);
-                        discoveredCharacteristics.put(gattCharacteristic.getInstanceId(), characteristic);
+                .discoverServices()
+                .subscribe(new Observer<RxBleDeviceServices>() {
+                    @Override
+                    public void onCompleted() {
+                        promise.resolve(device.toJSObject());
                     }
-                }
-                device.setServices(services);
-            }
-        });
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorConverter.toError(e).reject(promise);
+                    }
+
+                    @Override
+                    public void onNext(RxBleDeviceServices rxBleDeviceServices) {
+                        ArrayList<Service> services = new ArrayList<>();
+                        for (BluetoothGattService gattService : rxBleDeviceServices.getBluetoothGattServices()) {
+                            Service service = new Service(device, gattService);
+                            discoveredServices.put(gattService.getInstanceId(), service);
+                            services.add(service);
+
+                            for (BluetoothGattCharacteristic gattCharacteristic : gattService.getCharacteristics()) {
+                                Characteristic characteristic = new Characteristic(service, gattCharacteristic);
+                                discoveredCharacteristics.put(gattCharacteristic.getInstanceId(), characteristic);
+                            }
+                        }
+                        device.setServices(services);
+                    }
+                });
     }
 
     // Mark: Service and characteristic getters ----------------------------------------------------
