@@ -150,6 +150,39 @@ public class BleClientManager : NSObject {
         scanDisposable.disposable = Disposables.create()
     }
 
+    // Read peripheral's RSSI.
+    public func readRSSIForDevice(_ deviceIdentifier: String,
+                                       transactionId: String,
+                                             resolve: @escaping Resolve,
+                                              reject: @escaping Reject) {
+        guard let deviceId = UUID(uuidString: deviceIdentifier) else {
+            BleError.invalidUUID(deviceIdentifier).callReject(reject)
+            return
+        }
+
+        guard let peripheral = connectedPeripherals[deviceId] else {
+            BleError.peripheralNotConnected(deviceIdentifier).callReject(reject)
+            return
+        }
+
+        let safePromise = SafePromise(resolve: resolve, reject: reject)
+        let disposable = peripheral.readRSSI()
+            .subscribe(
+                onNext: { (peripheral, rssi) in
+                    safePromise.resolve(peripheral.asJSObject)
+                },
+                onError: {error in
+                    error.bleError.callReject(safePromise)
+                },
+                onCompleted: nil,
+                onDisposed: { [weak self] in
+                    self?.transactions.removeDisposable(transactionId)
+                    BleError.cancelled().callReject(safePromise)
+                })
+
+        transactions.replaceDisposable(transactionId, disposable: disposable)
+    }
+
     // Mark: Connection management -------------------------------------------------------------------------------------
 
     // Connect to specified device.

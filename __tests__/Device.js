@@ -6,6 +6,13 @@ describe("Test if Device is properly calling BleManager's utility function: ", (
   const bleManager = new BleManager()
   const device = new Device({ id: 'id' }, bleManager)
 
+  test('readRSSI', async () => {
+    await device.readRSSI()
+    expect(bleManager.readRSSIForDevice).toBeCalledWith('id', undefined)
+    await device.readRSSI('transaction')
+    expect(bleManager.readRSSIForDevice).toBeCalledWith('id', 'transaction')
+  })
+
   test('connect', async () => {
     await device.connect({})
     expect(bleManager.connectToDevice).toBeCalledWith('id', {})

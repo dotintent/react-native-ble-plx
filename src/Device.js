@@ -83,6 +83,16 @@ export class Device implements NativeDevice {
   }
 
   /**
+   * {@link #BleManager#readRSSIForDevice|bleManager.readRSSIForDevice()} with partially filled arguments.
+   * 
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation.
+   * @returns {Promise<Device>} This device with updated RSSI value.
+   */
+  readRSSI(transactionId: ?TransactionId): Promise<Device> {
+    return this._manager.readRSSIForDevice(this.id, transactionId)
+  }
+
+  /**
    * {@link #BleManager#connectToDevice|bleManager.connectToDevice()} with partially filled arguments.
    * 
    * @param {?ConnectionOptions} options Platform specific options for connection establishment. Not used currently.

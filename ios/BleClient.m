@@ -68,6 +68,16 @@ RCT_EXPORT_METHOD(stopDeviceScan) {
     [_manager stopDeviceScan];
 }
 
+RCT_EXPORT_METHOD(readRSSIForDevice:(NSString*)deviceIdentifier
+                      transactionId:(NSString*)transactionId
+                           resolver:(RCTPromiseResolveBlock)resolve
+                           rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager readRSSIForDevice:deviceIdentifier
+                  transactionId:transactionId
+                        resolve:resolve
+                         reject:reject];
+}
+
 // Mark: Connection management -----------------------------------------------------------------------------------------
 
 RCT_EXPORT_METHOD(connectToDevice:(NSString*)deviceIdentifier

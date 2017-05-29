@@ -17,6 +17,7 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.reactnativeble.converter.RxBleScanResultConverter;
 import com.polidea.reactnativeble.errors.BleError;
@@ -274,6 +275,47 @@ public class BleModule extends ReactContextBaseJavaModule {
             }
             scanSubscription = null;
         }
+    }
+
+    @ReactMethod
+    public void readRSSIForDevice(final String deviceId, final String transactionId, final Promise promise) {
+        final Device device = connectedDevices.get(deviceId);
+        if (device == null) {
+            BleError.deviceNotConnected(deviceId).reject(promise);
+            return;
+        }
+
+        final SafePromise safePromise = new SafePromise(promise);
+        final Subscription subscription = device
+                .getConnection()
+                .readRssi()
+                .doOnUnsubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        BleError.cancelled().reject(safePromise);
+                        transactions.removeSubscription(transactionId);
+                    }
+                })
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onCompleted() {
+                        transactions.removeSubscription(transactionId);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorConverter.toError(e).reject(safePromise);
+                        transactions.removeSubscription(transactionId);
+                    }
+
+                    @Override
+                    public void onNext(Integer rssi) {
+                        device.setRSSI(rssi);
+                        safePromise.resolve(device.toJSObject());
+                    }
+                });
+
+        transactions.replaceSubscription(transactionId, subscription);
     }
 
     // Mark: Connection management -----------------------------------------------------------------

@@ -27,10 +27,15 @@ public class Device extends JSObject {
     private RxBleDevice device;
     private RxBleConnection connection;
     private List<Service> services;
+    private Integer lastRSSI;
 
     public Device(RxBleDevice device, RxBleConnection connection) {
         this.device = device;
         this.connection = connection;
+    }
+
+    public void setRSSI(Integer rssi) {
+        this.lastRSSI = rssi;
     }
 
     public void setServices(List<Service> services) {
@@ -62,9 +67,13 @@ public class Device extends JSObject {
         WritableMap result = Arguments.createMap();
         result.putString(Metadata.ID, device.getMacAddress());
         result.putString(Metadata.NAME, device.getName());
+        if (lastRSSI != null) {
+            result.putInt(Metadata.RSSI, lastRSSI);
+        } else {
+            result.putNull(Metadata.RSSI);
+        }
 
         // Advertisement data is not set
-        result.putNull(Metadata.RSSI);
         result.putNull(Metadata.MANUFACTURER_DATA);
         result.putNull(Metadata.SERVICE_DATA);
         result.putNull(Metadata.SERVICE_UUIDS);

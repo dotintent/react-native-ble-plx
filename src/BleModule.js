@@ -222,6 +222,16 @@ export interface BleModuleInterface {
    */
   stopDeviceScan(): void,
 
+  /**
+   * Reads RSSI for connected device.
+   * 
+   * @param {DeviceId} deviceIdentifier Device identifier.
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeDevice>} Connected device with updated RSSI value.
+   * @private
+   */
+  readRSSIForDevice(deviceIdentifier: DeviceId, transactionId: TransactionId): Promise<NativeDevice>,
+
   // Connection management
 
   /**

@@ -198,6 +198,21 @@ export class BleManager {
     BleModule.stopDeviceScan()
   }
 
+  /**
+   * Reads RSSI for connected device.
+   * 
+   * @param {DeviceId} deviceIdentifier Device identifier.
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<Device>} Connected device with updated RSSI value.
+   */
+  async readRSSIForDevice(deviceIdentifier: DeviceId, transactionId: ?TransactionId): Promise<Device> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeDevice = await BleModule.readRSSIForDevice(deviceIdentifier, transactionId)
+    return new Device(nativeDevice, this)
+  }
+
   // Mark: Connection management ---------------------------------------------------------------------------------------
 
   /**

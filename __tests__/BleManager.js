@@ -17,6 +17,7 @@ beforeEach(() => {
     state: jest.fn(),
     startDeviceScan: jest.fn(),
     stopDeviceScan: jest.fn(),
+    readRSSIForDevice: jest.fn(),
     connectToDevice: jest.fn(),
     cancelDeviceConnection: jest.fn(),
     isDeviceConnected: jest.fn(),
@@ -90,6 +91,13 @@ test('When BleManager starts scanning it calls BleModule startScanning function'
 test('When BleManager stops scanning it calls BleModule stopScanning function', () => {
   bleManager.stopDeviceScan()
   expect(Native.BleModule.stopDeviceScan).toBeCalled()
+})
+
+test('When BleManager readRSSI is called it should call BleModule readRSSI', () => {
+  bleManager.readRSSIForDevice('id')
+  expect(Native.BleModule.readRSSIForDevice).toBeCalledWith('id', '1')
+  bleManager.readRSSIForDevice('id', 'transaction')
+  expect(Native.BleModule.readRSSIForDevice).toBeCalledWith('id', 'transaction')
 })
 
 test('When BleManager scans two devices it passes them to callback function', () => {

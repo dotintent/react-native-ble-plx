@@ -112,6 +112,12 @@
                       </a></li>
                       
                       <li><a
+                        href='#BleManager#readRSSIForDevice'
+                        class='regular pre-open'>
+                        #readRSSIForDevice
+                      </a></li>
+                      
+                      <li><a
                         href='#BleManager#connectToDevice'
                         class='regular pre-open'>
                         #connectToDevice
@@ -257,6 +263,12 @@
                         href='#Device#overflowServiceUUIDs'
                         class='regular pre-open'>
                         #overflowServiceUUIDs
+                      </a></li>
+                      
+                      <li><a
+                        href='#Device#readRSSI'
+                        class='regular pre-open'>
+                        #readRSSI
                       </a></li>
                       
                       <li><a
@@ -433,6 +445,12 @@
                         href='#Characteristic#uuid'
                         class='regular pre-open'>
                         #uuid
+                      </a></li>
+                      
+                      <li><a
+                        href='#Characteristic#serviceID'
+                        class='regular pre-open'>
+                        #serviceID
                       </a></li>
                       
                       <li><a
@@ -1509,6 +1527,83 @@ is a scanned
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='BleManager#readRSSIForDevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>readRSSIForDevice(deviceIdentifier, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Reads RSSI for connected device.</p>
+
+
+  <div class='pre p1 fill-light mt0'>readRSSIForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    Device identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    Transaction handle used to cancel operation
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Connected device with updated RSSI value.
+
+      
+    
   
 
   
@@ -3089,6 +3184,74 @@ in favour of indications.</p>
 
   
 
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='Device#readRSSI'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>readRSSI(transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#BleManager#readRSSIForDevice">bleManager.readRSSIForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>readRSSI(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    Transaction handle used to cancel operation.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        This device with updated RSSI value.
+
+      
+    
   
 
   
@@ -4853,6 +5016,57 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
+    <div class='border-bottom' id='Characteristic#serviceID'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>serviceID</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Service's ID to which characteristic belongs</p>
+
+
+  <div class='pre p1 fill-light mt0'>serviceID</div>
+  
+    <p>
+      Type:
+      <a href="#identifier">Identifier</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='Characteristic#serviceUUID'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -5807,7 +6021,7 @@ this
 
   
 
-  <p>Logging in native modules are disabled</p>
+  <p>Logging in native module is disabled</p>
 
 
   <div class='pre p1 fill-light mt0'>None</div>
@@ -5853,7 +6067,7 @@ this
 
   
 
-  <p>All logs in native modules are shown</p>
+  <p>All logs in native module are shown</p>
 
 
   <div class='pre p1 fill-light mt0'>Verbose</div>
@@ -5899,7 +6113,7 @@ this
 
   
 
-  <p>Only debug logs and of higher importance are shown in native modules.</p>
+  <p>Only debug logs and of higher importance are shown in native module.</p>
 
 
   <div class='pre p1 fill-light mt0'>Debug</div>
@@ -5945,7 +6159,7 @@ this
 
   
 
-  <p>Only info logs and of higher importance are shown in native modules.</p>
+  <p>Only info logs and of higher importance are shown in native module.</p>
 
 
   <div class='pre p1 fill-light mt0'>Info</div>
@@ -5991,7 +6205,7 @@ this
 
   
 
-  <p>Only warning logs and of higher importance are shown in native modules.</p>
+  <p>Only warning logs and of higher importance are shown in native module.</p>
 
 
   <div class='pre p1 fill-light mt0'>Warning</div>
@@ -6037,7 +6251,7 @@ this
 
   
 
-  <p>Only error logs and of higher importance are shown in native modules.</p>
+  <p>Only error logs and of higher importance are shown in native module.</p>
 
 
   <div class='pre p1 fill-light mt0'>Error</div>
