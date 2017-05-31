@@ -34,11 +34,11 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 - Small fixes in examples.
 - Updated installation steps.
 
+[All previous changes](CHANGELOG.md)
 
 ## Documentation
 
 Documentation can be found [here](https://polidea.github.io/react-native-ble-plx/).
-
 
 ## Configuration & Installation
 
