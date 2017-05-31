@@ -2,9 +2,11 @@ package com.polidea.reactnativeble.wrapper;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.util.Pair;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import com.polidea.reactnativeble.utils.IdGenerator;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 
 import java.util.ArrayList;
@@ -21,12 +23,17 @@ public class Service extends JSObject {
     }
 
     private Device device;
-
     private BluetoothGattService service;
+    private int id;
 
     public Service(Device device, BluetoothGattService service) {
         this.device = device;
         this.service = service;
+        this.id = IdGenerator.getIdForKey(new Pair<>(service.getUuid(), service.getInstanceId()));
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public Device getDevice() {
@@ -54,7 +61,7 @@ public class Service extends JSObject {
     @Override
     public WritableMap toJSObject() {
         WritableMap result = Arguments.createMap();
-        result.putInt(Metadata.ID, service.getInstanceId());
+        result.putInt(Metadata.ID, id);
         result.putString(Metadata.UUID, UUIDConverter.fromUUID(service.getUuid()));
         result.putString(Metadata.DEVICE_ID, device.getNativeDevice().getMacAddress());
         result.putBoolean(Metadata.IS_PRIMARY, service.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY);

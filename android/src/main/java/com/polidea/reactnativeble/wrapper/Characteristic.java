@@ -3,9 +3,11 @@ package com.polidea.reactnativeble.wrapper;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.util.Base64;
+import android.util.Pair;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import com.polidea.reactnativeble.utils.IdGenerator;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 
 import java.util.UUID;
@@ -31,10 +33,16 @@ public class Characteristic extends JSObject {
 
     private Service service;
     private BluetoothGattCharacteristic characteristic;
+    private int id;
 
     public Characteristic(Service service, BluetoothGattCharacteristic characteristic) {
         this.service = service;
         this.characteristic = characteristic;
+        this.id = IdGenerator.getIdForKey(new Pair<>(characteristic.getUuid(), characteristic.getInstanceId()));
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public Service getService() {
@@ -49,7 +57,7 @@ public class Characteristic extends JSObject {
     public WritableMap toJSObject() {
         WritableMap js = Arguments.createMap();
 
-        js.putInt(Metadata.ID, characteristic.getInstanceId());
+        js.putInt(Metadata.ID, id);
         js.putString(Metadata.UUID, UUIDConverter.fromUUID(characteristic.getUuid()));
         js.putInt(Metadata.SERVICE_ID, service.getNativeService().getInstanceId());
         js.putString(Metadata.SERVICE_UUID, UUIDConverter.fromUUID(service.getNativeService().getUuid()));

@@ -17,7 +17,6 @@ import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.reactnativeble.converter.RxBleScanResultConverter;
 import com.polidea.reactnativeble.errors.BleError;
@@ -26,6 +25,7 @@ import com.polidea.reactnativeble.errors.ErrorConverter;
 import com.polidea.reactnativeble.exceptions.CannotMonitorCharacteristicException;
 import com.polidea.reactnativeble.utils.Base64Converter;
 import com.polidea.reactnativeble.utils.DisposableMap;
+import com.polidea.reactnativeble.utils.IdGenerator;
 import com.polidea.reactnativeble.utils.LogLevel;
 import com.polidea.reactnativeble.utils.ReadableArrayConverter;
 import com.polidea.reactnativeble.utils.SafePromise;
@@ -140,6 +140,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         // Clear client
         rxBleClient = null;
+        IdGenerator.clear();
     }
 
     @Override
@@ -452,12 +453,12 @@ public class BleModule extends ReactContextBaseJavaModule {
                         ArrayList<Service> services = new ArrayList<>();
                         for (BluetoothGattService gattService : rxBleDeviceServices.getBluetoothGattServices()) {
                             Service service = new Service(device, gattService);
-                            discoveredServices.put(gattService.getInstanceId(), service);
+                            discoveredServices.put(service.getId(), service);
                             services.add(service);
 
                             for (BluetoothGattCharacteristic gattCharacteristic : gattService.getCharacteristics()) {
                                 Characteristic characteristic = new Characteristic(service, gattCharacteristic);
-                                discoveredCharacteristics.put(gattCharacteristic.getInstanceId(), characteristic);
+                                discoveredCharacteristics.put(characteristic.getId(), characteristic);
                             }
                         }
                         device.setServices(services);
