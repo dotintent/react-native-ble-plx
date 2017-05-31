@@ -77,12 +77,12 @@ export class Characteristic implements NativeCharacteristic {
   /**
    * {@link #BleManager#readCharacteristicForDevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
    * 
-   * @param {TransactionId} transactionId optional `transactionId` which can be used in 
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
    * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value will be stored 
    * inside returned object.
    */
-  read(transactionId: TransactionId): Promise<Characteristic> {
+  read(transactionId: ?TransactionId): Promise<Characteristic> {
     return this._manager._readCharacteristic(this.id, transactionId)
   }
 
