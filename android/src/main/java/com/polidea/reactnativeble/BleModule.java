@@ -658,6 +658,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onNext(byte[] bytes) {
+                        characteristic.logValue("Write to");
                         promise.resolve(characteristic.toJSObject());
                     }
                 });
@@ -747,6 +748,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onNext(byte[] bytes) {
+                        characteristic.logValue("Read from");
                         promise.resolve(characteristic.toJSObject());
                     }
                 });
@@ -851,6 +853,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onNext(byte[] result) {
+                        characteristic.logValue("Notification from");
                         WritableArray jsResult = Arguments.createArray();
                         jsResult.pushNull();
                         jsResult.pushMap(characteristic.toJSObject());

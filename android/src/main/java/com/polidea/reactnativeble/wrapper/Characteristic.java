@@ -9,6 +9,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.reactnativeble.utils.IdGenerator;
 import com.polidea.reactnativeble.utils.UUIDConverter;
+import com.polidea.rxandroidble.internal.RxBleLog;
 
 import java.util.UUID;
 
@@ -81,5 +82,26 @@ public class Characteristic extends JSObject {
         js.putString(Metadata.VALUE, characteristic.getValue() != null ? Base64.encodeToString(characteristic.getValue(), Base64.DEFAULT) : null);
 
         return js;
+    }
+
+    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
+
+    public static String bytesToHex(byte[] bytes) {
+        char[] hexChars = new char[bytes.length * 2];
+        for ( int j = 0; j < bytes.length; j++ ) {
+            int v = bytes[j] & 0xFF;
+            hexChars[j * 2] = hexArray[v >>> 4];
+            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
+        }
+        return new String(hexChars);
+    }
+
+    public void logValue(String message) {
+        String value = characteristic.getValue() != null
+                ? bytesToHex(characteristic.getValue()) : "(null)";
+        RxBleLog.v(message +
+                " Characteristic(uuid: " + characteristic.getUuid().toString() +
+                ", id: " + id +
+                ", value: " + value + ")");
     }
 }
