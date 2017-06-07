@@ -36,6 +36,10 @@ export class BleManager {
   _eventEmitter: EventEmitter
   // Unique identifier used to create internal transactionIds
   _uniqueId: number
+  // Map of active promises with functions to forcibly cancel them
+  _activePromises: { [id: string]: (error: Error) => void }
+  // Map of active subscriptions
+  _activeSubscriptions: { [id: string]: Subscription }
 
   /**
    * Creates an instance of {@link BleManager}.
@@ -44,6 +48,26 @@ export class BleManager {
     BleModule.createClient()
     this._eventEmitter = new EventEmitter(BleModule)
     this._uniqueId = 0
+    this._activePromises = {}
+    this._activeSubscriptions = {}
+  }
+
+  /**
+   * Destroys all promises which are in progress.
+   */
+  _destroyPromises() {
+    for (const id in this._activePromises) {
+      this._activePromises[id](new Error('Destroyed'))
+    }
+  }
+
+  /**
+   * Destroys all subscriptions.
+   */
+  _destroySubscriptions() {
+    for (const id in this._activeSubscriptions) {
+      this._activeSubscriptions[id].remove()
+    }
   }
 
   /**
@@ -51,7 +75,18 @@ export class BleManager {
    * this library.
    */
   destroy() {
+    // Destroy native module object
     BleModule.destroyClient()
+
+    // Unsubscribe from any subscriptions
+    if (this._scanEventSubscription != null) {
+      this._scanEventSubscription.remove()
+      this._scanEventSubscription = null
+    }
+    this._destroySubscriptions()
+
+    // Destroy all promises
+    this._destroyPromises()
   }
 
   /**
@@ -63,6 +98,29 @@ export class BleManager {
   _nextUniqueID(): string {
     this._uniqueId += 1
     return this._uniqueId.toString()
+  }
+
+  /**
+   * Calls promise and checks if it completed successfully
+   * 
+   * @template T 
+   * @param {Promise<T>} promise Promise to be called
+   * @returns {Promise<T>} Value of called promise.
+   * @private
+   */
+  async _callPromise<T>(promise: Promise<T>): Promise<T> {
+    const id = this._nextUniqueID()
+    try {
+      const destroyPromise = new Promise((resolve, reject) => {
+        this._activePromises[id] = reject
+      })
+      const value = await Promise.race([destroyPromise, promise])
+      delete this._activePromises[id]
+      return value
+    } catch (error) {
+      delete this._activePromises[id]
+      throw error
+    }
   }
 
   // Mark: Common ------------------------------------------------------------------------------------------------------
@@ -80,7 +138,7 @@ export class BleManager {
    * @returns {Promise<LogLevel>} Current log level.
    */
   logLevel(): Promise<$Keys<typeof LogLevel>> {
-    return BleModule.logLevel()
+    return this._callPromise(BleModule.logLevel())
   }
 
   /**
@@ -119,7 +177,7 @@ export class BleManager {
    * @returns {Promise<State>} Promise which emits current state of BleManager.
    */
   state(): Promise<$Keys<typeof State>> {
-    return BleModule.state()
+    return this._callPromise(BleModule.state())
   }
 
   /**
@@ -141,24 +199,39 @@ export class BleManager {
   */
   onStateChange(listener: (newState: $Keys<typeof State>) => void, emitCurrentState: boolean = false): Subscription {
     const subscription: Subscription = this._eventEmitter.addListener(BleModule.StateChangeEvent, listener)
+    const id = this._nextUniqueID()
+    var wrappedSubscription: Subscription
 
     if (emitCurrentState) {
       var cancelled = false
-      this.state().then(currentState => {
+      this._callPromise(this.state()).then(currentState => {
         if (!cancelled) {
           listener(currentState)
         }
       })
 
-      return {
+      wrappedSubscription = {
         remove: () => {
-          cancelled = true
-          subscription.remove()
+          if (this._activeSubscriptions[id] != null) {
+            cancelled = true
+            delete this._activeSubscriptions[id]
+            subscription.remove()
+          }
+        }
+      }
+    } else {
+      wrappedSubscription = {
+        remove: () => {
+          if (this._activeSubscriptions[id] != null) {
+            delete this._activeSubscriptions[id]
+            subscription.remove()
+          }
         }
       }
     }
 
-    return subscription
+    this._activeSubscriptions[id] = wrappedSubscription
+    return wrappedSubscription
   }
 
   // Mark: Scanning ----------------------------------------------------------------------------------------------------
@@ -193,7 +266,7 @@ export class BleManager {
   stopDeviceScan() {
     if (this._scanEventSubscription != null) {
       this._scanEventSubscription.remove()
-      delete this._scanEventSubscription
+      this._scanEventSubscription = null
     }
     BleModule.stopDeviceScan()
   }
@@ -209,7 +282,7 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeDevice = await BleModule.readRSSIForDevice(deviceIdentifier, transactionId)
+    const nativeDevice = await this._callPromise(BleModule.readRSSIForDevice(deviceIdentifier, transactionId))
     return new Device(nativeDevice, this)
   }
 
@@ -223,7 +296,7 @@ export class BleManager {
    * @returns {Promise<Device>} Connected {@link Device} object if successful.
    */
   async connectToDevice(deviceIdentifier: DeviceId, options: ?ConnectionOptions): Promise<Device> {
-    const nativeDevice = await BleModule.connectToDevice(deviceIdentifier, options)
+    const nativeDevice = await this._callPromise(BleModule.connectToDevice(deviceIdentifier, options))
     return new Device(nativeDevice, this)
   }
 
@@ -234,7 +307,7 @@ export class BleManager {
    * @returns {Promise<Device>} Returns closed {@link Device} when operation is successful.
    */
   async cancelDeviceConnection(deviceIdentifier: DeviceId): Promise<Device> {
-    const nativeDevice = await BleModule.cancelDeviceConnection(deviceIdentifier)
+    const nativeDevice = await this._callPromise(BleModule.cancelDeviceConnection(deviceIdentifier))
     return new Device(nativeDevice, this)
   }
 
@@ -257,7 +330,17 @@ export class BleManager {
       disconnectionListener
     )
 
-    return subscription
+    const id = this._nextUniqueID()
+    const wrappedSubscription = {
+      remove: () => {
+        if (this._activeSubscriptions[id] != null) {
+          delete this._activeSubscriptions[id]
+          subscription.remove()
+        }
+      }
+    }
+    this._activeSubscriptions[id] = wrappedSubscription
+    return wrappedSubscription
   }
 
   /**
@@ -267,7 +350,7 @@ export class BleManager {
    * @returns {Promise<boolean>} Promise which emits `true` if device is connected, and `false` otherwise.
    */
   isDeviceConnected(deviceIdentifier: DeviceId): Promise<boolean> {
-    return BleModule.isDeviceConnected(deviceIdentifier)
+    return this._callPromise(BleModule.isDeviceConnected(deviceIdentifier))
   }
 
   // Mark: Discovery ---------------------------------------------------------------------------------------------------
@@ -280,7 +363,9 @@ export class BleManager {
    * characteristics have been discovered.
    */
   async discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: DeviceId): Promise<Device> {
-    const nativeDevice = await BleModule.discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier)
+    const nativeDevice = await this._callPromise(
+      BleModule.discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier)
+    )
     return new Device(nativeDevice, this)
   }
 
@@ -294,7 +379,7 @@ export class BleManager {
    * {@link Device}.
    */
   async servicesForDevice(deviceIdentifier: DeviceId): Promise<Array<Service>> {
-    const services = await BleModule.servicesForDevice(deviceIdentifier)
+    const services = await this._callPromise(BleModule.servicesForDevice(deviceIdentifier))
     return services.map(nativeService => {
       return new Service(nativeService, this)
     })
@@ -335,7 +420,7 @@ export class BleManager {
   async _handleCharacteristics(
     characteristicsPromise: Promise<Array<NativeCharacteristic>>
   ): Promise<Array<Characteristic>> {
-    const characteristics = await characteristicsPromise
+    const characteristics = await this._callPromise(characteristicsPromise)
     return characteristics.map(nativeCharacteristic => {
       return new Characteristic(nativeCharacteristic, this)
     })
@@ -363,11 +448,8 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeCharacteristic = await BleModule.readCharacteristicForDevice(
-      deviceIdentifier,
-      serviceUUID,
-      characteristicUUID,
-      transactionId
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.readCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -391,10 +473,8 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeCharacteristic = await BleModule.readCharacteristicForService(
-      serviceIdentifier,
-      characteristicUUID,
-      transactionId
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.readCharacteristicForService(serviceIdentifier, characteristicUUID, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -416,7 +496,9 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeCharacteristic = await BleModule.readCharacteristic(characteristicIdentifier, transactionId)
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.readCharacteristic(characteristicIdentifier, transactionId)
+    )
     return new Characteristic(nativeCharacteristic, this)
   }
 
@@ -442,13 +524,15 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeCharacteristic = await BleModule.writeCharacteristicForDevice(
-      deviceIdentifier,
-      serviceUUID,
-      characteristicUUID,
-      base64Value,
-      true,
-      transactionId
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.writeCharacteristicForDevice(
+        deviceIdentifier,
+        serviceUUID,
+        characteristicUUID,
+        base64Value,
+        true,
+        transactionId
+      )
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -474,12 +558,8 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeCharacteristic = await BleModule.writeCharacteristicForService(
-      serviceIdentifier,
-      characteristicUUID,
-      base64Value,
-      true,
-      transactionId
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.writeCharacteristicForService(serviceIdentifier, characteristicUUID, base64Value, true, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -503,11 +583,8 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeCharacteristic = await BleModule.writeCharacteristic(
-      characteristicIdentifier,
-      base64Value,
-      true,
-      transactionId
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.writeCharacteristic(characteristicIdentifier, base64Value, true, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -534,13 +611,15 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeCharacteristic = await BleModule.writeCharacteristicForDevice(
-      deviceIdentifier,
-      serviceUUID,
-      characteristicUUID,
-      base64Value,
-      false,
-      transactionId
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.writeCharacteristicForDevice(
+        deviceIdentifier,
+        serviceUUID,
+        characteristicUUID,
+        base64Value,
+        false,
+        transactionId
+      )
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -566,12 +645,8 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeCharacteristic = await BleModule.writeCharacteristicForService(
-      serviceIdentifier,
-      characteristicUUID,
-      base64Value,
-      false,
-      transactionId
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.writeCharacteristicForService(serviceIdentifier, characteristicUUID, base64Value, false, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -595,11 +670,8 @@ export class BleManager {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
-    const nativeCharacteristic = await BleModule.writeCharacteristic(
-      characteristicIdentifier,
-      base64Value,
-      false,
-      transactionId
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.writeCharacteristic(characteristicIdentifier, base64Value, false, transactionId)
     )
     return new Characteristic(nativeCharacteristic, this)
   }
@@ -712,13 +784,24 @@ export class BleManager {
 
     const subscription: Subscription = this._eventEmitter.addListener(BleModule.ReadEvent, monitorListener)
 
-    monitorPromise.then(
+    const id = this._nextUniqueID()
+    const wrappedSubscription: Subscription = {
+      remove: () => {
+        if (this._activeSubscriptions[id] != null) {
+          delete this._activeSubscriptions[id]
+          subscription.remove()
+        }
+      }
+    }
+    this._activeSubscriptions[id] = wrappedSubscription
+
+    this._callPromise(monitorPromise).then(
       () => {
-        subscription.remove()
+        wrappedSubscription.remove()
       },
       (error: Error) => {
         listener(error, null)
-        subscription.remove()
+        wrappedSubscription.remove()
       }
     )
 
