@@ -44,6 +44,8 @@ Documentation can be found [here](https://polidea.github.io/react-native-ble-plx
 
 ### Automatically
 
+Make sure that you have Carthage installed on your system.
+
 ```bash
 npm install --save react-native-ble-plx
 react-native link
