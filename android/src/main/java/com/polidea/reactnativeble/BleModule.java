@@ -311,8 +311,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onNext(Integer rssi) {
-                        device.setRSSI(rssi);
-                        safePromise.resolve(device.toJSObject());
+                        safePromise.resolve(device.toJSObject(rssi));
                     }
                 });
 
@@ -366,7 +365,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                         Device jsDevice = new Device(device, connection);
                         cleanServicesAndCharacteristicsForDevice(jsDevice);
                         connectedDevices.put(device.getMacAddress(), jsDevice);
-                        promise.resolve(jsDevice.toJSObject());
+                        promise.resolve(jsDevice.toJSObject(null));
                     }
                 });
 
@@ -386,7 +385,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         } else {
             event.pushNull();
         }
-        event.pushMap(jsDevice.toJSObject());
+        event.pushMap(jsDevice.toJSObject(null));
         sendEvent(Event.DisconnectionEvent, event);
         connectingDevices.removeSubscription(device.getMacAddress());
     }
@@ -396,7 +395,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         final RxBleDevice device = rxBleClient.getBleDevice(deviceId);
 
         if (connectingDevices.removeSubscription(deviceId) && device != null) {
-            promise.resolve(new Device(device, null).toJSObject());
+            promise.resolve(new Device(device, null).toJSObject(null));
         } else {
             if (device == null) {
                 BleError.deviceNotFound(deviceId).reject(promise);
@@ -440,7 +439,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .subscribe(new Observer<RxBleDeviceServices>() {
                     @Override
                     public void onCompleted() {
-                        promise.resolve(device.toJSObject());
+                        promise.resolve(device.toJSObject(null));
                     }
 
                     @Override
@@ -524,7 +523,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     private void characteristicsForService(final Service service, final Promise promise) {
         WritableArray jsCharacteristics = Arguments.createArray();
         for (Characteristic characteristic : service.getCharacteristics()) {
-            jsCharacteristics.pushMap(characteristic.toJSObject());
+            jsCharacteristics.pushMap(characteristic.toJSObject(null));
         }
         promise.resolve(jsCharacteristics);
     }
@@ -658,8 +657,8 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onNext(byte[] bytes) {
-                        characteristic.logValue("Write to");
-                        promise.resolve(characteristic.toJSObject());
+                        characteristic.logValue("Write to", bytes);
+                        promise.resolve(characteristic.toJSObject(bytes));
                     }
                 });
 
@@ -748,8 +747,8 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onNext(byte[] bytes) {
-                        characteristic.logValue("Read from");
-                        promise.resolve(characteristic.toJSObject());
+                        characteristic.logValue("Read from", bytes);
+                        promise.resolve(characteristic.toJSObject(bytes));
                     }
                 });
 
@@ -852,11 +851,11 @@ public class BleModule extends ReactContextBaseJavaModule {
                     }
 
                     @Override
-                    public void onNext(byte[] result) {
-                        characteristic.logValue("Notification from");
+                    public void onNext(byte[] bytes) {
+                        characteristic.logValue("Notification from", bytes);
                         WritableArray jsResult = Arguments.createArray();
                         jsResult.pushNull();
-                        jsResult.pushMap(characteristic.toJSObject());
+                        jsResult.pushMap(characteristic.toJSObject(bytes));
                         jsResult.pushString(transactionId);
                         sendEvent(Event.ReadEvent, jsResult);
                     }

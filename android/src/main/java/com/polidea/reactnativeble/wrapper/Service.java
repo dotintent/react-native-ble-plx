@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Service extends JSObject {
+public class Service {
 
     private interface Metadata {
         String ID = "id";
@@ -58,7 +58,6 @@ public class Service extends JSObject {
         return characteristics;
     }
 
-    @Override
     public WritableMap toJSObject() {
         WritableMap result = Arguments.createMap();
         result.putInt(Metadata.ID, id);
