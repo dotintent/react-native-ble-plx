@@ -8,6 +8,14 @@ import Foundation
 import RxBluetoothKit
 import CoreBluetooth
 
+extension RestoredState {
+    var asJSObject: Any {
+        return [
+            "connectedPeripherals": self.peripherals.map { $0.asJSObject }
+        ]
+    }
+}
+
 extension ScannedPeripheral {
     var asJSObject: Any {
         var serviceData: [String:String]?

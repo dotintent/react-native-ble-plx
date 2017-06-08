@@ -130,7 +130,7 @@ public class BleClientManager : NSObject {
 
     // Restore state
     private func onRestoreState(_ restoredState: RestoredState) {
-        dispatchEvent(BleEvent.restoreStateEvent, value: restoredState.restoredStateData)
+        dispatchEvent(BleEvent.restoreStateEvent, value: restoredState.asJSObject)
     }
 
     // Mark: Scanning --------------------------------------------------------------------------------------------------
