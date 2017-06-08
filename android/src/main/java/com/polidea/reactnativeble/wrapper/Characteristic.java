@@ -106,6 +106,6 @@ public class Characteristic {
         RxBleLog.v(message +
                 " Characteristic(uuid: " + characteristic.getUuid().toString() +
                 ", id: " + id +
-                ", value: " + value + ")");
+                ", value: " + hexValue + ")");
     }
 }
