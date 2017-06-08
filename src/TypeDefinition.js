@@ -40,6 +40,18 @@ export interface Subscription {
 }
 
 /**
+ * Options which can be passed to when creating BLE Manager
+ */
+export interface BleManagerOptions {
+  /**
+   * BLE State restoration identifier key used to restore state [iOS only]
+   * @memberof BleManagerOptions
+   * @instance
+   */
+  restoreIdentifierKey?: string
+}
+
+/**
  * Options which can be passed to scanning function
  */
 export interface ScanOptions {

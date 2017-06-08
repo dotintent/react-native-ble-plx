@@ -15,7 +15,8 @@ import type {
   TransactionId,
   Base64,
   ScanOptions,
-  ConnectionOptions
+  ConnectionOptions,
+  BleManagerOptions
 } from './TypeDefinition'
 
 /**
@@ -44,8 +45,8 @@ export class BleManager {
   /**
    * Creates an instance of {@link BleManager}.
    */
-  constructor() {
-    BleModule.createClient()
+  constructor(options: BleManagerOptions = {}) {
+    BleModule.createClient(options.restoreIdentifierKey || null)
     this._eventEmitter = new EventEmitter(BleModule)
     this._uniqueId = 0
     this._activePromises = {}
@@ -54,6 +55,7 @@ export class BleManager {
 
   /**
    * Destroys all promises which are in progress.
+   * @private
    */
   _destroyPromises() {
     for (const id in this._activePromises) {
@@ -63,6 +65,7 @@ export class BleManager {
 
   /**
    * Destroys all subscriptions.
+   * @private
    */
   _destroySubscriptions() {
     for (const id in this._activeSubscriptions) {

@@ -53,8 +53,15 @@ public class BleClientManager : NSObject {
 
     // MARK: Lifecycle -------------------------------------------------------------------------------------------------
 
-    public init(queue: DispatchQueue) {
-        manager = BluetoothManager(queue: queue)
+    public init(queue: DispatchQueue, restoreIdentifierKey: String?) {
+
+        if let key = restoreIdentifierKey {
+            manager = BluetoothManager(queue: queue,
+                                       options: [CBCentralManagerOptionRestoreIdentifierKey: key as AnyObject])
+        } else {
+            manager = BluetoothManager(queue: queue)
+        }
+
         super.init()
         stateDisposable = manager.rx_state.subscribe(onNext: { [weak self] newState in
             self?.onStateChange(newState)

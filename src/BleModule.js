@@ -183,9 +183,10 @@ export interface BleModuleInterface {
   /**
    * Creates new native module internally. Only one module
    * is allowed to be instantiated.
+   * @param {?string} restoreIdentifierKey Optional unique Id used for state restoration of BLE manager.
    * @private
    */
-  createClient(): void,
+  createClient(restoreIdentifierKey: ?string): void,
 
   /**
    * Destroys previously instantiated module. This function is

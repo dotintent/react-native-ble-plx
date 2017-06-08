@@ -35,8 +35,9 @@ RCT_EXPORT_MODULE(BleClientManager);
     return consts;
 }
 
-RCT_EXPORT_METHOD(createClient) {
-    _manager = [[BleClientManager alloc] initWithQueue:self.methodQueue];
+RCT_EXPORT_METHOD(createClient:(NSString*)restoreIdentifierKey) {
+    _manager = [[BleClientManager alloc] initWithQueue:self.methodQueue
+                                  restoreIdentifierKey:restoreIdentifierKey];
     _manager.delegate = self;
 }
 
