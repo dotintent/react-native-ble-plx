@@ -130,6 +130,24 @@ public class BleClientManager : NSObject {
 
     // Restore state
     private func onRestoreState(_ restoredState: RestoredState) {
+        // Update all caches.
+        restoredState.peripherals.forEach { peripheral in
+            connectedPeripherals[peripheral.identifier] = peripheral
+
+            _ = manager.monitorDisconnection(for: peripheral)
+                .take(1)
+                .subscribe(onNext: { [weak self] peripheral in
+                    self?.onPeripheralDisconnected(peripheral)
+                })
+
+            peripheral.services?.forEach { service in
+                discoveredServices[service.jsIdentifier] = service
+                service.characteristics?.forEach { characteristic in
+                    discoveredCharacteristics[characteristic.jsIdentifier] = characteristic
+                }
+            }
+        }
+
         dispatchEvent(BleEvent.restoreStateEvent, value: restoredState.asJSObject)
     }
 
