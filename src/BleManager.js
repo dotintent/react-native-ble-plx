@@ -237,6 +237,10 @@ export class BleManager {
     return wrappedSubscription
   }
 
+  onRestoreState(listener: any => void): Subscription {
+    return this._eventEmitter.addListener(BleModule.RestoreStateEvent, listener)
+  }
+
   // Mark: Scanning ----------------------------------------------------------------------------------------------------
 
   /**

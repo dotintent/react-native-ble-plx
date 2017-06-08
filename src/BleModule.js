@@ -493,6 +493,12 @@ export interface BleModuleInterface {
   StateChangeEvent: string,
 
   /**
+   * BLE Manager restored its internal state
+   * @private
+   */
+  RestoreStateEvent: string,
+
+  /**
    * Device disconnected as [Error?, NativeDevice]
    * @private
    */

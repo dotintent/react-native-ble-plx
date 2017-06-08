@@ -42,6 +42,9 @@ public class BleClientManager : NSObject {
     // Disposable for detecting state changes of BleManager
     private var stateDisposable = Disposables.create()
 
+    // Disposable for detecing state restoration of BleManager.
+    private var restorationDisposable = Disposables.create()
+
     // Scan disposable which is removed when new scan is created.
     private let scanDisposable = SerialDisposable()
 
@@ -66,11 +69,16 @@ public class BleClientManager : NSObject {
         stateDisposable = manager.rx_state.subscribe(onNext: { [weak self] newState in
             self?.onStateChange(newState)
         })
+
+        restorationDisposable = manager.listenOnRestoredState().subscribe(onNext: {[weak self] newRestoredState in
+            self?.onRestoreState(newRestoredState)
+        })
     }
 
     public func invalidate() {
         // Disposables
         stateDisposable.dispose()
+        restorationDisposable.dispose()
         scanDisposable.disposable = Disposables.create()
         transactions.dispose()
         connectingPeripherals.dispose()
@@ -118,6 +126,11 @@ public class BleClientManager : NSObject {
     // Dispatch events when state changes
     private func onStateChange(_ state: BluetoothState) {
         dispatchEvent(BleEvent.stateChangeEvent, value: state.asJSObject)
+    }
+
+    // Restore state
+    private func onRestoreState(_ restoredState: RestoredState) {
+        dispatchEvent(BleEvent.restoreStateEvent, value: restoredState.restoredStateData)
     }
 
     // Mark: Scanning --------------------------------------------------------------------------------------------------
