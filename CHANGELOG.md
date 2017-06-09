@@ -1,3 +1,12 @@
+**0.6.0**
+- Added basic API to support background mode. When BleManager is constructed you can pass
+  `restoreStateIdentifier` and `restoreStateFunction` to `BleManagerOptions` object to
+  enable support for background mode. More info about usage can be found in documentation.
+- All subscriptions and promises are properly "Destroyed" when `destory()` function is called.
+- Fixed bug on Android where notification messages could be duplicated or skipped.
+- Updated README file.
+- Updated library logo
+
 **0.5.0**
 - Added new API for supporting unique Services and Characteristics:
   * `Characteristic.id`, `Service.id` fields which uniquely identify BLE objects.
