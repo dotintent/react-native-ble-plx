@@ -23,6 +23,7 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
   enable support for background mode. More info about usage can be found in documentation.
 - All subscriptions and promises are properly "Destroyed" when `destory()` function is called.
 - Fixed bug on Android where notification messages could be duplicated or skipped.
+- Updated RxAndroidBle to version 1.3
 - Updated README file.
 - Updated library logo
 
@@ -66,8 +67,8 @@ Both on iOS and Android continue manually from step 7.
     * `$(SRCROOT)/../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS/RxBluetoothKit.framework`
 10) Minimal supported version of iOS is 8.0
 11) If you want to support background mode:
-    * In your application target go to "Capabilities" tab and enable "Uses Bluetooth LE Accessories" in 
-      "Background Modes" section.
+    * In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in 
+      `Background Modes` section.
     * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
 
 #### Android

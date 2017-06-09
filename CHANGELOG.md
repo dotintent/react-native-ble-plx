@@ -4,6 +4,7 @@
   enable support for background mode. More info about usage can be found in documentation.
 - All subscriptions and promises are properly "Destroyed" when `destory()` function is called.
 - Fixed bug on Android where notification messages could be duplicated or skipped.
+- Updated RxAndroidBle to version 1.3
 - Updated README file.
 - Updated library logo
 
