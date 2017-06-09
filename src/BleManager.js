@@ -6,7 +6,7 @@ import { Service } from './Service'
 import { Characteristic } from './Characteristic'
 import { State, LogLevel } from './TypeDefinition'
 import { BleModule, EventEmitter } from './BleModule'
-import type { NativeDevice, NativeCharacteristic } from './BleModule'
+import type { NativeDevice, NativeCharacteristic, NativeBleRestoredState } from './BleModule'
 import type {
   Subscription,
   DeviceId,
@@ -54,11 +54,21 @@ export class BleManager {
     this._activePromises = {}
     this._activeSubscriptions = {}
 
-    if (options.restoreStateFunction != null && options.restoreStateIdentifier != null) {
-      this._activeSubscriptions[this._nextUniqueID()] = this._eventEmitter.addListener(
-        BleModule.RestoreStateEvent,
-        options.restoreStateFunction
-      )
+    const restoreStateFunction = options.restoreStateFunction
+    if (restoreStateFunction != null && options.restoreStateIdentifier != null) {
+      this._activeSubscriptions[
+        this._nextUniqueID()
+      ] = this._eventEmitter.addListener(BleModule.RestoreStateEvent, (nativeRestoredState: NativeBleRestoredState) => {
+        if (nativeRestoredState == null) {
+          restoreStateFunction(null)
+          return
+        }
+        restoreStateFunction({
+          connectedPeripherals: nativeRestoredState.connectedPeripherals.map(
+            nativeDevice => new Device(nativeDevice, this)
+          )
+        })
+      })
     }
 
     BleModule.createClient(options.restoreStateIdentifier || null)

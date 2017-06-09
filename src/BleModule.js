@@ -174,6 +174,21 @@ export interface NativeCharacteristic {
 }
 
 /**
+ * Object representing information about restored BLE state after application relaunch.
+ * @private
+ */
+export interface NativeBleRestoredState {
+  /**
+   * List of connected devices after state restoration.
+   * @type {Array<NativeDevice>}
+   * @instance
+   * @memberof NativeBleRestoredState
+   * @private
+   */
+  connectedPeripherals: Array<NativeDevice>
+}
+
+/**
  * Native BLE Module interface
  * @private
  */
