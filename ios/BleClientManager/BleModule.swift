@@ -42,6 +42,9 @@ public class BleClientManager : NSObject {
     // Disposable for detecting state changes of BleManager
     private var stateDisposable = Disposables.create()
 
+    // Disposable for detecing state restoration of BleManager.
+    private var restorationDisposable = Disposables.create()
+
     // Scan disposable which is removed when new scan is created.
     private let scanDisposable = SerialDisposable()
 
@@ -53,17 +56,35 @@ public class BleClientManager : NSObject {
 
     // MARK: Lifecycle -------------------------------------------------------------------------------------------------
 
-    public init(queue: DispatchQueue) {
-        manager = BluetoothManager(queue: queue)
+    public init(queue: DispatchQueue, restoreIdentifierKey: String?) {
+
+        if let key = restoreIdentifierKey {
+            manager = BluetoothManager(queue: queue,
+                                       options: [CBCentralManagerOptionRestoreIdentifierKey: key as AnyObject])
+        } else {
+            manager = BluetoothManager(queue: queue)
+        }
+
         super.init()
         stateDisposable = manager.rx_state.subscribe(onNext: { [weak self] newState in
             self?.onStateChange(newState)
         })
+
+        if restoreIdentifierKey != nil {
+            restorationDisposable = Observable<RestoredState?>.amb([
+                    manager.rx_state.skip(1).map { _ in nil },
+                    manager.listenOnRestoredState().map { $0 as RestoredState? }
+                ])
+                .subscribe(onNext: {[weak self] newRestoredState in
+                    self?.onRestoreState(newRestoredState)
+                })
+        }
     }
 
     public func invalidate() {
         // Disposables
         stateDisposable.dispose()
+        restorationDisposable.dispose()
         scanDisposable.disposable = Disposables.create()
         transactions.dispose()
         connectingPeripherals.dispose()
@@ -103,14 +124,44 @@ public class BleClientManager : NSObject {
 
     // Mark: Monitoring state ------------------------------------------------------------------------------------------
 
-    // Retrieve current BleManager's state
+    // Retrieve current BleManager's state.
     public func state(_ resolve: Resolve, reject: Reject) {
         resolve(manager.state.asJSObject)
     }
 
-    // Dispatch events when state changes
+    // Dispatch events when state changes.
     private func onStateChange(_ state: BluetoothState) {
         dispatchEvent(BleEvent.stateChangeEvent, value: state.asJSObject)
+    }
+
+    // Restore internal manager state.
+    private func onRestoreState(_ restoredState: RestoredState?) {
+
+        // When restored state is null then application is run for the first time.
+        guard let restoredState = restoredState else {
+            dispatchEvent(BleEvent.restoreStateEvent, value: NSNull())
+            return
+        }
+
+        // When state is to be restored update all caches.
+        restoredState.peripherals.forEach { peripheral in
+            connectedPeripherals[peripheral.identifier] = peripheral
+
+            _ = manager.monitorDisconnection(for: peripheral)
+                .take(1)
+                .subscribe(onNext: { [weak self] peripheral in
+                    self?.onPeripheralDisconnected(peripheral)
+                })
+
+            peripheral.services?.forEach { service in
+                discoveredServices[service.jsIdentifier] = service
+                service.characteristics?.forEach { characteristic in
+                    discoveredCharacteristics[characteristic.jsIdentifier] = characteristic
+                }
+            }
+        }
+
+        dispatchEvent(BleEvent.restoreStateEvent, value: restoredState.asJSObject)
     }
 
     // Mark: Scanning --------------------------------------------------------------------------------------------------

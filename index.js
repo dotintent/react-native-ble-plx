@@ -14,5 +14,7 @@ export type {
   TransactionId,
   Base64,
   ScanOptions,
-  ConnectionOptions
+  ConnectionOptions,
+  BleManagerOptions,
+  BleRestoredState
 } from './src/TypeDefinition'

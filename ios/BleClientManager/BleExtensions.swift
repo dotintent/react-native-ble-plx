@@ -8,8 +8,16 @@ import Foundation
 import RxBluetoothKit
 import CoreBluetooth
 
+extension RestoredState {
+    var asJSObject: [AnyHashable: Any] {
+        return [
+            "connectedPeripherals": peripherals.map { $0.asJSObject() }
+        ]
+    }
+}
+
 extension ScannedPeripheral {
-    var asJSObject: Any {
+    var asJSObject: [AnyHashable: Any] {
         var serviceData: [String:String]?
         if let advServiceData = advertisementData.serviceData {
             var data = [String:String]()
@@ -52,7 +60,7 @@ extension ScannedPeripheral {
 }
 
 extension Peripheral {
-    func asJSObject(withRssi: Int? = nil) -> Any {
+    func asJSObject(withRssi: Int? = nil) -> [AnyHashable: Any] {
         return [
             "id": identifier.uuidString,
             "name": name as Any,
@@ -73,7 +81,7 @@ extension Service {
     var jsIdentifier: Double {
         return Double(UInt64(objectId) & ((1 << 53) - 1))
     }
-    var asJSObject: Any {
+    var asJSObject: [AnyHashable: Any] {
         return [
             "id": jsIdentifier,
             "uuid": uuid.fullUUIDString,
@@ -87,7 +95,7 @@ extension Characteristic {
     var jsIdentifier: Double {
         return Double(UInt64(objectId) & ((1 << 53) - 1))
     }
-    var asJSObject: Any {
+    var asJSObject: [AnyHashable: Any] {
         return [
             "id": jsIdentifier,
             "uuid": uuid.fullUUIDString,

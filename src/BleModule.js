@@ -174,6 +174,21 @@ export interface NativeCharacteristic {
 }
 
 /**
+ * Object representing information about restored BLE state after application relaunch.
+ * @private
+ */
+export interface NativeBleRestoredState {
+  /**
+   * List of connected devices after state restoration.
+   * @type {Array<NativeDevice>}
+   * @instance
+   * @memberof NativeBleRestoredState
+   * @private
+   */
+  connectedPeripherals: Array<NativeDevice>
+}
+
+/**
  * Native BLE Module interface
  * @private
  */
@@ -183,9 +198,10 @@ export interface BleModuleInterface {
   /**
    * Creates new native module internally. Only one module
    * is allowed to be instantiated.
+   * @param {?string} restoreIdentifierKey Optional unique Id used for state restoration of BLE manager.
    * @private
    */
-  createClient(): void,
+  createClient(restoreIdentifierKey: ?string): void,
 
   /**
    * Destroys previously instantiated module. This function is
@@ -490,6 +506,12 @@ export interface BleModuleInterface {
    * @private
    */
   StateChangeEvent: string,
+
+  /**
+   * BLE Manager restored its internal state
+   * @private
+   */
+  RestoreStateEvent: string,
 
   /**
    * Device disconnected as [Error?, NativeDevice]

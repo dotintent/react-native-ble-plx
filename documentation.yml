@@ -18,6 +18,8 @@ toc:
       All Flow aliases and Flow types used in this library.
   - LogLevel
   - State
+  - BleManagerOptions
+  - BleRestoredState
   - ScanOptions
   - ConnectionOptions
   - DeviceId

@@ -6,7 +6,7 @@ import { Service } from './Service'
 import { Characteristic } from './Characteristic'
 import { State, LogLevel } from './TypeDefinition'
 import { BleModule, EventEmitter } from './BleModule'
-import type { NativeDevice, NativeCharacteristic } from './BleModule'
+import type { NativeDevice, NativeCharacteristic, NativeBleRestoredState } from './BleModule'
 import type {
   Subscription,
   DeviceId,
@@ -15,7 +15,8 @@ import type {
   TransactionId,
   Base64,
   ScanOptions,
-  ConnectionOptions
+  ConnectionOptions,
+  BleManagerOptions
 } from './TypeDefinition'
 
 /**
@@ -23,6 +24,9 @@ import type {
  * BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
  * {@link Device} instances. It should be initialized only once with `new` keyword and method 
  * {@link #BleManager#destroy|destroy()} should be called on its instance when user wants to deallocate all resources.
+ * 
+ * In case you want to properly support Background Mode, you should provide `restoreStateIdentifier` and
+ * `restoreStateFunction` in {@link BleManagerOptions}.
  * 
  * @example
  * const manager = new BleManager();
@@ -44,16 +48,35 @@ export class BleManager {
   /**
    * Creates an instance of {@link BleManager}.
    */
-  constructor() {
-    BleModule.createClient()
+  constructor(options: BleManagerOptions = {}) {
     this._eventEmitter = new EventEmitter(BleModule)
     this._uniqueId = 0
     this._activePromises = {}
     this._activeSubscriptions = {}
+
+    const restoreStateFunction = options.restoreStateFunction
+    if (restoreStateFunction != null && options.restoreStateIdentifier != null) {
+      this._activeSubscriptions[
+        this._nextUniqueID()
+      ] = this._eventEmitter.addListener(BleModule.RestoreStateEvent, (nativeRestoredState: NativeBleRestoredState) => {
+        if (nativeRestoredState == null) {
+          restoreStateFunction(null)
+          return
+        }
+        restoreStateFunction({
+          connectedPeripherals: nativeRestoredState.connectedPeripherals.map(
+            nativeDevice => new Device(nativeDevice, this)
+          )
+        })
+      })
+    }
+
+    BleModule.createClient(options.restoreStateIdentifier || null)
   }
 
   /**
    * Destroys all promises which are in progress.
+   * @private
    */
   _destroyPromises() {
     for (const id in this._activePromises) {
@@ -63,6 +86,7 @@ export class BleManager {
 
   /**
    * Destroys all subscriptions.
+   * @private
    */
   _destroySubscriptions() {
     for (const id in this._activeSubscriptions) {
@@ -103,7 +127,6 @@ export class BleManager {
   /**
    * Calls promise and checks if it completed successfully
    * 
-   * @template T 
    * @param {Promise<T>} promise Promise to be called
    * @returns {Promise<T>} Value of called promise.
    * @private

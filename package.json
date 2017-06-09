@@ -9,6 +9,7 @@
   "scripts": {
     "postinstall": "bash build_ios_frameworks.sh",
     "test": "jest",
+    "lint": "flow && documentation lint index.js",
     "docs": "documentation build index.js -o docs --config documentation.yml -f html"
   },
   "repository": {
