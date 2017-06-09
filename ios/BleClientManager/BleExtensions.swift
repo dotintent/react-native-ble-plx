@@ -12,7 +12,10 @@ extension RestoredState {
     var asJSObject: NSDictionary {
 
         let connectedPeripherals = NSMutableArray()
-        connectedPeripherals.addingObjects(from: peripherals.map { $0.asJSObject })
+        for peripheral in peripherals {
+            connectedPeripherals.add("P")
+            connectedPeripherals.add(peripheral.asJSObject())
+        }
 
         let dict = NSMutableDictionary()
         dict.setObject(connectedPeripherals, forKey: "connectedPeripherals" as NSString)
