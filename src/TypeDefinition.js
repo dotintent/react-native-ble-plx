@@ -22,7 +22,7 @@ export type UUID = string
 export type Base64 = string
 
 /**
- * Transaction identifier
+ * Transaction identifier. All transaction identifiers in numeric form are reserved for internal use.
  */
 export type TransactionId = string
 

@@ -13,7 +13,7 @@ import com.polidea.rxandroidble.internal.RxBleLog;
 
 import java.util.UUID;
 
-public class Characteristic extends JSObject {
+public class Characteristic {
 
     private static final UUID CLIENT_CHARACTERISTIC_CONFIG_UUID = UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
@@ -54,8 +54,7 @@ public class Characteristic extends JSObject {
         return characteristic;
     }
 
-    @Override
-    public WritableMap toJSObject() {
+    public WritableMap toJSObject(byte[] value) {
         WritableMap js = Arguments.createMap();
 
         js.putInt(Metadata.ID, id);
@@ -79,14 +78,17 @@ public class Characteristic extends JSObject {
             }
         }
         js.putBoolean(Metadata.IS_NOTIFYING, isNotifying);
-        js.putString(Metadata.VALUE, characteristic.getValue() != null ? Base64.encodeToString(characteristic.getValue(), Base64.DEFAULT) : null);
 
+        if (value == null) {
+            value = characteristic.getValue();
+        }
+        js.putString(Metadata.VALUE, value != null ? Base64.encodeToString(value, Base64.DEFAULT) : null);
         return js;
     }
 
     private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
 
-    public static String bytesToHex(byte[] bytes) {
+    private static String bytesToHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for ( int j = 0; j < bytes.length; j++ ) {
             int v = bytes[j] & 0xFF;
@@ -96,12 +98,14 @@ public class Characteristic extends JSObject {
         return new String(hexChars);
     }
 
-    public void logValue(String message) {
-        String value = characteristic.getValue() != null
-                ? bytesToHex(characteristic.getValue()) : "(null)";
+    public void logValue(String message, byte[] value) {
+        if (value == null) {
+            value = characteristic.getValue();
+        }
+        String hexValue = value != null ? bytesToHex(value) : "(null)";
         RxBleLog.v(message +
                 " Characteristic(uuid: " + characteristic.getUuid().toString() +
                 ", id: " + id +
-                ", value: " + value + ")");
+                ", value: " + hexValue + ")");
     }
 }

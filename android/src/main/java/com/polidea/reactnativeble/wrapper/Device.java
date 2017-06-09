@@ -8,7 +8,7 @@ import com.polidea.rxandroidble.RxBleDevice;
 import java.util.List;
 import java.util.UUID;
 
-public class Device extends JSObject {
+public class Device  {
 
     private interface Metadata {
         String ID = "id";
@@ -27,15 +27,10 @@ public class Device extends JSObject {
     private RxBleDevice device;
     private RxBleConnection connection;
     private List<Service> services;
-    private Integer lastRSSI;
 
     public Device(RxBleDevice device, RxBleConnection connection) {
         this.device = device;
         this.connection = connection;
-    }
-
-    public void setRSSI(Integer rssi) {
-        this.lastRSSI = rssi;
     }
 
     public void setServices(List<Service> services) {
@@ -62,13 +57,12 @@ public class Device extends JSObject {
         return null;
     }
 
-    @Override
-    public WritableMap toJSObject() {
+    public WritableMap toJSObject(Integer rssi) {
         WritableMap result = Arguments.createMap();
         result.putString(Metadata.ID, device.getMacAddress());
         result.putString(Metadata.NAME, device.getName());
-        if (lastRSSI != null) {
-            result.putInt(Metadata.RSSI, lastRSSI);
+        if (rssi != null) {
+            result.putInt(Metadata.RSSI, rssi);
         } else {
             result.putNull(Metadata.RSSI);
         }
