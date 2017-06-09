@@ -10,14 +10,8 @@ import CoreBluetooth
 
 extension RestoredState {
     var asJSObject: Any {
-        if peripherals.count > 0 {
-            return [
-                "connectedPeripherals:": peripherals[0].identifier.uuidString
-            ]
-        }
-
         return [
-            "connectedPeripherals": "none"
+            "connectedPeripherals": peripherals.map { $0.asJSObject as AnyObject }
         ]
     }
 }
