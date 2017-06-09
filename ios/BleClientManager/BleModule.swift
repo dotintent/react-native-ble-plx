@@ -70,9 +70,15 @@ public class BleClientManager : NSObject {
             self?.onStateChange(newState)
         })
 
-        restorationDisposable = manager.listenOnRestoredState().subscribe(onNext: {[weak self] newRestoredState in
-            self?.onRestoreState(newRestoredState)
-        })
+        if restoreIdentifierKey != nil {
+            restorationDisposable = Observable<RestoredState?>.amb([
+                    manager.rx_state.map { _ in nil },
+                    manager.listenOnRestoredState().map { $0 as RestoredState? }
+                ])
+                .subscribe(onNext: {[weak self] newRestoredState in
+                    self?.onRestoreState(newRestoredState)
+                })
+        }
     }
 
     public func invalidate() {
@@ -118,19 +124,26 @@ public class BleClientManager : NSObject {
 
     // Mark: Monitoring state ------------------------------------------------------------------------------------------
 
-    // Retrieve current BleManager's state
+    // Retrieve current BleManager's state.
     public func state(_ resolve: Resolve, reject: Reject) {
         resolve(manager.state.asJSObject)
     }
 
-    // Dispatch events when state changes
+    // Dispatch events when state changes.
     private func onStateChange(_ state: BluetoothState) {
         dispatchEvent(BleEvent.stateChangeEvent, value: state.asJSObject)
     }
 
-    // Restore state
-    private func onRestoreState(_ restoredState: RestoredState) {
-        // Update all caches.
+    // Restore internal manager state.
+    private func onRestoreState(_ restoredState: RestoredState?) {
+
+        // When restored state is null then application is run for the first time.
+        guard let restoredState = restoredState else {
+            dispatchEvent(BleEvent.restoreStateEvent, value: NSNull())
+            return
+        }
+
+        // When state is to be restored update all caches.
         restoredState.peripherals.forEach { peripheral in
             connectedPeripherals[peripheral.identifier] = peripheral
 

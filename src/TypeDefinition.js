@@ -1,6 +1,8 @@
 // @flow
 'use strict'
 
+import { Device } from './Device'
+
 /**
  * Bluetooth device id.
  */
@@ -44,11 +46,35 @@ export interface Subscription {
  */
 export interface BleManagerOptions {
   /**
-   * BLE State restoration identifier key used to restore state [iOS only]
+   * BLE State restoration identifier used to restore state.
    * @memberof BleManagerOptions
    * @instance
    */
-  restoreIdentifierKey?: string
+  restoreStateIdentifier?: string,
+
+  /**
+   * Optional function which is used to properly restore state of your BLE Manager. Callback
+   * is emitted in the beginning of BleManager creation and optional {@link BleRestoreState}
+   * is passed. When value is `null` application is launching for the first time, otherwise
+   * it contains saved state which may be used by developer to continue working with
+   * connected peripherals.
+   * @memberof BleManagerOptions
+   * @instance
+   */
+  restoreStateFunction?: (restoredState: ?BleRestoredState) => void
+}
+
+/**
+ * Object representing information about restored BLE state after application relaunch.
+ */
+export interface BleRestoredState {
+  /**
+   * List of connected devices after state restoration.
+   * @type {Array<Device>}
+   * @instance
+   * @memberof BleRestoredState
+   */
+  connectedPeripherals: Array<Device>
 }
 
 /**
@@ -109,7 +135,8 @@ export const State = {
 }
 
 /**
- * Native module logging log level. By default it is set to None
+ * Native module logging log level. By default it is set to None.
+ * @name LogLevel
  */
 export const LogLevel = {
   /**

@@ -25,6 +25,9 @@ import type {
  * {@link Device} instances. It should be initialized only once with `new` keyword and method 
  * {@link #BleManager#destroy|destroy()} should be called on its instance when user wants to deallocate all resources.
  * 
+ * In case you want to properly support Background Mode, you should provide `restoreStateIdentifier` and
+ * `restoreStateFunction` in {@link BleManagerOptions}.
+ * 
  * @example
  * const manager = new BleManager();
  * // ... work with BLE manager ...
@@ -46,11 +49,19 @@ export class BleManager {
    * Creates an instance of {@link BleManager}.
    */
   constructor(options: BleManagerOptions = {}) {
-    BleModule.createClient(options.restoreIdentifierKey || null)
     this._eventEmitter = new EventEmitter(BleModule)
     this._uniqueId = 0
     this._activePromises = {}
     this._activeSubscriptions = {}
+
+    if (options.restoreStateFunction != null && options.restoreStateIdentifier != null) {
+      this._activeSubscriptions[this._nextUniqueID()] = this._eventEmitter.addListener(
+        BleModule.RestoreStateEvent,
+        options.restoreStateFunction
+      )
+    }
+
+    BleModule.createClient(options.restoreStateIdentifier || null)
   }
 
   /**
@@ -106,7 +117,6 @@ export class BleManager {
   /**
    * Calls promise and checks if it completed successfully
    * 
-   * @template T 
    * @param {Promise<T>} promise Promise to be called
    * @returns {Promise<T>} Value of called promise.
    * @private
@@ -235,10 +245,6 @@ export class BleManager {
 
     this._activeSubscriptions[id] = wrappedSubscription
     return wrappedSubscription
-  }
-
-  onRestoreState(listener: any => void): Subscription {
-    return this._eventEmitter.addListener(BleModule.RestoreStateEvent, listener)
   }
 
   // Mark: Scanning ----------------------------------------------------------------------------------------------------

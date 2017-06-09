@@ -19,6 +19,7 @@ toc:
   - LogLevel
   - State
   - BleManagerOptions
+  - BleRestoredState
   - ScanOptions
   - ConnectionOptions
   - DeviceId

@@ -6,6 +6,7 @@ Native.EventEmitter = NativeEventEmitter
 
 /* eslint-disable no-unused-vars */
 var bleManager
+const restoreStateFunction = jest.fn()
 
 beforeEach(() => {
   Native.BleModule = {
@@ -32,12 +33,23 @@ beforeEach(() => {
     StateChangeEvent: 'state_change_event',
     DisconnectionEvent: 'disconnection_event'
   }
-  bleManager = new BleManager()
+  bleManager = new BleManager({
+    restoreStateIdentifier: 'identifier',
+    restoreStateFunction
+  })
 })
 
 test('BleModule calls create function when BleManager is constructed', () => {
-  expect(Native.BleModule.createClient).toBeCalled()
+  expect(Native.BleModule.createClient).toBeCalledWith('identifier')
   expect(Native.BleModule.destroyClient).not.toBeCalled()
+})
+
+test('BleModule emits state restoration after BleManager was created', () => {
+  const restoredState = {
+    connectedPeripherals: [new Device({ id: 'deviceId' }, bleManager)]
+  }
+  Native.BleModule.emit(Native.BleModule.RestoreStateEvent, restoredState)
+  expect(restoreStateFunction).toBeCalledWith(restoredState)
 })
 
 test('BleModule calls destroy function when destroyed', () => {
@@ -95,7 +107,7 @@ test('When BleManager stops scanning it calls BleModule stopScanning function', 
 
 test('When BleManager readRSSI is called it should call BleModule readRSSI', () => {
   bleManager.readRSSIForDevice('id')
-  expect(Native.BleModule.readRSSIForDevice).toBeCalledWith('id', '1')
+  expect(Native.BleModule.readRSSIForDevice).toBeCalledWith('id', '2')
   bleManager.readRSSIForDevice('id', 'transaction')
   expect(Native.BleModule.readRSSIForDevice).toBeCalledWith('id', 'transaction')
 })
@@ -209,8 +221,8 @@ test('BleManager properly writes characteristic value', async () => {
     .mockReturnValue(Promise.resolve({ uuid: 'aaaa', value: '=AA' }))
 
   const options = [
-    { response: true, function: bleManager.writeCharacteristicWithResponseForDevice },
-    { response: false, function: bleManager.writeCharacteristicWithoutResponseForDevice }
+    { response: true, function: bleManager.writeCharacteristicWithResponseForDevice.bind(bleManager) },
+    { response: false, function: bleManager.writeCharacteristicWithoutResponseForDevice.bind(bleManager) }
   ]
 
   for (let option of options) {
