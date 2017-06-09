@@ -15,5 +15,6 @@ export type {
   Base64,
   ScanOptions,
   ConnectionOptions,
-  BleManagerOptions
+  BleManagerOptions,
+  BleRestoredState
 } from './src/TypeDefinition'
