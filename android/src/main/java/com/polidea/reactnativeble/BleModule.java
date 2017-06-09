@@ -113,10 +113,15 @@ public class BleModule extends ReactContextBaseJavaModule {
     // Lifecycle -----------------------------------------------------------------------------------
 
     @ReactMethod
-    public void createClient() {
+    public void createClient(String restoreStateIdentifier) {
         final ReactApplicationContext context = getReactApplicationContext();
         rxBleClient = RxBleClient.create(context);
         adapterStateChangesSubscription = monitorAdapterStateChanges(context);
+
+        // We need to send signal that BLE Module starts without restored state
+        if (restoreStateIdentifier != null) {
+            sendEvent(Event.RestoreStateEvent, null);
+        }
     }
 
     @ReactMethod
