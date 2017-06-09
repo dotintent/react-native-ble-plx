@@ -9,17 +9,10 @@ import RxBluetoothKit
 import CoreBluetooth
 
 extension RestoredState {
-    var asJSObject: NSDictionary {
-
-        let connectedPeripherals = NSMutableArray()
-        for peripheral in peripherals {
-            connectedPeripherals.add("P")
-            connectedPeripherals.add(peripheral.asJSObject())
-        }
-
-        let dict = NSMutableDictionary()
-        dict.setObject(connectedPeripherals, forKey: "connectedPeripherals" as NSString)
-        return dict
+    var asJSObject: [AnyHashable: Any] {
+        return [
+            "connectedPeripherals": peripherals.map { $0.asJSObject() }
+        ]
     }
 }
 
@@ -67,7 +60,7 @@ extension ScannedPeripheral {
 }
 
 extension Peripheral {
-    func asJSObject(withRssi: Int? = nil) -> NSDictionary {
+    func asJSObject(withRssi: Int? = nil) -> [AnyHashable: Any] {
         return [
             "id": identifier.uuidString,
             "name": name as Any,
