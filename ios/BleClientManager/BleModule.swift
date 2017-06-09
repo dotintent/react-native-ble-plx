@@ -72,7 +72,7 @@ public class BleClientManager : NSObject {
 
         if restoreIdentifierKey != nil {
             restorationDisposable = Observable<RestoredState?>.amb([
-                    manager.rx_state.map { _ in nil },
+                    manager.rx_state.skip(1).map { _ in nil },
                     manager.listenOnRestoredState().map { $0 as RestoredState? }
                 ])
                 .subscribe(onNext: {[weak self] newRestoredState in
