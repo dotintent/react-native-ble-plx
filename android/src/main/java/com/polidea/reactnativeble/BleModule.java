@@ -351,8 +351,12 @@ public class BleModule extends ReactContextBaseJavaModule {
         int requestMtu = 0;
 
         if (options != null) {
-            autoConnect = options.getBoolean("autoConnect");
-            requestMtu = options.getInt("requestMtu");
+            if (options.hasKey("autoConnect")) {
+                autoConnect = options.getBoolean("autoConnect");
+            }
+            if (options.hasKey("requestMtu")) {
+                requestMtu = options.getInt("requestMtu");
+            }
         }
 
         safeConnectToDevice(device, autoConnect, requestMtu, new SafePromise(promise));
