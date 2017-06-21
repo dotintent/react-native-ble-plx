@@ -309,6 +309,18 @@ export class BleManager {
     return new Device(nativeDevice, this)
   }
 
+  /**
+   * Get Mtu for device.
+   * 
+   * @param {DeviceId} deviceIdentifier Device identifier.
+   * @returns {Promise<NativeDevice>} Device's MTU size. Default value is 23.
+   * @private
+   */
+  async getMtuForDevice(deviceIdentifier: DeviceId): Promise<number> {
+    const deviceMtu = await this._callPromise(BleModule.getMtuForDevice(deviceIdentifier))
+    return deviceMtu
+  }
+
   // Mark: Connection management ---------------------------------------------------------------------------------------
 
   /**

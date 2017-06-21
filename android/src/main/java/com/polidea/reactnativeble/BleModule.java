@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.util.SparseArray;
 
@@ -283,6 +284,19 @@ public class BleModule extends ReactContextBaseJavaModule {
         }
     }
 
+    // Mark: Device operations ---------------------------------------------------------------------
+
+    @ReactMethod
+    public void getMtuForDevice(final String deviceId, final Promise promise) {
+        final Device device = connectedDevices.get(deviceId);
+        if (device == null) {
+            BleError.deviceNotConnected(deviceId).reject(promise);
+            return;
+        }
+
+        promise.resolve(device.getConnection().getMtu());
+    }
+
     @ReactMethod
     public void readRSSIForDevice(final String deviceId, final String transactionId, final Promise promise) {
         final Device device = connectedDevices.get(deviceId);
@@ -323,8 +337,6 @@ public class BleModule extends ReactContextBaseJavaModule {
         transactions.replaceSubscription(transactionId, subscription);
     }
 
-    // Mark: Connection management -----------------------------------------------------------------
-
     @ReactMethod
     public void connectToDevice(final String deviceId, @Nullable ReadableMap options, final Promise promise) {
         final SafePromise safePromise = new SafePromise(promise);
@@ -336,15 +348,19 @@ public class BleModule extends ReactContextBaseJavaModule {
         }
 
         boolean autoConnect = false;
+        int requestMtu = 0;
+
         if (options != null) {
             autoConnect = options.getBoolean("autoConnect");
+            requestMtu = options.getInt("requestMtu");
         }
 
-        safeConnectToDevice(device, autoConnect, new SafePromise(promise));
+        safeConnectToDevice(device, autoConnect, requestMtu, new SafePromise(promise));
     }
 
-    private void safeConnectToDevice(final RxBleDevice device, boolean autoConnect, final SafePromise promise) {
-        final Subscription subscription = device
+    private void safeConnectToDevice(final RxBleDevice device, boolean autoConnect, final int requestMtu, final SafePromise promise) {
+
+        Observable<RxBleConnection> connect = device
                 .establishConnection(autoConnect)
                 .doOnUnsubscribe(new Action0() {
                     @Override
@@ -352,7 +368,29 @@ public class BleModule extends ReactContextBaseJavaModule {
                         BleError.cancelled().reject(promise);
                         onDeviceDisconnected(device, null);
                     }
-                })
+                });
+
+        if (requestMtu > 0) {
+            connect = connect.flatMap(new Func1<RxBleConnection, Observable<RxBleConnection>>() {
+                @Override
+                public Observable<RxBleConnection> call(final RxBleConnection rxBleConnection) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        return rxBleConnection
+                                .requestMtu(requestMtu)
+                                .map(new Func1<Integer, RxBleConnection>() {
+                                    @Override
+                                    public RxBleConnection call(Integer integer) {
+                                        return rxBleConnection;
+                                    }
+                                });
+                    } else {
+                        return Observable.just(rxBleConnection);
+                    }
+                }
+            });
+        }
+
+        final Subscription subscription = connect
                 .subscribe(new Observer<RxBleConnection>() {
                     @Override
                     public void onCompleted() {

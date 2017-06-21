@@ -92,6 +92,16 @@ export class Device implements NativeDevice {
   }
 
   /**
+   * {@link #BleManager#getMtuForDevice|bleManager.getMtuForDevice()} with partially filled arguments.
+   * 
+   * @returns {Promise<NativeDevice>} Device's MTU size. Default value is 23.
+   * 
+   */
+  getMtuForDevice(): Promise<number> {
+    return this._manager.getMtuForDevice(this.id)
+  }
+
+  /**
    * {@link #BleManager#connectToDevice|bleManager.connectToDevice()} with partially filled arguments.
    * 
    * @param {?ConnectionOptions} options Platform specific options for connection establishment. Not used currently.
