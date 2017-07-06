@@ -113,9 +113,10 @@ class AdvertisementDataSpec extends Specification {
 
     def "complex advertisement data should be parsed properly"() {
         when:
-        def data = AdvertisementData.parseScanResponseData(_("03160a18020a7f05140a180b28"))
+        def data = AdvertisementData.parseScanResponseData(_("03160a180909536f6d654e616d65020a7f05140a180b28"))
 
         then:
+        data.localName == "SomeName"
         data.txPowerLevel == 127
         data.solicitedServiceUUIDs == [UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")]
         data.serviceData == [(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")]
@@ -123,9 +124,9 @@ class AdvertisementDataSpec extends Specification {
 
     def "unknown advertisement data should be skipped"() {
         when:
-        def data = AdvertisementData.parseScanResponseData(_("03160a1803fe0102020a7f05140a180b28"))
-
+        def data = AdvertisementData.parseScanResponseData(_("03160a1803fe01020909536f6d654e616d65020a7f05140a180b28"))
         then:
+        data.localName == "SomeName"
         data.txPowerLevel == 127
         data.solicitedServiceUUIDs == [UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")]
         data.serviceData == [(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")]
@@ -133,9 +134,10 @@ class AdvertisementDataSpec extends Specification {
 
     def "corrupted advertisement data should be ignored"() {
         when:
-        def data = AdvertisementData.parseScanResponseData(_("03160a18020a7f05140a180b28ff223210"))
+        def data = AdvertisementData.parseScanResponseData(_("03160a180909536f6d654e616d65020a7f05140a180b28ff223210"))
 
         then:
+        data.localName == "SomeName"
         data.txPowerLevel == 127
         data.solicitedServiceUUIDs == [UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb"), UUID.fromString("0000280b-0000-1000-8000-00805f9b34fb")]
         data.serviceData == [(UUID.fromString("0000180a-0000-1000-8000-00805f9b34fb")): _("")]
