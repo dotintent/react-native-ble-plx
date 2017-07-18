@@ -75,6 +75,7 @@ public class BleClientManager : NSObject {
                     manager.rx_state.skip(1).map { _ in nil },
                     manager.listenOnRestoredState().map { $0 as RestoredState? }
                 ])
+                .take(1)
                 .subscribe(onNext: {[weak self] newRestoredState in
                     self?.onRestoreState(newRestoredState)
                 })
