@@ -1,3 +1,9 @@
+**0.6.1**
+- Updated RxAndroidBle library to version 1.3.3 which fixes internal issues which may
+  block execution of operation queue.
+- Updated dev dependencies to fix latest Flowtype issues.
+- Fixed bug when `restoreStateFunction` function could be called multiple times on iOS.
+
 **0.6.0**
 - Added basic API to support background mode. When BleManager is constructed you can pass
   `restoreStateIdentifier` and `restoreStateFunction` to `BleManagerOptions` object to
