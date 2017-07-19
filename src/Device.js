@@ -78,7 +78,6 @@ export class Device implements NativeDevice {
    * @private
    */
   constructor(nativeDevice: NativeDevice, manager: BleManager) {
-    // $FlowFixMe Should be fixed in flow 0.46
     Object.assign(this, nativeDevice, { _manager: manager })
   }
 

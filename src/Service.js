@@ -41,7 +41,6 @@ export class Service implements NativeService {
    * @ignore
    */
   constructor(nativeService: NativeService, manager: BleManager) {
-    // $FlowFixMe Should be fixed in flow 0.46
     Object.assign(this, nativeService, { _manager: manager })
   }
 

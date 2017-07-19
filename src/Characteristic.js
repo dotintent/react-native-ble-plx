@@ -70,7 +70,6 @@ export class Characteristic implements NativeCharacteristic {
    * @private
    */
   constructor(nativeCharacteristic: NativeCharacteristic, manager: BleManager) {
-    // $FlowFixMe Should be fixed in flow 0.46
     Object.assign(this, nativeCharacteristic, { _manager: manager })
   }
 
