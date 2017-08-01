@@ -31,6 +31,10 @@ Documentation can be found [here](https://polidea.github.io/react-native-ble-plx
 
 ## Configuration & Installation
 
+### Important
+If you do not have [Carthage](https://github.com/Carthage/Carthage) installed yet and 
+wish to set up for iOS, please install it first and only then follow the steps given below
+
 ### Automatically
 
 ```bash
