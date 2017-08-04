@@ -37,6 +37,8 @@ wish to set up for iOS, please install it first and only then follow the steps g
 
 ### Automatically
 
+For iOS make sure that you have Carthage installed on your system.
+
 ```bash
 npm install --save react-native-ble-plx
 react-native link
