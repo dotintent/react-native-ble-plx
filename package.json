@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "postinstall": "bash build_ios_frameworks.sh",
+    "postinstall": "node ./postinstall.js",
     "test": "jest",
     "lint": "flow && documentation lint index.js",
     "docs": "documentation build index.js -o docs --config documentation.yml -f html"
