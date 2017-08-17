@@ -638,6 +638,27 @@ public class BleClientManager : NSObject {
                                            promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+	public func getMtuForDevice(deviceIdentifier: String,
+	                            withResponse: Bool = true,
+	                            resolve: Resolve,
+	                            reject: Reject) {
+		guard let deviceId = UUID(uuidString: deviceIdentifier) else {
+			BleError.invalidUUID(deviceIdentifier).callReject(reject)
+			return
+		}
+		guard let peripheral = connectedPeripherals[deviceId] else {
+			BleError.peripheralNotConnected(deviceIdentifier).callReject(reject)
+			return
+		}
+
+		if #available(iOS 9.0, *) {
+			resolve(peripheral.maximumWriteValueLength(for: withResponse ? .withResponse : .withoutResponse))
+		} else {
+			BleError.dataUnavailable("MTU", device: "pre-iOS 9").callReject(reject)
+		}
+
+	}
+
     private func safeMonitorCharacteristicForDevice(_ characteristicObservable: Observable<Characteristic>,
                                                                  transactionId: String,
                                                                        promise: SafePromise) {
@@ -753,6 +774,7 @@ public class BleClientManager : NSObject {
             return Disposables.create()
         }
     }
+
 
     // MARK: Private interface -----------------------------------------------------------------------------------------
 

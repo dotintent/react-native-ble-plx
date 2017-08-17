@@ -267,6 +267,16 @@ RCT_EXPORT_METHOD(monitorCharacteristic:(nonnull NSNumber*)characteristicIdentif
                              reject:reject];
 }
 
+RCT_EXPORT_METHOD(getMtuForDevice:(NSString*)deviceIdentifier
+				  withResponse:(NSString*)response
+				  resolver:(RCTPromiseResolveBlock)resolve
+				  rejecter:(RCTPromiseRejectBlock)reject) {
+	[_manager getMtuForDeviceWithDeviceIdentifier:deviceIdentifier
+									 withResponse:response
+										  resolve:resolve
+										   reject:reject];
+}
+
 // Mark: Other operations ----------------------------------------------------------------------------------------------
 
 RCT_EXPORT_METHOD(cancelTransaction:(NSString*)transactionId) {

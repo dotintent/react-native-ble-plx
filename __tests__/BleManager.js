@@ -28,14 +28,15 @@ beforeEach(() => {
     readCharacteristicForDevice: jest.fn(),
     writeCharacteristicForDevice: jest.fn(),
     monitorCharacteristicForDevice: jest.fn(),
+    getMtuForDevice: jest.fn(),
     ScanEvent: 'scan_event',
     ReadEvent: 'read_event',
     StateChangeEvent: 'state_change_event',
-    DisconnectionEvent: 'disconnection_event'
+    DisconnectionEvent: 'disconnection_event',
   }
   bleManager = new BleManager({
     restoreStateIdentifier: 'identifier',
-    restoreStateFunction
+    restoreStateFunction,
   })
 })
 
@@ -46,7 +47,7 @@ test('BleModule calls create function when BleManager is constructed', () => {
 
 test('BleModule emits state restoration after BleManager was created', () => {
   const restoredState = {
-    connectedPeripherals: [new Device({ id: 'deviceId' }, bleManager)]
+    connectedPeripherals: [new Device({ id: 'deviceId' }, bleManager)],
   }
   Native.BleModule.emit(Native.BleModule.RestoreStateEvent, restoredState)
   expect(restoreStateFunction).toBeCalledWith(restoredState)
@@ -97,7 +98,9 @@ test('When BleManager cancelTransaction is called it should call BleModule cance
 test('When BleManager starts scanning it calls BleModule startScanning function', () => {
   const listener = jest.fn()
   bleManager.startDeviceScan(['18a0', '1800'], { allowDuplicates: true }, listener)
-  expect(Native.BleModule.startDeviceScan).toBeCalledWith(['18a0', '1800'], { allowDuplicates: true })
+  expect(Native.BleModule.startDeviceScan).toBeCalledWith(['18a0', '1800'], {
+    allowDuplicates: true,
+  })
 })
 
 test('When BleManager stops scanning it calls BleModule stopScanning function', () => {
@@ -162,7 +165,10 @@ test('BleManager monitors device disconnection properly', () => {
 })
 
 test('BleManager calls BleModule isDeviceConnected function properly', async () => {
-  Native.BleModule.isDeviceConnected = jest.fn().mockReturnValueOnce(false).mockReturnValueOnce(true)
+  Native.BleModule.isDeviceConnected = jest
+    .fn()
+    .mockReturnValueOnce(false)
+    .mockReturnValueOnce(true)
   expect(await bleManager.isDeviceConnected('id')).toBe(false)
   expect(await bleManager.isDeviceConnected('id')).toBe(true)
   expect(Native.BleModule.isDeviceConnected.mock.calls.length).toBe(2)
@@ -181,7 +187,9 @@ test('BleManager properly calls BleModule discovery function', async () => {
 test('BleManager properly calls servicesForDevice BleModule function', async () => {
   Native.BleModule.servicesForDevice = jest
     .fn()
-    .mockReturnValueOnce(Promise.resolve([{ uuid: 'a', deviceId: 'id' }, { uuid: 'b', deviceId: 'id' }]))
+    .mockReturnValueOnce(
+      Promise.resolve([{ uuid: 'a', deviceId: 'id' }, { uuid: 'b', deviceId: 'id' }]),
+    )
   const services = await bleManager.servicesForDevice('id')
   expect(services.length).toBe(2)
   expect(services[0]).toBeInstanceOf(Service)
@@ -194,7 +202,9 @@ test('BleManager properly calls servicesForDevice BleModule function', async () 
 test('BleManager properly calls characteristicsForDevice BleModule function', async () => {
   Native.BleModule.characteristicsForDevice = jest
     .fn()
-    .mockReturnValueOnce(Promise.resolve([{ uuid: 'a', deviceId: 'id' }, { uuid: 'b', deviceId: 'id' }]))
+    .mockReturnValueOnce(
+      Promise.resolve([{ uuid: 'a', deviceId: 'id' }, { uuid: 'b', deviceId: 'id' }]),
+    )
   const characteristics = await bleManager.characteristicsForDevice('id', 'aa')
   expect(characteristics.length).toBe(2)
   expect(characteristics[0]).toBeInstanceOf(Characteristic)
@@ -208,7 +218,12 @@ test('BleManager properly reads characteristic value', async () => {
   Native.BleModule.readCharacteristicForDevice = jest
     .fn()
     .mockReturnValueOnce(Promise.resolve({ uuid: 'aaaa', value: '=AA' }))
-  const newCharacteristicValue = await bleManager.readCharacteristicForDevice('id', 'bbbb', 'aaaa', 'ok')
+  const newCharacteristicValue = await bleManager.readCharacteristicForDevice(
+    'id',
+    'bbbb',
+    'aaaa',
+    'ok',
+  )
   expect(newCharacteristicValue).toBeInstanceOf(Characteristic)
   expect(newCharacteristicValue.uuid).toBe('aaaa')
   expect(newCharacteristicValue.value).toBe('=AA')
@@ -221,8 +236,14 @@ test('BleManager properly writes characteristic value', async () => {
     .mockReturnValue(Promise.resolve({ uuid: 'aaaa', value: '=AA' }))
 
   const options = [
-    { response: true, function: bleManager.writeCharacteristicWithResponseForDevice.bind(bleManager) },
-    { response: false, function: bleManager.writeCharacteristicWithoutResponseForDevice.bind(bleManager) }
+    {
+      response: true,
+      function: bleManager.writeCharacteristicWithResponseForDevice.bind(bleManager),
+    },
+    {
+      response: false,
+      function: bleManager.writeCharacteristicWithoutResponseForDevice.bind(bleManager),
+    },
   ]
 
   for (let option of options) {
@@ -236,7 +257,7 @@ test('BleManager properly writes characteristic value', async () => {
       'bbbb',
       '=AA',
       option.response,
-      'trans'
+      'trans',
     )
   }
 })
@@ -247,7 +268,13 @@ test('BleManager properly monitors characteristic value', async () => {
 
   Native.BleModule.emit(Native.BleModule.ReadEvent, [null, { id: 'a', value: 'a' }, 'id'])
   Native.BleModule.emit(Native.BleModule.ReadEvent, [null, { id: 'a', value: 'b' }, 'x'])
-  const subscription = bleManager.monitorCharacteristicForDevice('id', 'aaaa', 'bbbb', listener, 'x')
+  const subscription = bleManager.monitorCharacteristicForDevice(
+    'id',
+    'aaaa',
+    'bbbb',
+    listener,
+    'x',
+  )
   Native.BleModule.emit(Native.BleModule.ReadEvent, [null, { id: 'a', value: 'b' }, 'x'])
   Native.BleModule.emit(Native.BleModule.ReadEvent, [null, { id: 'a', value: 'b' }, 'x'])
   Native.BleModule.emit(Native.BleModule.ReadEvent, [null, { id: 'a', value: 'c' }, 'x2'])
@@ -255,4 +282,9 @@ test('BleManager properly monitors characteristic value', async () => {
   expect(listener).toHaveBeenCalledTimes(2)
   expect(Native.BleModule.cancelTransaction).toBeCalledWith('x')
   expect(Native.BleModule.monitorCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', 'x')
+})
+
+test('BleManager properly reads the MTU', async () => {
+  bleManager.getMtuForDevice('id')
+  expect(Native.BleModule.getMtuForDevice).toBeCalledWith('id')
 })
