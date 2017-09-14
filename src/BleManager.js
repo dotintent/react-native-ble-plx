@@ -20,14 +20,14 @@ import type {
 } from './TypeDefinition'
 
 /**
- * 
+ *
  * BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
- * {@link Device} instances. It should be initialized only once with `new` keyword and method 
+ * {@link Device} instances. It should be initialized only once with `new` keyword and method
  * {@link #BleManager#destroy|destroy()} should be called on its instance when user wants to deallocate all resources.
- * 
+ *
  * In case you want to properly support Background Mode, you should provide `restoreStateIdentifier` and
  * `restoreStateFunction` in {@link BleManagerOptions}.
- * 
+ *
  * @example
  * const manager = new BleManager();
  * // ... work with BLE manager ...
@@ -95,7 +95,7 @@ export class BleManager {
   }
 
   /**
-   * Destroys {@link BleManager} instance. A new instance needs to be created to continue working with 
+   * Destroys {@link BleManager} instance. A new instance needs to be created to continue working with
    * this library.
    */
   destroy() {
@@ -115,7 +115,7 @@ export class BleManager {
 
   /**
    * Generates new unique identifier to be used internally.
-   * 
+   *
    * @returns {string} New identifier.
    * @private
    */
@@ -126,7 +126,7 @@ export class BleManager {
 
   /**
    * Calls promise and checks if it completed successfully
-   * 
+   *
    * @param {Promise<T>} promise Promise to be called
    * @returns {Promise<T>} Value of called promise.
    * @private
@@ -166,37 +166,44 @@ export class BleManager {
 
   /**
    * Cancels pending transaction.
-   * 
-   * Few operations such as monitoring characteristic's value changes can be cancelled by a user. Basically every API 
-   * entry which accepts `transactionId` allows to call `cancelTransaction` function. When cancelled operation is a 
-   * promise or a callback which registers errors, `"Cancelled"` error will be emitted in that case. Cancelling 
+   *
+   * Few operations such as monitoring characteristic's value changes can be cancelled by a user. Basically every API
+   * entry which accepts `transactionId` allows to call `cancelTransaction` function. When cancelled operation is a
+   * promise or a callback which registers errors, `"Cancelled"` error will be emitted in that case. Cancelling
    * transaction which doesn't exist is ignored.
-   * 
+   *
    * @example
    * const transactionId = 'monitor_battery';
-   * 
+   *
    * // Monitor battery notifications
    * manager.monitorCharacteristicForDevice(
-   *   device.id, '180F', '2A19', 
+   *   device.id, '180F', '2A19',
    *   (error, characteristic) => {
    *   // Handle battery level changes...
    * }, transactionId);
-   * 
+   *
    * // Cancel after specified amount of time
    * setTimeout(() => manager.cancelTransaction(transactionId), 2000);
-   * 
+   *
    * @param {TransactionId} transactionId Id of pending transactions.
    */
   cancelTransaction(transactionId: TransactionId) {
     BleModule.cancelTransaction(transactionId)
   }
 
+  /**
+   * @param {boolean} [enabled=false] If true, enable bluetooth. Defaults to false.
+   */
+  setBluetooth(enabled: boolean = false) {
+    BleModule.setBluetooth(enabled)
+  }
+
   // Mark: Monitoring state --------------------------------------------------------------------------------------------
 
   /**
    * Current, global {@link State} of a {@link BleManager}. All APIs are working only when active state
-   * is "PoweredOn". 
-   * 
+   * is "PoweredOn".
+   *
    * @returns {Promise<State>} Promise which emits current state of BleManager.
    */
   state(): Promise<$Keys<typeof State>> {
@@ -205,7 +212,7 @@ export class BleManager {
 
   /**
   * Notifies about {@link State} changes of a {@link BleManager}.
-  * 
+  *
   * @example
   * const subscription = this.manager.onStateChange((state) => {
   *      if (state === 'PoweredOn') {
@@ -213,11 +220,11 @@ export class BleManager {
   *          subscription.remove();
   *      }
   *  }, true);
-  * 
-  * @param {function(newState: State)} listener Callback which emits state changes of BLE Manager. 
+  *
+  * @param {function(newState: State)} listener Callback which emits state changes of BLE Manager.
   * Look at {@link State} for possible values.
   * @param {boolean} [emitCurrentState=false] If true, current state will be emitted as well. Defaults to false.
-  *  
+  *
   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
   */
   onStateChange(listener: (newState: $Keys<typeof State>) => void, emitCurrentState: boolean = false): Subscription {
@@ -261,13 +268,13 @@ export class BleManager {
 
   /**
    * Starts device scanning. When previous scan is in progress it will be stopped before executing this command.
-   * 
-   * @param {?Array<UUID>} UUIDs Array of strings containing {@link UUID}s of {@link Service}s which are registered in 
+   *
+   * @param {?Array<UUID>} UUIDs Array of strings containing {@link UUID}s of {@link Service}s which are registered in
    * scanned {@link Device}. If `null` is passed, all available {@link Device}s will be scanned.
    * @param {?ScanOptions} options Optional configuration for scanning operation.
-   * @param {function(error: ?Error, scannedDevice: ?Device)} listener Function which will be called for every scanned 
-   * {@link Device} (devices may be scanned multiple times). It's first argument is potential {@link Error} which is set 
-   * to non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument 
+   * @param {function(error: ?Error, scannedDevice: ?Device)} listener Function which will be called for every scanned
+   * {@link Device} (devices may be scanned multiple times). It's first argument is potential {@link Error} which is set
+   * to non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument
    * is a scanned {@link Device}.
    */
   startDeviceScan(
@@ -296,7 +303,7 @@ export class BleManager {
 
   /**
    * Reads RSSI for connected device.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Device identifier.
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<Device>} Connected device with updated RSSI value.
@@ -313,7 +320,7 @@ export class BleManager {
 
   /**
    * Connects to {@link Device} with provided ID.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
    * @param {?ConnectionOptions} options Platform specific options for connection establishment.
    * @returns {Promise<Device>} Connected {@link Device} object if successful.
@@ -325,8 +332,8 @@ export class BleManager {
 
   /**
    * Disconnects from {@link Device} if it's connected or cancels pending connection.
-   * 
-   * @param {DeviceId} deviceIdentifier {@link Device} identifier to be closed. 
+   *
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier to be closed.
    * @returns {Promise<Device>} Returns closed {@link Device} when operation is successful.
    */
   async cancelDeviceConnection(deviceIdentifier: DeviceId): Promise<Device> {
@@ -336,9 +343,9 @@ export class BleManager {
 
   /**
    * Monitors if {@link Device} was disconnected due to any errors or connection problems.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier to be monitored.
-   * @param {function(error: ?Error, device: Device)} listener - callback returning error as a reason of disconnection 
+   * @param {function(error: ?Error, device: Device)} listener - callback returning error as a reason of disconnection
    * if available and {@link Device} object.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
@@ -368,7 +375,7 @@ export class BleManager {
 
   /**
    * Check connection state of a {@link Device}.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
    * @returns {Promise<boolean>} Promise which emits `true` if device is connected, and `false` otherwise.
    */
@@ -380,9 +387,9 @@ export class BleManager {
 
   /**
    * Discovers all {@link Service}s and {@link Characteristic}s for {@link Device}.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
-   * @returns {Promise<Device>} Promise which emits {@link Device} object if all available services and 
+   * @returns {Promise<Device>} Promise which emits {@link Device} object if all available services and
    * characteristics have been discovered.
    */
   async discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: DeviceId): Promise<Device> {
@@ -396,9 +403,9 @@ export class BleManager {
 
   /**
    * List of discovered {@link Service}s for {@link Device}.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
-   * @returns {Promise<Array<Service>>} Promise which emits array of {@link Service} objects which are discovered for a 
+   * @returns {Promise<Array<Service>>} Promise which emits array of {@link Service} objects which are discovered for a
    * {@link Device}.
    */
   async servicesForDevice(deviceIdentifier: DeviceId): Promise<Array<Service>> {
@@ -410,10 +417,10 @@ export class BleManager {
 
   /**
    * List of discovered {@link Characteristic}s for given {@link Device} and {@link Service}.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
    * @param {UUID} serviceUUID {@link Service} UUID.
-   * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are 
+   * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are
    * discovered for a {@link Device} in specified {@link Service}.
    */
   characteristicsForDevice(deviceIdentifier: DeviceId, serviceUUID: UUID): Promise<Array<Characteristic>> {
@@ -422,9 +429,9 @@ export class BleManager {
 
   /**
    * List of discovered {@link Characteristic}s for unique {@link Service}.
-   * 
+   *
    * @param {Identifier} serviceIdentifier {@link Service} ID.
-   * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are 
+   * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are
    * discovered in unique {@link Service}.
    * @private
    */
@@ -434,9 +441,9 @@ export class BleManager {
 
   /**
    * Common code for handling NativeCharacteristic fetches.
-   * 
+   *
    * @param {Promise<Array<NativeCharacteristic>>} characteristicsPromise Native characteristics.
-   * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are 
+   * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are
    * discovered in unique {@link Service}.
    * @private
    */
@@ -453,13 +460,13 @@ export class BleManager {
 
   /**
    * Read {@link Characteristic} value.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
-   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
-   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
    * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.
    */
   async readCharacteristicForDevice(
@@ -479,12 +486,12 @@ export class BleManager {
 
   /**
    * Read {@link Characteristic} value.
-   * 
+   *
    * @param {Identifier} serviceIdentifier {@link Service} ID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
-   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
-   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
    * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.
    * @private
    */
@@ -504,11 +511,11 @@ export class BleManager {
 
   /**
    * Read {@link Characteristic} value.
-   * 
+   *
    * @param {Identifier} characteristicIdentifier {@link Characteristic} ID.
-   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
-   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID. 
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID.
    * Latest value of {@link Characteristic} will be stored inside returned object.
    * @private
    */
@@ -527,14 +534,14 @@ export class BleManager {
 
   /**
    * Write {@link Characteristic} value with response.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
-   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    */
   async writeCharacteristicWithResponseForDevice(
@@ -562,13 +569,13 @@ export class BleManager {
 
   /**
    * Write {@link Characteristic} value with response.
-   * 
+   *
    * @param {Identifier} serviceIdentifier {@link Service} ID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
-   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    * @private
    */
@@ -589,12 +596,12 @@ export class BleManager {
 
   /**
    * Write {@link Characteristic} value with response.
-   * 
+   *
    * @param {Identifier} characteristicIdentifier {@link Characteristic} ID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
-   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID. 
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID.
    * Latest value of characteristic may not be stored inside returned object.
    * @private
    */
@@ -614,14 +621,14 @@ export class BleManager {
 
   /**
    * Write {@link Characteristic} value without response.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
-   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    */
   async writeCharacteristicWithoutResponseForDevice(
@@ -649,13 +656,13 @@ export class BleManager {
 
   /**
    * Write {@link Characteristic} value without response.
-   * 
+   *
    * @param {Identifier} serviceIdentifier {@link Service} ID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
-   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    * @private
    */
@@ -676,12 +683,12 @@ export class BleManager {
 
   /**
    * Write {@link Characteristic} value without response.
-   * 
+   *
    * @param {Identifier} characteristicIdentifier {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
-   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID. 
+   * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID.
    * Latest value of characteristic may not be stored inside returned object.
    * @private
    */
@@ -702,13 +709,13 @@ export class BleManager {
   /**
    * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
    * in favour of indications.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
-   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
+   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits
    * {@link Characteristic} objects with modified value for each notification.
-   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
@@ -730,12 +737,12 @@ export class BleManager {
   /**
    * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
    * in favour of indications.
-   * 
+   *
    * @param {Identifier} serviceIdentifier {@link Service} ID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
-   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
+   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits
    * {@link Characteristic} objects with modified value for each notification.
-   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    * @private
@@ -757,11 +764,11 @@ export class BleManager {
   /**
    * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
    * in favour of indications.
-   * 
+   *
    * @param {Identifier} characteristicIdentifier - {@link Characteristic} ID.
-   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
+   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits
    * {@link Characteristic} objects with modified value for each notification.
-   * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    * @private
@@ -781,10 +788,10 @@ export class BleManager {
 
   /**
    * Common code to handle characteristic monitoring.
-   * 
+   *
    * @param {Promise<void>} monitorPromise Characteristic monitoring promise
    * @param {TransactionId} transactionId TransactionId of passed promise
-   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
+   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits
    * {@link Characteristic} objects with modified value for each notification.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    * @private
