@@ -173,7 +173,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public static boolean setBluetooth(boolean enabled) {
+    public static boolean setBluetooth(boolean enable) {
         final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         boolean isEnabled = bluetoothAdapter.isEnabled();
         if (enable && !isEnabled) {
