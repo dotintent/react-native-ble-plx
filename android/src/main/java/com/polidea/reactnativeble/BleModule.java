@@ -172,20 +172,6 @@ public class BleModule extends ReactContextBaseJavaModule {
         promise.resolve(LogLevel.fromLogLevel(currentLogLevel));
     }
 
-    @ReactMethod
-    public static boolean setBluetooth(boolean enabled) {
-        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        boolean isEnabled = bluetoothAdapter.isEnabled();
-        if (enable && !isEnabled) {
-            return bluetoothAdapter.enable();
-        }
-        else if(!enable && isEnabled) {
-            return bluetoothAdapter.disable();
-        }
-        // No need to change bluetooth state
-        return true;
-    }
-
     // Mark: Monitoring state ----------------------------------------------------------------------
 
     @ReactMethod
