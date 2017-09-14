@@ -15,6 +15,7 @@ beforeEach(() => {
     cancelTransaction: jest.fn(),
     setLogLevel: jest.fn(),
     logLevel: jest.fn(),
+    setBluetooth: jest.fn(),
     state: jest.fn(),
     startDeviceScan: jest.fn(),
     stopDeviceScan: jest.fn(),
@@ -69,6 +70,15 @@ test('BleModule calls logLevel function when logLevel is retrieved', async () =>
   const logLevel = await bleManager.logLevel()
   expect(Native.BleModule.logLevel).toBeCalled()
   expect(logLevel).toBe('Verbose')
+})
+
+test('When BleManager setBluetooth is called it should call BleModule setBluetooth', () => {
+  bleManager.setBluetooth(true)
+  expect(Native.BleModule.setBluetooth).toBeCalledWith(true)
+  bleManager.setBluetooth(false)
+  expect(Native.BleModule.setBluetooth).toBeCalledWith(false)
+  bleManager.setBluetooth()
+  expect(Native.BleModule.setBluetooth).toBeCalledWith(false)
 })
 
 test('BleManager state function should return BleModule state', async () => {
