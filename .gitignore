@@ -51,3 +51,6 @@ Carthage
 
 # IDE
 .vscode/
+
+# TEST
+coverage

@@ -8,9 +8,11 @@
   },
   "scripts": {
     "postinstall": "node ./postinstall.js",
-    "test": "jest",
+    "test": "jest --coverage",
     "lint": "flow && documentation lint index.js",
-    "docs": "documentation build index.js -o docs --config documentation.yml -f html"
+    "docs": "documentation build index.js -o docs --config documentation.yml -f html",
+    "precommit": "yarn test",
+    "prepush": "yarn test"
   },
   "repository": {
     "type": "git",
