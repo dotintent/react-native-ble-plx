@@ -134,3 +134,13 @@ android {
         android:minSdkVersion="18"
         ...
 ```
+
+## Troubleshooting
+
+### Problems with Proguard
+
+Add this to your `app/proguard-rules.pro`
+
+```
+-dontwarn com.polidea.reactnativeble.**
+```
