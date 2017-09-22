@@ -22,6 +22,7 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
         String MANUFACTURER_DATA = "manufacturerData";
         String SERVICE_DATA = "serviceData";
         String SERVICE_UUIDS = "serviceUUIDs";
+        String LOCAL_NAME = "localName";
         String TX_POWER_LEVEL = "txPowerLevel";
         String SOLICITED_SERVICE_UUIDS = "solicitedServiceUUIDs";
         String IS_CONNECTABLE = "isConnectable";
@@ -60,6 +61,12 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
             result.putArray(Metadata.SERVICE_UUIDS, serviceUUIDs);
         } else {
             result.putNull(Metadata.SERVICE_UUIDS);
+        }
+
+        if (advData.getLocalName() != null) {
+            result.putString(Metadata.LOCAL_NAME, advData.getLocalName());
+        } else {
+            result.putNull(Metadata.LOCAL_NAME);
         }
 
         if (advData.getTxPowerLevel() != null) {

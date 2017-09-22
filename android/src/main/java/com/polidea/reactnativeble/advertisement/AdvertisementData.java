@@ -2,6 +2,7 @@ package com.polidea.reactnativeble.advertisement;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,11 +13,16 @@ public class AdvertisementData {
     private byte[] manufacturerData;
     private Map<UUID, byte[]> serviceData;
     private ArrayList<UUID> serviceUUIDs;
+    private String localName;
     private Integer txPowerLevel;
     private ArrayList<UUID> solicitedServiceUUIDs;
 
     private static final long BLUETOOTH_BASE_UUID_LSB = 0x800000805F9B34FBL;
     private static final int  BLUETOOTH_BASE_UUID_MSB = 0x00001000;
+
+    public String getLocalName() {
+        return localName;
+    }
 
     public byte[] getManufacturerData() {
         return manufacturerData;
@@ -72,6 +78,10 @@ public class AdvertisementData {
                 parseServiceUUIDs(advData, adLength, data, 16);
                 break;
 
+            case 0x09:
+                parseLocalName(advData, adLength, data);
+                break;
+
             case 0x0A:
                 parseTxPowerLevel(advData, adLength, data);
                 break;
@@ -96,6 +106,12 @@ public class AdvertisementData {
                 parseServiceData(advData, adLength, data, 16);
                 break;
         }
+    }
+
+    private static void parseLocalName(AdvertisementData advData, int adLength, ByteBuffer data) {
+        byte[] bytes = new byte[adLength];
+        data.get(bytes, 0, adLength);
+        advData.localName = new String(bytes, Charset.forName("UTF-8"));
     }
 
     private static UUID parseUUID(ByteBuffer data, int uuidLength) {

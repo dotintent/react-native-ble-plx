@@ -55,6 +55,12 @@ export interface NativeDevice {
   serviceUUIDs: ?Array<UUID>,
 
   /**
+   * User friendly name of device.
+   * @private
+   */
+  localName: ?string,
+
+  /**
    * Transmission power level of device.
    * @private
    */
