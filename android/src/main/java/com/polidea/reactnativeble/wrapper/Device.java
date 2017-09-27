@@ -18,6 +18,7 @@ public class Device  {
         String MANUFACTURER_DATA = "manufacturerData";
         String SERVICE_DATA = "serviceData";
         String SERVICE_UUIDS = "serviceUUIDs";
+        String LOCAL_NAME = "localName";
         String TX_POWER_LEVEL = "txPowerLevel";
         String SOLICITED_SERVICE_UUIDS = "solicitedServiceUUIDs";
         String IS_CONNECTABLE = "isConnectable";
@@ -71,6 +72,7 @@ public class Device  {
         result.putNull(Metadata.MANUFACTURER_DATA);
         result.putNull(Metadata.SERVICE_DATA);
         result.putNull(Metadata.SERVICE_UUIDS);
+        result.putNull(Metadata.LOCAL_NAME);
         result.putNull(Metadata.TX_POWER_LEVEL);
         result.putNull(Metadata.SOLICITED_SERVICE_UUIDS);
         result.putNull(Metadata.IS_CONNECTABLE);
