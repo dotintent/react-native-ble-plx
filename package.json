@@ -1,6 +1,6 @@
 {
   "name": "react-native-ble-plx",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "React Native Bluetooth Low Energy library",
   "main": "index.js",
   "directories": {
@@ -32,7 +32,15 @@
     "react": "16.0.0-alpha.12",
     "react-native": "0.46.4"
   },
-  "keywords": ["React", "Native", "Bluetooth", "Low", "Energy", "BLE", "Polidea"],
+  "keywords": [
+    "React",
+    "Native",
+    "Bluetooth",
+    "Low",
+    "Energy",
+    "BLE",
+    "Polidea"
+  ],
   "jest": {
     "preset": "react-native"
   },

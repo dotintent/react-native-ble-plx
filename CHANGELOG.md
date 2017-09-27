@@ -1,3 +1,13 @@
+**0.6.2**
+- Updated RxBluetoothKit library to version 3.0.14 to allow building library on XCode 9.
+- Added new `localName` property to `Device` object, which is set when localName is available
+  in device's advertisement data.
+- Fixed build process on Windows.
+- Fixed compatibility with RN 0.47
+- Fixed bug when `onDeviceDisconnected` callback was not called on iOS when Bluetooth was 
+  turned off on device.
+- Updated library setup instructions.
+
 **0.6.1**
 - Updated RxAndroidBle library to version 1.3.3 which fixes internal issues which may
   block execution of operation queue.

@@ -15,6 +15,9 @@
 .*/Libraries/react-native/React.js
 .*/Libraries/react-native/ReactNative.js
 
+; Ignore examples
+.*/examples
+
 [include]
 
 [libs]

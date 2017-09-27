@@ -51,6 +51,11 @@ export class Device implements NativeDevice {
   serviceUUIDs: ?Array<UUID>
 
   /**
+   * User friendly name of device.
+   */
+  localName: ?string
+
+  /**
    * Transmission power level of device.
    */
   txPowerLevel: ?number
