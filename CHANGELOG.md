@@ -7,6 +7,7 @@
 - Fixed bug when `onDeviceDisconnected` callback was not called on iOS when Bluetooth was 
   turned off on device.
 - Updated library setup instructions.
+- Added option to cache native libraries built by Carthage.
 
 **0.6.1**
 - Updated RxAndroidBle library to version 1.3.3 which fixes internal issues which may

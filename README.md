@@ -26,6 +26,7 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 - Fixed bug when `onDeviceDisconnected` callback was not called on iOS when Bluetooth was 
   turned off on device.
 - Updated library setup instructions.
+- Added option to cache native libraries built by Carthage.
 
 [All previous changes](CHANGELOG.md)
 

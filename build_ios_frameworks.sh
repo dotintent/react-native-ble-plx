@@ -7,4 +7,4 @@ command -v carthage >/dev/null 2>&1 || {
 
 cd ./ios/BleClientManager
 carthage bootstrap --no-build --platform "iOS"
-carthage build --no-skip-current --platform "iOS"
+carthage build --no-skip-current --cache-builds --platform "iOS"
