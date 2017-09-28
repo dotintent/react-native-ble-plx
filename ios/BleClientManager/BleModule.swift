@@ -150,9 +150,13 @@ public class BleClientManager : NSObject {
 
             _ = manager.monitorDisconnection(for: peripheral)
                 .take(1)
-                .subscribe(onNext: { [weak self] peripheral in
-                    self?.onPeripheralDisconnected(peripheral)
-                })
+                .subscribe(
+                    onNext: { [weak self] peripheral in
+                        self?.onPeripheralDisconnected(peripheral)
+                    },
+                    onError: { [weak self] error in
+                        self?.onPeripheralDisconnected(peripheral)
+                    })
 
             peripheral.services?.forEach { service in
                 discoveredServices[service.jsIdentifier] = service
@@ -278,6 +282,8 @@ public class BleClientManager : NSObject {
                             .subscribe(onNext: { peripheral in
                                 // We are monitoring peripheral disconnections to clean up state.
                                 self?.onPeripheralDisconnected(peripheral)
+                            }, onError: { error in
+                                self?.onPeripheralDisconnected(device)
                             })
                         promise.resolve(device.asJSObject())
                     } else {
