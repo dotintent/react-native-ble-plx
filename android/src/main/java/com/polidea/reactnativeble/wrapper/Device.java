@@ -51,6 +51,10 @@ public class Device  {
     }
 
     public Service getServiceByUUID(UUID uuid) {
+        if (services == null) {
+            return null;
+        }
+
         for(Service service : services) {
             if (uuid.equals(service.getNativeService().getUuid()))
                 return service;
