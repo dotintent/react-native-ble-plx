@@ -1,3 +1,12 @@
+**0.6.3**
+- Updated RxBluetoothKit library to version 3.1.1
+- Updated RxAndroidBle library to version 1.4.1
+- Fixed NullPointerException when calling BLE operations without previous discovery.
+- iOS emits values in `monitorCharacteristicForDevice` only when no reads are pending for specific characteristic.
+  Previously when characteristic was notified and read operation was completed, characteristic value was received
+  both in `readCharacteristicForDevice` and `monitorCharacteristicForDevice`. Now it will only be received in 
+  `readCharacteristicForDevice` promise.
+
 **0.6.2**
 - Updated RxBluetoothKit library to version 3.0.14 to allow building library on XCode 9.
 - Added new `localName` property to `Device` object, which is set when localName is available
