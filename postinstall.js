@@ -1,10 +1,10 @@
-var childProcess = require('child_process');
+var childProcess = require('child_process')
 
 if (process.platform === 'darwin') {
   var result = childProcess.spawnSync('./build_ios_frameworks.sh', [], {
     shell: 'bash',
-    stdio: 'inherit',
-  });
+    stdio: 'inherit'
+  })
 
-  process.exit(result.status);
+  process.exit(result.status)
 }

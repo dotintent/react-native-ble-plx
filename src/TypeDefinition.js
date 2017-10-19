@@ -38,7 +38,7 @@ export interface Subscription {
    * @memberof Subscription
    * @ignore
    */
-  remove(): void
+  remove(): void;
 }
 
 /**
@@ -50,7 +50,7 @@ export interface BleManagerOptions {
    * @memberof BleManagerOptions
    * @instance
    */
-  restoreStateIdentifier?: string,
+  restoreStateIdentifier?: string;
 
   /**
    * Optional function which is used to properly restore state of your BLE Manager. Callback
@@ -61,7 +61,7 @@ export interface BleManagerOptions {
    * @memberof BleManagerOptions
    * @instance
    */
-  restoreStateFunction?: (restoredState: ?BleRestoredState) => void
+  restoreStateFunction?: (restoredState: ?BleRestoredState) => void;
 }
 
 /**
@@ -74,7 +74,7 @@ export interface BleRestoredState {
    * @instance
    * @memberof BleRestoredState
    */
-  connectedPeripherals: Array<Device>
+  connectedPeripherals: Array<Device>;
 }
 
 /**
@@ -86,7 +86,7 @@ export interface ScanOptions {
    * @memberof ScanOptions
    * @instance
    */
-  allowDuplicates?: boolean
+  allowDuplicates?: boolean;
 }
 
 /**
@@ -99,7 +99,7 @@ export interface ConnectionOptions {
    * @memberof ConnectionOptions
    * @instance
    */
-  autoConnect?: boolean,
+  autoConnect?: boolean;
 
   /**
    * Whether MTU size will be negotiated to this value. It is not guaranteed to get it after connection is successful.
@@ -107,7 +107,7 @@ export interface ConnectionOptions {
    * @memberof ConnectionOptions
    * @instance
    */
-  requestMtu?: number
+  requestMtu?: number;
 }
 
 /**

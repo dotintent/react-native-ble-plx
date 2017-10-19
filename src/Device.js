@@ -5,14 +5,7 @@ import { BleManager } from './BleManager'
 import { Characteristic } from './Characteristic'
 import { Service } from './Service'
 import type { NativeDevice } from './BleModule'
-import type {
-  DeviceId,
-  Base64,
-  UUID,
-  Subscription,
-  TransactionId,
-  ConnectionOptions,
-} from './TypeDefinition'
+import type { DeviceId, Base64, UUID, Subscription, TransactionId, ConnectionOptions } from './TypeDefinition'
 
 /**
  * Device instance which can be retrieved only by calling 
@@ -196,14 +189,9 @@ export class Device implements NativeDevice {
   readCharacteristicForService(
     serviceUUID: UUID,
     characteristicUUID: UUID,
-    transactionId: ?TransactionId,
+    transactionId: ?TransactionId
   ): Promise<Characteristic> {
-    return this._manager.readCharacteristicForDevice(
-      this.id,
-      serviceUUID,
-      characteristicUUID,
-      transactionId,
-    )
+    return this._manager.readCharacteristicForDevice(this.id, serviceUUID, characteristicUUID, transactionId)
   }
 
   /**
@@ -221,14 +209,14 @@ export class Device implements NativeDevice {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId,
+    transactionId: ?TransactionId
   ): Promise<Characteristic> {
     return this._manager.writeCharacteristicWithResponseForDevice(
       this.id,
       serviceUUID,
       characteristicUUID,
       valueBase64,
-      transactionId,
+      transactionId
     )
   }
 
@@ -247,14 +235,14 @@ export class Device implements NativeDevice {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId,
+    transactionId: ?TransactionId
   ): Promise<Characteristic> {
     return this._manager.writeCharacteristicWithoutResponseForDevice(
       this.id,
       serviceUUID,
       characteristicUUID,
       valueBase64,
-      transactionId,
+      transactionId
     )
   }
 
@@ -273,14 +261,14 @@ export class Device implements NativeDevice {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     listener: (error: ?Error, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId,
+    transactionId: ?TransactionId
   ): Subscription {
     return this._manager.monitorCharacteristicForDevice(
       this.id,
       serviceUUID,
       characteristicUUID,
       listener,
-      transactionId,
+      transactionId
     )
   }
 }

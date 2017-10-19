@@ -1,16 +1,7 @@
 {
   "parser": "babel-eslint",
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:flowtype/recommended"
-  ],
-  "plugins": [
-    "react",
-    "import",
-    "flowtype",
-    "jest"
-  ],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:flowtype/recommended"],
+  "plugins": ["react", "import", "flowtype", "jest"],
   "rules": {
     "indent": [
       "error",
@@ -19,10 +10,7 @@
         "SwitchCase": 1
       }
     ],
-    "semi": [
-      "error",
-      "never"
-    ]
+    "semi": ["error", "never"]
   },
   "env": {
     "node": true,
