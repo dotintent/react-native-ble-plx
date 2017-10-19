@@ -86,21 +86,28 @@ export interface ScanOptions {
    * @memberof ScanOptions
    * @instance
    */
-  allowDuplicates?: boolean,
-  /**
-   * Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device 
-   * becomes available (true). [Android only]
-   * @memberof ScanOptions
-   * @instance
-   */
-  autoConnect?: boolean
+  allowDuplicates?: boolean
 }
 
 /**
  * Connection specific options to be passed before connection happen. [Not used]
  */
 export interface ConnectionOptions {
-  // Not used for now
+  /**
+   * Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device 
+   * becomes available (true). [Android only]
+   * @memberof ConnectionOptions
+   * @instance
+   */
+  autoConnect?: boolean,
+
+  /**
+   * Whether MTU size will be negotiated to this value. It is not guaranteed to get it after connection is successful.
+   *
+   * @memberof ConnectionOptions
+   * @instance
+   */
+  requestMtu?: number
 }
 
 /**

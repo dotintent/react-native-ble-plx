@@ -108,4 +108,5 @@ extension BleError {
     static func invalidID(_ id: Double) -> BleError { return BleError(code: 505, message: "Invalid ID was passed: \(id)")}
     static func serviceNotFound(_ uuid: String) -> BleError { return BleError(code: 506, message: "Service \(uuid) not found") }
     static func serviceNotFound(_ id: Double) -> BleError { return BleError(code: 506, message: "Service \(id) not found") }
+	static func dataUnavailable(_ data: String, device: String) -> BleError { return BleError(code: 507, message: "\(data) is not the available on your device (\(device))") }
 }

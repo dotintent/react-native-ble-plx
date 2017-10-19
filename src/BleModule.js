@@ -244,6 +244,8 @@ export interface BleModuleInterface {
    */
   stopDeviceScan(): void,
 
+  // Device operations
+
   /**
    * Reads RSSI for connected device.
    * 
@@ -253,6 +255,14 @@ export interface BleModuleInterface {
    * @private
    */
   readRSSIForDevice(deviceIdentifier: DeviceId, transactionId: TransactionId): Promise<NativeDevice>,
+
+  /**
+   * Get Mtu for device.
+   * @param {DeviceId} deviceIdentifier Device identifier.
+   * @returns {Promise<NativeDevice>} Device's MTU size. Default value is 23.
+   * @private
+   */
+  getMtuForDevice(deviceIdentifier: DeviceId): Promise<number>,
 
   // Connection management
 
