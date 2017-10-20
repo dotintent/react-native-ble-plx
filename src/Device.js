@@ -106,7 +106,7 @@ export class Device implements NativeDevice {
    * 
    * @returns {Promise<Device>} Device with updated MTU size. Default value is 23.
    */
-  readMTUForDevice(): Promise<Device> {
+  readMTU(): Promise<Device> {
     return this._manager.readMTUForDevice(this.id)
   }
 
