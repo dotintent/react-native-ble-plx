@@ -14,6 +14,7 @@ public class Device  {
         String ID = "id";
         String NAME = "name";
         String RSSI = "rssi";
+        String MTU = "mtu";
 
         String MANUFACTURER_DATA = "manufacturerData";
         String SERVICE_DATA = "serviceData";
@@ -71,6 +72,7 @@ public class Device  {
         } else {
             result.putNull(Metadata.RSSI);
         }
+        result.putInt(Metadata.MTU, connection.getMtu());
 
         // Advertisement data is not set
         result.putNull(Metadata.MANUFACTURER_DATA);

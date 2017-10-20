@@ -287,14 +287,14 @@ public class BleModule extends ReactContextBaseJavaModule {
     // Mark: Device operations ---------------------------------------------------------------------
 
     @ReactMethod
-    public void getMtuForDevice(final String deviceId, final Promise promise) {
+    public void readMTUForDevice(final String deviceId, final Promise promise) {
         final Device device = connectedDevices.get(deviceId);
         if (device == null) {
             BleError.deviceNotConnected(deviceId).reject(promise);
             return;
         }
 
-        promise.resolve(device.getConnection().getMtu());
+        promise.resolve(device.toJSObject(null));
     }
 
     @ReactMethod
@@ -354,8 +354,8 @@ public class BleModule extends ReactContextBaseJavaModule {
             if (options.hasKey("autoConnect")) {
                 autoConnect = options.getBoolean("autoConnect");
             }
-            if (options.hasKey("requestMtu")) {
-                requestMtu = options.getInt("requestMtu");
+            if (options.hasKey("requestMTU")) {
+                requestMtu = options.getInt("requestMTU");
             }
         }
 

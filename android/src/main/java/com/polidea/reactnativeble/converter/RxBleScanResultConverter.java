@@ -18,6 +18,7 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
         String ID = "id";
         String NAME = "name";
         String RSSI = "rssi";
+        String MTU = "mtu";
 
         String MANUFACTURER_DATA = "manufacturerData";
         String SERVICE_DATA = "serviceData";
@@ -35,6 +36,7 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
         result.putString(Metadata.ID, value.getBleDevice().getMacAddress());
         result.putString(Metadata.NAME, value.getBleDevice().getName());
         result.putInt(Metadata.RSSI, value.getRssi());
+        result.putInt(Metadata.MTU, 23);
 
         AdvertisementData advData = AdvertisementData.parseScanResponseData(value.getScanRecord());
         result.putString(Metadata.MANUFACTURER_DATA,
