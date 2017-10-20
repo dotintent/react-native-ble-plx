@@ -74,10 +74,10 @@ export class Characteristic implements NativeCharacteristic {
   }
 
   /**
-   * {@link #BleManager#readCharacteristicForDevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
+   * {@link #blemanagerreadcharacteristicfordevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
    * 
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value will be stored 
    * inside returned object.
    */
@@ -86,11 +86,11 @@ export class Characteristic implements NativeCharacteristic {
   }
 
   /**
-   * {@link #BleManager#writeCharacteristicWithResponseForDevice|bleManager.writeCharacteristicWithResponseForDevice()} with partially filled arguments.
+   * {@link #blemanagerwritecharacteristicwithresponsefordevice|bleManager.writeCharacteristicWithResponseForDevice()} with partially filled arguments.
    * 
    * @param {Base64} valueBase64 Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value may 
    * not be stored inside returned object.
    */
@@ -99,11 +99,11 @@ export class Characteristic implements NativeCharacteristic {
   }
 
   /**
-   * {@link #BleManager#writeCharacteristicWithoutResponseForDevice|bleManager.writeCharacteristicWithoutResponseForDevice()} with partially filled arguments.
+   * {@link #blemanagerwritecharacteristicwithoutresponsefordevice|bleManager.writeCharacteristicWithoutResponseForDevice()} with partially filled arguments.
    * 
    * @param {Base64} valueBase64 Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value may 
    * not be stored inside returned object.
    */
@@ -112,12 +112,12 @@ export class Characteristic implements NativeCharacteristic {
   }
 
   /**
-   * {@link #BleManager#monitorCharacteristicForDevice|bleManager.monitorCharacteristicForDevice()} with partially filled arguments.
+   * {@link #blemanagermonitorcharacteristicfordevice|bleManager.monitorCharacteristicForDevice()} with partially filled arguments.
    * 
    * @param {function(error: ?Error, characteristic: ?Characteristic)} listener callback which emits 
    * this {@link Characteristic} with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
   monitor(

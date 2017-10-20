@@ -107,11 +107,11 @@ export interface ConnectionOptions {
    * @memberof ConnectionOptions
    * @instance
    */
-  requestMtu?: number;
+  requestMTU?: number;
 }
 
 /**
- * Device Bluetooth Low Energy state. It's keys are used to check {@link #BleManager#state} values
+ * Device Bluetooth Low Energy state. It's keys are used to check {@link #blemanagerstate} values
  * received by {@link BleManager}
  */
 export const State = {

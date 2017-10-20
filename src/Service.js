@@ -45,7 +45,7 @@ export class Service implements NativeService {
   }
 
   /**
-   * {@link #BleManager#characteristicsForDevice|bleManager.characteristicsForDevice()} with partially filled arguments.
+   * {@link #blemanagercharacteristicsfordevice|bleManager.characteristicsForDevice()} with partially filled arguments.
    * 
    * @returns {Promise<Array<Characteristic>>} Promise which emits array of {@link Characteristic} objects which are 
    * discovered for this service.
@@ -55,11 +55,11 @@ export class Service implements NativeService {
   }
 
   /**
-   * {@link #BleManager#readCharacteristicForDevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
+   * {@link #blemanagerreadcharacteristicfordevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
    * 
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID path. Latest value of {@link Characteristic} will be stored inside returned object.
    */
@@ -68,12 +68,12 @@ export class Service implements NativeService {
   }
 
   /**
-   * {@link #BleManager#writeCharacteristicWithResponseForDevice|bleManager.writeCharacteristicWithResponseForDevice()} with partially filled arguments.
+   * {@link #blemanagerwritecharacteristicwithresponsefordevice|bleManager.writeCharacteristicWithResponseForDevice()} with partially filled arguments.
    * 
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} valueBase64 Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID path. Latest value of characteristic may not be stored inside returned object.
    */
@@ -91,12 +91,12 @@ export class Service implements NativeService {
   }
 
   /**
-     * {@link #BleManager#writeCharacteristicWithoutResponseForDevice|bleManager.writeCharacteristicWithoutResponseForDevice()} with partially filled arguments.
+     * {@link #blemanagerwritecharacteristicwithoutresponsefordevice|bleManager.writeCharacteristicWithoutResponseForDevice()} with partially filled arguments.
      * 
      * @param {UUID} characteristicUUID {@link Characteristic} UUID.
      * @param {Base64} valueBase64 Value in Base64 format.
      * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-     * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
+     * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
      * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
      * UUID path. Latest value of characteristic may not be stored inside returned object.
      */
@@ -114,13 +114,13 @@ export class Service implements NativeService {
   }
 
   /**
-     * {@link #BleManager#monitorCharacteristicForDevice|bleManager.monitorCharacteristicForDevice()} with partially filled arguments.
+     * {@link #blemanagermonitorcharacteristicfordevice|bleManager.monitorCharacteristicForDevice()} with partially filled arguments.
      * 
      * @param {UUID} characteristicUUID - {@link Characteristic} UUID.
      * @param {function(error: ?Error, characteristic: ?Characteristic)} listener callback which emits 
      * {@link Characteristic} objects with modified value for each notification.
      * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-     * {@link #BleManager#cancelTransaction|bleManager.cancelTransaction()} function.
+     * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
   monitorCharacteristic(

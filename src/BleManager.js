@@ -23,7 +23,7 @@ import type {
  * 
  * BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
  * {@link Device} instances. It should be initialized only once with `new` keyword and method 
- * {@link #BleManager#destroy|destroy()} should be called on its instance when user wants to deallocate all resources.
+ * {@link #blemanagerdestroy|destroy()} should be called on its instance when user wants to deallocate all resources.
  * 
  * In case you want to properly support Background Mode, you should provide `restoreStateIdentifier` and
  * `restoreStateFunction` in {@link BleManagerOptions}.
@@ -280,6 +280,7 @@ export class BleManager {
     const scanListener = ([error, nativeDevice]: [?Error, ?NativeDevice]) => {
       listener(error, nativeDevice ? new Device(nativeDevice, this) : null)
     }
+    // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
     this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
     BleModule.startDeviceScan(UUIDs, options)
   }
@@ -311,15 +312,13 @@ export class BleManager {
   }
 
   /**
-   * Get Mtu for device.
-   * 
+   * Read current MTU of this device.
    * @param {DeviceId} deviceIdentifier Device identifier.
-   * @returns {Promise<number>} Device's MTU size. Default value is 23.
-   * @private
+   * @returns {Promise<Device>} Device with updated MTU size. Default value is 23.
    */
-  async getMtuForDevice(deviceIdentifier: DeviceId, withResponse: boolean): Promise<number> {
-    const deviceMtu = await this._callPromise(BleModule.getMtuForDevice(deviceIdentifier, withResponse))
-    return deviceMtu
+  async readMTUForDevice(deviceIdentifier: DeviceId): Promise<Device> {
+    const nativeDevice = await this._callPromise(BleModule.readMTUForDevice(deviceIdentifier))
+    return new Device(nativeDevice, this)
   }
 
   // Mark: Connection management ---------------------------------------------------------------------------------------
@@ -471,7 +470,7 @@ export class BleManager {
    * @param {UUID} serviceUUID {@link Service} UUID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.
    */
@@ -496,7 +495,7 @@ export class BleManager {
    * @param {Identifier} serviceIdentifier {@link Service} ID.
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of {@link Characteristic} will be stored inside returned object.
    * @private
@@ -520,7 +519,7 @@ export class BleManager {
    * 
    * @param {Identifier} characteristicIdentifier {@link Characteristic} ID.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID. 
    * Latest value of {@link Characteristic} will be stored inside returned object.
    * @private
@@ -546,7 +545,7 @@ export class BleManager {
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    */
@@ -580,7 +579,7 @@ export class BleManager {
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    * @private
@@ -606,7 +605,7 @@ export class BleManager {
    * @param {Identifier} characteristicIdentifier {@link Characteristic} ID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID. 
    * Latest value of characteristic may not be stored inside returned object.
    * @private
@@ -633,7 +632,7 @@ export class BleManager {
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    */
@@ -667,7 +666,7 @@ export class BleManager {
    * @param {UUID} characteristicUUID {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified 
    * UUID paths. Latest value of characteristic may not be stored inside returned object.
    * @private
@@ -693,7 +692,7 @@ export class BleManager {
    * @param {Identifier} characteristicIdentifier {@link Characteristic} UUID.
    * @param {Base64} base64Value Value in Base64 format.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified ID. 
    * Latest value of characteristic may not be stored inside returned object.
    * @private
@@ -722,7 +721,7 @@ export class BleManager {
    * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
    * {@link Characteristic} objects with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
   monitorCharacteristicForDevice(
@@ -749,7 +748,7 @@ export class BleManager {
    * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
    * {@link Characteristic} objects with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    * @private
    */
@@ -775,7 +774,7 @@ export class BleManager {
    * @param {function(error: ?Error, characteristic: ?Characteristic)} listener - callback which emits 
    * {@link Characteristic} objects with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in 
-   * {@link #BleManager#cancelTransaction|cancelTransaction()} function.
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    * @private
    */

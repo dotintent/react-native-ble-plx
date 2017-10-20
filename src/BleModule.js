@@ -33,6 +33,11 @@ export interface NativeDevice {
    * @private
    */
   rssi: ?number;
+  /**
+   * Current Maximum Transmission Unit for this device.
+   * @private
+   */
+  mtu: number;
 
   // Advertisement
 
@@ -257,12 +262,12 @@ export interface BleModuleInterface {
   readRSSIForDevice(deviceIdentifier: DeviceId, transactionId: TransactionId): Promise<NativeDevice>;
 
   /**
-   * Get Mtu for device.
+   * Read current MTU of this device.
    * @param {DeviceId} deviceIdentifier Device identifier.
-   * @returns {Promise<NativeDevice>} Device's MTU size. Default value is 23.
+   * @returns {Promise<NativeDevice>} Device with updated MTU size. Default value is 23.
    * @private
    */
-  getMtuForDevice(deviceIdentifier: DeviceId): Promise<number>;
+  readMTUForDevice(deviceIdentifier: DeviceId): Promise<NativeDevice>;
 
   // Connection management
 

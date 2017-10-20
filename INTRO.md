@@ -97,9 +97,9 @@ it can be a long process depending on number of characteristics and services ava
 ## Read, write and monitor values
 
 After successful discovery of services you can call 
-* {@link #BleManager#readCharacteristicForDevice|BleManager.readCharacteristicForDevice()},
-* {@link #BleManager#writeCharacteristicWithResponseForDevice|BleManager.writeCharacteristicWithResponseForDevice()}, 
-* {@link #BleManager#monitorCharacteristicForDevice|BleManager.monitorCharacteristicForDevice()}
+* {@link #blemanagerreadcharacteristicfordevice|BleManager.readCharacteristicForDevice()},
+* {@link #blemanagerwritecharacteristicwithresponsefordevice|BleManager.writeCharacteristicWithResponseForDevice()}, 
+* {@link #blemanagermonitorcharacteristicfordevice|BleManager.monitorCharacteristicForDevice()}
 
 and other functions which are described in detail in documentation.
 
