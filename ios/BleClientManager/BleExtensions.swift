@@ -17,6 +17,15 @@ extension RestoredState {
 }
 
 extension ScannedPeripheral {
+
+    var mtu: Int {
+        if #available(iOS 9.0, *) {
+            return peripheral.maximumWriteValueLength(for: .withResponse)
+        } else {
+            return 23
+        }
+    }
+
     var asJSObject: [AnyHashable: Any] {
         var serviceData: [String:String]?
         if let advServiceData = advertisementData.serviceData {
@@ -47,6 +56,7 @@ extension ScannedPeripheral {
             "id": peripheral.identifier.uuidString,
             "name": peripheral.name as Any,
             "rssi": rssi,
+            "mtu": mtu,
 
             "manufacturerData": manufacturerData as Any,
             "serviceData": serviceData as Any,
@@ -61,11 +71,20 @@ extension ScannedPeripheral {
 }
 
 extension Peripheral {
+    var mtu: Int {
+        if #available(iOS 9.0, *) {
+            return maximumWriteValueLength(for: .withResponse)
+        } else {
+            return 23
+        }
+    }
+
     func asJSObject(withRssi: Int? = nil) -> [AnyHashable: Any] {
         return [
             "id": identifier.uuidString,
             "name": name as Any,
             "rssi": withRssi as Any,
+            "mtu": mtu,
 
             "manufacturerData": NSNull(),
             "serviceData": NSNull(),
