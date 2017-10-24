@@ -17,14 +17,10 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 
 ## Recent Changes
 
-**0.6.3**
-- Updated RxBluetoothKit library to version 3.1.1
-- Updated RxAndroidBle library to version 1.4.1
-- Fixed NullPointerException when calling BLE operations without previous discovery.
-- iOS emits values in `monitorCharacteristicForDevice` only when no reads are pending for specific characteristic.
-  Previously when characteristic was notified and read operation was completed, characteristic value was received
-  both in `readCharacteristicForDevice` and `monitorCharacteristicForDevice`. Now it will only be received in 
-  `readCharacteristicForDevice` promise.
+**0.6.4**
+- Fail explicitly when carthage fails on postinstall.
+- Added `mtu` property for `Device` object which allows you to get current BLE MTU of device.
+- Added function `requestMTUForDevice` which allows to negotiate BLE MTU of device if it is possible.
   
 [All previous changes](CHANGELOG.md)
 

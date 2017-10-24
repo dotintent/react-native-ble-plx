@@ -1,3 +1,8 @@
+**0.6.4**
+- Fail explicitly when carthage fails on postinstall.
+- Added `mtu` property for `Device` object which allows you to get current BLE MTU of device.
+- Added function `requestMTUForDevice` which allows to negotiate BLE MTU of device if it is possible.
+
 **0.6.3**
 - Updated RxBluetoothKit library to version 3.1.1
 - Updated RxAndroidBle library to version 1.4.1
