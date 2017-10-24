@@ -20,7 +20,7 @@ extension ScannedPeripheral {
 
     var mtu: Int {
         if #available(iOS 9.0, *) {
-            return peripheral.maximumWriteValueLength(for: .withResponse)
+            return peripheral.maximumWriteValueLength(for: .withoutResponse) + 3
         } else {
             return 23
         }
@@ -73,7 +73,7 @@ extension ScannedPeripheral {
 extension Peripheral {
     var mtu: Int {
         if #available(iOS 9.0, *) {
-            return maximumWriteValueLength(for: .withResponse)
+            return maximumWriteValueLength(for: .withoutResponse) + 3
         } else {
             return 23
         }

@@ -80,10 +80,12 @@ RCT_EXPORT_METHOD(readRSSIForDevice:(NSString*)deviceIdentifier
 }
 
 RCT_EXPORT_METHOD(requestMTUForDevice:(NSString*)deviceIdentifier
+                                  mtu:(nonnull NSNumber*)mtu
                         transactionId:(NSString*)transactionId
                              resolver:(RCTPromiseResolveBlock)resolve
                              rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager requestMTUForDevice:deviceIdentifier
+                              mtu:mtu
                     transactionId:transactionId
                           resolve:resolve
                            reject:reject];

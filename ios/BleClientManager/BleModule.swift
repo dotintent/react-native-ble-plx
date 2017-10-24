@@ -244,6 +244,7 @@ public class BleClientManager : NSObject {
     }
 
     public func requestMTUForDevice(_ deviceIdentifier: String,
+                                                   mtu: Int,
                                          transactionId: String,
                                                resolve: @escaping Resolve,
                                                 reject: @escaping Reject) {
