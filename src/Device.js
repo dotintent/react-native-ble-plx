@@ -104,10 +104,11 @@ export class Device implements NativeDevice {
   /**
    * {@link #blemanagerrequestmtufordevice|bleManager.requestMTUForDevice()} with partially filled arguments.
    * 
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation.
    * @returns {Promise<Device>} Device with updated MTU size. Default value is 23.
    */
-  requestMTU(mtu: number): Promise<Device> {
-    return this._manager.requestMTUForDevice(this.id, mtu)
+  requestMTU(mtu: number, transactionId: ?TransactionId): Promise<Device> {
+    return this._manager.requestMTUForDevice(this.id, mtu, transactionId)
   }
 
   /**

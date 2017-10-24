@@ -287,14 +287,46 @@ public class BleModule extends ReactContextBaseJavaModule {
     // Mark: Device operations ---------------------------------------------------------------------
 
     @ReactMethod
-    public void readMTUForDevice(final String deviceId, final Promise promise) {
+    public void requestMTUForDevice(final String deviceId, int mtu, final String transactionId, final Promise promise) {
         final Device device = connectedDevices.get(deviceId);
         if (device == null) {
             BleError.deviceNotConnected(deviceId).reject(promise);
             return;
         }
 
-        promise.resolve(device.toJSObject(null));
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            final SafePromise safePromise = new SafePromise(promise);
+            final Subscription subscription = device
+                    .getConnection()
+                    .requestMtu(mtu)
+                    .doOnUnsubscribe(new Action0() {
+                        @Override
+                        public void call() {
+                            BleError.cancelled().reject(safePromise);
+                            transactions.removeSubscription(transactionId);
+                        }
+                    }).subscribe(new Observer<Integer>() {
+                        @Override
+                        public void onCompleted() {
+                            transactions.removeSubscription(transactionId);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            errorConverter.toError(e).reject(safePromise);
+                            transactions.removeSubscription(transactionId);
+                        }
+
+                        @Override
+                        public void onNext(Integer integer) {
+                            safePromise.resolve(device.toJSObject(null));
+                        }
+                    });
+
+            transactions.replaceSubscription(transactionId, subscription);
+        } else {
+            promise.resolve(device.toJSObject(null));
+        }
     }
 
     @ReactMethod

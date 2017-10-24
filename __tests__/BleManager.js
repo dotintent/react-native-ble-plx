@@ -270,6 +270,6 @@ test('BleManager properly monitors characteristic value', async () => {
 })
 
 test('BleManager properly requests the MTU', async () => {
-  bleManager.requestMTUForDevice('id', 99)
-  expect(Native.BleModule.requestMTUForDevice).toBeCalledWith('id', 99)
+  bleManager.requestMTUForDevice('id', 99, 'trId')
+  expect(Native.BleModule.requestMTUForDevice).toBeCalledWith('id', 99, 'trId')
 })

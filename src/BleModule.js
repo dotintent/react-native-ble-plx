@@ -266,10 +266,11 @@ export interface BleModuleInterface {
    * on iOS platform as MTU exchange is done automatically.
    * @param {DeviceId} deviceIdentifier Device identifier.
    * @param {number} mtu New MTU to negotiate.
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<NativeDevice>} Device with updated MTU size. Default value is 23.
    * @private
    */
-  requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number): Promise<NativeDevice>;
+  requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number, transactionId: TransactionId): Promise<NativeDevice>;
 
   // Connection management
 

@@ -316,10 +316,14 @@ export class BleManager {
    * on iOS platform as MTU exchange is done automatically.
    * @param {DeviceId} deviceIdentifier Device identifier.
    * @param {number} mtu New MTU to negotiate.
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<Device>} Device with updated MTU size. Default value is 23.
    */
-  async requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number): Promise<Device> {
-    const nativeDevice = await this._callPromise(BleModule.requestMTUForDevice(deviceIdentifier, mtu))
+  async requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number, transactionId: ?TransactionId): Promise<Device> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeDevice = await this._callPromise(BleModule.requestMTUForDevice(deviceIdentifier, mtu, transactionId))
     return new Device(nativeDevice, this)
   }
 

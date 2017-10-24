@@ -243,9 +243,10 @@ public class BleClientManager : NSObject {
         transactions.replaceDisposable(transactionId, disposable: disposable)
     }
 
-    public func readMTUForDevice(_ deviceIdentifier: String,
-                                 resolve: @escaping Resolve,
-                                 reject: @escaping Reject) {
+    public func requestMTUForDevice(_ deviceIdentifier: String,
+                                         transactionId: String,
+                                               resolve: @escaping Resolve,
+                                                reject: @escaping Reject) {
 
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
             BleError.invalidUUID(deviceIdentifier).callReject(reject)

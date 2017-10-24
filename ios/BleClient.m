@@ -79,12 +79,14 @@ RCT_EXPORT_METHOD(readRSSIForDevice:(NSString*)deviceIdentifier
                          reject:reject];
 }
 
-RCT_EXPORT_METHOD(readMTUForDevice:(NSString*)deviceIdentifier
-                          resolver:(RCTPromiseResolveBlock)resolve
-                          rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager readMTUForDevice:deviceIdentifier
-                       resolve:resolve
-                        reject:reject];
+RCT_EXPORT_METHOD(requestMTUForDevice:(NSString*)deviceIdentifier
+                        transactionId:(NSString*)transactionId
+                             resolver:(RCTPromiseResolveBlock)resolve
+                             rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager requestMTUForDevice:deviceIdentifier
+                    transactionId:transactionId
+                          resolve:resolve
+                           reject:reject];
 }
 
 // Mark: Connection management -----------------------------------------------------------------------------------------
