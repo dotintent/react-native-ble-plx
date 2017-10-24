@@ -2,7 +2,7 @@
 
 command -v carthage >/dev/null 2>&1 || { 
   echo >&2 "Warning: Carthage is required to compile frameworks for iOS backend. You can install it with brew: brew install carthage. After installation go to ./node_modules/react-native-ble-plx and run ./build_ios_frameworks.sh or reinstall node module."
-  exit 0 
+  exit 1
 }
 
 cd ./ios/BleClientManager
