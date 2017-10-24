@@ -34,7 +34,8 @@ export interface NativeDevice {
    */
   rssi: ?number;
   /**
-   * Current Maximum Transmission Unit for this device.
+   * Current Maximum Transmission Unit for this device. When device is not connected
+   * default value of 23 is used.
    * @private
    */
   mtu: number;

@@ -19,11 +19,7 @@ extension RestoredState {
 extension ScannedPeripheral {
 
     var mtu: Int {
-        if #available(iOS 9.0, *) {
-            return peripheral.maximumWriteValueLength(for: .withoutResponse) + 3
-        } else {
-            return 23
-        }
+        return 23
     }
 
     var asJSObject: [AnyHashable: Any] {
