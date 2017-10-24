@@ -312,12 +312,14 @@ export class BleManager {
   }
 
   /**
-   * Read current MTU of this device.
+   * Request new MTU value for this device. This function currently is not doing anything
+   * on iOS platform as MTU exchange is done automatically.
    * @param {DeviceId} deviceIdentifier Device identifier.
+   * @param {number} mtu New MTU to negotiate.
    * @returns {Promise<Device>} Device with updated MTU size. Default value is 23.
    */
-  async readMTUForDevice(deviceIdentifier: DeviceId): Promise<Device> {
-    const nativeDevice = await this._callPromise(BleModule.readMTUForDevice(deviceIdentifier))
+  async requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number): Promise<Device> {
+    const nativeDevice = await this._callPromise(BleModule.requestMTUForDevice(deviceIdentifier, mtu))
     return new Device(nativeDevice, this)
   }
 

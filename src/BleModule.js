@@ -262,12 +262,14 @@ export interface BleModuleInterface {
   readRSSIForDevice(deviceIdentifier: DeviceId, transactionId: TransactionId): Promise<NativeDevice>;
 
   /**
-   * Read current MTU of this device.
+   * Request new MTU value for this device. This function currently is not doing anything
+   * on iOS platform as MTU exchange is done automatically.
    * @param {DeviceId} deviceIdentifier Device identifier.
+   * @param {number} mtu New MTU to negotiate.
    * @returns {Promise<NativeDevice>} Device with updated MTU size. Default value is 23.
    * @private
    */
-  readMTUForDevice(deviceIdentifier: DeviceId): Promise<NativeDevice>;
+  requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number): Promise<NativeDevice>;
 
   // Connection management
 

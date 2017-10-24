@@ -102,12 +102,12 @@ export class Device implements NativeDevice {
   }
 
   /**
-   * {@link #blemanagerreadmtufordevice|bleManager.readMTUForDevice()} with partially filled arguments.
+   * {@link #blemanagerrequestmtufordevice|bleManager.requestMTUForDevice()} with partially filled arguments.
    * 
    * @returns {Promise<Device>} Device with updated MTU size. Default value is 23.
    */
-  readMTU(): Promise<Device> {
-    return this._manager.readMTUForDevice(this.id)
+  requestMTU(mtu: number): Promise<Device> {
+    return this._manager.requestMTUForDevice(this.id, mtu)
   }
 
   /**

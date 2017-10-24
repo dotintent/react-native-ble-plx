@@ -28,7 +28,7 @@ beforeEach(() => {
     readCharacteristicForDevice: jest.fn(),
     writeCharacteristicForDevice: jest.fn(),
     monitorCharacteristicForDevice: jest.fn(),
-    readMTUForDevice: jest.fn(),
+    requestMTUForDevice: jest.fn(),
     ScanEvent: 'scan_event',
     ReadEvent: 'read_event',
     StateChangeEvent: 'state_change_event',
@@ -269,7 +269,7 @@ test('BleManager properly monitors characteristic value', async () => {
   expect(Native.BleModule.monitorCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', 'x')
 })
 
-test('BleManager properly reads the MTU', async () => {
-  bleManager.readMTUForDevice('id')
-  expect(Native.BleModule.readMTUForDevice).toBeCalledWith('id')
+test('BleManager properly requests the MTU', async () => {
+  bleManager.requestMTUForDevice('id', 99)
+  expect(Native.BleModule.requestMTUForDevice).toBeCalledWith('id', 99)
 })

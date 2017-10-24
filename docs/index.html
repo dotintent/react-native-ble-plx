@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>react-native-ble-plx 0.6.3 | Documentation</title>
+  <title>react-native-ble-plx 0.6.4 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>react-native-ble-plx</h3>
-          <div class='mb1'><code>0.6.3</code></div>
+          <div class='mb1'><code>0.6.4</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -112,9 +112,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#blemanagerreadmtufordevice'
+                        href='#blemanagerrequestmtufordevice'
                         class='regular pre-open'>
-                        #readMTUForDevice
+                        #requestMTUForDevice
                       </a></li>
                       
                       <li><a
@@ -284,9 +284,9 @@
                       </a></li>
                       
                       <li><a
-                        href='#devicereadmtufordevice'
+                        href='#devicerequestmtu'
                         class='regular pre-open'>
-                        #readMTUForDevice
+                        #requestMTU
                       </a></li>
                       
                       <li><a
@@ -1688,11 +1688,11 @@ is a scanned
       </div>
     </div>
   
-    <div class='border-bottom' id='blemanagerreadmtufordevice'>
+    <div class='border-bottom' id='blemanagerrequestmtufordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>readMTUForDevice(deviceIdentifier)</span>
+            <span class='code strong strong truncate'>requestMTUForDevice(deviceIdentifier, mtu)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -1700,10 +1700,11 @@ is a scanned
 
   
 
-  <p>Read current MTU of this device.</p>
+  <p>Request new MTU value for this device. This function currently is not doing anything
+on iOS platform as MTU exchange is done automatically.</p>
 
 
-  <div class='pre p1 fill-light mt0'>readMTUForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>requestMTUForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, mtu: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -1722,6 +1723,15 @@ is a scanned
           <div>
             <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    Device identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mtu</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    New MTU to negotiate.
 
           </div>
           
@@ -3506,11 +3516,11 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='devicereadmtufordevice'>
+    <div class='border-bottom' id='devicerequestmtu'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>readMTUForDevice()</span>
+            <span class='code strong strong truncate'>requestMTU(mtu)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3518,20 +3528,33 @@ in favour of indications.</p>
 
   
 
-  <p><a href="#blemanagerreadmtufordevice">bleManager.readMTUForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerrequestmtufordevice">bleManager.requestMTUForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>readMTUForDevice(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
-  
-  
-
-  
-  
-  
-  
+  <div class='pre p1 fill-light mt0'>requestMTU(mtu: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mtu</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+    </div>
   
 
   
