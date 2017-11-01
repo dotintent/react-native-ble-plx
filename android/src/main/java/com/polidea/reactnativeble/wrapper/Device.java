@@ -72,7 +72,11 @@ public class Device  {
         } else {
             result.putNull(Metadata.RSSI);
         }
-        result.putInt(Metadata.MTU, connection.getMtu());
+        if(connection != null) {
+            result.putInt(Metadata.MTU, connection.getMtu());
+        } else {
+            result.putNull(Metadata.MTU);
+        }
 
         // Advertisement data is not set
         result.putNull(Metadata.MANUFACTURER_DATA);
