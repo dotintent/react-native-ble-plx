@@ -2,6 +2,7 @@ package com.polidea.reactnativeble.wrapper;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.util.Pair;
 
@@ -36,7 +37,7 @@ public class Characteristic {
     private BluetoothGattCharacteristic characteristic;
     private int id;
 
-    public Characteristic(Service service, BluetoothGattCharacteristic characteristic) {
+    public Characteristic(@NonNull Service service, @NonNull BluetoothGattCharacteristic characteristic) {
         this.service = service;
         this.characteristic = characteristic;
         this.id = IdGenerator.getIdForKey(new Pair<>(characteristic.getUuid(), characteristic.getInstanceId()));
