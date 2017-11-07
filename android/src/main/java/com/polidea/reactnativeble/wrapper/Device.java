@@ -2,6 +2,7 @@ package com.polidea.reactnativeble.wrapper;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import com.polidea.reactnativeble.utils.Constants;
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
 
@@ -75,7 +76,7 @@ public class Device  {
         if(connection != null) {
             result.putInt(Metadata.MTU, connection.getMtu());
         } else {
-            result.putNull(Metadata.MTU);
+            result.putInt(Metadata.MTU, Constants.MINIMUM_MTU);
         }
 
         // Advertisement data is not set

@@ -6,6 +6,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.reactnativeble.advertisement.AdvertisementData;
+import com.polidea.reactnativeble.utils.Constants;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.rxandroidble.RxBleScanResult;
 
@@ -36,7 +37,7 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
         result.putString(Metadata.ID, value.getBleDevice().getMacAddress());
         result.putString(Metadata.NAME, value.getBleDevice().getName());
         result.putInt(Metadata.RSSI, value.getRssi());
-        result.putInt(Metadata.MTU, 23);
+        result.putInt(Metadata.MTU, Constants.MINIMUM_MTU);
 
         AdvertisementData advData = AdvertisementData.parseScanResponseData(value.getScanRecord());
         result.putString(Metadata.MANUFACTURER_DATA,
