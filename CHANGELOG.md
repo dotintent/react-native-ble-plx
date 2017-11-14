@@ -1,3 +1,8 @@
+**0.6.5**
+- Fixed Null Pointer Exception when called `cancelDeviceConnection` on Android.
+- Updated gradle version to be able to use latest Android Studio.
+- Added Nullable and Nonnull annotations to Android implementation.
+
 **0.6.4**
 - Fail explicitly when carthage fails on postinstall.
 - Added `mtu` property for `Device` object which allows you to get current BLE MTU of device.

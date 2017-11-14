@@ -17,16 +17,19 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 
 ## Recent Changes
 
-**0.6.4**
-- Fail explicitly when carthage fails on postinstall.
-- Added `mtu` property for `Device` object which allows you to get current BLE MTU of device.
-- Added function `requestMTUForDevice` which allows to negotiate BLE MTU of device if it is possible.
+**0.6.5**
+- Fixed Null Pointer Exception when called `cancelDeviceConnection` on Android.
+- Updated gradle version to be able to use latest Android Studio.
+- Added Nullable and Nonnull annotations to Android implementation.
   
 [All previous changes](CHANGELOG.md)
 
-## Documentation
+## Documentation & Support
 
 Documentation can be found [here](https://polidea.github.io/react-native-ble-plx/).
+
+
+Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you have any questions, feedback or want to help!
 
 ## Configuration & Installation
 
