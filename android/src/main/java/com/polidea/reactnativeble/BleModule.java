@@ -268,7 +268,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     private void safeStartDeviceScan(final UUID[] uuids) {
         if (rxBleClient == null) {
-            throw new IllegalStateException("Ble client not created when tried to start device scan");
+            throw new IllegalStateException("BleManager not created when tried to start device scan");
         }
         scanSubscription = rxBleClient
                 .scanBleDevices(uuids)
@@ -390,7 +390,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         final SafePromise safePromise = new SafePromise(promise);
 
         if (rxBleClient == null) {
-            throw new IllegalStateException("Ble client not created when tried connecting to device");
+            throw new IllegalStateException("BleManager not created when tried connecting to device");
         }
 
         final RxBleDevice device = rxBleClient.getBleDevice(deviceId);
@@ -492,7 +492,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void cancelDeviceConnection(String deviceId, Promise promise) {
         if (rxBleClient == null) {
-            throw new IllegalStateException("Ble client not created when tried cancel device connection");
+            throw new IllegalStateException("BleManager not created when tried cancel device connection");
         }
 
         final RxBleDevice device = rxBleClient.getBleDevice(deviceId);
@@ -511,7 +511,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void isDeviceConnected(String deviceId, Promise promise) {
         if (rxBleClient == null) {
-            throw new IllegalStateException("Ble client not created when tried cancel device connection");
+            throw new IllegalStateException("BleManager not created when tried cancel device connection");
         }
 
         final RxBleDevice device = rxBleClient.getBleDevice(deviceId);
