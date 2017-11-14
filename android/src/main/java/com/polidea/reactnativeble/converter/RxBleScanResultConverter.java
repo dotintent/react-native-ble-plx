@@ -1,5 +1,6 @@
 package com.polidea.reactnativeble.converter;
 
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import com.facebook.react.bridge.Arguments;
@@ -32,7 +33,7 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
     }
 
     @Override
-    public WritableMap toJSObject(RxBleScanResult value) {
+    public WritableMap toJSObject(@NonNull RxBleScanResult value) {
         WritableMap result = Arguments.createMap();
         result.putString(Metadata.ID, value.getBleDevice().getMacAddress());
         result.putString(Metadata.NAME, value.getBleDevice().getName());

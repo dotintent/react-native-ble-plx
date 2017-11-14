@@ -1,5 +1,7 @@
 package com.polidea.reactnativeble.wrapper;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.reactnativeble.utils.Constants;
@@ -28,18 +30,21 @@ public class Device  {
     }
 
     private RxBleDevice device;
+    @Nullable
     private RxBleConnection connection;
+    @Nullable
     private List<Service> services;
 
-    public Device(RxBleDevice device, RxBleConnection connection) {
+    public Device(@NonNull RxBleDevice device, @Nullable RxBleConnection connection) {
         this.device = device;
         this.connection = connection;
     }
 
-    public void setServices(List<Service> services) {
+    public void setServices(@NonNull List<Service> services) {
         this.services = services;
     }
 
+    @Nullable
     public List<Service> getServices() {
         return services;
     }
@@ -48,11 +53,13 @@ public class Device  {
         return device;
     }
 
+    @Nullable
     public RxBleConnection getConnection() {
         return connection;
     }
 
-    public Service getServiceByUUID(UUID uuid) {
+    @Nullable
+    public Service getServiceByUUID(@NonNull UUID uuid) {
         if (services == null) {
             return null;
         }
@@ -64,7 +71,7 @@ public class Device  {
         return null;
     }
 
-    public WritableMap toJSObject(Integer rssi) {
+    public WritableMap toJSObject(@Nullable Integer rssi) {
         WritableMap result = Arguments.createMap();
         result.putString(Metadata.ID, device.getMacAddress());
         result.putString(Metadata.NAME, device.getName());

@@ -2,6 +2,8 @@ package com.polidea.reactnativeble.wrapper;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Pair;
 
 import com.facebook.react.bridge.Arguments;
@@ -26,7 +28,7 @@ public class Service {
     private BluetoothGattService service;
     private int id;
 
-    public Service(Device device, BluetoothGattService service) {
+    public Service(@NonNull Device device, @NonNull BluetoothGattService service) {
         this.device = device;
         this.service = service;
         this.id = IdGenerator.getIdForKey(new Pair<>(service.getUuid(), service.getInstanceId()));
@@ -44,7 +46,8 @@ public class Service {
         return service;
     }
 
-    public Characteristic getCharacteristicByUUID(UUID uuid) {
+    @Nullable
+    public Characteristic getCharacteristicByUUID(@NonNull UUID uuid) {
         BluetoothGattCharacteristic characteristic = service.getCharacteristic(uuid);
         if (characteristic == null) return null;
         return new Characteristic(this, characteristic);
