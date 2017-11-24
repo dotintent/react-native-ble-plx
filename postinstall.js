@@ -1,8 +1,9 @@
 const platformParams = ['--platform', 'iOS']
 
-var childProcess = require('child_process')
+const childProcess = require('child_process')
+const parentModulePackageJson = require('../../package.json')
 
-if (process.platform === 'darwin') {
+if (process.platform === 'darwin' && shouldUseCarthage()) {
   var carthageVersionProcessResult = childProcess.spawnSync('carthage', ['version'], {
     stdio: 'pipe'
   })
@@ -27,6 +28,13 @@ if (process.platform === 'darwin') {
   spawnSyncProcessAndExitOnError('carthage', getCarthageBuildParams(carthageVersionString))
 
   process.exit(0)
+}
+
+function shouldUseCarthage() {
+  const reactNativeBlePlxOptions = parentModulePackageJson.react_native_ble_plx
+  if (!reactNativeBlePlxOptions) return true
+  const useCarthage = reactNativeBlePlxOptions.carthage
+  return useCarthage != undefined ? useCarthage : true
 }
 
 function errorExitProcess(errorMessage) {
