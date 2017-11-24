@@ -24,19 +24,8 @@ if (process.platform === 'darwin') {
 
   spawnSyncProcessAndExitOnError('carthage', ['bootstrap', '--no-build', '--platform "iOS"'])
 
-  // check version of `carthage`
   const carthageVersionString = carthageVersionProcessResult.output[1].toString()
-  const majorMinorPatch = carthageVersionString.split('.')
-  const major = parseInt(majorMinorPatch[0])
-  const minor = parseInt(majorMinorPatch[1])
-
-  const buildParams = ['build', '--no-skip-current', '--platform "iOS"']
-  if (major > 0 || minor > 20) {
-    // --cache-builds should be available (unless version 1.x.x will remove it)
-    buildParams.push('--cache-builds')
-  }
-
-  spawnSyncProcessAndExitOnError('carthage', buildParams)
+  spawnSyncProcessAndExitOnError('carthage', getCarthageBuildParams(carthageVersionString))
 
   process.exit(0)
 }
@@ -51,4 +40,17 @@ function spawnSyncProcessAndExitOnError(command, params) {
     console.error(`Error: "${command} ${params.join(' ')}"  command failed with status=${result.status}.`)
     process.exit(1)
   }
+}
+
+function getCarthageBuildParams(carthageVersionString) {
+  // check version of `carthage` to alter build params
+  const majorMinorPatch = carthageVersionString.split('.')
+  const major = parseInt(majorMinorPatch[0])
+  const minor = parseInt(majorMinorPatch[1])
+  const buildParams = ['build', '--no-skip-current', '--platform "iOS"']
+  if (major > 0 || minor > 20) {
+    // --cache-builds should be available (unless version 1.x.x will remove it)
+    buildParams.push('--cache-builds')
+  }
+  return buildParams
 }
