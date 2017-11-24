@@ -31,7 +31,7 @@ if (process.platform === 'darwin' && shouldUseCarthage()) {
 }
 
 function shouldUseCarthage() {
-  const reactNativeBlePlxOptions = parentModulePackageJson.react_native_ble_plx
+  const reactNativeBlePlxOptions = parentModulePackageJson["react-native-ble-plx"]
   if (!reactNativeBlePlxOptions) return true
   const useCarthage = reactNativeBlePlxOptions.carthage
   return useCarthage != undefined ? useCarthage : true
