@@ -189,7 +189,7 @@ public class BleModule extends ReactContextBaseJavaModule {
             return bluetoothAdapter.disable();
         }
         // No need to change bluetooth state
-        return true
+        return true;
     }
 
     // Mark: Monitoring state ----------------------------------------------------------------------
