@@ -15,7 +15,8 @@ beforeEach(() => {
     cancelTransaction: jest.fn(),
     setLogLevel: jest.fn(),
     logLevel: jest.fn(),
-    setBluetooth: jest.fn(),
+    enableBluetooth: jest.fn(),
+    disableBluetooth: jest.fn(),
     state: jest.fn(),
     startDeviceScan: jest.fn(),
     stopDeviceScan: jest.fn(),
@@ -72,15 +73,6 @@ test('BleModule calls logLevel function when logLevel is retrieved', async () =>
   expect(logLevel).toBe('Verbose')
 })
 
-test('When BleManager setBluetooth is called it should call BleModule setBluetooth', () => {
-  bleManager.setBluetooth(true)
-  expect(Native.BleModule.setBluetooth).toBeCalledWith(true)
-  bleManager.setBluetooth(false)
-  expect(Native.BleModule.setBluetooth).toBeCalledWith(false)
-  bleManager.setBluetooth()
-  expect(Native.BleModule.setBluetooth).toBeCalledWith(false)
-})
-
 test('BleManager state function should return BleModule state', async () => {
   Native.BleModule.state = jest
     .fn()
@@ -98,6 +90,16 @@ test('BleModule two emitted state changes are registered by BleManager', () => {
   Native.BleModule.emit(Native.BleModule.StateChangeEvent, 'PoweredOn')
   Native.BleModule.emit(Native.BleModule.StateChangeEvent, 'PoweredOff')
   expect(newStateCallback.mock.calls).toEqual([['PoweredOn'], ['PoweredOff']])
+})
+
+test('When BleManager enableBluetooth is called it should call BleModule enableBluetooth', () => {
+  bleManager.enableBluetooth()
+  expect(Native.BleModule.setBluetooth).toBeCalled()
+})
+
+test('When BleManager disableBluetooth is called it should call BleModule disableBluetooth', () => {
+  bleManager.disableBluetooth()
+  expect(Native.BleModule.setBluetooth).toBeCalled()
 })
 
 test('When BleManager cancelTransaction is called it should call BleModule cancelTransaction', () => {
