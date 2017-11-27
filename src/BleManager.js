@@ -192,14 +192,21 @@ export class BleManager {
   }
   
   /**
-  * Enables / Disables phone's bluetooth.
+  * Enables phone's bluetooth.
   *
   * Only works for Android.
-  *
-  * @param {boolean} [enable=false] If true, enable bluetooth. Defaults to false.
   */
-  setBluetooth(enable: boolean = false) {
-    BleModule.setBluetooth(enable)
+  enableBluetooth() {
+    BleModule.enableBluetooth()
+  }
+  
+  /**
+  * Disable phone's bluetooth.
+  *
+  * Only works for Android.
+  */
+  disableBluetooth() {
+    BleModule.enableBluetooth()
   }
 
   // Mark: Monitoring state --------------------------------------------------------------------------------------------
