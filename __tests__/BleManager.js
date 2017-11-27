@@ -94,12 +94,12 @@ test('BleModule two emitted state changes are registered by BleManager', () => {
 
 test('When BleManager enableBluetooth is called it should call BleModule enableBluetooth', () => {
   bleManager.enableBluetooth()
-  expect(Native.BleModule.setBluetooth).toBeCalled()
+  expect(Native.BleModule.enableBluetooth).toBeCalled()
 })
 
 test('When BleManager disableBluetooth is called it should call BleModule disableBluetooth', () => {
   bleManager.disableBluetooth()
-  expect(Native.BleModule.setBluetooth).toBeCalled()
+  expect(Native.BleModule.disableBluetooth).toBeCalled()
 })
 
 test('When BleManager cancelTransaction is called it should call BleModule cancelTransaction', () => {
