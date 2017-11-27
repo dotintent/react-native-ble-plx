@@ -193,7 +193,7 @@ export class BleManager {
   }
   
   /**
-  * Enables phone's bluetooth.
+  * Enable phone's bluetooth.
   *
   * Only works for Android.
   */
