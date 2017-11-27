@@ -1,3 +1,33 @@
+**0.6.5**
+- Fixed Null Pointer Exception when called `cancelDeviceConnection` on Android.
+- Updated gradle version to be able to use latest Android Studio.
+- Added Nullable and Nonnull annotations to Android implementation.
+
+**0.6.4**
+- Fail explicitly when carthage fails on postinstall.
+- Added `mtu` property for `Device` object which allows you to get current BLE MTU of device.
+- Added function `requestMTUForDevice` which allows to negotiate BLE MTU of device if it is possible.
+
+**0.6.3**
+- Updated RxBluetoothKit library to version 3.1.1
+- Updated RxAndroidBle library to version 1.4.1
+- Fixed NullPointerException when calling BLE operations without previous discovery.
+- iOS emits values in `monitorCharacteristicForDevice` only when no reads are pending for specific characteristic.
+  Previously when characteristic was notified and read operation was completed, characteristic value was received
+  both in `readCharacteristicForDevice` and `monitorCharacteristicForDevice`. Now it will only be received in 
+  `readCharacteristicForDevice` promise.
+
+**0.6.2**
+- Updated RxBluetoothKit library to version 3.0.14 to allow building library on XCode 9.
+- Added new `localName` property to `Device` object, which is set when localName is available
+  in device's advertisement data.
+- Fixed build process on Windows.
+- Fixed compatibility with RN 0.47
+- Fixed bug when `onDeviceDisconnected` callback was not called on iOS when Bluetooth was 
+  turned off on device.
+- Updated library setup instructions.
+- Added option to cache native libraries built by Carthage.
+
 **0.6.1**
 - Updated RxAndroidBle library to version 1.3.3 which fixes internal issues which may
   block execution of operation queue.

@@ -1,5 +1,6 @@
 package com.polidea.reactnativeble.errors;
 
+import android.support.annotation.NonNull;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableArray;
@@ -40,7 +41,7 @@ public class Error {
         return array;
     }
 
-    public void reject(Promise promise) {
+    public void reject(@NonNull Promise promise) {
         promise.reject(Integer.toString(code), message);
     }
 }

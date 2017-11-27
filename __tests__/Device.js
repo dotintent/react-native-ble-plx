@@ -69,4 +69,9 @@ describe("Test if Device is properly calling BleManager's utility function: ", (
     await device.monitorCharacteristicForService('aaaa', 'bbbb', listener, 'id')
     expect(bleManager.monitorCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', listener, 'id')
   })
+
+  test('BleManager properly requests the MTU', async () => {
+    await device.requestMTU(24, 'tid')
+    expect(bleManager.requestMTUForDevice).toBeCalledWith('id', 24, 'tid')
+  })
 })

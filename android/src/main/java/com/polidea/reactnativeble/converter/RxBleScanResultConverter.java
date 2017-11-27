@@ -1,11 +1,13 @@
 package com.polidea.reactnativeble.converter;
 
+import android.support.annotation.NonNull;
 import android.util.Base64;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.reactnativeble.advertisement.AdvertisementData;
+import com.polidea.reactnativeble.utils.Constants;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.rxandroidble.RxBleScanResult;
 
@@ -18,10 +20,12 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
         String ID = "id";
         String NAME = "name";
         String RSSI = "rssi";
+        String MTU = "mtu";
 
         String MANUFACTURER_DATA = "manufacturerData";
         String SERVICE_DATA = "serviceData";
         String SERVICE_UUIDS = "serviceUUIDs";
+        String LOCAL_NAME = "localName";
         String TX_POWER_LEVEL = "txPowerLevel";
         String SOLICITED_SERVICE_UUIDS = "solicitedServiceUUIDs";
         String IS_CONNECTABLE = "isConnectable";
@@ -29,11 +33,12 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
     }
 
     @Override
-    public WritableMap toJSObject(RxBleScanResult value) {
+    public WritableMap toJSObject(@NonNull RxBleScanResult value) {
         WritableMap result = Arguments.createMap();
         result.putString(Metadata.ID, value.getBleDevice().getMacAddress());
         result.putString(Metadata.NAME, value.getBleDevice().getName());
         result.putInt(Metadata.RSSI, value.getRssi());
+        result.putInt(Metadata.MTU, Constants.MINIMUM_MTU);
 
         AdvertisementData advData = AdvertisementData.parseScanResponseData(value.getScanRecord());
         result.putString(Metadata.MANUFACTURER_DATA,
@@ -60,6 +65,12 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
             result.putArray(Metadata.SERVICE_UUIDS, serviceUUIDs);
         } else {
             result.putNull(Metadata.SERVICE_UUIDS);
+        }
+
+        if (advData.getLocalName() != null) {
+            result.putString(Metadata.LOCAL_NAME, advData.getLocalName());
+        } else {
+            result.putNull(Metadata.LOCAL_NAME);
         }
 
         if (advData.getTxPowerLevel() != null) {

@@ -17,17 +17,19 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 
 ## Recent Changes
 
-**0.6.1**
-- Updated RxAndroidBle library to version 1.3.3 which fixes internal issues which may
-  block execution of operation queue.
-- Updated dev dependencies to fix latest Flowtype issues.
-- Fixed bug when `restoreStateFunction` function could be called multiple times on iOS.
-
+**0.6.5**
+- Fixed Null Pointer Exception when called `cancelDeviceConnection` on Android.
+- Updated gradle version to be able to use latest Android Studio.
+- Added Nullable and Nonnull annotations to Android implementation.
+  
 [All previous changes](CHANGELOG.md)
 
-## Documentation
+## Documentation & Support
 
 Documentation can be found [here](https://polidea.github.io/react-native-ble-plx/).
+
+
+Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you have any questions, feedback or want to help!
 
 ## Configuration & Installation
 
@@ -39,7 +41,7 @@ wish to set up for iOS, please install it first and only then follow the steps g
 
 ```bash
 npm install --save react-native-ble-plx
-react-native link
+react-native link react-native-ble-plx
 ```
 
 Both on iOS and Android continue manually from step 7.
@@ -133,4 +135,14 @@ android {
     <uses-sdk
         android:minSdkVersion="18"
         ...
+```
+
+## Troubleshooting
+
+### Problems with Proguard
+
+Add this to your `app/proguard-rules.pro`
+
+```
+-dontwarn com.polidea.reactnativeble.**
 ```

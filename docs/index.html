@@ -2,19 +2,19 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>react-native-ble-plx 0.6.0 | Documentation</title>
+  <title>react-native-ble-plx 0.6.4 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
   <link href='assets/github.css' type='text/css' rel='stylesheet' />
+  <link href='assets/split.css' type='text/css' rel='stylesheet' />
 </head>
-<body class='documentation'>
-  <div class='max-width-4 mx-auto'>
-    <div class='clearfix md-mxn2'>
-      <div class='fixed xs-hide fix-3 overflow-auto max-height-100'>
+<body class='documentation m0'>
+    <div class='flex'>
+      <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>react-native-ble-plx</h3>
-          <div class='mb1'><code>0.6.0</code></div>
+          <div class='mb1'><code>0.6.4</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -58,127 +58,127 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#BleManager#constructor'
-                        class='regular pre-open'>
-                        #constructor
-                      </a></li>
-                      
-                      <li><a
-                        href='#BleManager#destroy'
+                        href='#blemanagerdestroy'
                         class='regular pre-open'>
                         #destroy
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#setLogLevel'
+                        href='#blemanagersetloglevel'
                         class='regular pre-open'>
                         #setLogLevel
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#logLevel'
+                        href='#blemanagerloglevel'
                         class='regular pre-open'>
                         #logLevel
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#cancelTransaction'
+                        href='#blemanagercanceltransaction'
                         class='regular pre-open'>
                         #cancelTransaction
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#state'
+                        href='#blemanagerstate'
                         class='regular pre-open'>
                         #state
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#onStateChange'
+                        href='#blemanageronstatechange'
                         class='regular pre-open'>
                         #onStateChange
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#startDeviceScan'
+                        href='#blemanagerstartdevicescan'
                         class='regular pre-open'>
                         #startDeviceScan
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#stopDeviceScan'
+                        href='#blemanagerstopdevicescan'
                         class='regular pre-open'>
                         #stopDeviceScan
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#readRSSIForDevice'
+                        href='#blemanagerreadrssifordevice'
                         class='regular pre-open'>
                         #readRSSIForDevice
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#connectToDevice'
+                        href='#blemanagerrequestmtufordevice'
+                        class='regular pre-open'>
+                        #requestMTUForDevice
+                      </a></li>
+                      
+                      <li><a
+                        href='#blemanagerconnecttodevice'
                         class='regular pre-open'>
                         #connectToDevice
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#cancelDeviceConnection'
+                        href='#blemanagercanceldeviceconnection'
                         class='regular pre-open'>
                         #cancelDeviceConnection
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#onDeviceDisconnected'
+                        href='#blemanagerondevicedisconnected'
                         class='regular pre-open'>
                         #onDeviceDisconnected
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#isDeviceConnected'
+                        href='#blemanagerisdeviceconnected'
                         class='regular pre-open'>
                         #isDeviceConnected
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#discoverAllServicesAndCharacteristicsForDevice'
+                        href='#blemanagerdiscoverallservicesandcharacteristicsfordevice'
                         class='regular pre-open'>
                         #discoverAllServicesAndCharacteristicsForDevice
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#servicesForDevice'
+                        href='#blemanagerservicesfordevice'
                         class='regular pre-open'>
                         #servicesForDevice
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#characteristicsForDevice'
+                        href='#blemanagercharacteristicsfordevice'
                         class='regular pre-open'>
                         #characteristicsForDevice
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#readCharacteristicForDevice'
+                        href='#blemanagerreadcharacteristicfordevice'
                         class='regular pre-open'>
                         #readCharacteristicForDevice
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#writeCharacteristicWithResponseForDevice'
+                        href='#blemanagerwritecharacteristicwithresponsefordevice'
                         class='regular pre-open'>
                         #writeCharacteristicWithResponseForDevice
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#writeCharacteristicWithoutResponseForDevice'
+                        href='#blemanagerwritecharacteristicwithoutresponsefordevice'
                         class='regular pre-open'>
                         #writeCharacteristicWithoutResponseForDevice
                       </a></li>
                       
                       <li><a
-                        href='#BleManager#monitorCharacteristicForDevice'
+                        href='#blemanagermonitorcharacteristicfordevice'
                         class='regular pre-open'>
                         #monitorCharacteristicForDevice
                       </a></li>
@@ -206,133 +206,151 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#Device#id'
+                        href='#deviceid'
                         class='regular pre-open'>
                         #id
                       </a></li>
                       
                       <li><a
-                        href='#Device#name'
+                        href='#devicename'
                         class='regular pre-open'>
                         #name
                       </a></li>
                       
                       <li><a
-                        href='#Device#rssi'
+                        href='#devicerssi'
                         class='regular pre-open'>
                         #rssi
                       </a></li>
                       
                       <li><a
-                        href='#Device#manufacturerData'
+                        href='#devicemtu'
+                        class='regular pre-open'>
+                        #mtu
+                      </a></li>
+                      
+                      <li><a
+                        href='#devicemanufacturerdata'
                         class='regular pre-open'>
                         #manufacturerData
                       </a></li>
                       
                       <li><a
-                        href='#Device#serviceData'
+                        href='#deviceservicedata'
                         class='regular pre-open'>
                         #serviceData
                       </a></li>
                       
                       <li><a
-                        href='#Device#serviceUUIDs'
+                        href='#deviceserviceuuids'
                         class='regular pre-open'>
                         #serviceUUIDs
                       </a></li>
                       
                       <li><a
-                        href='#Device#txPowerLevel'
+                        href='#devicelocalname'
+                        class='regular pre-open'>
+                        #localName
+                      </a></li>
+                      
+                      <li><a
+                        href='#devicetxpowerlevel'
                         class='regular pre-open'>
                         #txPowerLevel
                       </a></li>
                       
                       <li><a
-                        href='#Device#solicitedServiceUUIDs'
+                        href='#devicesolicitedserviceuuids'
                         class='regular pre-open'>
                         #solicitedServiceUUIDs
                       </a></li>
                       
                       <li><a
-                        href='#Device#isConnectable'
+                        href='#deviceisconnectable'
                         class='regular pre-open'>
                         #isConnectable
                       </a></li>
                       
                       <li><a
-                        href='#Device#overflowServiceUUIDs'
+                        href='#deviceoverflowserviceuuids'
                         class='regular pre-open'>
                         #overflowServiceUUIDs
                       </a></li>
                       
                       <li><a
-                        href='#Device#readRSSI'
+                        href='#devicereadrssi'
                         class='regular pre-open'>
                         #readRSSI
                       </a></li>
                       
                       <li><a
-                        href='#Device#connect'
+                        href='#devicerequestmtu'
+                        class='regular pre-open'>
+                        #requestMTU
+                      </a></li>
+                      
+                      <li><a
+                        href='#deviceconnect'
                         class='regular pre-open'>
                         #connect
                       </a></li>
                       
                       <li><a
-                        href='#Device#cancelConnection'
+                        href='#devicecancelconnection'
                         class='regular pre-open'>
                         #cancelConnection
                       </a></li>
                       
                       <li><a
-                        href='#Device#isConnected'
+                        href='#deviceisconnected'
                         class='regular pre-open'>
                         #isConnected
                       </a></li>
                       
                       <li><a
-                        href='#Device#onDisconnected'
+                        href='#deviceondisconnected'
                         class='regular pre-open'>
                         #onDisconnected
                       </a></li>
                       
                       <li><a
-                        href='#Device#discoverAllServicesAndCharacteristics'
+                        href='#devicediscoverallservicesandcharacteristics'
                         class='regular pre-open'>
                         #discoverAllServicesAndCharacteristics
                       </a></li>
                       
                       <li><a
-                        href='#Device#services'
+                        href='#deviceservices'
                         class='regular pre-open'>
                         #services
                       </a></li>
                       
                       <li><a
-                        href='#Device#characteristicsForService'
+                        href='#devicecharacteristicsforservice'
                         class='regular pre-open'>
                         #characteristicsForService
                       </a></li>
                       
                       <li><a
-                        href='#Device#readCharacteristicForService'
+                        href='#devicereadcharacteristicforservice'
                         class='regular pre-open'>
                         #readCharacteristicForService
                       </a></li>
                       
                       <li><a
-                        href='#Device#writeCharacteristicWithResponseForService'
+                        href='#devicewritecharacteristicwithresponseforservice'
                         class='regular pre-open'>
                         #writeCharacteristicWithResponseForService
                       </a></li>
                       
                       <li><a
-                        href='#Device#writeCharacteristicWithoutResponseForService'
+                        href='#devicewritecharacteristicwithoutresponseforservice'
                         class='regular pre-open'>
                         #writeCharacteristicWithoutResponseForService
                       </a></li>
                       
                       <li><a
-                        href='#Device#monitorCharacteristicForService'
+                        href='#devicemonitorcharacteristicforservice'
                         class='regular pre-open'>
                         #monitorCharacteristicForService
                       </a></li>
@@ -360,55 +378,55 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#Service#id'
+                        href='#serviceid'
                         class='regular pre-open'>
                         #id
                       </a></li>
                       
                       <li><a
-                        href='#Service#uuid'
+                        href='#serviceuuid'
                         class='regular pre-open'>
                         #uuid
                       </a></li>
                       
                       <li><a
-                        href='#Service#deviceID'
+                        href='#servicedeviceid'
                         class='regular pre-open'>
                         #deviceID
                       </a></li>
                       
                       <li><a
-                        href='#Service#isPrimary'
+                        href='#serviceisprimary'
                         class='regular pre-open'>
                         #isPrimary
                       </a></li>
                       
                       <li><a
-                        href='#Service#characteristics'
+                        href='#servicecharacteristics'
                         class='regular pre-open'>
                         #characteristics
                       </a></li>
                       
                       <li><a
-                        href='#Service#readCharacteristic'
+                        href='#servicereadcharacteristic'
                         class='regular pre-open'>
                         #readCharacteristic
                       </a></li>
                       
                       <li><a
-                        href='#Service#writeCharacteristicWithResponse'
+                        href='#servicewritecharacteristicwithresponse'
                         class='regular pre-open'>
                         #writeCharacteristicWithResponse
                       </a></li>
                       
                       <li><a
-                        href='#Service#writeCharacteristicWithoutResponse'
+                        href='#servicewritecharacteristicwithoutresponse'
                         class='regular pre-open'>
                         #writeCharacteristicWithoutResponse
                       </a></li>
                       
                       <li><a
-                        href='#Service#monitorCharacteristic'
+                        href='#servicemonitorcharacteristic'
                         class='regular pre-open'>
                         #monitorCharacteristic
                       </a></li>
@@ -436,97 +454,97 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#Characteristic#id'
+                        href='#characteristicid'
                         class='regular pre-open'>
                         #id
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#uuid'
+                        href='#characteristicuuid'
                         class='regular pre-open'>
                         #uuid
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#serviceID'
+                        href='#characteristicserviceid'
                         class='regular pre-open'>
                         #serviceID
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#serviceUUID'
+                        href='#characteristicserviceuuid'
                         class='regular pre-open'>
                         #serviceUUID
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#deviceID'
+                        href='#characteristicdeviceid'
                         class='regular pre-open'>
                         #deviceID
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#isReadable'
+                        href='#characteristicisreadable'
                         class='regular pre-open'>
                         #isReadable
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#isWritableWithResponse'
+                        href='#characteristiciswritablewithresponse'
                         class='regular pre-open'>
                         #isWritableWithResponse
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#isWritableWithoutResponse'
+                        href='#characteristiciswritablewithoutresponse'
                         class='regular pre-open'>
                         #isWritableWithoutResponse
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#isNotifiable'
+                        href='#characteristicisnotifiable'
                         class='regular pre-open'>
                         #isNotifiable
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#isNotifying'
+                        href='#characteristicisnotifying'
                         class='regular pre-open'>
                         #isNotifying
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#isIndictable'
+                        href='#characteristicisindictable'
                         class='regular pre-open'>
                         #isIndictable
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#value'
+                        href='#characteristicvalue'
                         class='regular pre-open'>
                         #value
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#read'
+                        href='#characteristicread'
                         class='regular pre-open'>
                         #read
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#writeWithResponse'
+                        href='#characteristicwritewithresponse'
                         class='regular pre-open'>
                         #writeWithResponse
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#writeWithoutResponse'
+                        href='#characteristicwritewithoutresponse'
                         class='regular pre-open'>
                         #writeWithoutResponse
                       </a></li>
                       
                       <li><a
-                        href='#Characteristic#monitor'
+                        href='#characteristicmonitor'
                         class='regular pre-open'>
                         #monitor
                       </a></li>
@@ -583,37 +601,37 @@
                     <li class='h5'><span>Static members</span></li>
                     
                       <li><a
-                        href='#LogLevel.None'
+                        href='#loglevelnone'
                         class='regular pre-open'>
                         .None
                       </a></li>
                     
                       <li><a
-                        href='#LogLevel.Verbose'
+                        href='#loglevelverbose'
                         class='regular pre-open'>
                         .Verbose
                       </a></li>
                     
                       <li><a
-                        href='#LogLevel.Debug'
+                        href='#logleveldebug'
                         class='regular pre-open'>
                         .Debug
                       </a></li>
                     
                       <li><a
-                        href='#LogLevel.Info'
+                        href='#loglevelinfo'
                         class='regular pre-open'>
                         .Info
                       </a></li>
                     
                       <li><a
-                        href='#LogLevel.Warning'
+                        href='#loglevelwarning'
                         class='regular pre-open'>
                         .Warning
                       </a></li>
                     
                       <li><a
-                        href='#LogLevel.Error'
+                        href='#loglevelerror'
                         class='regular pre-open'>
                         .Error
                       </a></li>
@@ -641,37 +659,37 @@
                     <li class='h5'><span>Static members</span></li>
                     
                       <li><a
-                        href='#State.Unknown'
+                        href='#stateunknown'
                         class='regular pre-open'>
                         .Unknown
                       </a></li>
                     
                       <li><a
-                        href='#State.Resetting'
+                        href='#stateresetting'
                         class='regular pre-open'>
                         .Resetting
                       </a></li>
                     
                       <li><a
-                        href='#State.Unsupported'
+                        href='#stateunsupported'
                         class='regular pre-open'>
                         .Unsupported
                       </a></li>
                     
                       <li><a
-                        href='#State.Unauthorized'
+                        href='#stateunauthorized'
                         class='regular pre-open'>
                         .Unauthorized
                       </a></li>
                     
                       <li><a
-                        href='#State.PoweredOff'
+                        href='#statepoweredoff'
                         class='regular pre-open'>
                         .PoweredOff
                       </a></li>
                     
                       <li><a
-                        href='#State.PoweredOn'
+                        href='#statepoweredon'
                         class='regular pre-open'>
                         .PoweredOn
                       </a></li>
@@ -700,13 +718,13 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#BleManagerOptions#restoreStateIdentifier'
+                        href='#blemanageroptionsrestorestateidentifier'
                         class='regular pre-open'>
                         #restoreStateIdentifier
                       </a></li>
                       
                       <li><a
-                        href='#BleManagerOptions#restoreStateFunction'
+                        href='#blemanageroptionsrestorestatefunction'
                         class='regular pre-open'>
                         #restoreStateFunction
                       </a></li>
@@ -734,7 +752,7 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#BleRestoredState#connectedPeripherals'
+                        href='#blerestoredstateconnectedperipherals'
                         class='regular pre-open'>
                         #connectedPeripherals
                       </a></li>
@@ -762,15 +780,9 @@
                       <li class='h5'><span>Instance members</span></li>
                       
                       <li><a
-                        href='#ScanOptions#allowDuplicates'
+                        href='#scanoptionsallowduplicates'
                         class='regular pre-open'>
                         #allowDuplicates
-                      </a></li>
-                      
-                      <li><a
-                        href='#ScanOptions#autoConnect'
-                        class='regular pre-open'>
-                        #autoConnect
                       </a></li>
                       
                     </ul>
@@ -784,10 +796,34 @@
                 
                 <li><a
                   href='#connectionoptions'
-                  class="">
+                  class=" toggle-sibling">
                   ConnectionOptions
-                  
+                  <span class='icon'>▸</span>
                 </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  
+                    <ul class='list-reset py1-ul pl1'>
+                      <li class='h5'><span>Instance members</span></li>
+                      
+                      <li><a
+                        href='#connectionoptionsautoconnect'
+                        class='regular pre-open'>
+                        #autoConnect
+                      </a></li>
+                      
+                      <li><a
+                        href='#connectionoptionsrequestmtu'
+                        class='regular pre-open'>
+                        #requestMTU
+                      </a></li>
+                      
+                    </ul>
+                  
+                  
+                  
+                </div>
                 
                 </li>
               
@@ -858,7 +894,7 @@
           </div>
         </div>
       </div>
-      <div class='fix-margin-3'>
+      <div id='split-right' class='relative overflow-auto height-viewport-100'>
         
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
@@ -942,9 +978,9 @@ it can be a long process depending on number of characteristics and services ava
 <h2>Read, write and monitor values</h2>
 <p>After successful discovery of services you can call </p>
 <ul>
-<li><a href="#BleManager#readCharacteristicForDevice">BleManager.readCharacteristicForDevice()</a>,</li>
-<li><a href="#BleManager#writeCharacteristicWithResponseForDevice">BleManager.writeCharacteristicWithResponseForDevice()</a>, </li>
-<li><a href="#BleManager#monitorCharacteristicForDevice">BleManager.monitorCharacteristicForDevice()</a></li>
+<li><a href="#blemanagerreadcharacteristicfordevice">BleManager.readCharacteristicForDevice()</a>,</li>
+<li><a href="#blemanagerwritecharacteristicwithresponsefordevice">BleManager.writeCharacteristicWithResponseForDevice()</a>, </li>
+<li><a href="#blemanagermonitorcharacteristicfordevice">BleManager.monitorCharacteristicForDevice()</a></li>
 </ul>
 <p>and other functions which are described in detail in documentation.</p>
 
@@ -985,7 +1021,7 @@ are presented in order which aligns them with usage.</p>
 
   <p>BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
 <a href="#device">Device</a> instances. It should be initialized only once with <code>new</code> keyword and method
-<a href="#BleManager#destroy">destroy()</a> should be called on its instance when user wants to deallocate all resources.</p>
+<a href="#blemanagerdestroy">destroy()</a> should be called on its instance when user wants to deallocate all resources.</p>
 <p>In case you want to properly support Background Mode, you should provide <code>restoreStateIdentifier</code> and
 <code>restoreStateFunction</code> in <a href="#blemanageroptions">BleManagerOptions</a>.</p>
 
@@ -1039,67 +1075,7 @@ manager.destroy();</pre>
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='BleManager#constructor'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>constructor(options)</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Creates an instance of <a href="#blemanager">BleManager</a>.</p>
-
-
-  <div class='pre p1 fill-light mt0'>constructor(options: <a href="#blemanageroptions">BleManagerOptions</a>)</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>options</span> <code class='quiet'>(<a href="#blemanageroptions">BleManagerOptions</a>
-            = <code>{}</code>)</code>
-	    
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='BleManager#destroy'>
+    <div class='border-bottom' id='blemanagerdestroy'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1146,7 +1122,7 @@ this library.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#setLogLevel'>
+    <div class='border-bottom' id='blemanagersetloglevel'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1206,7 +1182,7 @@ this library.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#logLevel'>
+    <div class='border-bottom' id='blemanagerloglevel'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1260,7 +1236,7 @@ this library.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#cancelTransaction'>
+    <div class='border-bottom' id='blemanagercanceltransaction'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1340,7 +1316,7 @@ setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#state'>
+    <div class='border-bottom' id='blemanagerstate'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1395,7 +1371,7 @@ is "PoweredOn".</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#onStateChange'>
+    <div class='border-bottom' id='blemanageronstatechange'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1489,7 +1465,7 @@ Look at
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#startDeviceScan'>
+    <div class='border-bottom' id='blemanagerstartdevicescan'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1589,7 +1565,7 @@ is a scanned
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#stopDeviceScan'>
+    <div class='border-bottom' id='blemanagerstopdevicescan'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1635,7 +1611,7 @@ is a scanned
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#readRSSIForDevice'>
+    <div class='border-bottom' id='blemanagerreadrssifordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1712,7 +1688,94 @@ is a scanned
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#connectToDevice'>
+    <div class='border-bottom' id='blemanagerrequestmtufordevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>requestMTUForDevice(deviceIdentifier, mtu, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Request new MTU value for this device. This function currently is not doing anything
+on iOS platform as MTU exchange is done automatically.</p>
+
+
+  <div class='pre p1 fill-light mt0'>requestMTUForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, mtu: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    Device identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mtu</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    New MTU to negotiate.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    Transaction handle used to cancel operation
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Device with updated MTU size. Default value is 23.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='blemanagerconnecttodevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1792,7 +1855,7 @@ is a scanned
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#cancelDeviceConnection'>
+    <div class='border-bottom' id='blemanagercanceldeviceconnection'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1863,7 +1926,7 @@ is a scanned
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#onDeviceDisconnected'>
+    <div class='border-bottom' id='blemanagerondevicedisconnected'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -1946,7 +2009,7 @@ if available and
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#isDeviceConnected'>
+    <div class='border-bottom' id='blemanagerisdeviceconnected'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2019,7 +2082,7 @@ if available and
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#discoverAllServicesAndCharacteristicsForDevice'>
+    <div class='border-bottom' id='blemanagerdiscoverallservicesandcharacteristicsfordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2091,7 +2154,7 @@ characteristics have been discovered.
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#servicesForDevice'>
+    <div class='border-bottom' id='blemanagerservicesfordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2165,7 +2228,7 @@ characteristics have been discovered.
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#characteristicsForDevice'>
+    <div class='border-bottom' id='blemanagercharacteristicsfordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2251,7 +2314,7 @@ discovered for a
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#readCharacteristicForDevice'>
+    <div class='border-bottom' id='blemanagerreadcharacteristicfordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2318,7 +2381,7 @@ discovered for a
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">cancelTransaction()</a>
  function.
 
           </div>
@@ -2359,7 +2422,7 @@ UUID paths. Latest value of
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#writeCharacteristicWithResponseForDevice'>
+    <div class='border-bottom' id='blemanagerwritecharacteristicwithresponsefordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2435,7 +2498,7 @@ UUID paths. Latest value of
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">cancelTransaction()</a>
  function.
 
           </div>
@@ -2474,7 +2537,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#writeCharacteristicWithoutResponseForDevice'>
+    <div class='border-bottom' id='blemanagerwritecharacteristicwithoutresponsefordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2550,7 +2613,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">cancelTransaction()</a>
  function.
 
           </div>
@@ -2589,7 +2652,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManager#monitorCharacteristicForDevice'>
+    <div class='border-bottom' id='blemanagermonitorcharacteristicfordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2669,7 +2732,7 @@ in favour of indications.</p>
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">cancelTransaction()</a>
  function.
 
           </div>
@@ -2731,7 +2794,7 @@ in favour of indications.</p>
   
 
   <p>Device instance which can be retrieved only by calling
-<a href="#BleManager#startDeviceScan">bleManager.startDeviceScan()</a>.</p>
+<a href="#blemanagerstartdevicescan">bleManager.startDeviceScan()</a>.</p>
 
 
   <div class='pre p1 fill-light mt0'>new Device(nativeDevice: NativeDevice, manager: <a href="#blemanager">BleManager</a>)</div>
@@ -2782,7 +2845,7 @@ in favour of indications.</p>
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='Device#id'>
+    <div class='border-bottom' id='deviceid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2833,7 +2896,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#name'>
+    <div class='border-bottom' id='devicename'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2884,7 +2947,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#rssi'>
+    <div class='border-bottom' id='devicerssi'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2935,7 +2998,59 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#manufacturerData'>
+    <div class='border-bottom' id='devicemtu'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>mtu</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Current Maximum Transmission Unit for this device. When device is not connected
+default value of 23 is used.</p>
+
+
+  <div class='pre p1 fill-light mt0'>mtu</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='devicemanufacturerdata'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -2986,7 +3101,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#serviceData'>
+    <div class='border-bottom' id='deviceservicedata'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3037,7 +3152,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#serviceUUIDs'>
+    <div class='border-bottom' id='deviceserviceuuids'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3088,7 +3203,58 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#txPowerLevel'>
+    <div class='border-bottom' id='devicelocalname'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>localName</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>User friendly name of device.</p>
+
+
+  <div class='pre p1 fill-light mt0'>localName</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='devicetxpowerlevel'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3139,7 +3305,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#solicitedServiceUUIDs'>
+    <div class='border-bottom' id='devicesolicitedserviceuuids'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3190,7 +3356,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#isConnectable'>
+    <div class='border-bottom' id='deviceisconnectable'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3241,7 +3407,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#overflowServiceUUIDs'>
+    <div class='border-bottom' id='deviceoverflowserviceuuids'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3292,7 +3458,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#readRSSI'>
+    <div class='border-bottom' id='devicereadrssi'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3304,7 +3470,7 @@ in favour of indications.</p>
 
   
 
-  <p><a href="#BleManager#readRSSIForDevice">bleManager.readRSSIForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerreadrssifordevice">bleManager.readRSSIForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>readRSSI(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
@@ -3360,7 +3526,83 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#connect'>
+    <div class='border-bottom' id='devicerequestmtu'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>requestMTU(mtu, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#blemanagerrequestmtufordevice">bleManager.requestMTUForDevice()</a> with partially filled arguments.</p>
+
+
+  <div class='pre p1 fill-light mt0'>requestMTU(mtu: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>mtu</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    Transaction handle used to cancel operation.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Device with updated MTU size. Default value is 23.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='deviceconnect'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3372,7 +3614,7 @@ in favour of indications.</p>
 
   
 
-  <p><a href="#BleManager#connectToDevice">bleManager.connectToDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerconnecttodevice">bleManager.connectToDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>connect(options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
@@ -3430,7 +3672,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#cancelConnection'>
+    <div class='border-bottom' id='devicecancelconnection'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3442,7 +3684,7 @@ in favour of indications.</p>
 
   
 
-  <p><a href="#BleManager#cancelDeviceConnection">bleManager.cancelDeviceConnection()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagercanceldeviceconnection">bleManager.cancelDeviceConnection()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>cancelConnection(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
@@ -3486,7 +3728,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#isConnected'>
+    <div class='border-bottom' id='deviceisconnected'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3498,7 +3740,7 @@ in favour of indications.</p>
 
   
 
-  <p><a href="#BleManager#isDeviceConnected">bleManager.isDeviceConnected()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerisdeviceconnected">bleManager.isDeviceConnected()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>isConnected(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
@@ -3544,7 +3786,7 @@ in favour of indications.</p>
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#onDisconnected'>
+    <div class='border-bottom' id='deviceondisconnected'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3556,7 +3798,7 @@ in favour of indications.</p>
 
   
 
-  <p><a href="#BleManager#onDeviceDisconnected">bleManager.onDeviceDisconnected()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerondevicedisconnected">bleManager.onDeviceDisconnected()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>onDisconnected(listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
@@ -3617,7 +3859,7 @@ if available and
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#discoverAllServicesAndCharacteristics'>
+    <div class='border-bottom' id='devicediscoverallservicesandcharacteristics'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3629,7 +3871,7 @@ if available and
 
   
 
-  <p><a href="#BleManager#discoverAllServicesAndCharacteristicsForDevice">bleManager.discoverAllServicesAndCharacteristicsForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerdiscoverallservicesandcharacteristicsfordevice">bleManager.discoverAllServicesAndCharacteristicsForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristics(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
@@ -3674,7 +3916,7 @@ characteristics have been discovered.
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#services'>
+    <div class='border-bottom' id='deviceservices'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3686,7 +3928,7 @@ characteristics have been discovered.
 
   
 
-  <p><a href="#BleManager#servicesForDevice">bleManager.servicesForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerservicesfordevice">bleManager.servicesForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>services(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
@@ -3731,7 +3973,7 @@ device.
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#characteristicsForService'>
+    <div class='border-bottom' id='devicecharacteristicsforservice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3743,7 +3985,7 @@ device.
 
   
 
-  <p><a href="#BleManager#characteristicsForDevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagercharacteristicsfordevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>characteristicsForService(serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
@@ -3807,7 +4049,7 @@ discovered for a
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#readCharacteristicForService'>
+    <div class='border-bottom' id='devicereadcharacteristicforservice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3819,7 +4061,7 @@ discovered for a
 
   
 
-  <p><a href="#BleManager#readCharacteristicForDevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerreadcharacteristicfordevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>readCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
@@ -3864,7 +4106,7 @@ discovered for a
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -3905,7 +4147,7 @@ UUID paths. Latest value of
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#writeCharacteristicWithResponseForService'>
+    <div class='border-bottom' id='devicewritecharacteristicwithresponseforservice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -3917,7 +4159,7 @@ UUID paths. Latest value of
 
   
 
-  <p><a href="#BleManager#writeCharacteristicWithResponseForDevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerwritecharacteristicwithresponsefordevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
@@ -3971,7 +4213,7 @@ UUID paths. Latest value of
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -4010,7 +4252,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#writeCharacteristicWithoutResponseForService'>
+    <div class='border-bottom' id='devicewritecharacteristicwithoutresponseforservice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4022,7 +4264,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   
 
-  <p><a href="#BleManager#writeCharacteristicWithoutResponseForDevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerwritecharacteristicwithoutresponsefordevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
@@ -4076,7 +4318,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -4115,7 +4357,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       </div>
     </div>
   
-    <div class='border-bottom' id='Device#monitorCharacteristicForService'>
+    <div class='border-bottom' id='devicemonitorcharacteristicforservice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4127,7 +4369,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   
 
-  <p><a href="#BleManager#monitorCharacteristicForDevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagermonitorcharacteristicfordevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>monitorCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
@@ -4184,7 +4426,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -4296,7 +4538,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='Service#id'>
+    <div class='border-bottom' id='serviceid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4347,7 +4589,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       </div>
     </div>
   
-    <div class='border-bottom' id='Service#uuid'>
+    <div class='border-bottom' id='serviceuuid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4398,7 +4640,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       </div>
     </div>
   
-    <div class='border-bottom' id='Service#deviceID'>
+    <div class='border-bottom' id='servicedeviceid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4449,7 +4691,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       </div>
     </div>
   
-    <div class='border-bottom' id='Service#isPrimary'>
+    <div class='border-bottom' id='serviceisprimary'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4500,7 +4742,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       </div>
     </div>
   
-    <div class='border-bottom' id='Service#characteristics'>
+    <div class='border-bottom' id='servicecharacteristics'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4512,7 +4754,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   
 
-  <p><a href="#BleManager#characteristicsForDevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagercharacteristicsfordevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>characteristics(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
@@ -4557,7 +4799,7 @@ discovered for this service.
       </div>
     </div>
   
-    <div class='border-bottom' id='Service#readCharacteristic'>
+    <div class='border-bottom' id='servicereadcharacteristic'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4569,7 +4811,7 @@ discovered for this service.
 
   
 
-  <p><a href="#BleManager#readCharacteristicForDevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerreadcharacteristicfordevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>readCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
@@ -4604,7 +4846,7 @@ discovered for this service.
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -4645,7 +4887,7 @@ UUID path. Latest value of
       </div>
     </div>
   
-    <div class='border-bottom' id='Service#writeCharacteristicWithResponse'>
+    <div class='border-bottom' id='servicewritecharacteristicwithresponse'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4657,7 +4899,7 @@ UUID path. Latest value of
 
   
 
-  <p><a href="#BleManager#writeCharacteristicWithResponseForDevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerwritecharacteristicwithresponsefordevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
@@ -4701,7 +4943,7 @@ UUID path. Latest value of
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -4740,7 +4982,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Service#writeCharacteristicWithoutResponse'>
+    <div class='border-bottom' id='servicewritecharacteristicwithoutresponse'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4752,7 +4994,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   
 
-  <p><a href="#BleManager#writeCharacteristicWithoutResponseForDevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerwritecharacteristicwithoutresponsefordevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
@@ -4796,7 +5038,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -4835,7 +5077,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Service#monitorCharacteristic'>
+    <div class='border-bottom' id='servicemonitorcharacteristic'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -4847,7 +5089,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   
 
-  <p><a href="#BleManager#monitorCharacteristicForDevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagermonitorcharacteristicfordevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>monitorCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
@@ -4894,7 +5136,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -5006,7 +5248,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='Characteristic#id'>
+    <div class='border-bottom' id='characteristicid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5057,7 +5299,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#uuid'>
+    <div class='border-bottom' id='characteristicuuid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5108,7 +5350,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#serviceID'>
+    <div class='border-bottom' id='characteristicserviceid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5159,7 +5401,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#serviceUUID'>
+    <div class='border-bottom' id='characteristicserviceuuid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5210,7 +5452,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#deviceID'>
+    <div class='border-bottom' id='characteristicdeviceid'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5261,7 +5503,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#isReadable'>
+    <div class='border-bottom' id='characteristicisreadable'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5312,7 +5554,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#isWritableWithResponse'>
+    <div class='border-bottom' id='characteristiciswritablewithresponse'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5363,7 +5605,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#isWritableWithoutResponse'>
+    <div class='border-bottom' id='characteristiciswritablewithoutresponse'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5414,7 +5656,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#isNotifiable'>
+    <div class='border-bottom' id='characteristicisnotifiable'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5465,7 +5707,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#isNotifying'>
+    <div class='border-bottom' id='characteristicisnotifying'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5516,7 +5758,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#isIndictable'>
+    <div class='border-bottom' id='characteristicisindictable'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5567,7 +5809,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#value'>
+    <div class='border-bottom' id='characteristicvalue'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5618,7 +5860,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#read'>
+    <div class='border-bottom' id='characteristicread'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5630,7 +5872,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   
 
-  <p><a href="#BleManager#readCharacteristicForDevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerreadcharacteristicfordevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>read(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
@@ -5655,7 +5897,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -5694,7 +5936,7 @@ inside returned object.
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#writeWithResponse'>
+    <div class='border-bottom' id='characteristicwritewithresponse'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5706,7 +5948,7 @@ inside returned object.
 
   
 
-  <p><a href="#BleManager#writeCharacteristicWithResponseForDevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerwritecharacteristicwithresponsefordevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>writeWithResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
@@ -5740,7 +5982,7 @@ inside returned object.
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -5779,7 +6021,7 @@ not be stored inside returned object.
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#writeWithoutResponse'>
+    <div class='border-bottom' id='characteristicwritewithoutresponse'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5791,7 +6033,7 @@ not be stored inside returned object.
 
   
 
-  <p><a href="#BleManager#writeCharacteristicWithoutResponseForDevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagerwritecharacteristicwithoutresponsefordevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>writeWithoutResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
@@ -5825,7 +6067,7 @@ not be stored inside returned object.
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -5864,7 +6106,7 @@ not be stored inside returned object.
       </div>
     </div>
   
-    <div class='border-bottom' id='Characteristic#monitor'>
+    <div class='border-bottom' id='characteristicmonitor'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -5876,7 +6118,7 @@ not be stored inside returned object.
 
   
 
-  <p><a href="#BleManager#monitorCharacteristicForDevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
+  <p><a href="#blemanagermonitorcharacteristicfordevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
   <div class='pre p1 fill-light mt0'>monitor(listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
@@ -5913,7 +6155,7 @@ this
 <code>transactionId</code>
  which can be used in
 
-<a href="#BleManager#cancelTransaction">bleManager.cancelTransaction()</a>
+<a href="#blemanagercanceltransaction">bleManager.cancelTransaction()</a>
  function.
 
           </div>
@@ -6101,7 +6343,7 @@ this
     <div class='py1 quiet mt1 prose-big'>Static Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='LogLevel.None'>
+    <div class='border-bottom' id='loglevelnone'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6147,7 +6389,7 @@ this
       </div>
     </div>
   
-    <div class='border-bottom' id='LogLevel.Verbose'>
+    <div class='border-bottom' id='loglevelverbose'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6193,7 +6435,7 @@ this
       </div>
     </div>
   
-    <div class='border-bottom' id='LogLevel.Debug'>
+    <div class='border-bottom' id='logleveldebug'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6239,7 +6481,7 @@ this
       </div>
     </div>
   
-    <div class='border-bottom' id='LogLevel.Info'>
+    <div class='border-bottom' id='loglevelinfo'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6285,7 +6527,7 @@ this
       </div>
     </div>
   
-    <div class='border-bottom' id='LogLevel.Warning'>
+    <div class='border-bottom' id='loglevelwarning'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6331,7 +6573,7 @@ this
       </div>
     </div>
   
-    <div class='border-bottom' id='LogLevel.Error'>
+    <div class='border-bottom' id='loglevelerror'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6402,7 +6644,7 @@ this
   </div>
   
 
-  <p>Device Bluetooth Low Energy state. It's keys are used to check <a href="#BleManager#state">#BleManager#state</a> values
+  <p>Device Bluetooth Low Energy state. It's keys are used to check <a href="#blemanagerstate">#blemanagerstate</a> values
 received by <a href="#blemanager">BleManager</a></p>
 
 
@@ -6431,7 +6673,7 @@ received by <a href="#blemanager">BleManager</a></p>
     <div class='py1 quiet mt1 prose-big'>Static Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='State.Unknown'>
+    <div class='border-bottom' id='stateunknown'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6477,7 +6719,7 @@ received by <a href="#blemanager">BleManager</a></p>
       </div>
     </div>
   
-    <div class='border-bottom' id='State.Resetting'>
+    <div class='border-bottom' id='stateresetting'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6523,7 +6765,7 @@ received by <a href="#blemanager">BleManager</a></p>
       </div>
     </div>
   
-    <div class='border-bottom' id='State.Unsupported'>
+    <div class='border-bottom' id='stateunsupported'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6569,7 +6811,7 @@ received by <a href="#blemanager">BleManager</a></p>
       </div>
     </div>
   
-    <div class='border-bottom' id='State.Unauthorized'>
+    <div class='border-bottom' id='stateunauthorized'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6615,7 +6857,7 @@ received by <a href="#blemanager">BleManager</a></p>
       </div>
     </div>
   
-    <div class='border-bottom' id='State.PoweredOff'>
+    <div class='border-bottom' id='statepoweredoff'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6661,7 +6903,7 @@ received by <a href="#blemanager">BleManager</a></p>
       </div>
     </div>
   
-    <div class='border-bottom' id='State.PoweredOn'>
+    <div class='border-bottom' id='statepoweredon'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6779,7 +7021,7 @@ received by <a href="#blemanager">BleManager</a></p>
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='BleManagerOptions#restoreStateIdentifier'>
+    <div class='border-bottom' id='blemanageroptionsrestorestateidentifier'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6825,7 +7067,7 @@ received by <a href="#blemanager">BleManager</a></p>
       </div>
     </div>
   
-    <div class='border-bottom' id='BleManagerOptions#restoreStateFunction'>
+    <div class='border-bottom' id='blemanageroptionsrestorestatefunction'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -6939,7 +7181,7 @@ connected peripherals.</p>
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='BleRestoredState#connectedPeripherals'>
+    <div class='border-bottom' id='blerestoredstateconnectedperipherals'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -7034,12 +7276,6 @@ connected peripherals.</p>
           
         </div>
       
-        <div class='space-bottom0'>
-          <span class='code bold'>autoConnect</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
-          
-          
-        </div>
-      
     </div>
   
 
@@ -7055,7 +7291,7 @@ connected peripherals.</p>
     <div class='py1 quiet mt1 prose-big'>Instance Members</div>
     <div class="clearfix">
   
-    <div class='border-bottom' id='ScanOptions#allowDuplicates'>
+    <div class='border-bottom' id='scanoptionsallowduplicates'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
@@ -7071,53 +7307,6 @@ connected peripherals.</p>
 
 
   <div class='pre p1 fill-light mt0'>allowDuplicates</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='ScanOptions#autoConnect'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>autoConnect</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device
-becomes available (true). [Android only]</p>
-
-
-  <div class='pre p1 fill-light mt0'>autoConnect</div>
   
   
 
@@ -7188,6 +7377,68 @@ becomes available (true). [Android only]</p>
   
 
   
+    <div class='py1 quiet mt1 prose-big'>Properties</div>
+    <div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>autoConnect</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>requestMTU</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?)</code>
+          
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Instance Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='connectionoptionsautoconnect'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>autoConnect</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device
+becomes available (true). [Android only]</p>
+
+
+  <div class='pre p1 fill-light mt0'>autoConnect</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
 
   
 
@@ -7196,6 +7447,60 @@ becomes available (true). [Android only]</p>
   
 
   
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='connectionoptionsrequestmtu'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>requestMTU</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Whether MTU size will be negotiated to this value. It is not guaranteed to get it after connection is successful.</p>
+
+
+  <div class='pre p1 fill-light mt0'>requestMTU</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
 
   
 
@@ -7524,8 +7829,8 @@ becomes available (true). [Android only]</p>
         
       </div>
     </div>
-  </div>
   <script src='assets/anchor.js'></script>
+  <script src='assets/split.js'></script>
   <script src='assets/site.js'></script>
 </body>
 </html>

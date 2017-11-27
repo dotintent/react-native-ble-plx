@@ -1,7 +1,10 @@
 package com.polidea.reactnativeble.wrapper;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import com.polidea.reactnativeble.utils.Constants;
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
 
@@ -14,10 +17,12 @@ public class Device  {
         String ID = "id";
         String NAME = "name";
         String RSSI = "rssi";
+        String MTU = "mtu";
 
         String MANUFACTURER_DATA = "manufacturerData";
         String SERVICE_DATA = "serviceData";
         String SERVICE_UUIDS = "serviceUUIDs";
+        String LOCAL_NAME = "localName";
         String TX_POWER_LEVEL = "txPowerLevel";
         String SOLICITED_SERVICE_UUIDS = "solicitedServiceUUIDs";
         String IS_CONNECTABLE = "isConnectable";
@@ -25,18 +30,21 @@ public class Device  {
     }
 
     private RxBleDevice device;
+    @Nullable
     private RxBleConnection connection;
+    @Nullable
     private List<Service> services;
 
-    public Device(RxBleDevice device, RxBleConnection connection) {
+    public Device(@NonNull RxBleDevice device, @Nullable RxBleConnection connection) {
         this.device = device;
         this.connection = connection;
     }
 
-    public void setServices(List<Service> services) {
+    public void setServices(@NonNull List<Service> services) {
         this.services = services;
     }
 
+    @Nullable
     public List<Service> getServices() {
         return services;
     }
@@ -45,11 +53,17 @@ public class Device  {
         return device;
     }
 
+    @Nullable
     public RxBleConnection getConnection() {
         return connection;
     }
 
-    public Service getServiceByUUID(UUID uuid) {
+    @Nullable
+    public Service getServiceByUUID(@NonNull UUID uuid) {
+        if (services == null) {
+            return null;
+        }
+
         for(Service service : services) {
             if (uuid.equals(service.getNativeService().getUuid()))
                 return service;
@@ -57,7 +71,7 @@ public class Device  {
         return null;
     }
 
-    public WritableMap toJSObject(Integer rssi) {
+    public WritableMap toJSObject(@Nullable Integer rssi) {
         WritableMap result = Arguments.createMap();
         result.putString(Metadata.ID, device.getMacAddress());
         result.putString(Metadata.NAME, device.getName());
@@ -66,11 +80,17 @@ public class Device  {
         } else {
             result.putNull(Metadata.RSSI);
         }
+        if(connection != null) {
+            result.putInt(Metadata.MTU, connection.getMtu());
+        } else {
+            result.putInt(Metadata.MTU, Constants.MINIMUM_MTU);
+        }
 
         // Advertisement data is not set
         result.putNull(Metadata.MANUFACTURER_DATA);
         result.putNull(Metadata.SERVICE_DATA);
         result.putNull(Metadata.SERVICE_UUIDS);
+        result.putNull(Metadata.LOCAL_NAME);
         result.putNull(Metadata.TX_POWER_LEVEL);
         result.putNull(Metadata.SOLICITED_SERVICE_UUIDS);
         result.putNull(Metadata.IS_CONNECTABLE);

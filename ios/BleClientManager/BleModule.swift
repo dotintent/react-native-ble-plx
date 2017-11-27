@@ -54,6 +54,9 @@ public class BleClientManager : NSObject {
     // Disposable map for every transaction.
     private let transactions = DisposableMap<String>()
 
+    // Map of pending read operations.
+    private var pendingReads = Dictionary<Double, Int>()
+
     // MARK: Lifecycle -------------------------------------------------------------------------------------------------
 
     public init(queue: DispatchQueue, restoreIdentifierKey: String?) {
@@ -98,6 +101,7 @@ public class BleClientManager : NSObject {
             _ = device.cancelConnection().subscribe()
         }
         connectedPeripherals.removeAll()
+        pendingReads.removeAll()
     }
 
     deinit {
@@ -150,9 +154,13 @@ public class BleClientManager : NSObject {
 
             _ = manager.monitorDisconnection(for: peripheral)
                 .take(1)
-                .subscribe(onNext: { [weak self] peripheral in
-                    self?.onPeripheralDisconnected(peripheral)
-                })
+                .subscribe(
+                    onNext: { [weak self] peripheral in
+                        self?.onPeripheralDisconnected(peripheral)
+                    },
+                    onError: { [weak self] error in
+                        self?.onPeripheralDisconnected(peripheral)
+                    })
 
             peripheral.services?.forEach { service in
                 discoveredServices[service.jsIdentifier] = service
@@ -235,6 +243,25 @@ public class BleClientManager : NSObject {
         transactions.replaceDisposable(transactionId, disposable: disposable)
     }
 
+    public func requestMTUForDevice(_ deviceIdentifier: String,
+                                                   mtu: Int,
+                                         transactionId: String,
+                                               resolve: @escaping Resolve,
+                                                reject: @escaping Reject) {
+
+        guard let deviceId = UUID(uuidString: deviceIdentifier) else {
+            BleError.invalidUUID(deviceIdentifier).callReject(reject)
+            return
+        }
+
+        guard let peripheral = connectedPeripherals[deviceId] else {
+            BleError.peripheralNotConnected(deviceIdentifier).callReject(reject)
+            return
+        }
+
+        resolve(peripheral.asJSObject())
+    }
+
     // Mark: Connection management -------------------------------------------------------------------------------------
 
     // Connect to specified device.
@@ -278,6 +305,8 @@ public class BleClientManager : NSObject {
                             .subscribe(onNext: { peripheral in
                                 // We are monitoring peripheral disconnections to clean up state.
                                 self?.onPeripheralDisconnected(peripheral)
+                            }, onError: { error in
+                                self?.onPeripheralDisconnected(device)
                             })
                         promise.resolve(device.asJSObject())
                     } else {
@@ -492,8 +521,14 @@ public class BleClientManager : NSObject {
     private func safeReadCharacteristicForDevice(_ characteristicObservable: Observable<Characteristic>,
                                                               transactionId: String,
                                                                     promise: SafePromise) {
+        var characteristicIdentifier: Double? = nil
         let disposable = characteristicObservable
-            .flatMap { $0.readValue() }
+            .flatMap { [weak self] characteristic -> Observable<Characteristic> in
+                characteristicIdentifier = characteristic.jsIdentifier
+                let reads = self?.pendingReads[characteristic.jsIdentifier] ?? 0
+                self?.pendingReads[characteristic.jsIdentifier] = reads + 1
+                return characteristic.readValue()
+            }
             .subscribe(
                 onNext: { characteristic in
                     promise.resolve(characteristic.asJSObject)
@@ -505,6 +540,12 @@ public class BleClientManager : NSObject {
                 onDisposed: { [weak self] in
                     self?.transactions.removeDisposable(transactionId)
                     BleError.cancelled().callReject(promise)
+                    if let id = characteristicIdentifier {
+                        let reads = self?.pendingReads[id] ?? 0
+                        if reads > 0 {
+                            self?.pendingReads[id] = reads - 1
+                        }
+                    }
                 }
             )
 
@@ -662,7 +703,9 @@ public class BleClientManager : NSObject {
 
         let disposable = observable.subscribe(
             onNext: { [weak self] characteristic in
-                self?.dispatchEvent(BleEvent.readEvent, value: [NSNull(), characteristic.asJSObject, transactionId])
+                if self?.pendingReads[characteristic.jsIdentifier] ?? 0 == 0 {
+                    self?.dispatchEvent(BleEvent.readEvent, value: [NSNull(), characteristic.asJSObject, transactionId])
+                }
             }, onError: { [weak self] error in
                 self?.dispatchEvent(BleEvent.readEvent, value: [error.bleError.toJS, NSNull(), transactionId])
             }, onCompleted: {
@@ -753,6 +796,7 @@ public class BleClientManager : NSObject {
             return Disposables.create()
         }
     }
+
 
     // MARK: Private interface -----------------------------------------------------------------------------------------
 

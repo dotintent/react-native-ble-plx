@@ -38,7 +38,7 @@ export interface Subscription {
    * @memberof Subscription
    * @ignore
    */
-  remove(): void
+  remove(): void;
 }
 
 /**
@@ -50,7 +50,7 @@ export interface BleManagerOptions {
    * @memberof BleManagerOptions
    * @instance
    */
-  restoreStateIdentifier?: string,
+  restoreStateIdentifier?: string;
 
   /**
    * Optional function which is used to properly restore state of your BLE Manager. Callback
@@ -61,7 +61,7 @@ export interface BleManagerOptions {
    * @memberof BleManagerOptions
    * @instance
    */
-  restoreStateFunction?: (restoredState: ?BleRestoredState) => void
+  restoreStateFunction?: (restoredState: ?BleRestoredState) => void;
 }
 
 /**
@@ -74,7 +74,7 @@ export interface BleRestoredState {
    * @instance
    * @memberof BleRestoredState
    */
-  connectedPeripherals: Array<Device>
+  connectedPeripherals: Array<Device>;
 }
 
 /**
@@ -86,25 +86,32 @@ export interface ScanOptions {
    * @memberof ScanOptions
    * @instance
    */
-  allowDuplicates?: boolean,
-  /**
-   * Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device 
-   * becomes available (true). [Android only]
-   * @memberof ScanOptions
-   * @instance
-   */
-  autoConnect?: boolean
+  allowDuplicates?: boolean;
 }
 
 /**
  * Connection specific options to be passed before connection happen. [Not used]
  */
 export interface ConnectionOptions {
-  // Not used for now
+  /**
+   * Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device 
+   * becomes available (true). [Android only]
+   * @memberof ConnectionOptions
+   * @instance
+   */
+  autoConnect?: boolean;
+
+  /**
+   * Whether MTU size will be negotiated to this value. It is not guaranteed to get it after connection is successful.
+   *
+   * @memberof ConnectionOptions
+   * @instance
+   */
+  requestMTU?: number;
 }
 
 /**
- * Device Bluetooth Low Energy state. It's keys are used to check {@link #BleManager#state} values
+ * Device Bluetooth Low Energy state. It's keys are used to check {@link #blemanagerstate} values
  * received by {@link BleManager}
  */
 export const State = {
