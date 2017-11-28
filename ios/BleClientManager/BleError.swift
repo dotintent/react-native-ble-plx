@@ -91,6 +91,9 @@ extension BluetoothError {
             return BleError(code: 403, message: "Descriptor \(descriptor.uuid.fullUUIDString) write failed: \(error?.localizedDescription ?? "Unknown reason")")
         case let .descriptorReadFailed(descriptor, error):
             return BleError(code: 403, message: "Descriptor \(descriptor.uuid.fullUUIDString) read failed: \(error?.localizedDescription ?? "Unknown reason")")
+
+        case .destroyed:
+            return BleError(code: 500, message: "Native iOS BleManager was destroyed")
         }
     }
 }
