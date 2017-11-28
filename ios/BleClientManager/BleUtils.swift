@@ -24,7 +24,7 @@ extension Sequence where Iterator.Element == String {
 extension String {
     func toCBUUID() -> CBUUID? {
         let uuid: String
-        switch self.characters.count {
+        switch self.count {
         case 4:
             uuid = "0000\(self)-0000-1000-8000-00805f9b34fb"
         case 8:
@@ -42,10 +42,10 @@ extension String {
 extension CBUUID {
     var fullUUIDString: String {
         let native = self.uuidString.lowercased()
-        if (native.characters.count == 4) {
+        if (native.count == 4) {
             return "0000\(native)-0000-1000-8000-00805f9b34fb"
         }
-        if (native.characters.count == 8) {
+        if (native.count == 8) {
             return "\(native)-0000-1000-8000-00805f9b34fb"
         }
         return native
