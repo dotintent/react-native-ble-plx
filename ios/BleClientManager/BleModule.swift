@@ -18,6 +18,7 @@ public protocol BleClientManagerDelegate {
 public class BleClientManager : NSObject {
 
     // Delegate is used to send events to
+    @objc
     public var delegate: BleClientManagerDelegate?
 
     // RxBlutoothKit's manager
@@ -59,6 +60,7 @@ public class BleClientManager : NSObject {
 
     // MARK: Lifecycle -------------------------------------------------------------------------------------------------
 
+    @objc
     public init(queue: DispatchQueue, restoreIdentifierKey: String?) {
 
         if let key = restoreIdentifierKey {
@@ -85,6 +87,7 @@ public class BleClientManager : NSObject {
         }
     }
 
+    @objc
     public func invalidate() {
         // Disposables
         stateDisposable.dispose()
@@ -113,16 +116,19 @@ public class BleClientManager : NSObject {
     // Mark: Common ----------------------------------------------------------------------------------------------------
 
     // User is able to cancel any "atomic" operation which is contained in transactions map.
+    @objc
     public func cancelTransaction(_ transactionId: String) {
         transactions.removeDisposable(transactionId)
     }
 
     // User is able to enable logging of RxBluetoothKit to show how real device responds.
+    @objc
     public func setLogLevel(_ logLevel: String) {
         RxBluetoothKitLog.setLogLevel(RxBluetoothKitLog.LogLevel(jsObject: logLevel))
     }
 
     // User can retrieve current log level.
+    @objc
     public func logLevel(_ resolve: Resolve, reject: Reject) {
         resolve(RxBluetoothKitLog.getLogLevel().asJSObject)
     }
@@ -130,6 +136,7 @@ public class BleClientManager : NSObject {
     // Mark: Monitoring state ------------------------------------------------------------------------------------------
 
     // Retrieve current BleManager's state.
+    @objc
     public func state(_ resolve: Resolve, reject: Reject) {
         resolve(manager.state.asJSObject)
     }
@@ -176,6 +183,7 @@ public class BleClientManager : NSObject {
     // Mark: Scanning --------------------------------------------------------------------------------------------------
 
     // Start BLE scanning.
+    @objc
     public func startDeviceScan(_ filteredUUIDs: [String]?, options:[String:AnyObject]?) {
 
         // iOS handles allowDuplicates option to receive more scan records.
@@ -206,11 +214,13 @@ public class BleClientManager : NSObject {
     }
 
     // Stop BLE scanning.
+    @objc
     public func stopDeviceScan() {
         scanDisposable.disposable = Disposables.create()
     }
 
     // Read peripheral's RSSI.
+    @objc
     public func readRSSIForDevice(_ deviceIdentifier: String,
                                        transactionId: String,
                                              resolve: @escaping Resolve,
@@ -243,6 +253,7 @@ public class BleClientManager : NSObject {
         transactions.replaceDisposable(transactionId, disposable: disposable)
     }
 
+    @objc
     public func requestMTUForDevice(_ deviceIdentifier: String,
                                                    mtu: Int,
                                          transactionId: String,
@@ -265,6 +276,7 @@ public class BleClientManager : NSObject {
     // Mark: Connection management -------------------------------------------------------------------------------------
 
     // Connect to specified device.
+    @objc
     public func connectToDevice(_ deviceIdentifier: String,
                                          options:[String: AnyObject]?,
                                          resolve: @escaping Resolve,
@@ -329,6 +341,7 @@ public class BleClientManager : NSObject {
     }
 
     // User is able to cancel device connection.
+    @objc
     public func cancelDeviceConnection(_ deviceIdentifier: String,
                                                   resolve: @escaping Resolve,
                                                    reject: @escaping Reject) {
@@ -358,6 +371,7 @@ public class BleClientManager : NSObject {
     }
 
     // Retrieve if device is connected.
+    @objc
     public func isDeviceConnected(_ deviceIdentifier: String, resolve: Resolve, reject: Reject) {
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
             BleError.invalidUUID(deviceIdentifier).callReject(reject)
@@ -375,6 +389,7 @@ public class BleClientManager : NSObject {
 
     // After connection for peripheral to be usable, 
     // user should discover all services and characteristics for peripheral.
+    @objc
     public func discoverAllServicesAndCharacteristicsForDevice(_ deviceIdentifier: String,
                                                                           resolve: @escaping Resolve,
                                                                            reject: @escaping Reject) {
@@ -412,6 +427,7 @@ public class BleClientManager : NSObject {
     // Mark: Service and characteristic getters ------------------------------------------------------------------------
 
     // When fetching services for peripherals we update our cache.
+    @objc
     public func servicesForDevice(_ deviceIdentifier: String, resolve: Resolve, reject: Reject) {
 
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
@@ -434,6 +450,7 @@ public class BleClientManager : NSObject {
     }
 
     // When fetching characteristics for peripherals we update our cache.
+    @objc
     public func characteristicsForDevice(_ deviceIdentifier: String,
                                                 serviceUUID: String,
                                                     resolve: Resolve,
@@ -460,6 +477,7 @@ public class BleClientManager : NSObject {
                                  reject: reject)
     }
 
+    @objc
     public func characteristicsForService(_ serviceIdentifier: Double,
                                                       resolve: Resolve,
                                                        reject: Reject) {
@@ -483,6 +501,7 @@ public class BleClientManager : NSObject {
 
     // Mark: Reading ---------------------------------------------------------------------------------------------------
 
+    @objc
     public func readCharacteristicForDevice(_ deviceIdentifier: String,
                                                    serviceUUID: String,
                                             characteristicUUID: String,
@@ -497,6 +516,7 @@ public class BleClientManager : NSObject {
                                         promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+    @objc
     public func readCharacteristicForService(_ serviceIdentifier: Double,
                                               characteristicUUID: String,
                                                    transactionId: String,
@@ -509,6 +529,7 @@ public class BleClientManager : NSObject {
                                         promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+    @objc
     public func readCharacteristic(_ characteristicIdentifier: Double,
                                                 transactionId: String,
                                                       resolve: @escaping Resolve,
@@ -554,6 +575,7 @@ public class BleClientManager : NSObject {
 
     // MARK: Writing ---------------------------------------------------------------------------------------------------
 
+    @objc
     public func writeCharacteristicForDevice(  _ deviceIdentifier: String,
                                                       serviceUUID: String,
                                                characteristicUUID: String,
@@ -576,6 +598,7 @@ public class BleClientManager : NSObject {
                                          promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+    @objc
     public func writeCharacteristicForService(  _ serviceIdentifier: Double,
                                                  characteristicUUID: String,
                                                         valueBase64: String,
@@ -597,6 +620,7 @@ public class BleClientManager : NSObject {
                                          promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+    @objc
     public func writeCharacteristic(  _ characteristicIdentifier: Double,
                                                      valueBase64: String,
                                                         response: Bool,
@@ -643,6 +667,7 @@ public class BleClientManager : NSObject {
 
     // MARK: Monitoring ------------------------------------------------------------------------------------------------
 
+    @objc
     public func monitorCharacteristicForDevice(  _ deviceIdentifier: String,
                                                         serviceUUID: String,
                                                  characteristicUUID: String,
@@ -658,6 +683,7 @@ public class BleClientManager : NSObject {
                                            promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+    @objc
     public func monitorCharacteristicForService(  _ serviceIdentifier: Double,
                                                    characteristicUUID: String,
                                                         transactionId: String,
@@ -670,6 +696,7 @@ public class BleClientManager : NSObject {
                                            promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+    @objc
     public func monitorCharacteristic(  _ characteristicIdentifier: Double,
                                                      transactionId: String,
                                                            resolve: @escaping Resolve,
