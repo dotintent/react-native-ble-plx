@@ -1,7 +1,12 @@
 const platformParams = ['--platform', 'iOS']
-
 const childProcess = require('child_process')
-const parentModulePackageJson = require('../../package.json')
+
+var parentModulePackageJson = null
+try {
+  parentModulePackageJson = require('../../package.json')
+} catch(e) {
+  console.warn('You should run react-native-ble-plx from the root of your project')
+}
 
 if (process.platform === 'darwin' && shouldUseCarthage()) {
   var carthageVersionProcessResult = childProcess.spawnSync('carthage', ['version'], {
@@ -31,7 +36,7 @@ if (process.platform === 'darwin' && shouldUseCarthage()) {
 }
 
 function shouldUseCarthage() {
-  const reactNativeBlePlxOptions = parentModulePackageJson["react-native-ble-plx"]
+  const reactNativeBlePlxOptions = parentModulePackageJson && parentModulePackageJson['react-native-ble-plx']
   if (!reactNativeBlePlxOptions) return true
   const useCarthage = reactNativeBlePlxOptions.carthage
   return useCarthage != undefined ? useCarthage : true
