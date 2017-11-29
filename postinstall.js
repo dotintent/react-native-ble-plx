@@ -28,7 +28,7 @@ if (process.platform === 'darwin' && shouldUseCarthage()) {
     errorExitProcess(`${bleClientManagerDirectory} directory not found. Cannot proceed with building the library.`)
   }
 
-  spawnSyncProcessAndExitOnError('carthage', ['bootstrap', '--no-build', ...platformParams])
+  spawnSyncProcessAndExitOnError('carthage', ['bootstrap', ...platformParams])
 
   const carthageVersionString = carthageVersionProcessResult.output[1].toString()
   spawnSyncProcessAndExitOnError('carthage', getCarthageBuildParams(carthageVersionString))
