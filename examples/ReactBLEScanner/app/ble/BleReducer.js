@@ -11,7 +11,7 @@ const defaultState = Map({
   scanning: false,
   errors: List(),
   state: ble.DEVICE_STATE_DISCONNECTED,
-  operations: Map(),
+  operations: OrderedMap(),
   transactionId: 0,
 });
 
