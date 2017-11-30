@@ -3,7 +3,7 @@
 **Breaking changes**:
 
   - Migrate to Swift 4 (now requires XCode 9 or higher)
-  - Fixed spelling mistake `device.isIndictable` is now `device.isIndicatable`.
+  - Fixed spelling mistake `characteristic.isIndictable` is now `characteristic.isIndicatable`.
 
 Other:
 
