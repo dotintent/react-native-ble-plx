@@ -1,3 +1,27 @@
+**0.7.0** 
+
+**Breaking changes**:
+
+  - Migrate to Swift 4 (now requires XCode 9 or higher)
+  - Fixed spelling mistake `device.isIndictable` is now `device.isIndicatable`.
+
+Other:
+
+  - Fixed potential memory leaks in iOS native module.
+  - Fixed an issue when successive scans could stop emitting scanned devices.
+  - Removed `bash` dependency in postinstall script.
+  - Use `--cache-builds` option only when specific version of carthage is available.
+  - Remove `--no-build` option to be able to reuse prepackages frameworks.
+  - Added option to disable building dynamic frameworks with carthage
+    by setting option in your app's package.json:
+    ```json
+    ...
+    "react-native-ble-plx": {
+      "carthage": false
+    }
+    ...
+    ```
+
 **0.6.5**
 - Fixed Null Pointer Exception when called `cancelDeviceConnection` on Android.
 - Updated gradle version to be able to use latest Android Studio.
