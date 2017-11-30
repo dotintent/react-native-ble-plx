@@ -29,7 +29,7 @@ public class Characteristic {
         String IS_WRITABLE_WITHOUT_RESPONSE = "isWritableWithoutResponse";
         String IS_NOTIFIABLE = "isNotifiable";
         String IS_NOTIFYING = "isNotifying";
-        String IS_INDICTABLE = "isIndictable";
+        String IS_INDICATABLE = "isIndicatable";
         String VALUE = "value";
     }
 
@@ -68,7 +68,7 @@ public class Characteristic {
         js.putBoolean(Metadata.IS_WRITABLE_WITH_RESPONSE, (characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0);
         js.putBoolean(Metadata.IS_WRITABLE_WITHOUT_RESPONSE, (characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) != 0);
         js.putBoolean(Metadata.IS_NOTIFIABLE, (characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0);
-        js.putBoolean(Metadata.IS_INDICTABLE, (characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0);
+        js.putBoolean(Metadata.IS_INDICATABLE, (characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0);
 
         BluetoothGattDescriptor descriptor = characteristic.getDescriptor(CLIENT_CHARACTERISTIC_CONFIG_UUID);
         boolean isNotifying = false;

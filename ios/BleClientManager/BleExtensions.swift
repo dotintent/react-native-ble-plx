@@ -124,7 +124,7 @@ extension Characteristic {
             "isWritableWithoutResponse": properties.contains(.writeWithoutResponse),
             "isNotifiable": properties.contains(.notify),
             "isNotifying": isNotifying,
-            "isIndictable": properties.contains(.indicate),
+            "isIndicatable": properties.contains(.indicate),
             "value": valueBase64 as Any
         ]
     }
