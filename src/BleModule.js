@@ -177,7 +177,7 @@ export interface NativeCharacteristic {
    * True if characteristic is monitoring value changes with ACK.
    * @private
    */
-  isIndictable: boolean;
+  isIndicatable: boolean;
   /**
    * Characteristic value if present
    * @private

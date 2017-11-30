@@ -57,7 +57,7 @@ export class Characteristic implements NativeCharacteristic {
   /**
    * True if characteristic is monitoring value changes with ACK.
    */
-  isIndictable: boolean
+  isIndicatable: boolean
   /**
    * Characteristic value if present
    */
