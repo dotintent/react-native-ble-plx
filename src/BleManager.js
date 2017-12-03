@@ -197,8 +197,8 @@ export class BleManager {
   *
   * Only works for Android.
   */
-  enableBluetooth() {
-    BleModule.enableBluetooth()
+  enable() {
+    BleModule.enable()
   }
   
   /**
@@ -207,7 +207,7 @@ export class BleManager {
   * Only works for Android.
   */
   disableBluetooth() {
-    BleModule.enableBluetooth()
+    BleModule.disable()
   }
 
   // Mark: Monitoring state --------------------------------------------------------------------------------------------

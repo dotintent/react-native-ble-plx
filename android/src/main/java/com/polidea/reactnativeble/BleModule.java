@@ -179,13 +179,13 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
     
     @ReactMethod
-    public static boolean enableBluetooth() {
+    public static boolean enable() {
         final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         return bluetoothAdapter.enable();
     }
     
     @ReactMethod
-    public static boolean disableBluetooth() {
+    public static boolean disable() {
         final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         return bluetoothAdapter.disable();
     }
