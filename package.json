@@ -8,7 +8,7 @@
   },
   "scripts": {
     "postinstall": "node ./postinstall.js",
-    "test": "jest",
+    "test": "jest --config jest.config.js",
     "lint": "flow && documentation lint index.js",
     "docs": "documentation build index.js -o docs --config documentation.yml -f html"
   },
@@ -33,9 +33,6 @@
     "react-native": "0.49.3"
   },
   "keywords": ["React", "Native", "Bluetooth", "Low", "Energy", "BLE", "Polidea"],
-  "jest": {
-    "preset": "react-native"
-  },
   "author": "Polidea",
   "license": "Apache-2.0",
   "bugs": {
