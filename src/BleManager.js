@@ -206,7 +206,7 @@ export class BleManager {
   *
   * Only works for Android.
   */
-  disableBluetooth() {
+  disable() {
     BleModule.disable()
   }
 
