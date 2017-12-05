@@ -8,7 +8,7 @@ const defaultState = Map({
   selecteddeviceIdentifier: null,
   selectedserviceUUID: null,
   selectedcharacteristicUUID: null,
-  enabling: true,
+  enabling: false,
   scanning: false,
   errors: List(),
   state: ble.DEVICE_STATE_DISCONNECTED,
