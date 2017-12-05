@@ -52,6 +52,13 @@ class BleComponent extends Component {
   }
 
   componentWillReceiveProps(newProps) {
+    console.log('componentWillReceiveProps');
+    // Handle enable / disable bluetooth
+    if (newProps.enabling === true) {
+      console.log('enabling');
+      this.manager.enable();
+    }
+    
     // Handle scanning
     if (newProps.scanning !== this.props.scanning) {
       if (newProps.scanning === true) {
@@ -76,10 +83,6 @@ class BleComponent extends Component {
 
     // Handle connection state
     switch (newProps.state) {
-      case ble.ENABLE_BLUETOOTH:
-        this.manager.enable();
-        break;
-
       case ble.DEVICE_STATE_DISCONNECT:
         this.manager.cancelDeviceConnection(newProps.selectedDeviceId)
           .then((successIdentifier) => {
