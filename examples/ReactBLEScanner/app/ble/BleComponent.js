@@ -76,6 +76,10 @@ class BleComponent extends Component {
 
     // Handle connection state
     switch (newProps.state) {
+      case ble.ENABLE_BLUETOOTH:
+        this.manager.enable();
+        break;
+
       case ble.DEVICE_STATE_DISCONNECT:
         this.manager.cancelDeviceConnection(newProps.selectedDeviceId)
           .then((successIdentifier) => {
@@ -204,6 +208,7 @@ export default connect(
     selectedDeviceId: state.getIn(['ble', 'selectedDeviceId'])
   }),
   {
+    enableBluetooth: ble.enableBluetooth,
     deviceFound: ble.deviceFound,
     changeDeviceState: ble.changeDeviceState,
     serviceIdsForDevice: ble.serviceIdsForDevice,

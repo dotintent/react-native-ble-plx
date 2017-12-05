@@ -8,6 +8,7 @@ const defaultState = Map({
   selecteddeviceIdentifier: null,
   selectedserviceUUID: null,
   selectedcharacteristicUUID: null,
+  enabling: true,
   scanning: false,
   errors: List(),
   state: ble.DEVICE_STATE_DISCONNECTED,
@@ -19,6 +20,8 @@ export default (state = defaultState, action) => {
   const transactionId = state.get('transactionId')
 
   switch (action.type) {
+    case ble.ENABLE_BLUETOOTH:
+      return state.set('enabling', true);
     case ble.START_SCAN:
       return state.set('scanning', true);
     case ble.STOP_SCAN:
