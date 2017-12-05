@@ -15,6 +15,8 @@ beforeEach(() => {
     cancelTransaction: jest.fn(),
     setLogLevel: jest.fn(),
     logLevel: jest.fn(),
+    enable: jest.fn(),
+    disable: jest.fn(),
     state: jest.fn(),
     startDeviceScan: jest.fn(),
     stopDeviceScan: jest.fn(),
@@ -88,6 +90,16 @@ test('BleModule two emitted state changes are registered by BleManager', () => {
   Native.BleModule.emit(Native.BleModule.StateChangeEvent, 'PoweredOn')
   Native.BleModule.emit(Native.BleModule.StateChangeEvent, 'PoweredOff')
   expect(newStateCallback.mock.calls).toEqual([['PoweredOn'], ['PoweredOff']])
+})
+
+test('When BleManager enable is called it should call BleModule enable', () => {
+  bleManager.enable()
+  expect(Native.BleModule.enable).toBeCalled()
+})
+
+test('When BleManager disable is called it should call BleModule disable', () => {
+  bleManager.disable()
+  expect(Native.BleModule.disable).toBeCalled()
 })
 
 test('When BleManager cancelTransaction is called it should call BleModule cancelTransaction', () => {

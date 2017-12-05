@@ -177,6 +177,18 @@ public class BleModule extends ReactContextBaseJavaModule {
     public void logLevel(Promise promise) {
         promise.resolve(LogLevel.fromLogLevel(currentLogLevel));
     }
+    
+    @ReactMethod
+    public static boolean enable() {
+        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return bluetoothAdapter.enable();
+    }
+    
+    @ReactMethod
+    public static boolean disable() {
+        final BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return bluetoothAdapter.disable();
+    }
 
     // Mark: Monitoring state ----------------------------------------------------------------------
 

@@ -43,6 +43,11 @@ class ScannedDevicesComponent extends Component {
             text={'Start scanning'}
             color={'#beffc6'}/>
           <ButtonView
+            onClick={this.props.enableBluetooth}
+            disabled={this.props.enabling}
+            text={'Enable bluetooth'}
+            color={'#beffc6'}/>
+          <ButtonView
             onClick={this.props.stopScan}
             disabled={!this.props.scanning}
             text={'Stop scanning'}
@@ -68,11 +73,13 @@ var styles = StyleSheet.create({
 export default connect(
   state => ({
     devices: state.getIn(['ble', 'devices']),
-    scanning: state.getIn(['ble', 'scanning'])
+    scanning: state.getIn(['ble', 'scanning']),
+    enabling: state.getIn(['ble', 'enabling'])
   }),
   {
     startScan: ble.startScan,
     stopScan: ble.stopScan,
-    changeDeviceState: ble.changeDeviceState
+    changeDeviceState: ble.changeDeviceState,
+    enableBluetooth: ble.enableBluetooth
   })
 (ScannedDevicesComponent)

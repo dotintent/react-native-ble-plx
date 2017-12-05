@@ -191,6 +191,24 @@ export class BleManager {
   cancelTransaction(transactionId: TransactionId) {
     BleModule.cancelTransaction(transactionId)
   }
+  
+  /**
+  * Enable phone's bluetooth.
+  *
+  * Only works for Android.
+  */
+  enable() {
+    BleModule.enable()
+  }
+  
+  /**
+  * Disable phone's bluetooth.
+  *
+  * Only works for Android.
+  */
+  disable() {
+    BleModule.disable()
+  }
 
   // Mark: Monitoring state --------------------------------------------------------------------------------------------
 
