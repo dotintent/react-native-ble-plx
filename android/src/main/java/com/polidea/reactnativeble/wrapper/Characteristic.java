@@ -3,11 +3,11 @@ package com.polidea.reactnativeble.wrapper;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.support.annotation.NonNull;
-import android.util.Base64;
 import android.util.Pair;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
+import com.polidea.reactnativeble.utils.Base64Converter;
 import com.polidea.reactnativeble.utils.IdGenerator;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.rxandroidble.internal.RxBleLog;
@@ -83,7 +83,7 @@ public class Characteristic {
         if (value == null) {
             value = characteristic.getValue();
         }
-        js.putString(Metadata.VALUE, value != null ? Base64.encodeToString(value, Base64.DEFAULT) : null);
+        js.putString(Metadata.VALUE, value != null ? Base64Converter.encode(value) : null);
         return js;
     }
 

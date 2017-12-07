@@ -1,12 +1,12 @@
 package com.polidea.reactnativeble.converter;
 
 import android.support.annotation.NonNull;
-import android.util.Base64;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.reactnativeble.advertisement.AdvertisementData;
+import com.polidea.reactnativeble.utils.Base64Converter;
 import com.polidea.reactnativeble.utils.Constants;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.rxandroidble.RxBleScanResult;
@@ -42,15 +42,14 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
 
         AdvertisementData advData = AdvertisementData.parseScanResponseData(value.getScanRecord());
         result.putString(Metadata.MANUFACTURER_DATA,
-                         advData.getManufacturerData() != null ?
-                         Base64.encodeToString(advData.getManufacturerData(), Base64.DEFAULT) :
-                         null);
+                advData.getManufacturerData() != null ?
+                        Base64Converter.encode(advData.getManufacturerData()) : null);
 
         if (advData.getServiceData() != null) {
             WritableMap serviceData = Arguments.createMap();
-            for (Map.Entry<UUID,byte[]> entry: advData.getServiceData().entrySet()) {
+            for (Map.Entry<UUID, byte[]> entry : advData.getServiceData().entrySet()) {
                 serviceData.putString(UUIDConverter.fromUUID(entry.getKey()),
-                                      Base64.encodeToString(entry.getValue(), Base64.DEFAULT));
+                        Base64Converter.encode(entry.getValue()));
             }
             result.putMap(Metadata.SERVICE_DATA, serviceData);
         } else {

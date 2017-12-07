@@ -584,7 +584,7 @@ public class BleClientManager : NSObject {
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
-        guard let value = Data(base64Encoded: valueBase64, options: .ignoreUnknownCharacters) else {
+        guard let value = valueBase64.fromBase64 else {
             return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
         }
 
@@ -606,7 +606,7 @@ public class BleClientManager : NSObject {
                                                       transactionId: String,
                                                             resolve: @escaping Resolve,
                                                              reject: @escaping Reject) {
-        guard let value = Data(base64Encoded: valueBase64, options: .ignoreUnknownCharacters) else {
+        guard let value = valueBase64.fromBase64 else {
             return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
         }
 
@@ -627,7 +627,7 @@ public class BleClientManager : NSObject {
                                                    transactionId: String,
                                                          resolve: @escaping Resolve,
                                                           reject: @escaping Reject) {
-        guard let value = Data(base64Encoded: valueBase64, options: .ignoreUnknownCharacters) else {
+        guard let value = valueBase64.fromBase64 else {
             return BleError.invalidWriteDataForCharacteristic(characteristicIdentifier, data: valueBase64)
                 .callReject(reject)
         }

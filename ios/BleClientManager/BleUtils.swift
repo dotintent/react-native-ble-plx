@@ -37,6 +37,10 @@ extension String {
         }
         return CBUUID(nsuuid: nsuuid)
     }
+
+    var fromBase64: Data? {
+        return Data(base64Encoded: self, options: .ignoreUnknownCharacters)
+    }
 }
 
 extension CBUUID {
@@ -54,6 +58,7 @@ extension CBUUID {
 
 extension Data {
     var base64: String {
-        return self.base64EncodedString(options: .endLineWithCarriageReturn)
+        // We are using Base64 encoding without line endings.
+        return self.base64EncodedString()
     }
 }
