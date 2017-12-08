@@ -2,6 +2,7 @@ package com.polidea.reactnativeble;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -35,6 +36,7 @@ import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.reactnativeble.wrapper.Characteristic;
 import com.polidea.reactnativeble.wrapper.Device;
 import com.polidea.reactnativeble.wrapper.Service;
+import com.polidea.rxandroidble.NotificationSetupMode;
 import com.polidea.rxandroidble.RxBleAdapterStateObservable;
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
@@ -924,17 +926,17 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final BluetoothGattCharacteristic gattCharacteristic = characteristic.getNativeCharacteristic();
 
+        final int properties = gattCharacteristic.getProperties();
+        final boolean notifications = (properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0;
+        final boolean indications = (properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0;
+
         final Subscription subscription = Observable.just(connection)
                 .flatMap(new Func1<RxBleConnection, Observable<Observable<byte[]>>>() {
                     @Override
                     public Observable<Observable<byte[]>> call(RxBleConnection connection) {
-                        int properties = gattCharacteristic.getProperties();
-                        if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
-                            return connection.setupNotification(gattCharacteristic);
-                        }
-
-                        if ((properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-                            return connection.setupIndication(gattCharacteristic);
+                        if (notifications || indications) {
+                            // NotificationSetupMode.COMPAT does not write CCC Descriptor on it's own
+                            return connection.setupNotification(gattCharacteristic, NotificationSetupMode.COMPAT);
                         }
 
                         return Observable.error(new CannotMonitorCharacteristicException(gattCharacteristic));
@@ -943,7 +945,17 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .flatMap(new Func1<Observable<byte[]>, Observable<byte[]>>() {
                     @Override
                     public Observable<byte[]> call(Observable<byte[]> observable) {
-                        return observable;
+                        BluetoothGattDescriptor cccDescriptor =
+                                gattCharacteristic.getDescriptor(Characteristic.CLIENT_CHARACTERISTIC_CONFIG_UUID);
+                        if (cccDescriptor == null) {
+                            return observable;
+                        } else {
+                            byte[] enableValue = notifications
+                                    ? BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                                    : BluetoothGattDescriptor.ENABLE_INDICATION_VALUE;
+                            // Keep in mind that every subscription to this observable will initiate another descriptor write
+                            return observable.mergeWith(connection.writeDescriptor(cccDescriptor, enableValue).ignoreElements());
+                        }
                     }
                 })
                 .doOnUnsubscribe(new Action0() {
