@@ -3,12 +3,12 @@ package com.polidea.reactnativeble.wrapper;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.support.annotation.NonNull;
-import android.util.Pair;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.reactnativeble.utils.Base64Converter;
 import com.polidea.reactnativeble.utils.IdGenerator;
+import com.polidea.reactnativeble.utils.IdGeneratorKey;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.rxandroidble.internal.RxBleLog;
 
@@ -40,7 +40,7 @@ public class Characteristic {
     public Characteristic(@NonNull Service service, @NonNull BluetoothGattCharacteristic characteristic) {
         this.service = service;
         this.characteristic = characteristic;
-        this.id = IdGenerator.getIdForKey(new Pair<>(characteristic.getUuid(), characteristic.getInstanceId()));
+        this.id = IdGenerator.getIdForKey(new IdGeneratorKey(service.getDevice().getNativeDevice(), characteristic.getUuid(), characteristic.getInstanceId()));
     }
 
     public int getId() {

@@ -4,11 +4,11 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Pair;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.reactnativeble.utils.IdGenerator;
+import com.polidea.reactnativeble.utils.IdGeneratorKey;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class Service {
     public Service(@NonNull Device device, @NonNull BluetoothGattService service) {
         this.device = device;
         this.service = service;
-        this.id = IdGenerator.getIdForKey(new Pair<>(service.getUuid(), service.getInstanceId()));
+        this.id = IdGenerator.getIdForKey(new IdGeneratorKey(device.getNativeDevice(), service.getUuid(), service.getInstanceId()));
     }
 
     public int getId() {
