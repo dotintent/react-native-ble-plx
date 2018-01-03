@@ -913,7 +913,9 @@ will be based on CC2541 SensorTag.</p>
 <p>First step is to create BleManager instance which is an entry point to all available APIs.
 Make sure to create it after application started its execution. For example we can do it in
 Component's constructor:</p>
-<pre class='hljs'><span class="hljs-keyword">constructor</span>() {
+<pre class='hljs'><span class="hljs-keyword">import</span> { BleManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native-ble-plx'</span>
+
+<span class="hljs-keyword">constructor</span>() {
     <span class="hljs-keyword">super</span>();
     <span class="hljs-keyword">this</span>.manager = <span class="hljs-keyword">new</span> BleManager();
     ...
