@@ -12,6 +12,8 @@ Make sure to create it after application started its execution. For example we c
 Component's constructor:
 
 ```js
+import { BleManager } from 'react-native-ble-plx';
+
 constructor() {
     super();
     this.manager = new BleManager();
