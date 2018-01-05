@@ -26,6 +26,7 @@ What this library supports:
 * observing characteristic notifications/indications
 * reading RSSI
 * negotiating MTU
+
 What this library does NOT support:
 * turning the device's Bluetooth adapter on 
 * [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Bonding)
