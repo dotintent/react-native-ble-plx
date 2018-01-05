@@ -34,7 +34,8 @@
   },
   "keywords": ["React", "Native", "Bluetooth", "Low", "Energy", "BLE", "Polidea"],
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "modulePathIgnorePatterns": ["<rootDir>/examples"]
   },
   "author": "Polidea",
   "license": "Apache-2.0",
