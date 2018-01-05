@@ -1,6 +1,6 @@
 {
   "name": "react-native-ble-plx",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "React Native Bluetooth Low Energy library",
   "main": "index.js",
   "directories": {

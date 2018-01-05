@@ -1,3 +1,10 @@
+**0.8.0**
+- Fix regression of Base64 encoding on Android platform. When large chunk of Base64 data was sent from Android it contained new lines characters.
+- Updated RxAndroidBle to version 1.4.3.
+- Fixed colissions in Characteristic and Service id generation on Android. The collisions had place if multiple devices with the same characteristic/service UUIDs were connected at the same time.
+- Fixed dropped notifications right after setup on Android. Before there was small window when notification was monitored and listener for it wasn't mounted.
+- Minor documentation updates.
+
 **0.7.0** 
 
 **Breaking changes**:
