@@ -15,6 +15,21 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 
 ---
 
+## About this library
+
+What this library supports:
+* [observing device's Bluetooth adapter state](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
+* [scanning BLE devices](https://github.com/Polidea/react-native-ble-plx/wiki/Scanning)
+* [making connections to peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Connecting)
+* discovering services/characteristics (all at once)
+* reading/writing characteristics
+* observing characteristic notifications/indications
+* reading RSSI
+* negotiating MTU
+What this library does NOT support:
+* turning the device's Bluetooth adapter on 
+* [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Bonding)
+
 ## Recent Changes
 
 **0.8.0**
