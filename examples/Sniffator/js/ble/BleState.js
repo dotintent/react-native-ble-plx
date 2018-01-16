@@ -1,43 +1,22 @@
 // @flow
 
-import type { devices } from './BleTypes'
+import { Device } from 'react-native-ble-plx'
 
-export type bleState = {
-  devices: devices,
-  selectedDeviceUUID: ?string,
-  selectedServiceUUID: ?string,
-  selectedCharacteristicUUID: ?string,
+export type BleState = {
+  devices: Devices,
+  selectedDeviceID: ?string,
+  selectedServiceID: ?string,
+  selectedCharacteristicID: ?string,
   scanning: boolean,
-  errors: string[],
-  state: deviceState,
-  operations: operations,
-  operationId: ?string
+  selectedDeviceState: ?DeviceState,
+  errors: string[]
 }
 
-export type deviceState =
-  | 'DISCONNECT'
-  | 'DISCONNECTING'
-  | 'DISCONNECTED'
-  | 'CONNECT'
+type Devices = {
+  [id: string]: Device
+}
+
+export type DeviceState =
   | 'CONNECTING'
-  | 'DISCOVERING'
-  | 'FETCHING SERVICES AND CHARACTERISTICS'
+  | 'DISCOVERING SERVICES AND CHARACTERISTICS'
   | 'CONNECTED'
-
-export type operations = {
-  [operationId: string]: operation
-}
-
-export type operation = {|
-  type: operationType,
-  state: operationState,
-  deviceUUID: string,
-  serviceUUID: string,
-  characteristicUUID: string,
-  base64Value: ?string,
-  operationId: string
-|}
-
-export type operationType = 'WRITE' | 'READ' | 'MONITOR'
-
-export type operationState = 'NEW' | 'IN_PROGRESS' | 'CANCEL'

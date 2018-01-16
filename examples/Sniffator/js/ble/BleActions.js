@@ -1,108 +1,159 @@
 // @flow
 
-import * as bt from './BleTypes'
-import type { deviceState } from './BleState'
+import { Device, Characteristic } from 'react-native-ble-plx'
+import type { DeviceState } from './BleState'
 
-export type startScan = {|
+export type StartScan = {|
   type: 'START_SCAN'
 |}
 
-export type stopScan = {|
+export function startScan(): StartScan {
+  return {
+    type: 'START_SCAN'
+  }
+}
+
+export type StopScan = {|
   type: 'STOP_SCAN'
 |}
 
-export type deviceFound = {|
+export function stopScan(): StopScan {
+  return {
+    type: 'STOP_SCAN'
+  }
+}
+
+export type DeviceFound = {|
   type: 'DEVICE_FOUND',
-  device: bt.device
+  device: Device
 |}
 
-export type changeDeviceState = {|
-  type: 'CHANGE_DEVICE_STATE',
-  deviceUUID: string,
-  state: deviceState
+export function deviceFound(device: Device): DeviceFound {
+  return {
+    type: 'DEVICE_FOUND',
+    device
+  }
+}
+
+export type ChangeSelectedDeviceState = {|
+  type: 'CHANGE_SELECTED_DEVICE_STATE',
+  device: Device,
+  state: DeviceState
 |}
 
-export type updateServices = {|
-  type: 'UPDATE_SERVICES',
-  deviceUUID: string,
-  services: bt.services
-|}
+export function changeSelectedDeviceState(device: Device, state: DeviceState): ChangeSelectedDeviceState {
+  return {
+    type: 'CHANGE_SELECTED_DEVICE_STATE',
+    device,
+    state
+  }
+}
 
-export type updateCharacteristics = {|
-  type: 'UPDATE_CHARACTERISTICS',
-  deviceUUID: string,
-  serviceUUID: string,
-  characteristics: bt.characteristics
-|}
-
-export type writeCharacteristic = {|
+export type WriteCharacteristic = {|
   type: 'WRITE_CHARACTERISTIC',
-  deviceUUID: string,
-  serviceUUID: string,
-  characteristicUUID: string,
+  characteristic: Characteristic,
   base64Value: string
 |}
 
-export type readCharacteristic = {|
+export function writeCharacteristic(characteristic: Characteristic, base64Value: string): WriteCharacteristic {
+  return {
+    type: 'WRITE_CHARACTERISTIC',
+    characteristic,
+    base64Value
+  }
+}
+
+export type ReadCharacteristic = {|
   type: 'READ_CHARACTERISTIC',
-  deviceUUID: string,
-  serviceUUID: string,
-  characteristicUUID: string
+  characteristic: Characteristic
 |}
 
-export type monitorCharacteristic = {|
+export function readCharacteristic(characteristic: Characteristic): ReadCharacteristic {
+  return {
+    type: 'READ_CHARACTERISTIC',
+    characteristic
+  }
+}
+
+export type MonitorCharacteristic = {|
   type: 'MONITOR_CHARACTERISTIC',
-  deviceUUID: string,
-  serviceUUID: string,
-  characteristicUUID: string,
+  characteristic: Characteristic,
   monitor: boolean
 |}
 
-export type selectService = {|
+export function monitorCharacteristic(characteristic: Characteristic, monitor: boolean): MonitorCharacteristic {
+  return {
+    type: 'MONITOR_CHARACTERISTIC',
+    characteristic,
+    monitor
+  }
+}
+
+export type SelectService = {|
   type: 'SELECT_SERVICE',
-  deviceUUID: string,
-  serviceUUID: string
+  deviceID: string,
+  serviceID: string
 |}
 
-export type selectCharacteristic = {|
+export function selectService(deviceID: string, serviceID: string): SelectService {
+  return {
+    type: 'SELECT_SERVICE',
+    deviceID,
+    serviceID
+  }
+}
+
+export type SelectCharacteristic = {|
   type: 'SELECT_CHARACTERISTIC',
-  deviceUUID: string,
-  serviceUUID: string,
-  characteristicUUID: string
+  deviceID: string,
+  serviceID: string,
+  characteristicID: string
 |}
 
-export type pushError = {|
+export function selectCharacteristic(
+  deviceID: string,
+  serviceID: string,
+  characteristicID: string
+): SelectCharacteristic {
+  return {
+    type: 'SELECT_CHARACTERISTIC',
+    deviceID,
+    serviceID,
+    characteristicID
+  }
+}
+
+export type PushError = {|
   type: 'PUSH_ERROR',
   errorMessage: string
 |}
 
-export type popError = {|
+export function pushError(errorMessage: string): PushError {
+  return {
+    type: 'PUSH_ERROR',
+    errorMessage
+  }
+}
+
+export type PopError = {|
   type: 'POP_ERROR'
 |}
 
-export type executeTransaction = {|
-  type: 'EXECUTE_TRANSACTION',
-  operationId: string
-|}
+export function popError(): PopError {
+  return {
+    type: 'POP_ERROR'
+  }
+}
 
-export type completeTransaction = {|
-  type: 'COMPLETE_TRANSACTION',
-  operationId: string
-|}
-
-export type bleAction =
-  | startScan
-  | stopScan
-  | deviceFound
-  | changeDeviceState
-  | updateServices
-  | updateCharacteristics
-  | writeCharacteristic
-  | readCharacteristic
-  | monitorCharacteristic
-  | selectService
-  | selectCharacteristic
-  | pushError
-  | popError
-  | executeTransaction
-  | completeTransaction
+export type BleAction =
+  | StartScan
+  | StopScan
+  | DeviceFound
+  | ChangeSelectedDeviceState
+  | WriteCharacteristic
+  | ReadCharacteristic
+  | MonitorCharacteristic
+  | SelectService
+  | SelectCharacteristic
+  | PushError
+  | PopError
