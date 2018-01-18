@@ -205,6 +205,11 @@ export interface NativeBleRestoredState {
  * @private
  */
 export interface BleModuleInterface {
+  
+  // NativeModule methods
+  addListener(string): void;
+  removeListeners(number): void;
+  
   // Lifecycle
 
   /**
