@@ -94,7 +94,7 @@ export interface ScanOptions {
  */
 export interface ConnectionOptions {
   /**
-   * Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device 
+   * Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device
    * becomes available (true). [Android only]
    * @memberof ConnectionOptions
    * @instance

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>react-native-ble-plx 0.7.0 | Documentation</title>
+  <title>react-native-ble-plx 0.8.0 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -14,7 +14,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>react-native-ble-plx</h3>
-          <div class='mb1'><code>0.7.0</code></div>
+          <div class='mb1'><code>0.8.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -1199,7 +1199,7 @@ this library.</p>
   <p>Get current log level for native module's logging mechanism.</p>
 
 
-  <div class='pre p1 fill-light mt0'>logLevel(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></div>
+  <div class='pre p1 fill-light mt0'>logLevel(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></div>
   
   
 
@@ -1217,7 +1217,7 @@ this library.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></code>:
         Current log level.
 
       
@@ -1334,7 +1334,7 @@ setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;
 is "PoweredOn".</p>
 
 
-  <div class='pre p1 fill-light mt0'>state(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></div>
+  <div class='pre p1 fill-light mt0'>state(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></div>
   
   
 
@@ -1352,7 +1352,7 @@ is "PoweredOn".</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></code>:
         Promise which emits current state of BleManager.
 
       
@@ -1388,7 +1388,7 @@ is "PoweredOn".</p>
   <p>Notifies about <a href="#state">State</a> changes of a <a href="#blemanager">BleManager</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>onStateChange(listener: function (newState: <a href="#state">State</a>), emitCurrentState: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="#subscription">Subscription</a></div>
+  <div class='pre p1 fill-light mt0'>onStateChange(listener: function (newState: <a href="#state">State</a>), emitCurrentState: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -1417,7 +1417,7 @@ Look at
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>emitCurrentState</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+            <span class='code bold'>emitCurrentState</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
             = <code>false</code>)</code>
 	    If true, current state will be emitted as well. Defaults to false.
 
@@ -1482,7 +1482,7 @@ Look at
   <p>Starts device scanning. When previous scan is in progress it will be stopped before executing this command.</p>
 
 
-  <div class='pre p1 fill-light mt0'>startDeviceScan(UUIDs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?, options: <a href="#scanoptions">ScanOptions</a>?, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, scannedDevice: <a href="#device">Device</a>?))</div>
+  <div class='pre p1 fill-light mt0'>startDeviceScan(UUIDs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?, options: <a href="#scanoptions">ScanOptions</a>?, listener: function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, scannedDevice: <a href="#device">Device</a>?))</div>
   
   
 
@@ -1499,7 +1499,7 @@ Look at
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>UUIDs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?)</code>
+            <span class='code bold'>UUIDs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?)</code>
 	    Array of strings containing 
 <a href="#uuid">UUID</a>
 s of 
@@ -1528,12 +1528,12 @@ s will be scanned.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, scannedDevice: <a href="#device">Device</a>?))</code>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, scannedDevice: <a href="#device">Device</a>?))</code>
 	    Function which will be called for every scanned
 
 <a href="#device">Device</a>
  (devices may be scanned multiple times). It's first argument is potential 
-<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>
+<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>
  which is set
 to non 
 <code>null</code>
@@ -1628,7 +1628,7 @@ is a scanned
   <p>Reads RSSI for connected device.</p>
 
 
-  <div class='pre p1 fill-light mt0'>readRSSIForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>readRSSIForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -1669,7 +1669,7 @@ is a scanned
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         Connected device with updated RSSI value.
 
       
@@ -1706,7 +1706,7 @@ is a scanned
 on iOS platform as MTU exchange is done automatically.</p>
 
 
-  <div class='pre p1 fill-light mt0'>requestMTUForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, mtu: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>requestMTUForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, mtu: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -1732,7 +1732,7 @@ on iOS platform as MTU exchange is done automatically.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>mtu</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+            <span class='code bold'>mtu</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
 	    New MTU to negotiate.
 
           </div>
@@ -1756,7 +1756,7 @@ on iOS platform as MTU exchange is done automatically.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         Device with updated MTU size. Default value is 23.
 
       
@@ -1792,7 +1792,7 @@ on iOS platform as MTU exchange is done automatically.</p>
   <p>Connects to <a href="#device">Device</a> with provided ID.</p>
 
 
-  <div class='pre p1 fill-light mt0'>connectToDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>connectToDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -1834,7 +1834,7 @@ on iOS platform as MTU exchange is done automatically.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         Connected 
 <a href="#device">Device</a>
  object if successful.
@@ -1872,7 +1872,7 @@ on iOS platform as MTU exchange is done automatically.</p>
   <p>Disconnects from <a href="#device">Device</a> if it's connected or cancels pending connection.</p>
 
 
-  <div class='pre p1 fill-light mt0'>cancelDeviceConnection(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>cancelDeviceConnection(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -1905,7 +1905,7 @@ on iOS platform as MTU exchange is done automatically.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         Returns closed 
 <a href="#device">Device</a>
  when operation is successful.
@@ -1943,7 +1943,7 @@ on iOS platform as MTU exchange is done automatically.</p>
   <p>Monitors if <a href="#device">Device</a> was disconnected due to any errors or connection problems.</p>
 
 
-  <div class='pre p1 fill-light mt0'>onDeviceDisconnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
+  <div class='pre p1 fill-light mt0'>onDeviceDisconnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>, listener: function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -1970,7 +1970,7 @@ on iOS platform as MTU exchange is done automatically.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>))</code>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>))</code>
 	    callback returning error as a reason of disconnection
 if available and 
 <a href="#device">Device</a>
@@ -2026,7 +2026,7 @@ if available and
   <p>Check connection state of a <a href="#device">Device</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>isDeviceConnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+  <div class='pre p1 fill-light mt0'>isDeviceConnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
   
   
 
@@ -2059,7 +2059,7 @@ if available and
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></code>:
         Promise which emits 
 <code>true</code>
  if device is connected, and 
@@ -2099,7 +2099,7 @@ if available and
   <p>Discovers all <a href="#service">Service</a>s and <a href="#characteristic">Characteristic</a>s for <a href="#device">Device</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -2132,7 +2132,7 @@ if available and
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         Promise which emits 
 <a href="#device">Device</a>
  object if all available services and
@@ -2171,7 +2171,7 @@ characteristics have been discovered.
   <p>List of discovered <a href="#service">Service</a>s for <a href="#device">Device</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>servicesForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
+  <div class='pre p1 fill-light mt0'>servicesForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
   
   
 
@@ -2204,7 +2204,7 @@ characteristics have been discovered.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></code>:
         Promise which emits array of 
 <a href="#service">Service</a>
  objects which are discovered for a
@@ -2245,7 +2245,7 @@ characteristics have been discovered.
   <p>List of discovered <a href="#characteristic">Characteristic</a>s for given <a href="#device">Device</a> and <a href="#service">Service</a>.</p>
 
 
-  <div class='pre p1 fill-light mt0'>characteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+  <div class='pre p1 fill-light mt0'>characteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
   
   
 
@@ -2288,7 +2288,7 @@ characteristics have been discovered.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></code>:
         Promise which emits array of 
 <a href="#characteristic">Characteristic</a>
  objects which are
@@ -2331,7 +2331,7 @@ discovered for a
   <p>Read <a href="#characteristic">Characteristic</a> value.</p>
 
 
-  <div class='pre p1 fill-light mt0'>readCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>readCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -2398,7 +2398,7 @@ discovered for a
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits first 
 <a href="#characteristic">Characteristic</a>
  object matching specified
@@ -2439,7 +2439,7 @@ UUID paths. Latest value of
   <p>Write <a href="#characteristic">Characteristic</a> value with response.</p>
 
 
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -2515,7 +2515,7 @@ UUID paths. Latest value of
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits first 
 <a href="#characteristic">Characteristic</a>
  object matching specified
@@ -2554,7 +2554,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   <p>Write <a href="#characteristic">Characteristic</a> value without response.</p>
 
 
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -2630,7 +2630,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits first 
 <a href="#characteristic">Characteristic</a>
  object matching specified
@@ -2670,7 +2670,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 in favour of indications.</p>
 
 
-  <div class='pre p1 fill-light mt0'>monitorCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+  <div class='pre p1 fill-light mt0'>monitorCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -2717,7 +2717,7 @@ in favour of indications.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
 	    callback which emits
 
 <a href="#characteristic">Characteristic</a>
@@ -2917,7 +2917,7 @@ in favour of indications.</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?
     </p>
   
   
@@ -2968,7 +2968,7 @@ in favour of indications.</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?
     </p>
   
   
@@ -3020,7 +3020,7 @@ default value of 23 is used.</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
     </p>
   
   
@@ -3173,7 +3173,7 @@ default value of 23 is used.</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?
     </p>
   
   
@@ -3224,7 +3224,7 @@ default value of 23 is used.</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?
     </p>
   
   
@@ -3275,7 +3275,7 @@ default value of 23 is used.</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?
     </p>
   
   
@@ -3326,7 +3326,7 @@ default value of 23 is used.</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?
     </p>
   
   
@@ -3377,7 +3377,7 @@ default value of 23 is used.</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?
     </p>
   
   
@@ -3428,7 +3428,7 @@ default value of 23 is used.</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?
     </p>
   
   
@@ -3475,7 +3475,7 @@ default value of 23 is used.</p>
   <p><a href="#blemanagerreadrssifordevice">bleManager.readRSSIForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>readRSSI(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>readRSSI(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -3507,7 +3507,7 @@ default value of 23 is used.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         This device with updated RSSI value.
 
       
@@ -3543,7 +3543,7 @@ default value of 23 is used.</p>
   <p><a href="#blemanagerrequestmtufordevice">bleManager.requestMTUForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>requestMTU(mtu: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>requestMTU(mtu: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -3560,7 +3560,7 @@ default value of 23 is used.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>mtu</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+            <span class='code bold'>mtu</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
 	    
           </div>
           
@@ -3583,7 +3583,7 @@ default value of 23 is used.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         Device with updated MTU size. Default value is 23.
 
       
@@ -3619,7 +3619,7 @@ default value of 23 is used.</p>
   <p><a href="#blemanagerconnecttodevice">bleManager.connectToDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>connect(options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>connect(options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -3651,7 +3651,7 @@ default value of 23 is used.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         Connected 
 <a href="#device">Device</a>
  object if successful.
@@ -3689,7 +3689,7 @@ default value of 23 is used.</p>
   <p><a href="#blemanagercanceldeviceconnection">bleManager.cancelDeviceConnection()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>cancelConnection(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>cancelConnection(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -3707,7 +3707,7 @@ default value of 23 is used.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         Returns closed 
 <a href="#device">Device</a>
  when operation is successful.
@@ -3745,7 +3745,7 @@ default value of 23 is used.</p>
   <p><a href="#blemanagerisdeviceconnected">bleManager.isDeviceConnected()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>isConnected(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+  <div class='pre p1 fill-light mt0'>isConnected(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
   
   
 
@@ -3763,7 +3763,7 @@ default value of 23 is used.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></code>:
         Promise which emits 
 <code>true</code>
  if device is connected, and 
@@ -3803,7 +3803,7 @@ default value of 23 is used.</p>
   <p><a href="#blemanagerondevicedisconnected">bleManager.onDeviceDisconnected()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>onDisconnected(listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
+  <div class='pre p1 fill-light mt0'>onDisconnected(listener: function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -3820,7 +3820,7 @@ default value of 23 is used.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>))</code>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, device: <a href="#device">Device</a>))</code>
 	    callback returning error as a reason of disconnection
 if available and 
 <a href="#device">Device</a>
@@ -3876,7 +3876,7 @@ if available and
   <p><a href="#blemanagerdiscoverallservicesandcharacteristicsfordevice">bleManager.discoverAllServicesAndCharacteristicsForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristics(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+  <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristics(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -3894,7 +3894,7 @@ if available and
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
         Promise which emits 
 <a href="#device">Device</a>
  object if all available services and
@@ -3933,7 +3933,7 @@ characteristics have been discovered.
   <p><a href="#blemanagerservicesfordevice">bleManager.servicesForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>services(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
+  <div class='pre p1 fill-light mt0'>services(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
   
   
 
@@ -3951,7 +3951,7 @@ characteristics have been discovered.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></code>:
         Promise which emits array of 
 <a href="#service">Service</a>
  objects which are discovered by this
@@ -3990,7 +3990,7 @@ device.
   <p><a href="#blemanagercharacteristicsfordevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>characteristicsForService(serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+  <div class='pre p1 fill-light mt0'>characteristicsForService(serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
   
   
 
@@ -4023,7 +4023,7 @@ device.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></code>:
         Promise which emits array of 
 <a href="#characteristic">Characteristic</a>
  objects which are
@@ -4066,7 +4066,7 @@ discovered for a
   <p><a href="#blemanagerreadcharacteristicfordevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>readCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>readCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -4123,7 +4123,7 @@ discovered for a
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits first 
 <a href="#characteristic">Characteristic</a>
  object matching specified
@@ -4164,7 +4164,7 @@ UUID paths. Latest value of
   <p><a href="#blemanagerwritecharacteristicwithresponsefordevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -4230,7 +4230,7 @@ UUID paths. Latest value of
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits first 
 <a href="#characteristic">Characteristic</a>
  object matching specified
@@ -4269,7 +4269,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   <p><a href="#blemanagerwritecharacteristicwithoutresponsefordevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -4335,7 +4335,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits first 
 <a href="#characteristic">Characteristic</a>
  object matching specified
@@ -4374,7 +4374,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   <p><a href="#blemanagermonitorcharacteristicfordevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>monitorCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+  <div class='pre p1 fill-light mt0'>monitorCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -4411,7 +4411,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
 	    callback which emits
 
 <a href="#characteristic">Characteristic</a>
@@ -4712,7 +4712,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
     </p>
   
   
@@ -4759,7 +4759,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   <p><a href="#blemanagercharacteristicsfordevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>characteristics(): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+  <div class='pre p1 fill-light mt0'>characteristics(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
   
   
 
@@ -4777,7 +4777,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></code>:
         Promise which emits array of 
 <a href="#characteristic">Characteristic</a>
  objects which are
@@ -4816,7 +4816,7 @@ discovered for this service.
   <p><a href="#blemanagerreadcharacteristicfordevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>readCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>readCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -4863,7 +4863,7 @@ discovered for this service.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits first 
 <a href="#characteristic">Characteristic</a>
  object matching specified
@@ -4904,7 +4904,7 @@ UUID path. Latest value of
   <p><a href="#blemanagerwritecharacteristicwithresponsefordevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -4960,7 +4960,7 @@ UUID path. Latest value of
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits first 
 <a href="#characteristic">Characteristic</a>
  object matching specified
@@ -4999,7 +4999,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   <p><a href="#blemanagerwritecharacteristicwithoutresponsefordevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -5055,7 +5055,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits first 
 <a href="#characteristic">Characteristic</a>
  object matching specified
@@ -5094,7 +5094,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   <p><a href="#blemanagermonitorcharacteristicfordevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>monitorCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+  <div class='pre p1 fill-light mt0'>monitorCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -5121,7 +5121,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
 	    callback which emits
 
 <a href="#characteristic">Characteristic</a>
@@ -5524,7 +5524,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
     </p>
   
   
@@ -5575,7 +5575,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
     </p>
   
   
@@ -5626,7 +5626,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
     </p>
   
   
@@ -5677,7 +5677,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
     </p>
   
   
@@ -5728,7 +5728,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
     </p>
   
   
@@ -5779,7 +5779,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
     </p>
   
   
@@ -5877,7 +5877,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   <p><a href="#blemanagerreadcharacteristicfordevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>read(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>read(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -5914,7 +5914,7 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits this 
 <a href="#characteristic">Characteristic</a>
 . Latest value will be stored
@@ -5953,7 +5953,7 @@ inside returned object.
   <p><a href="#blemanagerwritecharacteristicwithresponsefordevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>writeWithResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>writeWithResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -5999,7 +5999,7 @@ inside returned object.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits this 
 <a href="#characteristic">Characteristic</a>
 . Latest value may
@@ -6038,7 +6038,7 @@ not be stored inside returned object.
   <p><a href="#blemanagerwritecharacteristicwithoutresponsefordevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>writeWithoutResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+  <div class='pre p1 fill-light mt0'>writeWithoutResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -6084,7 +6084,7 @@ not be stored inside returned object.
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></code>:
         Promise which emits this 
 <a href="#characteristic">Characteristic</a>
 . Latest value may
@@ -6123,7 +6123,7 @@ not be stored inside returned object.
   <p><a href="#blemanagermonitorcharacteristicfordevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
 
 
-  <div class='pre p1 fill-light mt0'>monitor(listener: function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+  <div class='pre p1 fill-light mt0'>monitor(listener: function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -6140,7 +6140,7 @@ not be stored inside returned object.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
+            <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>?, characteristic: <a href="#characteristic">Characteristic</a>?))</code>
 	    callback which emits
 this 
 <a href="#characteristic">Characteristic</a>
@@ -6997,7 +6997,7 @@ received by <a href="#blemanager">BleManager</a></p>
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>restoreStateIdentifier</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
+          <span class='code bold'>restoreStateIdentifier</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>?)</code>
           
           
         </div>
@@ -7163,7 +7163,7 @@ connected peripherals.</p>
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>connectedPeripherals</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>)</code>
+          <span class='code bold'>connectedPeripherals</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>)</code>
           
           
         </div>
@@ -7273,7 +7273,7 @@ connected peripherals.</p>
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>allowDuplicates</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          <span class='code bold'>allowDuplicates</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
           
           
         </div>
@@ -7383,13 +7383,13 @@ connected peripherals.</p>
     <div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>autoConnect</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
+          <span class='code bold'>autoConnect</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
           
           
         </div>
       
         <div class='space-bottom0'>
-          <span class='code bold'>requestMTU</span> <code class='quiet'>(<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?)</code>
+          <span class='code bold'>requestMTU</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?)</code>
           
           
         </div>
@@ -7532,7 +7532,7 @@ becomes available (true). [Android only]</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
     </p>
   
   
@@ -7584,7 +7584,7 @@ becomes available (true). [Android only]</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>
     </p>
   
   
@@ -7636,7 +7636,7 @@ becomes available (true). [Android only]</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
     </p>
   
   
@@ -7688,7 +7688,7 @@ becomes available (true). [Android only]</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
     </p>
   
   
@@ -7798,7 +7798,7 @@ becomes available (true). [Android only]</p>
   
     <p>
       Type:
-      <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>
     </p>
   
   
