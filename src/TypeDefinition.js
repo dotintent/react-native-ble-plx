@@ -29,6 +29,11 @@ export type Base64 = string
 export type TransactionId = string
 
 /**
+ * [Android only] ConnectionOptions parameter to describe when to call BluetoothGatt.refresh()
+ */
+export type RefreshGattMoment = 'OnConnected'
+
+/**
  * Subscription
  * @interface
  */
@@ -108,6 +113,15 @@ export interface ConnectionOptions {
    * @instance
    */
   requestMTU?: number;
+
+  /**
+   * Whether action will be taken to reset services cache. This option may be useful when a peripheral's firmware was
+   * updated and it's services/characteristics were added/removed/altered. [Android only]
+   * {@link https://stackoverflow.com/questions/22596951/how-to-programmatically-force-bluetooth-low-energy-service-discovery-on-android}
+   * @memberof ConnectionOptions
+   * @instance
+   */
+  refreshGatt?: RefreshGattMoment;
 }
 
 /**
