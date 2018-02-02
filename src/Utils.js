@@ -5,7 +5,7 @@ import type { UUID } from './TypeDefinition'
 
 /**
  * Converts UUID to full 128bit, lowercase format which should be used to compare UUID values.
- * 
+ *
  * @param {UUID} uuid 16bit, 32bit or 128bit UUID.
  * @returns {UUID} 128bit lowercase UUID.
  */

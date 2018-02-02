@@ -205,6 +205,10 @@ export interface NativeBleRestoredState {
  * @private
  */
 export interface BleModuleInterface {
+  // NativeModule methods
+  addListener(string): void;
+  removeListeners(number): void;
+
   // Lifecycle
 
   /**
@@ -226,7 +230,7 @@ export interface BleModuleInterface {
 
   /**
    * Current state of BLE device.
-   * 
+   *
    * @returns {Promise<State>} Current state of BLE device.
    * @private
    */
@@ -236,12 +240,12 @@ export interface BleModuleInterface {
 
   /**
    * Starts device scan.
-   * 
-   * @param {?Array<UUID>} filteredUUIDs List of UUIDs for services which needs to be present to detect device during 
+   *
+   * @param {?Array<UUID>} filteredUUIDs List of UUIDs for services which needs to be present to detect device during
    * scanning.
    * @param {?ScanOptions} options Platform dependent options
    * @private
-  */
+   */
   startDeviceScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
 
   /**
@@ -254,7 +258,7 @@ export interface BleModuleInterface {
 
   /**
    * Reads RSSI for connected device.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Device identifier.
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<NativeDevice>} Connected device with updated RSSI value.
@@ -277,7 +281,7 @@ export interface BleModuleInterface {
 
   /**
    * Connect to specified device.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Device identifier to connect to.
    * @param {?ConnectionOptions} options Connection options.
    * @returns {Promise<NativeDevice>} Connected device.
@@ -287,7 +291,7 @@ export interface BleModuleInterface {
 
   /**
    * Cancels pending device connection.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Device identifier which is already connected.
    * @returns {Promise<NativeDevice>} Disconnected device.
    * @private
@@ -296,7 +300,7 @@ export interface BleModuleInterface {
 
   /**
    * Checks if specified device is connected.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Device identifier.
    * @returns {Promise<boolean>} True if specified device is connected.
    * @private
@@ -307,7 +311,7 @@ export interface BleModuleInterface {
 
   /**
    * Discovers all services and characteristics for specified device.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Connected device identifier.
    * @returns {Promise<NativeDevice>} Device which has discovered characteristics and services.
    * @private
@@ -318,7 +322,7 @@ export interface BleModuleInterface {
 
   /**
    * List of discovered services for specified device.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Connected device identifier.
    * @returns {Promise<Array<NativeService>>} List of services available in device.
    * @private
@@ -326,29 +330,29 @@ export interface BleModuleInterface {
   servicesForDevice(deviceIdentifier: DeviceId): Promise<Array<NativeService>>;
 
   /**
-    * List of discovered characteristics for specified service.
-    * 
-    * @param {DeviceId} deviceIdentifier Connected device identifier.
-    * @param {UUID} serviceUUID Service UUID which contains characteristics.
-    * @returns {Promise<Array<NativeCharacteristic>>} List of characteristics available in service.
-    * @private
-    */
+   * List of discovered characteristics for specified service.
+   *
+   * @param {DeviceId} deviceIdentifier Connected device identifier.
+   * @param {UUID} serviceUUID Service UUID which contains characteristics.
+   * @returns {Promise<Array<NativeCharacteristic>>} List of characteristics available in service.
+   * @private
+   */
   characteristicsForDevice(deviceIdentifier: DeviceId, serviceUUID: UUID): Promise<Array<NativeCharacteristic>>;
 
   /**
-    * List of discovered characteristics for specified service.
-    * 
-    * @param {Identifier} serviceIdentifier Service ID which contains characteristics.
-    * @returns {Promise<Array<NativeCharacteristic>>} List of characteristics available in service.
-    * @private
-    */
+   * List of discovered characteristics for specified service.
+   *
+   * @param {Identifier} serviceIdentifier Service ID which contains characteristics.
+   * @returns {Promise<Array<NativeCharacteristic>>} List of characteristics available in service.
+   * @private
+   */
   characteristicsForService(serviceIdentifier: Identifier): Promise<Array<NativeCharacteristic>>;
 
   // Characteristics operations
 
   /**
    * Read characteristic's value.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Connected device identifier
    * @param {UUID} serviceUUID Service UUID
    * @param {UUID} characteristicUUID Characteristic UUID
@@ -365,7 +369,7 @@ export interface BleModuleInterface {
 
   /**
    * Read characteristic's value.
-   * 
+   *
    * @param {Identifier} serviceIdentifier Service ID
    * @param {UUID} characteristicUUID Characteristic UUID
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
@@ -380,7 +384,7 @@ export interface BleModuleInterface {
 
   /**
    * Read characteristic's value.
-   * 
+   *
    * @param {Identifier} characteristicIdentifer Characteristic ID
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<NativeCharacteristic>} Characteristic for which value was read
@@ -390,7 +394,7 @@ export interface BleModuleInterface {
 
   /**
    * Write value to characteristic.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Connected device identifier
    * @param {UUID} serviceUUID Service UUID
    * @param {UUID} characteristicUUID Characteristic UUID
@@ -411,7 +415,7 @@ export interface BleModuleInterface {
 
   /**
    * Write value to characteristic.
-   * 
+   *
    * @param {Identifier} serviceIdentifier Service ID
    * @param {UUID} characteristicUUID Characteristic UUID
    * @param {Base64} valueBase64 Value to be set coded in Base64
@@ -430,7 +434,7 @@ export interface BleModuleInterface {
 
   /**
    * Write value to characteristic.
-   * 
+   *
    * @param {Identifier} characteristicIdentifier Characteristic ID
    * @param {Base64} valueBase64 Value to be set coded in Base64
    * @param {boolean} withResponse True if write should be with response
@@ -447,7 +451,7 @@ export interface BleModuleInterface {
 
   /**
    * Setup monitoring of characteristic value.
-   * 
+   *
    * @param {DeviceId} deviceIdentifier Connected device identifier
    * @param {UUID} serviceUUID Service UUID
    * @param {UUID} characteristicUUID Characteristic UUID
@@ -464,7 +468,7 @@ export interface BleModuleInterface {
 
   /**
    * Setup monitoring of characteristic value.
-   * 
+   *
    * @param {Identifier} serviceIdentifier Service ID
    * @param {UUID} characteristicUUID Characteristic UUID
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
@@ -479,7 +483,7 @@ export interface BleModuleInterface {
 
   /**
    * Setup monitoring of characteristic value.
-   * 
+   *
    * @param {Identifier} characteristicIdentifier Characteristic ID
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
@@ -491,7 +495,7 @@ export interface BleModuleInterface {
 
   /**
    * Cancels specified transaction
-   * 
+   *
    * @param {TransactionId} transactionId Transaction handle for operation to be cancelled
    * @private
    */
@@ -520,7 +524,7 @@ export interface BleModuleInterface {
   ScanEvent: string;
 
   /**
-   * Characteristic value update broadcasted due to registered notification as 
+   * Characteristic value update broadcasted due to registered notification as
    * [?Error, ?NativeCharacteristic, ?TransactionId].
    * @private
    */

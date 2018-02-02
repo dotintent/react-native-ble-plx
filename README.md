@@ -33,29 +33,12 @@ What this library does NOT support:
 
 ## Recent Changes
 
-**0.7.0** 
-
-**Breaking changes**:
-
-  - Migrate to Swift 4 (now requires XCode 9 or higher)
-  - Fixed spelling mistake `characteristic.isIndictable` is now `characteristic.isIndicatable`.
-
-Other:
-
-  - Fixed potential memory leaks in iOS native module.
-  - Fixed an issue when successive scans could stop emitting scanned devices.
-  - Removed `bash` dependency in postinstall script.
-  - Use `--cache-builds` option only when specific version of carthage is available.
-  - Remove `--no-build` option to be able to reuse prepackages frameworks.
-  - Added option to disable building dynamic frameworks with carthage
-    by setting option in your app's package.json:
-    ```json
-    ...
-    "react-native-ble-plx": {
-      "carthage": false
-    }
-    ...
-    ```
+**0.8.0**
+- Fix regression of Base64 encoding on Android platform. When large chunk of Base64 data was sent from Android it contained new lines characters.
+- Updated RxAndroidBle to version 1.4.3.
+- Fixed colissions in Characteristic and Service id generation on Android. The collisions had place if multiple devices with the same characteristic/service UUIDs were connected at the same time.
+- Fixed dropped notifications right after setup on Android. Before there was small window when notification was monitored and listener for it wasn't mounted.
+- Minor documentation updates.
   
 [All previous changes](CHANGELOG.md)
 
