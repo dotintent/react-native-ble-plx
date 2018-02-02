@@ -139,6 +139,9 @@ android {
         ...
 ```
 
+## Expo
+Currently [02.02.2018] to use this library with Expo one must first detach (eject) the project and follow the above instructions. Additionally on iOS there is a must to add a `Header Search Path` to other dependencies which are managed using `Pods`. To do so one has to add `$(SRCROOT)/../../../ios/Pods/Headers/Public/**` to `Header Search Path` in `BleClient` module using `XCode`. This can be further automated by a `git apply patch` executed as a `postinstall` script defined in `package.json`.
+
 ## Troubleshooting
 
 ### Problems with Proguard
