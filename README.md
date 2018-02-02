@@ -19,17 +19,17 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 
 What this library supports:
 * [observing device's Bluetooth adapter state](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
-* [scanning BLE devices](https://github.com/Polidea/react-native-ble-plx/wiki/Scanning)
-* [making connections to peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Connecting)
-* discovering services/characteristics (all at once)
-* reading/writing characteristics
-* observing characteristic notifications/indications
-* reading RSSI
-* negotiating MTU
+* [scanning BLE devices](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Scanning)
+* [making connections to peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Connecting)
+* [discovering services/characteristics](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Service-Discovery)
+* [reading](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
+* [observing characteristic notifications/indications](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Notifying)
+* [reading RSSI](https://github.com/Polidea/react-native-ble-plx/wiki/RSSI-Reading)
+* [negotiating MTU](https://github.com/Polidea/react-native-ble-plx/wiki/MTU-Negotiation)
 
 What this library does NOT support:
 * turning the device's Bluetooth adapter on 
-* [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Bonding)
+* [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Bonding)
 
 ## Recent Changes
 
