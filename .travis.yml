@@ -9,6 +9,7 @@ matrix:
 
     - language: android
       os: osx
+      sudo: required
       # jdk: oraclejdk8
       node_js: false
       android:
