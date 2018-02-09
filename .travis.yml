@@ -9,7 +9,7 @@ matrix:
 
     - language: android
       sudo: required
-      jdk: oraclejdk7
+      jdk: oraclejdk8
       node_js: false
       android:
         components:
@@ -17,6 +17,8 @@ matrix:
           - platform-tools
           - build-tools-23.0.3
           - android-23
+        licenses:
+          - 'android-sdk-license-.+'
       script:
         - java -version
         - cd android
