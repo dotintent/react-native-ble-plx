@@ -21,7 +21,7 @@ matrix:
         - nvm install 8
         - npm install
         - cd android
-        - ls
+        - chmod +x gradlew
         - ./gradlew assembleRelease
 
     - language: objective-c
