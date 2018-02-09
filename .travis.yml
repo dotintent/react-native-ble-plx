@@ -24,7 +24,7 @@ matrix:
         - java -version
         - cd android
         - chmod +x gradlew
-        - ./gradlew assembleRelease
+        - ./gradlew assembleRelease test
 
     - language: objective-c
       os: osx
