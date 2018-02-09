@@ -5,17 +5,81 @@
 //
 
 import Foundation
+import CoreBluetooth
 import RxBluetoothKit
 
-struct BleError: Error {
-    let code: Int
-    let message: String
-    let isCancelled: Bool
+enum BleErrorCode : Int {
+    case UnknownError = 0
+    case BluetoothManagerDestroyed = 1
+    case OperationCancelled = 2
+    case OperationTimedOut = 3
+    case OperationStartFailed = 4
+    case InvalidUUIDs = 5
 
-    init(code: Int, message: String, isCancelled: Bool = false) {
-        self.code = code
-        self.message = message
-        self.isCancelled = isCancelled
+    case BluetoothUnsupported = 100
+    case BluetoothUnauthorized = 101
+    case BluetoothPoweredOff = 102
+    case BluetoothInUnknownState = 103
+    case BluetoothResetting = 104
+
+    case DeviceConnectionFailed = 200
+    case DeviceDisconnected = 201
+    case DeviceRSSIReadFailed = 202
+    case DeviceAlreadyConnected = 203
+    case DeviceNotFound = 204
+    case DeviceNotConnected = 205
+
+    case ServicesDiscoveryFailed = 300
+    case IncludedServicesDiscoveryFailed = 301
+    case ServiceNotFound = 302
+
+    case CharacteristicsDiscoveryFailed = 400
+    case CharacteristicWriteFailed = 401
+    case CharacteristicReadFailed = 402
+    case CharacteristicNotifyChangeFailed = 403
+    case CharacteristicNotFound = 404
+    case CharacteristicInvalidDataFormat = 405
+
+    case DescriptorsDiscoveryFailed = 500
+    case DescriptorWriteFailed = 501
+    case DescriptorReadFailed = 502
+    case DescriptorNotFound = 503
+    case DescriptorInvalidDataFormat = 504
+
+
+    case ScanStartFailed = 600
+}
+
+struct BleError: Error {
+    let errorCode: BleErrorCode
+    let attErrorCode: Int?
+    let iosErrorCode: Int?
+    let iosMessage: String?
+
+    let deviceID: String?
+    let serviceUUID: String?
+    let characteristicUUID: String?
+    let descriptorUUID: String?
+    let internalMessage: String?
+
+    init(errorCode: BleErrorCode,
+         iosMessage: String? = nil,
+         attErrorCode: Int? = nil,
+         iosErrorCode: Int? = nil,
+         deviceID: String? = nil,
+         serviceUUID: String? = nil,
+         characteristicUUID: String? = nil,
+         descriptorUUID: String? = nil,
+         internalMessage: String? = nil) {
+        self.errorCode = errorCode
+        self.attErrorCode = attErrorCode
+        self.iosErrorCode = iosErrorCode
+        self.iosMessage = iosMessage
+        self.deviceID = deviceID
+        self.serviceUUID = serviceUUID
+        self.characteristicUUID = characteristicUUID
+        self.descriptorUUID = descriptorUUID
+        self.internalMessage = internalMessage
     }
 }
 
@@ -23,21 +87,33 @@ extension BleError {
     var toJSResult: Any {
         return [self.toJS, NSNull()]
     }
-    var toJS: Any {
-        if isCancelled {
-            return ["name": "BleClientModule", "code": code, "message": message, "isCancelled": true]
+    var toJS: String {
+        return """
+        {
+            "errorCode": \(self.errorCode.rawValue),
+            "attErrorCode": \(self.attErrorCode.map {$0.description} ?? "null"),
+            "iosErrorCode": \(self.iosErrorCode.map {$0.description} ?? "null"),
+            "iosMessage": \(self.iosMessage.map {"\"" + $0 + "\""} ?? "null"),
+            "androidErrorCode": null,
+            "androidMessage": null,
+            "deviceID": \(self.deviceID.map {"\"" + $0 + "\""} ?? "null"),
+            "serviceUUID": \(self.serviceUUID.map {"\"" + $0 + "\""} ?? "null"),
+            "characteristicUUID": \(self.characteristicUUID.map {"\"" + $0 + "\""} ?? "null"),
+            "descriptorUUID": \(self.descriptorUUID.map {"\"" + $0 + "\""} ?? "null"),
+            "internalMessage": \(self.internalMessage.map {"\"" + $0 + "\""} ?? "null")
         }
-        return ["name": "BleClientModule", "code": code, "message": message] as AnyObject
+        """
     }
     func callReject(_ reject: Reject) {
-        reject("\(self.code)", self.message, nil)
+        reject(nil, self.toJS, nil)
     }
     func callReject(_ promise: SafePromise) {
-        promise.reject(code: "\(self.code)", message: self.message)
+        promise.reject(code: nil, message: self.toJS)
     }
 }
 
 extension Error {
+
     var bleError: BleError {
         switch self {
         case let error as BluetoothError:
@@ -45,8 +121,74 @@ extension Error {
         case let error as BleError:
             return error
         default:
-            return BleError(code: 0, message: "Unknown error")
+            return BleError(errorCode: .UnknownError, iosMessage: self.localizedDescription)
         }
+    }
+
+    func bleError(errorCode: BleErrorCode,
+                  deviceID: String? = nil,
+                  serviceUUID: String? = nil,
+                  characteristicUUID: String? = nil,
+                  descriptorUUID: String? = nil) -> BleError {
+        switch self {
+        case let error as CBATTError:
+            return BleError(errorCode: errorCode,
+                            iosMessage: self.localizedDescription,
+                            attErrorCode: error.errorCode,
+                            iosErrorCode: nil,
+                            deviceID: deviceID,
+                            serviceUUID: serviceUUID,
+                            characteristicUUID: characteristicUUID,
+                            descriptorUUID: descriptorUUID)
+        case let error as CBError:
+            return BleError(errorCode: errorCode,
+                            iosMessage: self.localizedDescription,
+                            attErrorCode: nil,
+                            iosErrorCode: error.errorCode,
+                            deviceID: deviceID,
+                            serviceUUID: serviceUUID,
+                            characteristicUUID: characteristicUUID,
+                            descriptorUUID: descriptorUUID)
+        default:
+            return BleError(errorCode: errorCode,
+                            iosMessage: self.localizedDescription,
+                            attErrorCode: nil,
+                            iosErrorCode: nil,
+                            deviceID: deviceID,
+                            serviceUUID: serviceUUID,
+                            characteristicUUID: characteristicUUID,
+                            descriptorUUID: descriptorUUID)
+        }
+    }
+}
+
+extension Optional where Wrapped == Error {
+    func bleError(errorCode: BleErrorCode,
+                  deviceID: String? = nil,
+                  serviceUUID: String? = nil,
+                  characteristicUUID: String? = nil,
+                  descriptorUUID: String? = nil) -> BleError {
+
+        if let error = self {
+            return error.bleError(
+                errorCode: errorCode,
+                deviceID: deviceID,
+                serviceUUID: serviceUUID,
+                characteristicUUID:
+                characteristicUUID,
+                descriptorUUID:
+                descriptorUUID)
+        }
+
+        return BleError(
+            errorCode: errorCode,
+            iosMessage: nil,
+            attErrorCode: nil,
+            iosErrorCode: nil,
+            deviceID: deviceID,
+            serviceUUID: serviceUUID,
+            characteristicUUID: characteristicUUID,
+            descriptorUUID: descriptorUUID)
     }
 }
 
@@ -54,62 +196,87 @@ extension BluetoothError {
     var bleError: BleError {
         switch self {
         case .bluetoothUnsupported:
-            return BleError(code: 100, message: "Bluetooth is not supported")
+            return BleError(errorCode: .BluetoothUnsupported)
         case .bluetoothUnauthorized:
-            return BleError(code: 101, message: "Bluetooth is unauthorized")
+            return BleError(errorCode: .BluetoothUnauthorized)
         case .bluetoothPoweredOff:
-            return BleError(code: 102, message: "Bluetooth is powered off")
+            return BleError(errorCode: .BluetoothPoweredOff)
         case .bluetoothInUnknownState:
-            return BleError(code: 103, message: "Bluetooth is in unknown state")
+            return BleError(errorCode: .BluetoothInUnknownState)
         case .bluetoothResetting:
-            return BleError(code: 103, message: "Bluetooth is resetting")
+            return BleError(errorCode: .BluetoothResetting)
 
         case let .peripheralConnectionFailed(peripheral, error):
-            return BleError(code: 200, message: "Connection to \(peripheral.identifier.uuidString) failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .DeviceConnectionFailed, deviceID: peripheral.identifier.uuidString)
         case let .peripheralDisconnected(peripheral, error):
-            return BleError(code: 201, message: "Disconnection from \(peripheral.identifier.uuidString) failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .DeviceDisconnected, deviceID: peripheral.identifier.uuidString)
         case let .peripheralRSSIReadFailed(peripheral, error):
-            return BleError(code: 202, message: "Failed to read RSSI for \(peripheral.identifier.uuidString): \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .DeviceRSSIReadFailed, deviceID: peripheral.identifier.uuidString)
 
         case let .servicesDiscoveryFailed(peripheral, error):
-            return BleError(code: 300, message: "Failed to discover services for \(peripheral.identifier.uuidString): \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .ServicesDiscoveryFailed, deviceID: peripheral.identifier.uuidString)
+
+        // TODO: Fix included services discovery failed error in RxBluetoothKit.
         case let .includedServicesDiscoveryFailed(peripheral, error):
-            return BleError(code: 301, message: "Failed to discover included services for \(peripheral.identifier.uuidString): \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .IncludedServicesDiscoveryFailed,
+                                  deviceID: peripheral.identifier.uuidString,
+                                  serviceUUID: nil)
 
         case let .characteristicsDiscoveryFailed(service, error):
-            return BleError(code: 400, message: "Failed to discover characteristics for service \(service.uuid.fullUUIDString): \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .CharacteristicsDiscoveryFailed,
+                                  deviceID: service.peripheral.identifier.uuidString,
+                                  serviceUUID: service.uuid.fullUUIDString)
         case let .characteristicWriteFailed(characteristic, error):
-            return BleError(code: 401, message: "Characteristic \(characteristic.uuid.fullUUIDString) write failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .CharacteristicWriteFailed,
+                                  deviceID: characteristic.service.peripheral.identifier.uuidString,
+                                  serviceUUID: characteristic.service.uuid.fullUUIDString,
+                                  characteristicUUID: characteristic.uuid.fullUUIDString)
         case let .characteristicReadFailed(characteristic, error):
-            return BleError(code: 402, message: "Characteristic \(characteristic.uuid.fullUUIDString) read failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .CharacteristicReadFailed,
+                                  deviceID: characteristic.service.peripheral.identifier.uuidString,
+                                  serviceUUID: characteristic.service.uuid.fullUUIDString,
+                                  characteristicUUID: characteristic.uuid.fullUUIDString)
         case let .characteristicNotifyChangeFailed(characteristic, error):
-            return BleError(code: 403, message: "Characteristic \(characteristic.uuid.fullUUIDString) notification change failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .CharacteristicNotifyChangeFailed,
+                                  deviceID: characteristic.service.peripheral.identifier.uuidString,
+                                  serviceUUID: characteristic.service.uuid.fullUUIDString,
+                                  characteristicUUID: characteristic.uuid.fullUUIDString)
 
         case let .descriptorsDiscoveryFailed(characteristic, error):
-            return BleError(code: 403, message: "Descriptors discovery for characteristic \(characteristic.uuid.fullUUIDString) failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .DescriptorsDiscoveryFailed,
+                                  deviceID: characteristic.service.peripheral.identifier.uuidString,
+                                  serviceUUID: characteristic.service.uuid.fullUUIDString,
+                                  characteristicUUID: characteristic.uuid.fullUUIDString)
         case let .descriptorWriteFailed(descriptor, error):
-            return BleError(code: 403, message: "Descriptor \(descriptor.uuid.fullUUIDString) write failed: \(error?.localizedDescription ?? "Unknown reason")")
+            return error.bleError(errorCode: .DescriptorWriteFailed,
+                                  deviceID: descriptor.characteristic.service.peripheral.identifier.uuidString,
+                                  serviceUUID: descriptor.characteristic.service.uuid.fullUUIDString,
+                                  characteristicUUID: descriptor.characteristic.uuid.fullUUIDString,
+                                  descriptorUUID: descriptor.uuid.fullUUIDString)
         case let .descriptorReadFailed(descriptor, error):
-            return BleError(code: 403, message: "Descriptor \(descriptor.uuid.fullUUIDString) read failed: \(error?.localizedDescription ?? "Unknown reason")")
-
+            return error.bleError(errorCode: .DescriptorReadFailed,
+                                  deviceID: descriptor.characteristic.service.peripheral.identifier.uuidString,
+                                  serviceUUID: descriptor.characteristic.service.uuid.fullUUIDString,
+                                  characteristicUUID: descriptor.characteristic.uuid.fullUUIDString,
+                                  descriptorUUID: descriptor.uuid.fullUUIDString)
         case .destroyed:
-            return BleError(code: 500, message: "Native iOS BleManager was destroyed")
+            return BleError(errorCode: .BluetoothManagerDestroyed)
         }
     }
 }
 
 extension BleError {
-    static func cancelled() -> BleError { return BleError(code: 1, message: "Cancelled", isCancelled: true) }
+    static func cancelled() -> BleError { return BleError(errorCode: .OperationCancelled) }
     static func invalidUUID(_ uuid: String) -> BleError { return invalidUUIDs([uuid]) }
-    static func invalidUUIDs(_ uuids: [String]) -> BleError { return BleError(code: 500, message: "Invalid UUIDs were passed: \(uuids)") }
-    static func peripheralNotFound(_ uuid: String) -> BleError { return BleError(code: 501, message: "Device \(uuid) not found") }
-    static func peripheralNotConnected(_ uuid: String) -> BleError { return BleError(code: 502, message: "Device \(uuid) is not connected") }
-    static func characteristicNotFound(_ uuid: String) -> BleError { return BleError(code: 503, message: "Characteristic \(uuid) not found") }
-    static func characteristicNotFound(_ id: Double) -> BleError { return BleError(code: 503, message: "Characteristic \(id) not found") }
-    static func invalidWriteDataForCharacteristic(_ uuid: String, data: String) -> BleError { return BleError(code: 504, message: "Invalid value data: \(data) for characteristic \(uuid)")}
-    static func invalidWriteDataForCharacteristic(_ id: Double, data: String) -> BleError { return BleError(code: 504, message: "Invalid value data: \(data) for characteristic \(id)")}
-    static func invalidID(_ id: Double) -> BleError { return BleError(code: 505, message: "Invalid ID was passed: \(id)")}
-    static func serviceNotFound(_ uuid: String) -> BleError { return BleError(code: 506, message: "Service \(uuid) not found") }
-    static func serviceNotFound(_ id: Double) -> BleError { return BleError(code: 506, message: "Service \(id) not found") }
-	static func dataUnavailable(_ data: String, device: String) -> BleError { return BleError(code: 507, message: "\(data) is not the available on your device (\(device))") }
+    static func invalidUUIDs(_ uuids: [String]) -> BleError { return BleError(errorCode: .InvalidUUIDs, internalMessage: uuids.joined(separator: ", ")) }
+    static func peripheralNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .DeviceNotFound, deviceID: uuid) }
+    static func peripheralNotConnected(_ uuid: String) -> BleError { return BleError(errorCode: .DeviceNotConnected, deviceID: uuid) }
+    static func characteristicNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .CharacteristicNotFound, characteristicUUID: uuid) }
+    static func invalidWriteDataForCharacteristic(_ uuid: String, data: String) -> BleError {
+        return BleError(errorCode: .CharacteristicInvalidDataFormat, characteristicUUID: uuid, internalMessage: data)
+    }
+    static func invalidWriteDataForDescriptor(_ uuid: String, data: String) -> BleError {
+        return BleError(errorCode: .DescriptorInvalidDataFormat, characteristicUUID: uuid, internalMessage: data)
+    }
+    static func serviceNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .ServiceNotFound, serviceUUID: uuid) }
 }

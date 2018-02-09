@@ -482,7 +482,7 @@ public class BleClientManager : NSObject {
                                                       resolve: Resolve,
                                                        reject: Reject) {
         guard let service = discoveredServices[serviceIdentifier]  else {
-            BleError.invalidID(serviceIdentifier).callReject(reject)
+            BleError.serviceNotFound(serviceIdentifier.description).callReject(reject)
             return
         }
 
@@ -628,7 +628,7 @@ public class BleClientManager : NSObject {
                                                          resolve: @escaping Resolve,
                                                           reject: @escaping Reject) {
         guard let value = valueBase64.fromBase64 else {
-            return BleError.invalidWriteDataForCharacteristic(characteristicIdentifier, data: valueBase64)
+            return BleError.invalidWriteDataForCharacteristic(characteristicIdentifier.description, data: valueBase64)
                 .callReject(reject)
         }
 
@@ -794,7 +794,7 @@ public class BleClientManager : NSObject {
             }
 
             guard let service = self?.discoveredServices[serviceId] else {
-                observer.onError(BleError.serviceNotFound(serviceId))
+                observer.onError(BleError.serviceNotFound(serviceId.description))
                 return Disposables.create()
             }
 
@@ -814,7 +814,7 @@ public class BleClientManager : NSObject {
     private func getCharacteristic(_ characteristicId: Double) -> Observable<Characteristic> {
         return Observable.create { [weak self] observer in
             guard let characteristic = self?.discoveredCharacteristics[characteristicId] else {
-                observer.onError(BleError.characteristicNotFound(characteristicId))
+                observer.onError(BleError.characteristicNotFound(characteristicId.description))
                 return Disposables.create()
             }
 

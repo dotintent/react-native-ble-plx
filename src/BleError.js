@@ -1,6 +1,7 @@
 // @flow
 
 export class BleError extends Error {
+  errorCode: $Values<typeof BleErrorCode>
   attErrorCode: ?$Values<typeof BleATTErrorCode>
   iosErrorCode: ?$Values<typeof BleIOSErrorCode>
   iosMessage: ?string
@@ -16,6 +17,7 @@ export class BleError extends Error {
     androidMessage: ?string
   ) {
     super(BleErrorCodeDescription[errorCode])
+    this.errorCode = errorCode
     this.attErrorCode = attErrorCode
     this.iosErrorCode = iosErrorCode
     this.iosMessage = iosMessage
@@ -26,10 +28,12 @@ export class BleError extends Error {
 
 export const BleErrorCode = {
   // Implementation specific errors
-  BluetoothManagerDestroyed: 0,
-  OperationCancelled: 1,
-  OperationTimedOut: 2,
-  OperationStartFailed: 3,
+  UnknownError: 0,
+  BluetoothManagerDestroyed: 1,
+  OperationCancelled: 2,
+  OperationTimedOut: 3,
+  OperationStartFailed: 4,
+  InvalidUUIDs: 5,
 
   // Bluetooth global states
   BluetoothUnsupported: 100,
@@ -44,6 +48,7 @@ export const BleErrorCode = {
   DeviceRSSIReadFailed: 202,
   DeviceAlreadyConnected: 203,
   DeviceNotFound: 204,
+  DeviceNotConnected: 205,
 
   // Services
   ServicesDiscoveryFailed: 300,
@@ -56,12 +61,14 @@ export const BleErrorCode = {
   CharacteristicReadFailed: 402,
   CharacteristicNotifyChangeFailed: 403,
   CharacteristicNotFound: 404,
+  CharacteristicInvalidDataFormat: 405,
 
   // Descriptors
   DescriptorsDiscoveryFailed: 500,
   DescriptorWriteFailed: 501,
   DescriptorReadFailed: 502,
   DescriptorNotFound: 503,
+  DescriptorInvalidDataFormat: 504,
 
   // Scanning errors.
   ScanStartFailed: 600
@@ -69,10 +76,12 @@ export const BleErrorCode = {
 
 const BleErrorCodeDescription = {
   // Implementation specific errors
+  [BleErrorCode.UnknownError]: 'Unknown error occurred. This is probably a bug!',
   [BleErrorCode.BluetoothManagerDestroyed]: 'BleManager was destroyed',
-  [BleErrorCode.OperationCancelled]: 'Operation {transactionID} was cancelled by user',
-  [BleErrorCode.OperationTimedOut]: 'Operation {transactionID} timed out',
-  [BleErrorCode.OperationStartFailed]: 'Operation {transactionID} was rejected',
+  [BleErrorCode.OperationCancelled]: 'Operation was cancelled',
+  [BleErrorCode.OperationTimedOut]: 'Operation timed out',
+  [BleErrorCode.OperationStartFailed]: 'Operation was rejected',
+  [BleErrorCode.InvalidUUIDs]: 'Invalid UUIDs were passed: {internalMessage}',
 
   // Bluetooth global states
   [BleErrorCode.BluetoothUnsupported]: 'BluetoothLE is unsupported on this device',
@@ -87,6 +96,7 @@ const BleErrorCodeDescription = {
   [BleErrorCode.DeviceRSSIReadFailed]: 'RSSI read failed for device {deviceID}',
   [BleErrorCode.DeviceAlreadyConnected]: 'Device {deviceID} is already connected',
   [BleErrorCode.DeviceNotFound]: 'Device {deviceID} not found',
+  [BleErrorCode.DeviceNotConnected]: 'Device {deviceID} is not connected',
 
   // Services
   [BleErrorCode.ServicesDiscoveryFailed]: 'Services discovery failed for device {deviceID}',
@@ -103,8 +113,9 @@ const BleErrorCodeDescription = {
     'Characteristic {characteristicUUID} read failed for device {deviceID} and service {serviceUUID}',
   [BleErrorCode.CharacteristicNotifyChangeFailed]:
     'Characteristic {characteristicUUID} notify change failed for device {deviceID} and service {serviceUUID}',
-  [BleErrorCode.CharacteristicNotFound]:
-    'Characteristic {characteristicUUID} not found for device {deviceID} and service {serviceUUID}',
+  [BleErrorCode.CharacteristicNotFound]: 'Characteristic {characteristicUUID} not found',
+  [BleErrorCode.CharacteristicInvalidDataFormat]:
+    'Cannot write to characteristic {characteristicUUID} with invalid data format: {internalMessage}',
 
   // Descriptors
   [BleErrorCode.DescriptorsDiscoveryFailed]:
@@ -113,8 +124,9 @@ const BleErrorCodeDescription = {
     'Descriptor {descriptorUUID} write failed for device {deviceID}, service {serviceUUID} and characteristic {characteristicUUID}',
   [BleErrorCode.DescriptorReadFailed]:
     'Descriptor {descriptorUUID} read failed for device {deviceID}, service {serviceUUID} and characteristic {characteristicUUID}',
-  [BleErrorCode.DescriptorNotFound]:
-    'Descriptor {descriptorUUID} not found for device {deviceID}, service {serviceUUID} and characteristic {characteristicUUID}',
+  [BleErrorCode.DescriptorNotFound]: 'Descriptor {descriptorUUID} not found',
+  [BleErrorCode.DescriptorInvalidDataFormat]:
+    'Cannot write to descriptor {descriptorUUID} with invalid data format: {internalMessage}',
 
   // Scanning errors.
   [BleErrorCode.ScanStartFailed]: 'Cannot start device scanning'
