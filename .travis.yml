@@ -2,3 +2,26 @@ script:
   - npm install
   - npm run lint
   - npm test
+
+matrix:
+  include:
+    - language: android
+      os: linux
+      jdk: oraclejdk8
+      node_js: false
+      android:
+        components:
+          - tools
+          - platform-tools
+          - build-tools-23.0.3
+          - android-23
+      script:
+        - cd android && ./gradlew assembleRelease
+    - language: objective-c
+      os: osx
+      osx_image: xcode9.0
+      node_js: false
+      xcode_project: ios/BleClient.xcodeproj
+      script:
+        - cd ios
+        - xcodebuild -scheme BleClient -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty
