@@ -14,3 +14,9 @@ export function fullUUID(uuid: UUID): UUID {
   if (uuid.length === 8) return uuid.toLowerCase() + '-0000-1000-8000-00805f9b34fb'
   return uuid.toLowerCase()
 }
+
+export function fillStringWithArguments(value: string, object: Object) {
+  return value.replace(/\{([^}]+)\}/g, function(_, arg: string) {
+    return object[arg] || '?'
+  })
+}

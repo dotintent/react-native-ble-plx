@@ -1,5 +1,5 @@
 const EventEmitter = require('events')
-import { fullUUID } from '../src/Utils'
+import { fullUUID, fillStringWithArguments } from '../src/Utils'
 
 export class NativeEventEmitter extends EventEmitter {
   constructor(module) {
@@ -64,4 +64,9 @@ test('fullUUID properly transforms 32bit UUID', () => {
 
 test('fullUUID properly transforms 128bit UUID', () => {
   expect(fullUUID('0000180A-0000-1000-8000-00805f9B34Fb')).toBe('0000180a-0000-1000-8000-00805f9b34fb')
+})
+
+test('string replacment based on object', () => {
+  expect(fillStringWithArguments('hello', {})).toBe('hello')
+  expect(fillStringWithArguments('My {id} is {a} or {b}', { a: 'OK', id: 'X' })).toBe('My X is OK or ?')
 })

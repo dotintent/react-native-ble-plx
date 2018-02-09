@@ -6,6 +6,7 @@ import { Service } from './Service'
 import { Characteristic } from './Characteristic'
 import { State, LogLevel } from './TypeDefinition'
 import { BleModule, EventEmitter } from './BleModule'
+import { BleError, BleErrorCode } from './BleError'
 import type { NativeDevice, NativeCharacteristic, NativeBleRestoredState } from './BleModule'
 import type {
   Subscription,
@@ -143,7 +144,19 @@ export class BleManager {
       return value
     } catch (error) {
       delete this._activePromises[id]
-      throw error
+      const bleError = JSON.parse(error.message)
+      if (typeof bleError === 'object') {
+        throw new BleError(
+          bleError.errorCode,
+          bleError.attErrorCode,
+          bleError.iosErrorCode,
+          bleError.iosMessage,
+          bleError.androidErrorCode,
+          bleError.androidMessage
+        )
+      } else {
+        throw new BleError(BleErrorCode.UnknownError)
+      }
     }
   }
 
