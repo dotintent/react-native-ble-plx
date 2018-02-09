@@ -9,7 +9,7 @@ matrix:
 
     - language: android
       os: osx
-      jdk: oraclejdk8
+      # jdk: oraclejdk8
       node_js: false
       android:
         components:
