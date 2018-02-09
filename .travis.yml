@@ -30,6 +30,5 @@ matrix:
       node_js: false
       xcode_project: ios/BleClientManager/BleClientManager.xcodeproj
       script:
-        - npm install
-        - cd ios
+        - cd ios/BleClientManager
         - xcodebuild -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
