@@ -8,15 +8,13 @@ matrix:
         - npm test
 
     - language: android
-      sudo: required
       jdk: oraclejdk8
       node_js: false
       android:
         components:
           - tools
           - platform-tools
-          - build-tools-23.0.3
-          - android-23
+          - android-25
         licenses:
           - 'android-sdk-license-.+'
       script:
