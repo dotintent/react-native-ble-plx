@@ -23,8 +23,7 @@ matrix:
       script:
         - cd android
         - chmod +x gradlew
-        - ./gradlew assembleRelease
-        - ./gradlew test
+        - ./gradlew assembleRelease test
 
     - language: objective-c
       os: osx
