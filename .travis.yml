@@ -31,4 +31,5 @@ matrix:
       xcode_project: ios/BleClientManager/BleClientManager.xcodeproj
       script:
         - cd ios/BleClientManager
+        - carthage build
         - xcodebuild -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
