@@ -18,8 +18,7 @@ matrix:
           - build-tools-23.0.3
           - android-23
       script:
-        - nvm install 8
-        - npm install
+        - java -version
         - cd android
         - chmod +x gradlew
         - ./gradlew assembleRelease
