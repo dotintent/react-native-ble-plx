@@ -8,7 +8,7 @@ matrix:
         - npm test
 
     - language: android
-      os: linux
+      os: osx
       jdk: oraclejdk8
       node_js: false
       android:
