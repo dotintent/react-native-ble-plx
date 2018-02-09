@@ -21,10 +21,10 @@ matrix:
         licenses:
           - 'android-sdk-license-.+'
       script:
-        - java -version
         - cd android
         - chmod +x gradlew
-        - ./gradlew assembleRelease test
+        - ./gradlew assembleRelease
+        - ./gradlew test
 
     - language: objective-c
       os: osx
