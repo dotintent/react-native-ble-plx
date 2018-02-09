@@ -1,10 +1,12 @@
-script:
-  - npm install
-  - npm run lint
-  - npm test
-
 matrix:
   include:
+    - language: node_js
+      node_js: 8
+      script:
+        - npm install
+        - npm run lint
+        - npm test
+
     - language: android
       os: linux
       jdk: oraclejdk8
@@ -16,14 +18,17 @@ matrix:
           - build-tools-23.0.3
           - android-23
       script:
+        - npm install
         - cd android
         - ls
         - ./gradlew assembleRelease
+
     - language: objective-c
       os: osx
       osx_image: xcode9.1
       node_js: false
       xcode_project: ios/BleClient.xcodeproj
       script:
+        - npm install
         - cd ios
-        - xcodebuild -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty
+        - xcodebuild -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
