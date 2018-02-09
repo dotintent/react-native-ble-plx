@@ -13,6 +13,7 @@ matrix:
       android:
         components:
           - tools
+          - build-tools-26.0.2
           - platform-tools
           - android-25
         licenses:
