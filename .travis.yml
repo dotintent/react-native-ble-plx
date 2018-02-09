@@ -32,4 +32,4 @@ matrix:
       script:
         - cd ios/BleClientManager
         - carthage build
-        - xcodebuild -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+        - xcodebuild -scheme BleClientManager -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
