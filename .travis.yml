@@ -10,7 +10,7 @@ matrix:
     - language: android
       os: linux
       jdk: oraclejdk8
-      node_js: false
+      node_js: 8
       android:
         components:
           - tools
@@ -27,7 +27,7 @@ matrix:
       os: osx
       osx_image: xcode9.1
       node_js: false
-      xcode_project: ios/BleClient.xcodeproj
+      xcode_project: ios/BleClientManager/BleClientManager.xcodeproj
       script:
         - npm install
         - cd ios
