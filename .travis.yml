@@ -14,9 +14,10 @@ matrix:
       android:
         components:
           - tools
-          - build-tools-26.0.2
           - platform-tools
+          - build-tools-26.0.2
           - android-25
+          - extra-android-m2repository
         licenses:
           - 'android-sdk-license-.+'
       script:
