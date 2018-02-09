@@ -9,6 +9,7 @@ matrix:
 
     - language: android
       jdk: oraclejdk8
+      dist: precise
       node_js: false
       android:
         components:
