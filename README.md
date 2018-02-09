@@ -15,6 +15,22 @@ Example apps are available in [Google Play](https://play.google.com/store/apps/d
 
 ---
 
+## About this library
+
+What this library supports:
+* [observing device's Bluetooth adapter state](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
+* [scanning BLE devices](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Scanning)
+* [making connections to peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Connecting)
+* [discovering services/characteristics](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Service-Discovery)
+* [reading](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
+* [observing characteristic notifications/indications](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Notifying)
+* [reading RSSI](https://github.com/Polidea/react-native-ble-plx/wiki/RSSI-Reading)
+* [negotiating MTU](https://github.com/Polidea/react-native-ble-plx/wiki/MTU-Negotiation)
+
+What this library does NOT support:
+* turning the device's Bluetooth adapter on 
+* [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Bonding)
+
 ## Recent Changes
 
 **0.8.0**
@@ -138,6 +154,9 @@ android {
         android:minSdkVersion="18"
         ...
 ```
+
+## Expo
+Currently [02.02.2018] to use this library with Expo one must first detach (eject) the project and follow the above instructions. Additionally on iOS there is a must to add a `Header Search Path` to other dependencies which are managed using `Pods`. To do so one has to add `$(SRCROOT)/../../../ios/Pods/Headers/Public/**` to `Header Search Path` in `BleClient` module using `XCode`. This can be further automated by a `git apply patch` executed as a `postinstall` script defined in `package.json`.
 
 ## Troubleshooting
 
