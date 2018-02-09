@@ -27,8 +27,10 @@ project.xcworkspace
 build/
 .idea
 .gradle
-local.properties
 *.iml
+*.swp
+*.bat
+local.properties
 
 # node.js
 #
