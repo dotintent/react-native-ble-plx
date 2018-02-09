@@ -8,9 +8,8 @@ matrix:
         - npm test
 
     - language: android
-      os: osx
       sudo: required
-      # jdk: oraclejdk8
+      jdk: oraclejdk7
       node_js: false
       android:
         components:
