@@ -1,5 +1,6 @@
 // @flow
 
+export { BleError, BleErrorCode, BleAndroidErrorCode, BleIOSErrorCode, BleATTErrorCode } from './src/BleError'
 export { BleManager } from './src/BleManager'
 export { Device } from './src/Device'
 export { Service } from './src/Service'
