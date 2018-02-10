@@ -206,6 +206,7 @@ export interface NativeBleRestoredState {
  */
 export interface BleModuleInterface {
   // NativeModule methods
+
   addListener(string): void;
   removeListeners(number): void;
 

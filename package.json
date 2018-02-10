@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",
-    "babel-jest": "22.1.0",
+    "babel-jest": "22.2.0",
     "babel-preset-react-native": "4.0.0",
     "documentation": "5.3.5",
     "eslint": "4.15.0",
@@ -26,16 +26,26 @@
     "eslint-plugin-import": "2.8.0",
     "eslint-plugin-jest": "21.7.0",
     "eslint-plugin-react": "7.5.1",
-    "flow-bin": "^0.61.0",
-    "jest": "22.1.3",
+    "flow-bin": "^0.63.0",
+    "jest": "22.2.1",
     "prettier": "1.10.2",
     "react": "16.2.0",
-    "react-native": "0.52.0"
+    "react-native": "0.53.0"
   },
-  "keywords": ["React", "Native", "Bluetooth", "Low", "Energy", "BLE", "Polidea"],
+  "keywords": [
+    "React",
+    "Native",
+    "Bluetooth",
+    "Low",
+    "Energy",
+    "BLE",
+    "Polidea"
+  ],
   "jest": {
     "preset": "react-native",
-    "modulePathIgnorePatterns": ["<rootDir>/examples"]
+    "modulePathIgnorePatterns": [
+      "<rootDir>/examples"
+    ]
   },
   "author": "Polidea",
   "license": "Apache-2.0",

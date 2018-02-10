@@ -2,6 +2,7 @@
 'use strict'
 
 import { BleManager } from './BleManager'
+import { BleError } from './BleError'
 import type { NativeCharacteristic } from './BleModule'
 import type { DeviceId, Identifier, UUID, TransactionId, Base64, Subscription } from './TypeDefinition'
 
@@ -114,14 +115,15 @@ export class Characteristic implements NativeCharacteristic {
   /**
    * {@link #blemanagermonitorcharacteristicfordevice|bleManager.monitorCharacteristicForDevice()} with partially filled arguments.
    *
-   * @param {function(error: ?Error, characteristic: ?Characteristic)} listener callback which emits
+   * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener callback which emits
    * this {@link Characteristic} with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   * @deprecated
    */
   monitor(
-    listener: (error: ?Error, characteristic: ?Characteristic) => void,
+    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
     transactionId: ?TransactionId
   ): Subscription {
     return this._manager._monitorCharacteristic(this.id, listener, transactionId)

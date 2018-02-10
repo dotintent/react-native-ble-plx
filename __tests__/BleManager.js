@@ -8,6 +8,19 @@ Native.EventEmitter = NativeEventEmitter
 var bleManager
 const restoreStateFunction = jest.fn()
 
+// This type of error is passed inside error.message for asynchronous functions.
+const nativeOperationCancelledErrorAsync =
+  '{"errorCode": 2, "attErrorCode": null, "iosErrorCode": null, "reason": null, "androidErrorCode": null}'
+
+// This type of error is passed in events.
+const nativeOperationCancelledErrorEvent = {
+  errorCode: 2,
+  attErrorCode: null,
+  iosErrorCode: null,
+  reason: null,
+  androidErrorCode: null
+}
+
 beforeEach(() => {
   Native.BleModule = {
     createClient: jest.fn(),
@@ -103,6 +116,14 @@ test('When BleManager starts scanning it calls BleModule startScanning function'
   })
 })
 
+test('When BleManager while scanning emits an error it calls listener with error', () => {
+  const listener = jest.fn()
+  bleManager.startDeviceScan(null, null, listener)
+  Native.BleModule.emit(Native.BleModule.ScanEvent, [nativeOperationCancelledErrorEvent, null])
+  expect(listener.mock.calls.length).toBe(1)
+  expect(listener.mock.calls[0][0].message).toBe('Operation was cancelled')
+})
+
 test('When BleManager stops scanning it calls BleModule stopScanning function', () => {
   bleManager.stopDeviceScan()
   expect(Native.BleModule.stopDeviceScan).toBeCalled()
@@ -113,6 +134,22 @@ test('When BleManager readRSSI is called it should call BleModule readRSSI', () 
   expect(Native.BleModule.readRSSIForDevice).toBeCalledWith('id', '2')
   bleManager.readRSSIForDevice('id', 'transaction')
   expect(Native.BleModule.readRSSIForDevice).toBeCalledWith('id', 'transaction')
+})
+
+test('When BleManager calls async function which throws it should return Unknown Error', async () => {
+  Native.BleModule.readRSSIForDevice.mockImplementationOnce(async () => {
+    throw new Error('Unexpected error2')
+  })
+  await expect(bleManager.readRSSIForDevice('id')).rejects.toThrowError(
+    'Unknown error occurred. This is probably a bug!'
+  )
+})
+
+test('When BleManager calls async function which valid JSON object should return specific error', async () => {
+  Native.BleModule.readRSSIForDevice.mockImplementationOnce(async () => {
+    throw new Error(nativeOperationCancelledErrorAsync)
+  })
+  await expect(bleManager.readRSSIForDevice('id')).rejects.toThrowError('Operation was cancelled')
 })
 
 test('When BleManager scans two devices it passes them to callback function', () => {
@@ -162,6 +199,15 @@ test('BleManager monitors device disconnection properly', () => {
   expect(listener.mock.calls[0][0]).toBeFalsy()
   expect(listener.mock.calls[0][1]).toBeInstanceOf(Device)
   expect(listener.mock.calls[0][1].id).toBe('id')
+})
+
+test('BleManager handles errors properly while monitoring disconnections', () => {
+  const listener = jest.fn()
+  const subscription = bleManager.onDeviceDisconnected('id', listener)
+  Native.BleModule.emit(Native.BleModule.DisconnectionEvent, [nativeOperationCancelledErrorEvent, { id: 'id' }])
+  subscription.remove()
+  expect(listener.mock.calls.length).toBe(1)
+  expect(listener.mock.calls[0][0].message).toBe('Operation was cancelled')
 })
 
 test('BleManager calls BleModule isDeviceConnected function properly', async () => {
@@ -267,6 +313,16 @@ test('BleManager properly monitors characteristic value', async () => {
   expect(listener).toHaveBeenCalledTimes(2)
   expect(Native.BleModule.cancelTransaction).toBeCalledWith('x')
   expect(Native.BleModule.monitorCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', 'x')
+})
+
+test('BleManager properly handles errors while monitoring characteristic values', async () => {
+  const listener = jest.fn()
+  Native.BleModule.monitorCharacteristicForDevice = jest.fn().mockReturnValue(Promise.resolve(null))
+  const subscription = bleManager.monitorCharacteristicForDevice('id', 'aaaa', 'bbbb', listener, 'x')
+  Native.BleModule.emit(Native.BleModule.ReadEvent, [nativeOperationCancelledErrorEvent, { id: 'a', value: 'b' }, 'x'])
+  subscription.remove()
+  expect(listener.mock.calls.length).toBe(1)
+  expect(listener.mock.calls[0][0].message).toBe('Operation was cancelled')
 })
 
 test('BleManager properly requests the MTU', async () => {

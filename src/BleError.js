@@ -1,29 +1,55 @@
 // @flow
+import { fillStringWithArguments } from './Utils'
+
+export interface NativeBleError {
+  errorCode: $Values<typeof BleErrorCode>;
+  attErrorCode: ?$Values<typeof BleATTErrorCode>;
+  iosErrorCode: ?$Values<typeof BleIOSErrorCode>;
+  androidErrorCode: ?$Values<typeof BleAndroidErrorCode>;
+  reason: ?string;
+
+  deviceID?: string;
+  serviceUUID?: string;
+  characteristicUUID?: string;
+  descriptorUUID?: string;
+  internalMessage?: string;
+}
 
 export class BleError extends Error {
   errorCode: $Values<typeof BleErrorCode>
   attErrorCode: ?$Values<typeof BleATTErrorCode>
   iosErrorCode: ?$Values<typeof BleIOSErrorCode>
-  iosMessage: ?string
   androidErrorCode: ?$Values<typeof BleAndroidErrorCode>
-  androidMessage: ?string
+  reason: ?string
 
-  constructor(
-    errorCode: $Values<typeof BleErrorCode>,
-    attErrorCode: ?$Values<typeof BleATTErrorCode>,
-    iosErrorCode: ?$Values<typeof BleIOSErrorCode>,
-    iosMessage: ?string,
-    androidErrorCode: ?$Values<typeof BleAndroidErrorCode>,
-    androidMessage: ?string
-  ) {
-    super(BleErrorCodeDescription[errorCode])
-    this.errorCode = errorCode
-    this.attErrorCode = attErrorCode
-    this.iosErrorCode = iosErrorCode
-    this.iosMessage = iosMessage
-    this.androidErrorCode = androidErrorCode
-    this.androidMessage = androidMessage
+  constructor(nativeBleError: NativeBleError | string) {
+    if (typeof nativeBleError === 'string') {
+      super(BleErrorCodeDescription[BleErrorCode.UnknownError])
+      this.errorCode = BleErrorCode.UnknownError
+      this.attErrorCode = null
+      this.iosErrorCode = null
+      this.androidErrorCode = null
+      this.reason = nativeBleError
+    } else {
+      super(fillStringWithArguments(BleErrorCodeDescription[nativeBleError.errorCode], nativeBleError))
+      this.errorCode = nativeBleError.errorCode
+      this.attErrorCode = nativeBleError.attErrorCode
+      this.iosErrorCode = nativeBleError.iosErrorCode
+      this.androidErrorCode = nativeBleError.androidErrorCode
+      this.reason = nativeBleError.reason
+    }
   }
+}
+
+export function parseBleError(errorMessage: string): BleError {
+  let bleError: BleError
+  try {
+    const nativeBleError = JSON.parse(errorMessage)
+    bleError = new BleError(nativeBleError)
+  } catch (parseError) {
+    bleError = new BleError(errorMessage)
+  }
+  return bleError
 }
 
 export const BleErrorCode = {
