@@ -14,7 +14,7 @@ enum BleErrorCode : Int {
     case OperationCancelled = 2
     case OperationTimedOut = 3
     case OperationStartFailed = 4
-    case InvalidUUIDs = 5
+    case InvalidIdentifiers = 5
 
     case BluetoothUnsupported = 100
     case BluetoothUnauthorized = 101
@@ -45,16 +45,13 @@ enum BleErrorCode : Int {
     case DescriptorReadFailed = 502
     case DescriptorNotFound = 503
     case DescriptorInvalidDataFormat = 504
-
-
-    case ScanStartFailed = 600
 }
 
 struct BleError: Error {
     let errorCode: BleErrorCode
     let attErrorCode: Int?
     let iosErrorCode: Int?
-    let iosMessage: String?
+    let reason: String?
 
     let deviceID: String?
     let serviceUUID: String?
@@ -63,7 +60,7 @@ struct BleError: Error {
     let internalMessage: String?
 
     init(errorCode: BleErrorCode,
-         iosMessage: String? = nil,
+         reason: String? = nil,
          attErrorCode: Int? = nil,
          iosErrorCode: Int? = nil,
          deviceID: String? = nil,
@@ -74,7 +71,7 @@ struct BleError: Error {
         self.errorCode = errorCode
         self.attErrorCode = attErrorCode
         self.iosErrorCode = iosErrorCode
-        self.iosMessage = iosMessage
+        self.reason = reason
         self.deviceID = deviceID
         self.serviceUUID = serviceUUID
         self.characteristicUUID = characteristicUUID
@@ -93,9 +90,8 @@ extension BleError {
             "errorCode": \(self.errorCode.rawValue),
             "attErrorCode": \(self.attErrorCode.map {$0.description} ?? "null"),
             "iosErrorCode": \(self.iosErrorCode.map {$0.description} ?? "null"),
-            "iosMessage": \(self.iosMessage.map {"\"" + $0 + "\""} ?? "null"),
             "androidErrorCode": null,
-            "androidMessage": null,
+            "reason": \(self.reason.map {"\"" + $0 + "\""} ?? "null"),
             "deviceID": \(self.deviceID.map {"\"" + $0 + "\""} ?? "null"),
             "serviceUUID": \(self.serviceUUID.map {"\"" + $0 + "\""} ?? "null"),
             "characteristicUUID": \(self.characteristicUUID.map {"\"" + $0 + "\""} ?? "null"),
@@ -121,7 +117,7 @@ extension Error {
         case let error as BleError:
             return error
         default:
-            return BleError(errorCode: .UnknownError, iosMessage: self.localizedDescription)
+            return BleError(errorCode: .UnknownError, reason: self.localizedDescription)
         }
     }
 
@@ -133,7 +129,7 @@ extension Error {
         switch self {
         case let error as CBATTError:
             return BleError(errorCode: errorCode,
-                            iosMessage: self.localizedDescription,
+                            reason: self.localizedDescription,
                             attErrorCode: error.errorCode,
                             iosErrorCode: nil,
                             deviceID: deviceID,
@@ -142,7 +138,7 @@ extension Error {
                             descriptorUUID: descriptorUUID)
         case let error as CBError:
             return BleError(errorCode: errorCode,
-                            iosMessage: self.localizedDescription,
+                            reason: self.localizedDescription,
                             attErrorCode: nil,
                             iosErrorCode: error.errorCode,
                             deviceID: deviceID,
@@ -151,7 +147,7 @@ extension Error {
                             descriptorUUID: descriptorUUID)
         default:
             return BleError(errorCode: errorCode,
-                            iosMessage: self.localizedDescription,
+                            reason: self.localizedDescription,
                             attErrorCode: nil,
                             iosErrorCode: nil,
                             deviceID: deviceID,
@@ -182,7 +178,7 @@ extension Optional where Wrapped == Error {
 
         return BleError(
             errorCode: errorCode,
-            iosMessage: nil,
+            reason: nil,
             attErrorCode: nil,
             iosErrorCode: nil,
             deviceID: deviceID,
@@ -267,8 +263,8 @@ extension BluetoothError {
 
 extension BleError {
     static func cancelled() -> BleError { return BleError(errorCode: .OperationCancelled) }
-    static func invalidUUID(_ uuid: String) -> BleError { return invalidUUIDs([uuid]) }
-    static func invalidUUIDs(_ uuids: [String]) -> BleError { return BleError(errorCode: .InvalidUUIDs, internalMessage: uuids.joined(separator: ", ")) }
+    static func invalidIdentifiers(_ id: String) -> BleError { return invalidIdentifiers([id]) }
+    static func invalidIdentifiers(_ ids: [String]) -> BleError { return BleError(errorCode: .InvalidIdentifiers, internalMessage: ids.joined(separator: ", ")) }
     static func peripheralNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .DeviceNotFound, deviceID: uuid) }
     static func peripheralNotConnected(_ uuid: String) -> BleError { return BleError(errorCode: .DeviceNotConnected, deviceID: uuid) }
     static func characteristicNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .CharacteristicNotFound, characteristicUUID: uuid) }
