@@ -23,7 +23,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.reactnativeble.converter.RxBleScanResultConverter;
 import com.polidea.reactnativeble.errors.BleError;
-import com.polidea.reactnativeble.errors.Error;
+import com.polidea.reactnativeble.errors.BleErrorUtils;
 import com.polidea.reactnativeble.errors.ErrorConverter;
 import com.polidea.reactnativeble.exceptions.CannotMonitorCharacteristicException;
 import com.polidea.reactnativeble.utils.Base64Converter;
@@ -260,7 +260,7 @@ public class BleModule extends ReactContextBaseJavaModule {
             uuids = UUIDConverter.convert(filteredUUIDs);
             if (uuids == null) {
                 sendEvent(Event.ScanEvent,
-                        BleError.invalidUUIDs(ReadableArrayConverter.toStringArray(filteredUUIDs)).toJSCallback());
+                        BleErrorUtils.invalidIdentifiers(ReadableArrayConverter.toStringArray(filteredUUIDs)).toJSCallback());
                 return;
             }
         }
@@ -318,7 +318,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                     .doOnUnsubscribe(new Action0() {
                         @Override
                         public void call() {
-                            BleError.cancelled().reject(safePromise);
+                            BleErrorUtils.cancelled().reject(safePromise);
                             transactions.removeSubscription(transactionId);
                         }
                     }).subscribe(new Observer<Integer>() {
@@ -362,7 +362,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-                        BleError.cancelled().reject(safePromise);
+                        BleErrorUtils.cancelled().reject(safePromise);
                         transactions.removeSubscription(transactionId);
                     }
                 })
@@ -397,7 +397,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final RxBleDevice device = rxBleClient.getBleDevice(deviceId);
         if (device == null) {
-            BleError.deviceNotFound(deviceId).reject(safePromise);
+            BleErrorUtils.deviceNotFound(deviceId).reject(safePromise);
             return;
         }
 
@@ -423,7 +423,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-                        BleError.cancelled().reject(promise);
+                        BleErrorUtils.cancelled().reject(promise);
                         onDeviceDisconnected(device, null);
                     }
                 });
@@ -456,9 +456,9 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onError(Throwable e) {
-                        Error error = errorConverter.toError(e);
-                        error.reject(promise);
-                        onDeviceDisconnected(device, error);
+                        BleError bleError = errorConverter.toError(e);
+                        bleError.reject(promise);
+                        onDeviceDisconnected(device, bleError);
                     }
 
                     @Override
@@ -473,7 +473,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         connectingDevices.replaceSubscription(device.getMacAddress(), subscription);
     }
 
-    private void onDeviceDisconnected(RxBleDevice device, Error error) {
+    private void onDeviceDisconnected(RxBleDevice device, BleError bleError) {
         Device jsDevice = connectedDevices.remove(device.getMacAddress());
         if (jsDevice == null) {
             return;
@@ -481,8 +481,8 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         cleanServicesAndCharacteristicsForDevice(jsDevice);
         WritableArray event = Arguments.createArray();
-        if (error != null) {
-            event.pushMap(error.toJS());
+        if (bleError != null) {
+            event.pushString(bleError.toJS());
         } else {
             event.pushNull();
         }
@@ -503,9 +503,9 @@ public class BleModule extends ReactContextBaseJavaModule {
             promise.resolve(new Device(device, null).toJSObject(null));
         } else {
             if (device == null) {
-                BleError.deviceNotFound(deviceId).reject(promise);
+                BleErrorUtils.deviceNotFound(deviceId).reject(promise);
             } else {
-                BleError.deviceNotConnected(deviceId).reject(promise);
+                BleErrorUtils.deviceNotConnected(deviceId).reject(promise);
             }
         }
     }
@@ -518,7 +518,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final RxBleDevice device = rxBleClient.getBleDevice(deviceId);
         if (device == null) {
-            BleError.deviceNotFound(deviceId).reject(promise);
+            BleErrorUtils.deviceNotFound(deviceId).reject(promise);
             return;
         }
 
@@ -606,7 +606,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final UUID convertedServiceUUID = UUIDConverter.convert(serviceUUID);
         if (convertedServiceUUID == null) {
-            BleError.invalidUUIDs(serviceUUID).reject(promise);
+            BleErrorUtils.invalidIdentifiers(serviceUUID).reject(promise);
             return;
         }
 
@@ -617,7 +617,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final Service service = device.getServiceByUUID(convertedServiceUUID);
         if (service == null) {
-            BleError.serviceNotFound(serviceUUID).reject(promise);
+            BleErrorUtils.serviceNotFound(serviceUUID).reject(promise);
             return;
         }
 
@@ -628,7 +628,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     public void characteristicsForService(final int serviceIdentifier, final Promise promise) {
         Service service = discoveredServices.get(serviceIdentifier);
         if (service == null) {
-            BleError.serviceNotFound(serviceIdentifier).reject(promise);
+            BleErrorUtils.serviceNotFound(Integer.toString(serviceIdentifier)).reject(promise);
             return;
         }
 
@@ -717,7 +717,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         try {
             value = Base64Converter.decode(valueBase64);
         } catch (Throwable e) {
-            BleError.invalidWriteDataForCharacteristic(valueBase64,
+            BleErrorUtils.invalidWriteDataForCharacteristic(valueBase64,
                     UUIDConverter.fromUUID(characteristic.getNativeCharacteristic().getUuid()))
                     .reject(promise);
             return;
@@ -748,7 +748,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-                        BleError.cancelled().reject(promise);
+                        BleErrorUtils.cancelled().reject(promise);
                         transactions.removeSubscription(transactionId);
                     }
                 })
@@ -761,7 +761,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                     @Override
                     public void onError(Throwable e) {
                         if (e instanceof BleCharacteristicNotFoundException) {
-                            BleError.characteristicNotFound(
+                            BleErrorUtils.characteristicNotFound(
                                     UUIDConverter.fromUUID(
                                             characteristic.getNativeCharacteristic().getUuid()))
                                     .reject(promise);
@@ -839,7 +839,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
-                        BleError.cancelled().reject(promise);
+                        BleErrorUtils.cancelled().reject(promise);
                         transactions.removeSubscription(transactionId);
                     }
                 })
@@ -852,7 +852,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                     @Override
                     public void onError(Throwable e) {
                         if (e instanceof BleCharacteristicNotFoundException) {
-                            BleError.characteristicNotFound(
+                            BleErrorUtils.characteristicNotFound(
                                     UUIDConverter.fromUUID(
                                             characteristic.getNativeCharacteristic().getUuid()))
                                     .reject(promise);
@@ -1003,25 +1003,25 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final UUID[] UUIDs = UUIDConverter.convert(serviceUUID, characteristicUUID);
         if (UUIDs == null) {
-            BleError.invalidUUIDs(serviceUUID, characteristicUUID).reject(promise);
+            BleErrorUtils.invalidIdentifiers(serviceUUID, characteristicUUID).reject(promise);
             return null;
         }
 
         final Device device = connectedDevices.get(deviceId);
         if (device == null) {
-            BleError.deviceNotConnected(deviceId).reject(promise);
+            BleErrorUtils.deviceNotConnected(deviceId).reject(promise);
             return null;
         }
 
         final Service service = device.getServiceByUUID(UUIDs[0]);
         if (service == null) {
-            BleError.serviceNotFound(serviceUUID).reject(promise);
+            BleErrorUtils.serviceNotFound(serviceUUID).reject(promise);
             return null;
         }
 
         final Characteristic characteristic = service.getCharacteristicByUUID(UUIDs[1]);
         if (characteristic == null) {
-            BleError.characteristicNotFound(characteristicUUID).reject(promise);
+            BleErrorUtils.characteristicNotFound(characteristicUUID).reject(promise);
             return null;
         }
 
@@ -1035,19 +1035,19 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final UUID uuid = UUIDConverter.convert(characteristicUUID);
         if (uuid == null) {
-            BleError.invalidUUIDs(characteristicUUID).reject(promise);
+            BleErrorUtils.invalidIdentifiers(characteristicUUID).reject(promise);
             return null;
         }
 
         final Service service = discoveredServices.get(serviceIdentifier);
         if (service == null) {
-            BleError.serviceNotFound(serviceIdentifier).reject(promise);
+            BleErrorUtils.serviceNotFound(Integer.toString(serviceIdentifier)).reject(promise);
             return null;
         }
 
         final Characteristic characteristic = service.getCharacteristicByUUID(uuid);
         if (characteristic == null) {
-            BleError.characteristicNotFound(characteristicUUID).reject(promise);
+            BleErrorUtils.characteristicNotFound(characteristicUUID).reject(promise);
             return null;
         }
 
@@ -1060,7 +1060,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final Characteristic characteristic = discoveredCharacteristics.get(characteristicIdentifier);
         if (characteristic == null) {
-            BleError.characteristicNotFound(characteristicIdentifier).reject(promise);
+            BleErrorUtils.characteristicNotFound(Integer.toString(characteristicIdentifier)).reject(promise);
             return null;
         }
 
@@ -1074,7 +1074,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                                                   @NonNull Promise promise) {
         final RxBleConnection connection = device.getConnection();
         if (connection == null) {
-            BleError.deviceNotConnected(device.getNativeDevice().getMacAddress()).reject(promise);
+            BleErrorUtils.deviceNotConnected(device.getNativeDevice().getMacAddress()).reject(promise);
             return null;
         }
         return connection;
@@ -1085,7 +1085,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                                               @NonNull Promise promise) {
         final List<Service> services = device.getServices();
         if (services == null) {
-            BleError.deviceServicesNotDiscovered(device.getNativeDevice().getMacAddress()).reject(promise);
+            BleErrorUtils.deviceServicesNotDiscovered(device.getNativeDevice().getMacAddress()).reject(promise);
             return null;
         }
         return services;
@@ -1096,7 +1096,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                                      @NonNull Promise promise) {
         final Device device = connectedDevices.get(deviceId);
         if (device == null) {
-            BleError.deviceNotConnected(deviceId).reject(promise);
+            BleErrorUtils.deviceNotConnected(deviceId).reject(promise);
             return null;
         }
         return device;

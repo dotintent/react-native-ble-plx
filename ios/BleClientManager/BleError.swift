@@ -28,23 +28,29 @@ enum BleErrorCode : Int {
     case DeviceAlreadyConnected = 203
     case DeviceNotFound = 204
     case DeviceNotConnected = 205
+    case DeviceMTUChangeFailed = 206
 
     case ServicesDiscoveryFailed = 300
     case IncludedServicesDiscoveryFailed = 301
     case ServiceNotFound = 302
+    case ServicesNotDiscovered = 303
 
     case CharacteristicsDiscoveryFailed = 400
     case CharacteristicWriteFailed = 401
     case CharacteristicReadFailed = 402
     case CharacteristicNotifyChangeFailed = 403
     case CharacteristicNotFound = 404
-    case CharacteristicInvalidDataFormat = 405
+    case CharacteristicsNotDiscovered = 405
+    case CharacteristicInvalidDataFormat = 406
 
     case DescriptorsDiscoveryFailed = 500
     case DescriptorWriteFailed = 501
     case DescriptorReadFailed = 502
     case DescriptorNotFound = 503
-    case DescriptorInvalidDataFormat = 504
+    case DescriptorsNotDiscovered = 504
+    case DescriptorInvalidDataFormat = 505
+
+    case ScanStartFailed = 600
 }
 
 struct BleError: Error {

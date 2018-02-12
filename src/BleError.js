@@ -152,6 +152,10 @@ export const BleErrorCode = {
    * Operation failed because device has to be connected to perform it.
    */
   DeviceNotConnected: 205,
+  /**
+   * Device could not change MTU value.
+   */
+  DeviceMTUChangeFailed: 206,
 
   // Services ----------------------------------------------------------------------------------------------------------
   /**
@@ -168,6 +172,12 @@ export const BleErrorCode = {
    * to cache them.
    */
   ServiceNotFound: 302,
+  /**
+   * Services were not discovered. User may need to call
+   * {@link #blemanagerdiscoverallservicesandcharacteristicsfordevice|manager.discoverAllServicesAndCharacteristicsForDevice}
+   * to cache them.
+   */
+  ServicesNotDiscovered: 303,
 
   // Characteristics ---------------------------------------------------------------------------------------------------
   /**
@@ -198,9 +208,15 @@ export const BleErrorCode = {
    */
   CharacteristicNotFound: 404,
   /**
+   * Characteristic were not discovered for specified service. User may need to call
+   * {@link #blemanagerdiscoverallservicesandcharacteristicsfordevice|manager.discoverAllServicesAndCharacteristicsForDevice}
+   * to cache them.
+   */
+  CharacteristicsNotDiscovered: 405,
+  /**
    * Invalid Base64 format was passed to characteristic API function call.
    */
-  CharacteristicInvalidDataFormat: 405,
+  CharacteristicInvalidDataFormat: 406,
 
   // Characteristics ---------------------------------------------------------------------------------------------------
   /**
@@ -220,9 +236,19 @@ export const BleErrorCode = {
    */
   DescriptorNotFound: 503,
   /**
+   * Descriptors are not discovered for specified characteristic.
+   */
+  DescriptorsNotDiscovered: 504,
+  /**
    * Invalid Base64 format was passed to descriptor API function call.
    */
-  DescriptorInvalidDataFormat: 504
+  DescriptorInvalidDataFormat: 505,
+
+  // Scanning errors ---------------------------------------------------------------------------------------------------
+  /**
+   * Cannot start scanning operation.
+   */
+  ScanStartFailed: 600
 }
 
 const BleErrorCodeDescription = {
@@ -248,12 +274,14 @@ const BleErrorCodeDescription = {
   [BleErrorCode.DeviceAlreadyConnected]: 'Device {deviceID} is already connected',
   [BleErrorCode.DeviceNotFound]: 'Device {deviceID} not found',
   [BleErrorCode.DeviceNotConnected]: 'Device {deviceID} is not connected',
+  [BleErrorCode.DeviceMTUChangeFailed]: 'Device {deviceID} could not change MTU size',
 
   // Services
   [BleErrorCode.ServicesDiscoveryFailed]: 'Services discovery failed for device {deviceID}',
   [BleErrorCode.IncludedServicesDiscoveryFailed]:
     'Included services discovery failed for device {deviceID} and service: {serviceUUID}',
   [BleErrorCode.ServiceNotFound]: 'Service {serviceUUID} for device {deviceID} not found',
+  [BleErrorCode.ServicesNotDiscovered]: 'Services not discovered for device {deviceID}',
 
   // Characteristics
   [BleErrorCode.CharacteristicsDiscoveryFailed]:
@@ -265,6 +293,8 @@ const BleErrorCodeDescription = {
   [BleErrorCode.CharacteristicNotifyChangeFailed]:
     'Characteristic {characteristicUUID} notify change failed for device {deviceID} and service {serviceUUID}',
   [BleErrorCode.CharacteristicNotFound]: 'Characteristic {characteristicUUID} not found',
+  [BleErrorCode.CharacteristicsNotDiscovered]:
+    'Characteristics not discovered for device {deviceID} and service {serviceUUID}',
   [BleErrorCode.CharacteristicInvalidDataFormat]:
     'Cannot write to characteristic {characteristicUUID} with invalid data format: {internalMessage}',
 
@@ -276,8 +306,13 @@ const BleErrorCodeDescription = {
   [BleErrorCode.DescriptorReadFailed]:
     'Descriptor {descriptorUUID} read failed for device {deviceID}, service {serviceUUID} and characteristic {characteristicUUID}',
   [BleErrorCode.DescriptorNotFound]: 'Descriptor {descriptorUUID} not found',
+  [BleErrorCode.DescriptorsNotDiscovered]:
+    'Descriptors not discovered for device {deviceID}, service {serviceUUID} and characteristic {characteristicUUID}',
   [BleErrorCode.DescriptorInvalidDataFormat]:
-    'Cannot write to descriptor {descriptorUUID} with invalid data format: {internalMessage}'
+    'Cannot write to descriptor {descriptorUUID} with invalid data format: {internalMessage}',
+
+  // Scanning
+  [BleErrorCode.ScanStartFailed]: 'Cannot start scanning operation'
 }
 
 /**
