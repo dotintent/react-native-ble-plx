@@ -1,57 +1,86 @@
 package com.polidea.reactnativeble.errors;
 
 import android.support.annotation.NonNull;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 
 public class BleError {
-    public static Error unknown() {
-        return new Error("Unknown error", 0);
+
+    private BleErrorCode errorCode;
+    private Integer androidCode;
+    private String reason;
+
+    public String deviceID;
+    public String serviceUUID;
+    public String characteristicUUID;
+    public String descriptorUUID;
+    public String internalMessage;
+
+    public BleError(BleErrorCode errorCode, String reason, Integer androidCode) {
+        this.errorCode = errorCode;
+        this.reason = reason;
+        this.androidCode = androidCode;
     }
 
-    public static Error cancelled() {
-        return new Error("Cancelled", 1);
-    }
+    public String toJS() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("{");
 
-    static public Error invalidUUIDs(@NonNull  String... uuids) {
-        String uuidsString = "";
-        for (String uuid: uuids) {
-            uuidsString += uuid + ", ";
+        stringBuilder.append("\"errorCode\":");
+        stringBuilder.append(errorCode.code);
+
+        stringBuilder.append(",\"attErrorCode\":");
+        if (androidCode == null || androidCode >= 0x80) {
+            stringBuilder.append("null");
+        } else {
+            stringBuilder.append(androidCode);
         }
-        return new Error("Invalid UUIDs were passed: " + uuidsString, 500);
+
+        stringBuilder.append(",\"iosErrorCode\": null");
+
+        stringBuilder.append(",\"androidErrorCode\":");
+        if (androidCode == null || androidCode < 0x80) {
+            stringBuilder.append("null");
+        } else {
+            stringBuilder.append(androidCode);
+        }
+
+        appendString(stringBuilder, "reason", reason);
+        appendString(stringBuilder, "deviceID", deviceID);
+        appendString(stringBuilder, "serviceUUID", serviceUUID);
+        appendString(stringBuilder, "characteristicUUID", characteristicUUID);
+        appendString(stringBuilder, "descriptorUUID", descriptorUUID);
+        appendString(stringBuilder, "internalMessage", internalMessage);
+
+        stringBuilder.append("}");
+
+        return stringBuilder.toString();
     }
 
-    static public Error deviceNotFound(String uuid) {
-        return new Error("Device " + uuid + " not found", 501);
+    private void appendString(StringBuilder stringBuilder, String key, String value) {
+        stringBuilder.append(",\"");
+        stringBuilder.append(key);
+        stringBuilder.append("\":");
+        if (value == null) {
+            stringBuilder.append("null");
+        } else {
+            stringBuilder.append("\"");
+            stringBuilder.append(value);
+            stringBuilder.append("\"");
+        }
     }
 
-    static public Error deviceNotConnected(String uuid) {
-        return new Error("Device " + uuid + " not connected", 502);
+    public ReadableArray toJSCallback() {
+        WritableArray array = Arguments.createArray();
+        array.pushString(toJS());
+        array.pushNull();
+        return array;
     }
 
-    static public Error characteristicNotFound(String uuid) {
-        return new Error("Characteristic with uuid " + uuid + " not found", 503);
-    }
-
-    static public Error characteristicNotFound(int id) {
-        return new Error("Characteristic with id " + id + " not found", 503);
-    }
-
-    static public Error serviceNotFound(String uuid) {
-        return new Error("Service with uuid " + uuid + " not found", 504);
-    }
-
-    static public Error serviceNotFound(int id) {
-        return new Error("Service with id " + id + " not found", 504);
-    }
-
-    static public Error invalidWriteDataForCharacteristic(String data, String uuid) {
-        return new Error("Invalid base64 write data: " + data + " for characteristic " + uuid, 505);
-    }
-
-    static public Error cannotMonitorCharacteristic(String uuid) {
-        return new Error("Characteristic " + uuid + " cannot be monitored as it doesn't support notifications or indications", 506);
-    }
-
-    static public Error deviceServicesNotDiscovered(String deviceUuid) {
-        return new Error("Services for device " + deviceUuid + " not discovered. First you need to call discoverAllServicesAndCharacteristicsForDevice", 507);
+    public void reject(@NonNull Promise promise) {
+        promise.reject(null, toJS());
     }
 }
