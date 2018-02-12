@@ -171,8 +171,9 @@ export class BleManager {
    *
    * Few operations such as monitoring characteristic's value changes can be cancelled by a user. Basically every API
    * entry which accepts `transactionId` allows to call `cancelTransaction` function. When cancelled operation is a
-   * promise or a callback which registers errors, `"Cancelled"` error will be emitted in that case. Cancelling
-   * transaction which doesn't exist is ignored.
+   * promise or a callback which registers errors, {@link #bleerror|BleError} with error code
+   * {@link #bleerrorcodeoperationcancelled|OperationCancelled} will be emitted in that case. Cancelling transaction
+   * which doesn't exist is ignored.
    *
    * @example
    * const transactionId = 'monitor_battery';

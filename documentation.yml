@@ -13,6 +13,14 @@ toc:
     description: |
       Utility functions and classes.
   - fullUUID
+  - name: BLE Error
+    description: |
+      Types and classes related to BLE errors.
+  - BleError
+  - BleErrorCode 
+  - BleATTErrorCode
+  - BleAndroidErrorCode
+  - BleIOSErrorCode
   - name: Flow Types
     description: |
       All Flow aliases and Flow types used in this library.
