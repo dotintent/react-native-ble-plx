@@ -198,7 +198,7 @@ public class BleClientManager : NSObject {
         var uuids: [CBUUID]? = nil
         if let filteredUUIDs = filteredUUIDs {
             guard let cbuuids = filteredUUIDs.toCBUUIDS() else {
-                dispatchEvent(BleEvent.scanEvent, value: BleError.invalidUUIDs(filteredUUIDs).toJSResult)
+                dispatchEvent(BleEvent.scanEvent, value: BleError.invalidIdentifiers(filteredUUIDs).toJSResult)
                 return
             }
             uuids = cbuuids
@@ -226,7 +226,7 @@ public class BleClientManager : NSObject {
                                              resolve: @escaping Resolve,
                                               reject: @escaping Reject) {
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
-            BleError.invalidUUID(deviceIdentifier).callReject(reject)
+            BleError.invalidIdentifiers(deviceIdentifier).callReject(reject)
             return
         }
 
@@ -261,7 +261,7 @@ public class BleClientManager : NSObject {
                                                 reject: @escaping Reject) {
 
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
-            BleError.invalidUUID(deviceIdentifier).callReject(reject)
+            BleError.invalidIdentifiers(deviceIdentifier).callReject(reject)
             return
         }
 
@@ -282,7 +282,7 @@ public class BleClientManager : NSObject {
                                          resolve: @escaping Resolve,
                                           reject: @escaping Reject) {
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
-            BleError.invalidUUID(deviceIdentifier).callReject(reject)
+            BleError.invalidIdentifiers(deviceIdentifier).callReject(reject)
             return
         }
 
@@ -346,7 +346,7 @@ public class BleClientManager : NSObject {
                                                   resolve: @escaping Resolve,
                                                    reject: @escaping Reject) {
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
-            BleError.invalidUUID(deviceIdentifier).callReject(reject)
+            BleError.invalidIdentifiers(deviceIdentifier).callReject(reject)
             return
         }
 
@@ -374,7 +374,7 @@ public class BleClientManager : NSObject {
     @objc
     public func isDeviceConnected(_ deviceIdentifier: String, resolve: Resolve, reject: Reject) {
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
-            BleError.invalidUUID(deviceIdentifier).callReject(reject)
+            BleError.invalidIdentifiers(deviceIdentifier).callReject(reject)
             return
         }
 
@@ -395,7 +395,7 @@ public class BleClientManager : NSObject {
                                                                            reject: @escaping Reject) {
 
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
-            BleError.invalidUUID(deviceIdentifier).callReject(reject)
+            BleError.invalidIdentifiers(deviceIdentifier).callReject(reject)
             return
         }
 
@@ -431,7 +431,7 @@ public class BleClientManager : NSObject {
     public func servicesForDevice(_ deviceIdentifier: String, resolve: Resolve, reject: Reject) {
 
         guard let deviceId = UUID(uuidString: deviceIdentifier) else {
-            BleError.invalidUUID(deviceIdentifier).callReject(reject)
+            BleError.invalidIdentifiers(deviceIdentifier).callReject(reject)
             return
         }
 
@@ -458,7 +458,7 @@ public class BleClientManager : NSObject {
 
         guard let deviceId = UUID(uuidString: deviceIdentifier),
                   let serviceId = serviceUUID.toCBUUID() else {
-            BleError.invalidUUIDs([deviceIdentifier, serviceUUID]).callReject(reject)
+            BleError.invalidIdentifiers([deviceIdentifier, serviceUUID]).callReject(reject)
             return
         }
 
@@ -757,12 +757,12 @@ public class BleClientManager : NSObject {
             }
 
             guard let serviceCBUUID = serviceUUID.toCBUUID() else {
-                observer.onError(BleError.invalidUUID(serviceUUID))
+                observer.onError(BleError.invalidIdentifiers(serviceUUID))
                 return Disposables.create()
             }
 
             guard let characteristicCBUUID = characteristicUUID.toCBUUID() else {
-                observer.onError(BleError.invalidUUID(characteristicUUID))
+                observer.onError(BleError.invalidIdentifiers(characteristicUUID))
                 return Disposables.create()
             }
 
@@ -789,7 +789,7 @@ public class BleClientManager : NSObject {
                                       characteristicUUID: String) -> Observable<Characteristic> {
         return Observable.create { [weak self] observer in
             guard let characteristicCBUUID = characteristicUUID.toCBUUID() else {
-                observer.onError(BleError.invalidUUID(characteristicUUID))
+                observer.onError(BleError.invalidIdentifiers(characteristicUUID))
                 return Disposables.create()
             }
 
