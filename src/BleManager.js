@@ -6,7 +6,7 @@ import { Service } from './Service'
 import { Characteristic } from './Characteristic'
 import { State, LogLevel } from './TypeDefinition'
 import { BleModule, EventEmitter } from './BleModule'
-import { parseBleError, BleError, type NativeBleError } from './BleError'
+import { parseBleError, BleError } from './BleError'
 import type { NativeDevice, NativeCharacteristic, NativeBleRestoredState } from './BleModule'
 import type {
   Subscription,
@@ -281,8 +281,8 @@ export class BleManager {
     listener: (error: ?BleError, scannedDevice: ?Device) => void
   ) {
     this.stopDeviceScan()
-    const scanListener = ([error, nativeDevice]: [?NativeBleError, ?NativeDevice]) => {
-      listener(error ? new BleError(error) : null, nativeDevice ? new Device(nativeDevice, this) : null)
+    const scanListener = ([error, nativeDevice]: [?string, ?NativeDevice]) => {
+      listener(error ? parseBleError(error) : null, nativeDevice ? new Device(nativeDevice, this) : null)
     }
     // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
     this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
@@ -366,9 +366,9 @@ export class BleManager {
    * @deprecated
    */
   onDeviceDisconnected(deviceIdentifier: DeviceId, listener: (error: ?BleError, device: Device) => void): Subscription {
-    const disconnectionListener = ([error, nativeDevice]: [?NativeBleError, NativeDevice]) => {
+    const disconnectionListener = ([error, nativeDevice]: [?string, NativeDevice]) => {
       if (deviceIdentifier !== nativeDevice.id) return
-      listener(error ? new BleError(error) : null, new Device(nativeDevice, this))
+      listener(error ? parseBleError(error) : null, new Device(nativeDevice, this))
     }
 
     const subscription: Subscription = this._eventEmitter.addListener(
@@ -819,13 +819,13 @@ export class BleManager {
     listener: (error: ?BleError, characteristic: ?Characteristic) => void
   ): Subscription {
     const monitorListener = ([error, characteristic, msgTransactionId]: [
-      ?NativeBleError,
+      ?string,
       NativeCharacteristic,
       TransactionId
     ]) => {
       if (transactionId !== msgTransactionId) return
       if (error) {
-        listener(new BleError(error), null)
+        listener(parseBleError(error), null)
         return
       }
       listener(null, new Characteristic(characteristic, this))
