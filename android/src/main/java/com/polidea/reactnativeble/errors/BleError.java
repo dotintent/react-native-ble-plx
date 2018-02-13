@@ -33,7 +33,7 @@ public class BleError {
         stringBuilder.append(errorCode.code);
 
         stringBuilder.append(",\"attErrorCode\":");
-        if (androidCode == null || androidCode >= 0x80) {
+        if (androidCode == null || androidCode >= 0x80 || androidCode < 0) {
             stringBuilder.append("null");
         } else {
             stringBuilder.append(androidCode);

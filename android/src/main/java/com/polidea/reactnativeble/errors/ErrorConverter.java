@@ -79,7 +79,7 @@ public class ErrorConverter {
         }
 
         if (throwable instanceof BleScanException) {
-            return toError(throwable);
+            return toError((BleScanException) throwable);
         }
 
         if (throwable instanceof BleServiceNotFoundException) {
