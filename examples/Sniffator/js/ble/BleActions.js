@@ -37,29 +37,15 @@ export function deviceFound(device: Device): DeviceFound {
 
 export type ChangeSelectedDeviceState = {|
   type: 'CHANGE_SELECTED_DEVICE_STATE',
-  device: Device,
-  state: DeviceState
+  device: ?Device,
+  state: ?DeviceState
 |}
 
-export function changeSelectedDeviceState(device: Device, state: DeviceState): ChangeSelectedDeviceState {
+export function changeSelectedDeviceState(device: ?Device, state: ?DeviceState): ChangeSelectedDeviceState {
   return {
     type: 'CHANGE_SELECTED_DEVICE_STATE',
     device,
     state
-  }
-}
-
-export type WriteCharacteristic = {|
-  type: 'WRITE_CHARACTERISTIC',
-  characteristic: Characteristic,
-  base64Value: string
-|}
-
-export function writeCharacteristic(characteristic: Characteristic, base64Value: string): WriteCharacteristic {
-  return {
-    type: 'WRITE_CHARACTERISTIC',
-    characteristic,
-    base64Value
   }
 }
 
@@ -150,7 +136,6 @@ export type BleAction =
   | StopScan
   | DeviceFound
   | ChangeSelectedDeviceState
-  | WriteCharacteristic
   | ReadCharacteristic
   | MonitorCharacteristic
   | SelectService

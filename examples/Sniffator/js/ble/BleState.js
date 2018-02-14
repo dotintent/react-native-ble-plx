@@ -16,7 +16,4 @@ type Devices = {
   [id: string]: Device
 }
 
-export type DeviceState =
-  | 'CONNECTING'
-  | 'DISCOVERING SERVICES AND CHARACTERISTICS'
-  | 'CONNECTED'
+export type DeviceState = 'CONNECTING' | 'DISCOVERING SERVICES AND CHARACTERISTICS' | 'CONNECTED'

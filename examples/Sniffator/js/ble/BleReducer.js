@@ -37,12 +37,9 @@ export function bleReducer(state: BleState = initialState, action: BleAction): B
       return {
         ...state,
         scanning: false,
-        selectedDeviceID: action.device.id,
+        selectedDeviceID: action.device != null ? action.device.id : null,
         selectedDeviceState: action.state
       }
-
-    case 'WRITE_CHARACTERISTIC':
-      return state
 
     case 'READ_CHARACTERISTIC':
       return state
