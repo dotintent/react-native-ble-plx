@@ -41,6 +41,12 @@ export function bleReducer(state: BleState = initialState, action: BleAction): B
         selectedDeviceState: action.state
       }
 
+    case 'FETCHED_SERVICES_AND_CHARACTERISTICS':
+      return {
+        ...state,
+        devices: { ...state.devices, [action.device.device.id]: action.device }
+      }
+
     case 'READ_CHARACTERISTIC':
       return state
 

@@ -1,7 +1,7 @@
 // @flow
 
 import { Device, Characteristic } from 'react-native-ble-plx'
-import type { DeviceState } from './BleState'
+import type { DeviceWithServices, DeviceState } from './BleState'
 
 export type StartScan = {|
   type: 'START_SCAN'
@@ -46,6 +46,18 @@ export function changeSelectedDeviceState(device: ?Device, state: ?DeviceState):
     type: 'CHANGE_SELECTED_DEVICE_STATE',
     device,
     state
+  }
+}
+
+export type FetchedServicesAndCharacteristics = {|
+  type: 'FETCHED_SERVICES_AND_CHARACTERISTICS',
+  device: DeviceWithServices
+|}
+
+export function fetchedServicesAndCharacteristics(device: DeviceWithServices): FetchedServicesAndCharacteristics {
+  return {
+    type: 'FETCHED_SERVICES_AND_CHARACTERISTICS',
+    device
   }
 }
 
@@ -136,6 +148,7 @@ export type BleAction =
   | StopScan
   | DeviceFound
   | ChangeSelectedDeviceState
+  | FetchedServicesAndCharacteristics
   | ReadCharacteristic
   | MonitorCharacteristic
   | SelectService

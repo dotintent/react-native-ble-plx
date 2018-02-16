@@ -3,7 +3,8 @@
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, Button } from 'react-native'
 import { connect } from 'react-redux'
-import type { BleState } from './ble/BleState'
+import type { BleState, Devices, DeviceWithServices, ServiceWithCharacteristics } from './ble/BleState'
+import { Characteristic } from 'react-native-ble-plx'
 import {
   startScanning,
   stopScanning,
@@ -14,7 +15,7 @@ import {
 } from './ble/BleManager'
 
 type Props = {
-  devices: string,
+  devices: Devices,
   errors: string,
   startScanning: typeof startScanning,
   stopScanning: typeof stopScanning,
@@ -25,10 +26,26 @@ type Props = {
 }
 
 class App extends Component<Props> {
+  getCharacteristic = (deviceId: string, serviceId: string, characteristicId: string): ?Characteristic => {
+    const device: DeviceWithServices = this.props.devices[deviceId]
+    if (device.services == null) {
+      return null
+    }
+    for (var service: ServiceWithCharacteristics of device.services) {
+      if (service.service.uuid.toUpperCase() === serviceId.toUpperCase()) {
+        for (var characteristic: Characteristic of service.characteristics) {
+          if (characteristic.uuid.toUpperCase() === characteristicId.toUpperCase()) {
+            return characteristic
+          }
+        }
+      }
+    }
+    return null
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.instructions}>Devices:{this.props.devices}</Text>
         <Text style={styles.instructions}>Errors:{this.props.errors}</Text>
         <Button
           title="Start scanning"
@@ -57,33 +74,40 @@ class App extends Component<Props> {
         <Button
           title="SensorTag: enable temperature sensor"
           onPress={() => {
-            this.props.writeCharacteristic(
+            const characteristic = this.getCharacteristic(
               'D5D9286C-8F73-7C04-6E17-913595327793',
               'F000AA00-0451-4000-B000-000000000000',
-              'F000AA02-0451-4000-B000-000000000000',
-              'AQ=='
+              'F000AA02-0451-4000-B000-000000000000'
             )
+            if (characteristic != null) {
+              this.props.writeCharacteristic(characteristic, 'AQ==')
+            }
           }}
         />
         <Button
           title="SensorTag: disable temperature sensor"
           onPress={() => {
-            this.props.writeCharacteristic(
+            const characteristic = this.getCharacteristic(
               'D5D9286C-8F73-7C04-6E17-913595327793',
               'F000AA00-0451-4000-B000-000000000000',
-              'F000AA02-0451-4000-B000-000000000000',
-              'AA=='
+              'F000AA02-0451-4000-B000-000000000000'
             )
+            if (characteristic != null) {
+              this.props.writeCharacteristic(characteristic, 'AA==')
+            }
           }}
         />
         <Button
           title="SensorTag: read temperature sensor data"
           onPress={() => {
-            this.props.readCharacteristic(
+            const characteristic = this.getCharacteristic(
               'D5D9286C-8F73-7C04-6E17-913595327793',
               'F000AA00-0451-4000-B000-000000000000',
               'F000AA01-0451-4000-B000-000000000000'
             )
+            if (characteristic != null) {
+              this.props.readCharacteristic(characteristic)
+            }
           }}
         />
       </View>
@@ -93,10 +117,7 @@ class App extends Component<Props> {
 
 export default connect(
   (state: BleState) => ({
-    devices: Object.values(state.devices)
-      // $FlowFixMe: It's OK!
-      .map(device => device.name || '<no_device_name>')
-      .join(','),
+    devices: state.devices,
     errors: state.errors.join(',')
   }),
   {

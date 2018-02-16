@@ -1,6 +1,6 @@
 // @flow
 
-import { Device } from 'react-native-ble-plx'
+import { Device, Service, Characteristic } from 'react-native-ble-plx'
 
 export type BleState = {
   devices: Devices,
@@ -12,8 +12,23 @@ export type BleState = {
   errors: string[]
 }
 
-type Devices = {
-  [id: string]: Device
+export type Devices = {
+  [id: string]: DeviceWithServices
 }
 
-export type DeviceState = 'CONNECTING' | 'DISCOVERING SERVICES AND CHARACTERISTICS' | 'CONNECTED'
+export type DeviceWithServices = {
+  device: Device,
+  services: ServiceWithCharacteristics[]
+}
+
+export type ServiceWithCharacteristics = {
+  service: Service,
+  characteristics: Characteristic[]
+}
+
+export type DeviceState =
+  | 'DISCONNECTED'
+  | 'CONNECTING'
+  | 'DISCOVERING'
+  | 'FETCHING SERVICES AND CHARACTERISTICS'
+  | 'CONNECTED'
