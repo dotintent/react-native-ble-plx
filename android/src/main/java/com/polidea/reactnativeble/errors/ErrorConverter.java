@@ -204,7 +204,7 @@ public class ErrorConverter {
             case BleScanException.LOCATION_PERMISSION_MISSING:
                 return new BleError(BleErrorCode.BluetoothUnauthorized, bleScanException.getMessage(), null);
             case BleScanException.LOCATION_SERVICES_DISABLED:
-                return new BleError(BleErrorCode.BluetoothUnauthorized, bleScanException.getMessage(), null);
+                return new BleError(BleErrorCode.LocationServicesDisabled, bleScanException.getMessage(), null);
             default:
                 return new BleError(BleErrorCode.ScanStartFailed, bleScanException.getMessage(), null);
         }
