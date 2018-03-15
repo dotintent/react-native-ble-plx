@@ -123,7 +123,6 @@ export class Service implements NativeService {
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
-   * @deprecated
    */
   monitorCharacteristic(
     characteristicUUID: UUID,

@@ -222,7 +222,6 @@ export class BleManager {
    * @param {boolean} [emitCurrentState=false] If true, current state will be emitted as well. Defaults to false.
    *
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
-   * @deprecated
    */
   onStateChange(listener: (newState: $Keys<typeof State>) => void, emitCurrentState: boolean = false): Subscription {
     const subscription: Subscription = this._eventEmitter.addListener(BleModule.StateChangeEvent, listener)
@@ -273,7 +272,6 @@ export class BleManager {
    * {@link Device} (devices may be scanned multiple times). It's first argument is potential {@link Error} which is set
    * to non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument
    * is a scanned {@link Device}.
-   * @deprecated
    */
   startDeviceScan(
     UUIDs: ?Array<UUID>,
@@ -363,7 +361,6 @@ export class BleManager {
    * @param {function(error: ?BleError, device: Device)} listener - callback returning error as a reason of disconnection
    * if available and {@link Device} object.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
-   * @deprecated
    */
   onDeviceDisconnected(deviceIdentifier: DeviceId, listener: (error: ?BleError, device: Device) => void): Subscription {
     const disconnectionListener = ([error, nativeDevice]: [?string, NativeDevice]) => {
@@ -734,7 +731,6 @@ export class BleManager {
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
-   * @deprecated
    */
   monitorCharacteristicForDevice(
     deviceIdentifier: DeviceId,

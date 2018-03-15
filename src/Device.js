@@ -147,7 +147,6 @@ export class Device implements NativeDevice {
    * @param {function(error: ?BleError, device: Device)} listener callback returning error as a reason of disconnection
    *                                                              if available and {@link Device} object.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
-   * @deprecated
    */
   onDisconnected(listener: (error: ?BleError, device: Device) => void): Subscription {
     return this._manager.onDeviceDisconnected(this.id, listener)
@@ -264,7 +263,6 @@ export class Device implements NativeDevice {
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
    * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
-   * @deprecated
    */
   monitorCharacteristicForService(
     serviceUUID: UUID,
