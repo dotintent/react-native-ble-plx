@@ -44,7 +44,8 @@ public enum BleErrorCode {
     DescriptorsNotDiscovered(504),
     DescriptorInvalidDataFormat(505),
 
-    ScanStartFailed(600);
+    ScanStartFailed(600),
+    LocationServicesDisabled(601);
 
     public final int code;
 

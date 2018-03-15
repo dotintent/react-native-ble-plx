@@ -51,6 +51,7 @@ enum BleErrorCode : Int {
     case DescriptorInvalidDataFormat = 505
 
     case ScanStartFailed = 600
+    case LocationServicesDisabled = 601
 }
 
 struct BleError: Error {

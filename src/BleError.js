@@ -111,7 +111,8 @@ export const BleErrorCode = {
    */
   BluetoothUnsupported: 100,
   /**
-   * There are no granted permissions which allow to use BLE functionality.
+   * There are no granted permissions which allow to use BLE functionality. On Android it may require Coarse Location
+   * Permissions.
    */
   BluetoothUnauthorized: 101,
   /**
@@ -248,10 +249,14 @@ export const BleErrorCode = {
   /**
    * Cannot start scanning operation.
    */
-  ScanStartFailed: 600
+  ScanStartFailed: 600,
+  /**
+   * Location services are disabled.
+   */
+  LocationServicesDisabled: 601
 }
 
-const BleErrorCodeDescription = {
+export const BleErrorCodeDescription = {
   // Implementation specific errors
   [BleErrorCode.UnknownError]: 'Unknown error occurred. This is probably a bug! Check reason property.',
   [BleErrorCode.BluetoothManagerDestroyed]: 'BleManager was destroyed',
@@ -312,7 +317,8 @@ const BleErrorCodeDescription = {
     'Cannot write to descriptor {descriptorUUID} with invalid data format: {internalMessage}',
 
   // Scanning
-  [BleErrorCode.ScanStartFailed]: 'Cannot start scanning operation'
+  [BleErrorCode.ScanStartFailed]: 'Cannot start scanning operation',
+  [BleErrorCode.LocationServicesDisabled]: 'Location services are disabled'
 }
 
 /**
