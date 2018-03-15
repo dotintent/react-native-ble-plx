@@ -6,7 +6,14 @@ import { Service } from './Service'
 import { Characteristic } from './Characteristic'
 import { State, LogLevel } from './TypeDefinition'
 import { BleModule, EventEmitter } from './BleModule'
-import { parseBleError, BleError } from './BleError'
+import {
+  parseBleError,
+  BleError,
+  BleErrorCode,
+  BleATTErrorCode,
+  BleAndroidErrorCode,
+  BleIOSErrorCode
+} from './BleError'
 import type { NativeDevice, NativeCharacteristic, NativeBleRestoredState } from './BleModule'
 import type {
   Subscription,
@@ -42,7 +49,7 @@ export class BleManager {
   // Unique identifier used to create internal transactionIds
   _uniqueId: number
   // Map of active promises with functions to forcibly cancel them
-  _activePromises: { [id: string]: (error: Error) => void }
+  _activePromises: { [id: string]: (error: BleError) => void }
   // Map of active subscriptions
   _activeSubscriptions: { [id: string]: Subscription }
 
@@ -81,8 +88,15 @@ export class BleManager {
    * @private
    */
   _destroyPromises() {
+    const destroyedError = new BleError({
+      errorCode: BleErrorCode.BluetoothManagerDestroyed,
+      attErrorCode: (null: ?$Values<typeof BleATTErrorCode>),
+      iosErrorCode: (null: ?$Values<typeof BleIOSErrorCode>),
+      androidErrorCode: (null: ?$Values<typeof BleAndroidErrorCode>),
+      reason: (null: ?string)
+    })
     for (const id in this._activePromises) {
-      this._activePromises[id](new Error('Destroyed'))
+      this._activePromises[id](destroyedError)
     }
   }
 
@@ -98,7 +112,8 @@ export class BleManager {
 
   /**
    * Destroys {@link BleManager} instance. A new instance needs to be created to continue working with
-   * this library.
+   * this library. All operations which were in progress completes with 
+   * {@link #bleerrorcodebluetoothmanagerdestroyed|BluetoothManagerDestroyed} error code.
    */
   destroy() {
     // Destroy native module object
