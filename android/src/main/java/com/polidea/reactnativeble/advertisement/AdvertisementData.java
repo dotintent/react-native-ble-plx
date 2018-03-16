@@ -78,8 +78,9 @@ public class AdvertisementData {
                 parseServiceUUIDs(advData, adLength, data, 16);
                 break;
 
+            case 0x08:
             case 0x09:
-                parseLocalName(advData, adLength, data);
+                parseLocalName(advData, adType, adLength, data);
                 break;
 
             case 0x0A:
@@ -108,10 +109,13 @@ public class AdvertisementData {
         }
     }
 
-    private static void parseLocalName(AdvertisementData advData, int adLength, ByteBuffer data) {
-        byte[] bytes = new byte[adLength];
-        data.get(bytes, 0, adLength);
-        advData.localName = new String(bytes, Charset.forName("UTF-8"));
+    private static void parseLocalName(AdvertisementData advData, int adType, int adLength, ByteBuffer data) {
+        // Complete local name is preferred over short local name.
+        if (advData.localName == null || adType == 0x09) {
+            byte[] bytes = new byte[adLength];
+            data.get(bytes, 0, adLength);
+            advData.localName = new String(bytes, Charset.forName("UTF-8"));
+        }
     }
 
     private static UUID parseUUID(ByteBuffer data, int uuidLength) {

@@ -111,6 +111,22 @@ class AdvertisementDataSpec extends Specification {
         "04ff01020304"  | _("010203")
     }
 
+    def "local name should be parsed properly, preferring complete name over short name"(String advData, String localName) {
+        when:
+        def data = AdvertisementData.parseScanResponseData(_(advData))
+
+        then:
+        localName == data.localName
+
+        where:
+        advData                   | localName
+        "051073C3B36C"            | null
+        "040873C3B3"              | "só"
+        "050973C3B36C"            | "sól"
+        "040873C3B3050973C3B36C"  | "sól"
+        "050973C3B36C040873C3B3"  | "sól"
+    }
+
     def "complex advertisement data should be parsed properly"() {
         when:
         def data = AdvertisementData.parseScanResponseData(_("03160a180909536f6d654e616d65020a7f05140a180b28"))
