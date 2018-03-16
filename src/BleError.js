@@ -44,14 +44,14 @@ export class BleError extends Error {
 
   constructor(nativeBleError: NativeBleError | string) {
     if (typeof nativeBleError === 'string') {
-      super(BleErrorCodeDescription[BleErrorCode.UnknownError])
+      super(BleErrorCodeMessage[BleErrorCode.UnknownError])
       this.errorCode = BleErrorCode.UnknownError
       this.attErrorCode = null
       this.iosErrorCode = null
       this.androidErrorCode = null
       this.reason = nativeBleError
     } else {
-      super(fillStringWithArguments(BleErrorCodeDescription[nativeBleError.errorCode], nativeBleError))
+      super(fillStringWithArguments(BleErrorCodeMessage[nativeBleError.errorCode], nativeBleError))
       this.errorCode = nativeBleError.errorCode
       this.attErrorCode = nativeBleError.attErrorCode
       this.iosErrorCode = nativeBleError.iosErrorCode
@@ -111,8 +111,8 @@ export const BleErrorCode = {
    */
   BluetoothUnsupported: 100,
   /**
-   * There are no granted permissions which allow to use BLE functionality. On Android it may require Coarse Location
-   * Permissions.
+   * There are no granted permissions which allow to use BLE functionality. On Android it may require
+   * android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCESS_FINE_LOCATION permission.
    */
   BluetoothUnauthorized: 101,
   /**
@@ -256,7 +256,7 @@ export const BleErrorCode = {
   LocationServicesDisabled: 601
 }
 
-export const BleErrorCodeDescription = {
+export const BleErrorCodeMessage = {
   // Implementation specific errors
   [BleErrorCode.UnknownError]: 'Unknown error occurred. This is probably a bug! Check reason property.',
   [BleErrorCode.BluetoothManagerDestroyed]: 'BleManager was destroyed',

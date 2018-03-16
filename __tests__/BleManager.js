@@ -1,5 +1,5 @@
 import { BleManager, Device, Service, Characteristic } from '../index'
-import { BleErrorCode, BleErrorCodeDescription } from '../src/BleError'
+import { BleErrorCode, BleErrorCodeMessage } from '../src/BleError'
 import * as Native from '../src/BleModule'
 
 import { NativeEventEmitter } from './Utils'
@@ -113,7 +113,7 @@ test('When BleManager while scanning emits an error it calls listener with error
   bleManager.startDeviceScan(null, null, listener)
   Native.BleModule.emit(Native.BleModule.ScanEvent, [nativeOperationCancelledError, null])
   expect(listener.mock.calls.length).toBe(1)
-  expect(listener.mock.calls[0][0].message).toBe(BleErrorCodeDescription[BleErrorCode.OperationCancelled])
+  expect(listener.mock.calls[0][0].message).toBe(BleErrorCodeMessage[BleErrorCode.OperationCancelled])
 })
 
 test('When BleManager stops scanning it calls BleModule stopScanning function', () => {
@@ -132,9 +132,7 @@ test('When BleManager calls async function which throws it should return Unknown
   Native.BleModule.readRSSIForDevice.mockImplementationOnce(async () => {
     throw new Error('Unexpected error2')
   })
-  await expect(bleManager.readRSSIForDevice('id')).rejects.toThrowError(
-    BleErrorCodeDescription[BleErrorCode.UnknownError]
-  )
+  await expect(bleManager.readRSSIForDevice('id')).rejects.toThrowError(BleErrorCodeMessage[BleErrorCode.UnknownError])
 })
 
 test('When BleManager calls async function which valid JSON object should return specific error', async () => {
@@ -142,7 +140,7 @@ test('When BleManager calls async function which valid JSON object should return
     throw new Error(nativeOperationCancelledError)
   })
   await expect(bleManager.readRSSIForDevice('id')).rejects.toThrowError(
-    BleErrorCodeDescription[BleErrorCode.OperationCancelled]
+    BleErrorCodeMessage[BleErrorCode.OperationCancelled]
   )
 })
 
@@ -201,7 +199,7 @@ test('BleManager handles errors properly while monitoring disconnections', () =>
   Native.BleModule.emit(Native.BleModule.DisconnectionEvent, [nativeOperationCancelledError, { id: 'id' }])
   subscription.remove()
   expect(listener.mock.calls.length).toBe(1)
-  expect(listener.mock.calls[0][0].message).toBe(BleErrorCodeDescription[BleErrorCode.OperationCancelled])
+  expect(listener.mock.calls[0][0].message).toBe(BleErrorCodeMessage[BleErrorCode.OperationCancelled])
 })
 
 test('BleManager calls BleModule isDeviceConnected function properly', async () => {
@@ -316,7 +314,7 @@ test('BleManager properly handles errors while monitoring characteristic values'
   Native.BleModule.emit(Native.BleModule.ReadEvent, [nativeOperationCancelledError, { id: 'a', value: 'b' }, 'x'])
   subscription.remove()
   expect(listener.mock.calls.length).toBe(1)
-  expect(listener.mock.calls[0][0].message).toBe(BleErrorCodeDescription[BleErrorCode.OperationCancelled])
+  expect(listener.mock.calls[0][0].message).toBe(BleErrorCodeMessage[BleErrorCode.OperationCancelled])
 })
 
 test('BleManager properly requests the MTU', async () => {
