@@ -190,6 +190,10 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     private Subscription monitorAdapterStateChanges(Context context) {
+        if (!supportsBluetoothLowEnergy()) {
+            return null;
+        }
+
         return new RxBleAdapterStateObservable(context)
                 .map(new Func1<RxBleAdapterStateObservable.BleAdapterState, String>() {
                     @Override
