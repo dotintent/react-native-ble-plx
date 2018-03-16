@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.SparseArray;
 
 import com.facebook.react.bridge.Arguments;
@@ -31,6 +32,7 @@ import com.polidea.reactnativeble.utils.DisposableMap;
 import com.polidea.reactnativeble.utils.IdGenerator;
 import com.polidea.reactnativeble.utils.LogLevel;
 import com.polidea.reactnativeble.utils.ReadableArrayConverter;
+import com.polidea.reactnativeble.utils.RefreshGattCustomOperation;
 import com.polidea.reactnativeble.utils.SafePromise;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.reactnativeble.wrapper.Characteristic;
@@ -403,6 +405,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         boolean autoConnect = false;
         int requestMtu = 0;
+        RefreshGattMoment refreshGattMoment = null;
 
         if (options != null) {
             if (options.hasKey("autoConnect")) {
@@ -411,12 +414,16 @@ public class BleModule extends ReactContextBaseJavaModule {
             if (options.hasKey("requestMTU")) {
                 requestMtu = options.getInt("requestMTU");
             }
+            if (options.hasKey("refreshGatt")) {
+                refreshGattMoment = RefreshGattMoment.byJavaScriptName(options.getString("refreshGatt"));
+            }
         }
 
-        safeConnectToDevice(device, autoConnect, requestMtu, new SafePromise(promise));
+        safeConnectToDevice(device, autoConnect, requestMtu, refreshGattMoment, new SafePromise(promise));
     }
 
-    private void safeConnectToDevice(final RxBleDevice device, boolean autoConnect, final int requestMtu, final SafePromise promise) {
+    private void safeConnectToDevice(final RxBleDevice device, boolean autoConnect, final int requestMtu,
+                                     RefreshGattMoment refreshGattMoment, final SafePromise promise) {
 
         Observable<RxBleConnection> connect = device
                 .establishConnection(autoConnect)
@@ -428,22 +435,35 @@ public class BleModule extends ReactContextBaseJavaModule {
                     }
                 });
 
-        if (requestMtu > 0) {
+        if (refreshGattMoment == RefreshGattMoment.ON_CONNECTED) {
             connect = connect.flatMap(new Func1<RxBleConnection, Observable<RxBleConnection>>() {
                 @Override
                 public Observable<RxBleConnection> call(final RxBleConnection rxBleConnection) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        return rxBleConnection
-                                .requestMtu(requestMtu)
-                                .map(new Func1<Integer, RxBleConnection>() {
-                                    @Override
-                                    public RxBleConnection call(Integer integer) {
-                                        return rxBleConnection;
+                    return rxBleConnection
+                            .queue(new RefreshGattCustomOperation())
+                            .map(new Func1<Boolean, RxBleConnection>() {
+                                @Override
+                                public RxBleConnection call(Boolean refreshGattSuccess) {
+                                    return rxBleConnection;
+                                }
+                            });
+                }
+            });
+        }
+
+        if (requestMtu > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            connect = connect.flatMap(new Func1<RxBleConnection, Observable<RxBleConnection>>() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public Observable<RxBleConnection> call(final RxBleConnection rxBleConnection) {
+                return rxBleConnection
+                        .requestMtu(requestMtu)
+                        .map(new Func1<Integer, RxBleConnection>() {
+                            @Override
+                            public RxBleConnection call(Integer integer) {
+                                return rxBleConnection;
                                     }
                                 });
-                    } else {
-                        return Observable.just(rxBleConnection);
-                    }
                 }
             });
         }
