@@ -17,6 +17,7 @@ import {
 type Props = {
   devices: Devices,
   errors: string,
+  dispatch: Function,
   startScanning: typeof startScanning,
   stopScanning: typeof stopScanning,
   connectToDevice: typeof connectToDevice,
@@ -56,19 +57,25 @@ class App extends Component<Props> {
         <Button
           title="Stop scanning"
           onPress={() => {
-            this.props.stopScanning()
+            this.props.dispatch(
+              this.props.stopScanning()
+            )
           }}
         />
         <Button
           title="Connect to device: SensorTag"
           onPress={() => {
-            this.props.connectToDevice('D5D9286C-8F73-7C04-6E17-913595327793')
+            this.props.dispatch(
+              this.props.connectToDevice('D5D9286C-8F73-7C04-6E17-913595327793')
+            )
           }}
         />
         <Button
           title="Disconnect from device: SensorTag"
           onPress={() => {
-            this.props.disconnectFromDevice('D5D9286C-8F73-7C04-6E17-913595327793')
+            this.props.dispatch(
+              this.props.disconnectFromDevice('D5D9286C-8F73-7C04-6E17-913595327793')
+            )
           }}
         />
         <Button
@@ -80,7 +87,9 @@ class App extends Component<Props> {
               'F000AA02-0451-4000-B000-000000000000'
             )
             if (characteristic != null) {
-              this.props.writeCharacteristic(characteristic, 'AQ==')
+              this.props.dispatch(
+                this.props.writeCharacteristic(characteristic, 'AQ==')
+              )
             }
           }}
         />
@@ -93,7 +102,9 @@ class App extends Component<Props> {
               'F000AA02-0451-4000-B000-000000000000'
             )
             if (characteristic != null) {
-              this.props.writeCharacteristic(characteristic, 'AA==')
+              this.props.dispatch(
+                this.props.writeCharacteristic(characteristic, 'AA==')
+              )
             }
           }}
         />
@@ -106,7 +117,9 @@ class App extends Component<Props> {
               'F000AA01-0451-4000-B000-000000000000'
             )
             if (characteristic != null) {
-              this.props.readCharacteristic(characteristic)
+              this.props.dispatch(
+                this.props.readCharacteristic(characteristic)
+              )
             }
           }}
         />
@@ -120,14 +133,15 @@ export default connect(
     devices: state.devices,
     errors: state.errors.join(',')
   }),
-  {
+  dispatch => ({
+    dispatch,
     startScanning,
     stopScanning,
     connectToDevice,
     disconnectFromDevice,
     readCharacteristic,
     writeCharacteristic
-  }
+  })
 )(App)
 
 const styles = StyleSheet.create({
