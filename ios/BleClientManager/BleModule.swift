@@ -273,6 +273,50 @@ public class BleClientManager : NSObject {
         resolve(peripheral.asJSObject())
     }
 
+    // Mark: Device management -----------------------------------------------------------------------------------------
+
+    @objc
+    public func devices(_ deviceIdentifiers: [String],
+                                    resolve: @escaping Resolve,
+                                     reject: @escaping Reject) {
+        let uuids = deviceIdentifiers.flatMap { UUID(uuidString: $0) }
+        if (uuids.count != deviceIdentifiers.count) {
+            BleError.invalidIdentifiers(deviceIdentifiers).callReject(reject)
+            return
+        }
+
+        _  = manager.retrievePeripherals(withIdentifiers: uuids)
+            .subscribe(
+                onNext: { peripherals in
+                    resolve(peripherals.map { $0.asJSObject() })
+                },
+                onError: { error in
+                    error.bleError.callReject(reject)
+                }
+        );
+    }
+
+    @objc
+    public func connectedDevices(_ serviceUUIDs: [String],
+                                        resolve: @escaping Resolve,
+                                         reject: @escaping Reject) {
+        let uuids = serviceUUIDs.flatMap { $0.toCBUUID() }
+        if (uuids.count != serviceUUIDs.count) {
+            BleError.invalidIdentifiers(serviceUUIDs).callReject(reject)
+            return
+        }
+
+        _  = manager.retrieveConnectedPeripherals(withServices: uuids)
+            .subscribe(
+                onNext: { peripherals in
+                    resolve(peripherals.map { $0.asJSObject() })
+            },
+                onError: { error in
+                    error.bleError.callReject(reject)
+            }
+        );
+    }
+
     // Mark: Connection management -------------------------------------------------------------------------------------
 
     // Connect to specified device.

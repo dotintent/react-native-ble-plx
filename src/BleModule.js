@@ -278,6 +278,20 @@ export interface BleModuleInterface {
    */
   requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number, transactionId: TransactionId): Promise<NativeDevice>;
 
+  // Device management
+
+  /**
+   * Returns a list of known peripherals by their identifiers.
+   * @param {Array<DeviceId>} deviceIdentifiers List of device identifiers
+   */
+  devices(deviceIdentifiers: Array<DeviceId>): Promise<Array<NativeDevice>>;
+
+  /**
+   * Returns a list of the peripherals (containing any of the specified services) currently connected to the system.
+   * @param {Array<DeviceId>} deviceIdentifiers List of device identifiers
+   */
+  connectedDevices(serviceUUIDs: Array<UUID>): Promise<Array<NativeDevice>>;
+
   // Connection management
 
   /**

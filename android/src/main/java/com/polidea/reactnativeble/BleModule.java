@@ -303,6 +303,65 @@ public class BleModule extends ReactContextBaseJavaModule {
         }
     }
 
+    // Mark: Device management ---------------------------------------------------------------------
+
+    @ReactMethod
+    public void devices(final ReadableArray deviceIdentifiers, final Promise promise) {
+        if (rxBleClient == null) {
+            throw new IllegalStateException("BleManager not created when tried connecting to device");
+        }
+
+        WritableArray writableArray = Arguments.createArray();
+        for (int i = 0; i < deviceIdentifiers.size(); i++) {
+            final String deviceId = deviceIdentifiers.getString(i);
+
+            if (deviceId == null) {
+                BleErrorUtils.invalidIdentifiers(deviceIdentifiers).reject(promise);
+                return;
+            }
+
+            final RxBleDevice device = rxBleClient.getBleDevice(deviceId);
+            if (device != null) {
+                Device jsDevice = new Device(device, null);
+                writableArray.pushMap(jsDevice.toJSObject(null));
+            }
+        }
+
+        promise.resolve(writableArray);
+    }
+
+    @ReactMethod
+    public void connectedDevices(final ReadableArray serviceUUIDs, final Promise promise) {
+        if (rxBleClient == null) {
+            throw new IllegalStateException("BleManager not created when tried connecting to device");
+        }
+
+        UUID[] uuids = new UUID[serviceUUIDs.size()];
+        for (int i = 0; i < serviceUUIDs.size(); i++) {
+            UUID uuid = UUIDConverter.convert(serviceUUIDs.getString(i));
+
+            if (uuid == null) {
+                BleErrorUtils.invalidIdentifiers(serviceUUIDs).reject(promise);
+                return;
+            }
+
+            uuids[i] = uuid;
+        }
+
+        WritableArray writableArray = Arguments.createArray();
+
+        for (Device device : connectedDevices.values()) {
+            for (UUID uuid : uuids) {
+                if (device.getServiceByUUID(uuid) != null) {
+                    writableArray.pushMap(device.toJSObject(null));
+                    break;
+                }
+            }
+        }
+
+        promise.resolve(writableArray);
+    }
+
     // Mark: Device operations ---------------------------------------------------------------------
 
     @ReactMethod

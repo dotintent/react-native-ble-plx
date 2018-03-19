@@ -112,7 +112,7 @@ export class BleManager {
 
   /**
    * Destroys {@link BleManager} instance. A new instance needs to be created to continue working with
-   * this library. All operations which were in progress completes with 
+   * this library. All operations which were in progress completes with
    * {@link #bleerrorcodebluetoothmanagerdestroyed|BluetoothManagerDestroyed} error code.
    */
   destroy() {
@@ -342,6 +342,30 @@ export class BleManager {
     }
     const nativeDevice = await this._callPromise(BleModule.requestMTUForDevice(deviceIdentifier, mtu, transactionId))
     return new Device(nativeDevice, this)
+  }
+
+  // Mark: Connection management ---------------------------------------------------------------------------------------
+
+  /**
+   * Returns a list of known peripherals by their identifiers.
+   * @param {Array<DeviceId>} deviceIdentifiers List of device identifiers.
+   */
+  async devices(deviceIdentifiers: Array<DeviceId>): Promise<Array<Device>> {
+    const nativeDevices = await this._callPromise(BleModule.devices(deviceIdentifiers))
+    return nativeDevices.map((nativeDevice: NativeDevice) => {
+      return new Device(nativeDevice, this)
+    })
+  }
+
+  /**
+   * Returns a list of the peripherals (containing any of the specified services) currently connected to the system.
+   * @param {Array<UUID>} serviceUUIDs List of service UUIDs. Device must contain as list one of them to be listed.
+   */
+  async connectedDevices(serviceUUIDs: Array<UUID>): Promise<Array<Device>> {
+    const nativeDevices = await this._callPromise(BleModule.connectedDevices(serviceUUIDs))
+    return nativeDevices.map((nativeDevice: NativeDevice) => {
+      return new Device(nativeDevice, this)
+    })
   }
 
   // Mark: Connection management ---------------------------------------------------------------------------------------

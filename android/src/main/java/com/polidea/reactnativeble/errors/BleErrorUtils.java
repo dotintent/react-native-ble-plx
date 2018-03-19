@@ -2,6 +2,8 @@ package com.polidea.reactnativeble.errors;
 
 import android.support.annotation.NonNull;
 
+import com.facebook.react.bridge.ReadableArray;
+
 public class BleErrorUtils {
 
     public static BleError cancelled() {
@@ -12,6 +14,17 @@ public class BleErrorUtils {
         StringBuilder identifiersJoined = new StringBuilder();
         for (String identifier: identifiers) {
             identifiersJoined.append(identifier).append(", ");
+        }
+
+        BleError bleError = new BleError(BleErrorCode.InvalidIdentifiers, null, null);
+        bleError.internalMessage = identifiersJoined.toString();
+        return bleError;
+    }
+
+    static public BleError invalidIdentifiers(@NonNull ReadableArray readableArray) {
+        StringBuilder identifiersJoined = new StringBuilder();
+        for (int i = 0; i < readableArray.size(); i++) {
+            identifiersJoined.append(readableArray.getString(i)).append(", ");
         }
 
         BleError bleError = new BleError(BleErrorCode.InvalidIdentifiers, null, null);
