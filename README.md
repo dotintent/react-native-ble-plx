@@ -44,12 +44,23 @@ What this library does NOT support:
 Other:
 
 * All API calls return `BleError` instance in case of errors which contains additional fields:
-
   * `errorCode` - returns API independent and stable error code (defined in `BleErrorCode`).
   * `attErrorCode` _(optional)_ - platform independent ATT error code.
   * `iosErrorCode` _(optional)_ - iOS specific error code.
   * `androidErrorCode` _(optional)_ - Android specific error code.
   * `reason` - platform specific message.
+* Updated `BleModuleInterface` type to fix flow errors related to usage.
+* Added `refreshGatt` option to `connectToDevice` function.
+* Parse short `localName` advertisement data type on Android.
+* Don't emit state changes when BLE is not supported.
+* Added `devices` and `connectedDevices` functions.
+
+Docs:
+
+* Updated dev dependencies to the latest ones.
+* Added Expo section to README file.
+* Added About this library section to README file.
+* Updated Wiki pages
 
 [All previous changes](CHANGELOG.md)
 

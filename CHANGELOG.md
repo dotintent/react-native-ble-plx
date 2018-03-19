@@ -13,6 +13,18 @@ Other:
   * `iosErrorCode` _(optional)_ - iOS specific error code.
   * `androidErrorCode` _(optional)_ - Android specific error code.
   * `reason` - platform specific message.
+* Updated `BleModuleInterface` type to fix flow errors related to usage.
+* Added `refreshGatt` option to `connectToDevice` function.
+* Parse short `localName` advertisement data type on Android.
+* Don't emit state changes when BLE is not supported.
+* Added `devices` and `connectedDevices` functions.
+
+Docs:
+
+* Updated dev dependencies to the latest ones.
+* Added Expo section to README file.
+* Added About this library section to README file.
+* Updated Wiki pages
 
 **0.8.0**
 
