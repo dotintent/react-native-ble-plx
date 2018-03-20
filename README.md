@@ -54,6 +54,7 @@ Other:
 * Parse short `localName` advertisement data type on Android.
 * Don't emit state changes when BLE is not supported.
 * Added `devices` and `connectedDevices` functions.
+* Fixed iOS issue related to `requiresMainQueueSetup`.
 
 Docs:
 

@@ -35,6 +35,10 @@ RCT_EXPORT_MODULE(BleClientManager);
     return consts;
 }
 
++ (BOOL)requiresMainQueueSetup {
+    return YES;
+}
+
 RCT_EXPORT_METHOD(createClient:(NSString*)restoreIdentifierKey) {
     _manager = [[BleClientManager alloc] initWithQueue:self.methodQueue
                                   restoreIdentifierKey:restoreIdentifierKey];
