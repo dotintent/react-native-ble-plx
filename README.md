@@ -55,6 +55,7 @@ Other:
 * Don't emit state changes when BLE is not supported.
 * Added `devices` and `connectedDevices` functions.
 * Fixed iOS issue related to `requiresMainQueueSetup`.
+* Added `timeout` option to `connectToDevice`.
 
 Docs:
 

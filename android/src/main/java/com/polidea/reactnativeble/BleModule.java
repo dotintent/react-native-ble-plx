@@ -53,6 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
 import rx.Observer;
@@ -469,6 +470,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         boolean autoConnect = false;
         int requestMtu = 0;
         RefreshGattMoment refreshGattMoment = null;
+        Integer timeout = null;
 
         if (options != null) {
             if (options.hasKey("autoConnect")) {
@@ -480,13 +482,20 @@ public class BleModule extends ReactContextBaseJavaModule {
             if (options.hasKey("refreshGatt")) {
                 refreshGattMoment = RefreshGattMoment.byJavaScriptName(options.getString("refreshGatt"));
             }
+            if (options.hasKey("timeout")) {
+                timeout = options.getInt("timeout");
+            }
         }
 
-        safeConnectToDevice(device, autoConnect, requestMtu, refreshGattMoment, new SafePromise(promise));
+        safeConnectToDevice(device, autoConnect, requestMtu, refreshGattMoment, timeout, new SafePromise(promise));
     }
 
-    private void safeConnectToDevice(final RxBleDevice device, boolean autoConnect, final int requestMtu,
-                                     RefreshGattMoment refreshGattMoment, final SafePromise promise) {
+    private void safeConnectToDevice(final RxBleDevice device,
+                                     final boolean autoConnect,
+                                     final int requestMtu,
+                                     final RefreshGattMoment refreshGattMoment,
+                                     final Integer timeout,
+                                     final SafePromise promise) {
 
         Observable<RxBleConnection> connect = device
                 .establishConnection(autoConnect)
@@ -529,6 +538,10 @@ public class BleModule extends ReactContextBaseJavaModule {
                                 });
                 }
             });
+        }
+
+        if (timeout != null) {
+            connect = connect.timeout(timeout, TimeUnit.MILLISECONDS);
         }
 
         final Subscription subscription = connect

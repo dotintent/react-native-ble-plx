@@ -7,6 +7,7 @@
 import Foundation
 import CoreBluetooth
 import RxBluetoothKit
+import RxSwift
 
 enum BleErrorCode : Int {
     case UnknownError = 0
@@ -115,11 +116,28 @@ extension BleError {
     }
 }
 
-extension Error {
+extension RxError {
+    var bleError: BleError {
+        switch self {
+        case .timeout:
+            return BleError(errorCode: .OperationTimedOut, reason: self.localizedDescription)
+        case .unknown: fallthrough
+        case .disposed: fallthrough
+        case .overflow: fallthrough
+        case .argumentOutOfRange: fallthrough
+        case .noElements: fallthrough
+        case .moreThanOneElement:
+            return BleError(errorCode: .UnknownError, reason: self.localizedDescription)
+        }
+    }
+}
 
+extension Error {
     var bleError: BleError {
         switch self {
         case let error as BluetoothError:
+            return error.bleError
+        case let error as RxError:
             return error.bleError
         case let error as BleError:
             return error

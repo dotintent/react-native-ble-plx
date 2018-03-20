@@ -122,6 +122,16 @@ export interface ConnectionOptions {
    * @instance
    */
   refreshGatt?: RefreshGattMoment;
+
+  /**
+   * Number of milliseconds after connection is automatically timed out. In case of race condition were connection is
+   * established right after timeout event, device will be disconnected immediately. Time out may happen earlier then
+   * specified due to OS specific behavior.
+   *
+   * @memberof ConnectionOptions
+   * @instance
+   */
+  timeout?: number;
 }
 
 /**

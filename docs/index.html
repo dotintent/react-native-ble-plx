@@ -1491,6 +1491,12 @@
                         #refreshGatt
                       </a></li>
                       
+                      <li><a
+                        href='#connectionoptionstimeout'
+                        class='regular pre-open'>
+                        #timeout
+                      </a></li>
+                      
                     </ul>
                   
                   
@@ -12672,6 +12678,12 @@ connected peripherals.</p>
           
         </div>
       
+        <div class='space-bottom0'>
+          <span class='code bold'>timeout</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>?)</code>
+          
+          
+        </div>
+      
     </div>
   
 
@@ -12798,6 +12810,54 @@ updated and it's services/characteristics were added/removed/altered. [Android o
 
 
   <div class='pre p1 fill-light mt0'>refreshGatt</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='connectionoptionstimeout'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>timeout</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Number of milliseconds after connection is automatically timed out. In case of race condition were connection is
+established right after timeout event, device will be disconnected immediately. Time out may happen earlier then
+specified due to OS specific behavior.</p>
+
+
+  <div class='pre p1 fill-light mt0'>timeout</div>
   
   
 

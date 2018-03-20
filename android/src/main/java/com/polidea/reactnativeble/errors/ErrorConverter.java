@@ -20,6 +20,7 @@ import com.polidea.rxandroidble.exceptions.BleScanException;
 import com.polidea.rxandroidble.exceptions.BleServiceNotFoundException;
 
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 
 public class ErrorConverter {
 
@@ -37,6 +38,12 @@ public class ErrorConverter {
                     null,
                     UUIDConverter.fromUUID(gattService.getUuid()),
                     UUIDConverter.fromUUID(gattCharacteristic.getUuid()));
+        }
+
+        // RxSwift exceptions ----------------------------------------------------------------------
+
+        if (throwable instanceof TimeoutException) {
+            return new BleError(BleErrorCode.OperationTimedOut, throwable.getMessage(), null);
         }
 
         // RxAndroidBle exceptions -----------------------------------------------------------------

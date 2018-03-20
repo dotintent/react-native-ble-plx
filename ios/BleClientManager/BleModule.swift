@@ -24,6 +24,9 @@ public class BleClientManager : NSObject {
     // RxBlutoothKit's manager
     private let manager : BluetoothManager
 
+    // Dispatch queue used for BLE
+    private let queue : DispatchQueue
+
     // MARK: Caches ----------------------------------------------------------------------------------------------------
 
     // Map of discovered services in any of connected devices.
@@ -62,6 +65,7 @@ public class BleClientManager : NSObject {
 
     @objc
     public init(queue: DispatchQueue, restoreIdentifierKey: String?) {
+        self.queue = queue
 
         if let key = restoreIdentifierKey {
             manager = BluetoothManager(queue: queue,
@@ -330,14 +334,20 @@ public class BleClientManager : NSObject {
             return
         }
 
-        safeConnectToDevice(deviceId, options: options, promise: SafePromise(resolve: resolve, reject: reject))
+        var timeout: Int? = nil
+
+        if let options = options {
+            timeout = options["timeout"] as? Int
+        }
+
+        safeConnectToDevice(deviceId, timeout: timeout, promise: SafePromise(resolve: resolve, reject: reject))
     }
 
     private func safeConnectToDevice(_ deviceId: UUID,
-                                        options: [String:AnyObject]?,
+                                        timeout: Int?,
                                         promise: SafePromise) {
 
-        let connectionDisposable = manager.retrievePeripherals(withIdentifiers: [deviceId])
+        var connectionObservable = manager.retrievePeripherals(withIdentifiers: [deviceId])
             .flatMap { devices -> Observable<Peripheral> in
                 guard let device = devices.first else {
                     return Observable.error(BleError.peripheralNotFound(deviceId.uuidString))
@@ -345,13 +355,27 @@ public class BleClientManager : NSObject {
                 return Observable.just(device)
             }
             .flatMap { $0.connect() }
+
+        if let timeout = timeout {
+            connectionObservable = connectionObservable.timeout(Double(timeout) / 1000.0, scheduler: ConcurrentDispatchQueueScheduler(queue: queue))
+        }
+
+        var peripheralToConnect : Peripheral? = nil
+        let connectionDisposable = connectionObservable
             .subscribe(
                 onNext: { [weak self] peripheral in
                     // When device is connected we save it in dectionary and clear all old cached values.
+                    peripheralToConnect = peripheral
                     self?.connectedPeripherals[deviceId] = peripheral
                     self?.clearCacheForPeripheral(peripheral: peripheral)
                 },
-                onError: { error in
+                onError: {  [weak self] error in
+                    if let rxerror = error as? RxError,
+                       let peripheralToConnect = peripheralToConnect,
+                       let strongSelf = self,
+                       case RxError.timeout = rxerror {
+                        _ = strongSelf.manager.cancelPeripheralConnection(peripheralToConnect).subscribe()
+                    }
                     error.bleError.callReject(promise)
                 },
                 onCompleted: { [weak self] in
