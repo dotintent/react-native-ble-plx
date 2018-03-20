@@ -60,6 +60,7 @@ import rx.Observer;
 import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
 
 import static com.polidea.reactnativeble.utils.Constants.BluetoothState;
@@ -528,20 +529,30 @@ public class BleModule extends ReactContextBaseJavaModule {
                 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public Observable<RxBleConnection> call(final RxBleConnection rxBleConnection) {
-                return rxBleConnection
-                        .requestMtu(requestMtu)
-                        .map(new Func1<Integer, RxBleConnection>() {
-                            @Override
-                            public RxBleConnection call(Integer integer) {
-                                return rxBleConnection;
-                                    }
-                                });
+                    return rxBleConnection
+                            .requestMtu(requestMtu)
+                            .map(new Func1<Integer, RxBleConnection>() {
+                                @Override
+                                public RxBleConnection call(Integer integer) {
+                                    return rxBleConnection;
+                                }
+                            });
                 }
             });
         }
 
         if (timeout != null) {
-            connect = connect.timeout(timeout, TimeUnit.MILLISECONDS);
+            connect = connect.timeout(new Func0<Observable<Long>>() {
+                @Override
+                public Observable<Long> call() {
+                    return Observable.timer(timeout, TimeUnit.MILLISECONDS);
+                }
+            }, new Func1<RxBleConnection, Observable<Long>>() {
+                @Override
+                public Observable<Long> call(RxBleConnection rxBleConnection) {
+                    return Observable.never();
+                }
+            });
         }
 
         final Subscription subscription = connect
