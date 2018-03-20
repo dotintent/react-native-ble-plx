@@ -12,7 +12,7 @@ Other:
   * `attErrorCode` _(optional)_ - platform independent ATT error code.
   * `iosErrorCode` _(optional)_ - iOS specific error code.
   * `androidErrorCode` _(optional)_ - Android specific error code.
-  * `reason` - platform specific message.
+  * `reason` _(optional)_ - platform specific message.
 * Updated `BleModuleInterface` type to fix flow errors related to usage.
 * Added `refreshGatt` option to `connectToDevice` function.
 * Parse short `localName` advertisement data type on Android.
