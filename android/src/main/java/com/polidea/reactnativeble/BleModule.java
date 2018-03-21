@@ -76,6 +76,9 @@ public class BleModule extends ReactContextBaseJavaModule {
     @Nullable
     private RxBleClient rxBleClient;
 
+    // Map of discovered devices.
+    private HashMap<String, Device> discoveredDevices = new HashMap<>();
+
     // Map of connected devices.
     private HashMap<String, Device> connectedDevices = new HashMap<>();
 
@@ -152,6 +155,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         discoveredServices.clear();
         discoveredCharacteristics.clear();
         connectedDevices.clear();
+        discoveredDevices.clear();
 
         // Clear client
         rxBleClient = null;
@@ -283,6 +287,10 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .subscribe(new Action1<RxBleScanResult>() {
                     @Override
                     public void call(RxBleScanResult rxBleScanResult) {
+                        String deviceId = rxBleScanResult.getBleDevice().getMacAddress();
+                        if (!discoveredDevices.containsKey(deviceId)) {
+                            discoveredDevices.put(deviceId, new Device(rxBleScanResult.getBleDevice(), null));
+                        }
                         sendEvent(Event.ScanEvent, scanConverter.toJSCallback(rxBleScanResult));
                     }
                 }, new Action1<Throwable>() {
@@ -320,10 +328,9 @@ public class BleModule extends ReactContextBaseJavaModule {
                 return;
             }
 
-            final RxBleDevice device = rxBleClient.getBleDevice(deviceId);
+            final Device device = discoveredDevices.get(deviceId);
             if (device != null) {
-                Device jsDevice = new Device(device, null);
-                writableArray.pushMap(jsDevice.toJSObject(null));
+                writableArray.pushMap(device.toJSObject(null));
             }
         }
 
