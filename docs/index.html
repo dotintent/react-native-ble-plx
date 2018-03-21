@@ -2564,7 +2564,8 @@ on iOS platform as MTU exchange is done automatically.</p>
 
   
 
-  <p>Returns a list of the peripherals (containing any of the specified services) currently connected to the system.</p>
+  <p>Returns a list of the peripherals (containing any of the specified services) currently connected to the system.
+Make sure that services are actually discovered for specified device before calling this function.</p>
 
 
   <div class='pre p1 fill-light mt0'>connectedDevices(serviceUUIDs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></div>

@@ -359,6 +359,7 @@ export class BleManager {
 
   /**
    * Returns a list of the peripherals (containing any of the specified services) currently connected to the system.
+   * Make sure that services are actually discovered for specified device before calling this function.
    * @param {Array<UUID>} serviceUUIDs List of service UUIDs. Device must contain as list one of them to be listed.
    */
   async connectedDevices(serviceUUIDs: Array<UUID>): Promise<Array<Device>> {
