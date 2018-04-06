@@ -358,9 +358,10 @@ export class BleManager {
   }
 
   /**
-   * Returns a list of the peripherals (containing any of the specified services) currently connected to the system.
-   * Make sure that services are actually discovered for specified device before calling this function.
-   * @param {Array<UUID>} serviceUUIDs List of service UUIDs. Device must contain as list one of them to be listed.
+   * Returns a list of the peripherals (containing any of the specified services) currently connected to the system
+   * which have discovered services. Returned devices **may not be connected** to your application. Make sure to check
+   * if that's the case with function {@link #blemanagerisdeviceconnected|isDeviceConnected}.
+   * @param {Array<UUID>} serviceUUIDs List of service UUIDs. Device must contain at least one of them to be listed.
    */
   async connectedDevices(serviceUUIDs: Array<UUID>): Promise<Array<Device>> {
     const nativeDevices = await this._callPromise(BleModule.connectedDevices(serviceUUIDs))

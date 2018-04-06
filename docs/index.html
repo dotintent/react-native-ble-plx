@@ -2564,8 +2564,9 @@ on iOS platform as MTU exchange is done automatically.</p>
 
   
 
-  <p>Returns a list of the peripherals (containing any of the specified services) currently connected to the system.
-Make sure that services are actually discovered for specified device before calling this function.</p>
+  <p>Returns a list of the peripherals (containing any of the specified services) currently connected to the system
+which have discovered services. Returned devices <strong>may not be connected</strong> to your application. Make sure to check
+if that's the case with function <a href="#blemanagerisdeviceconnected">isDeviceConnected</a>.</p>
 
 
   <div class='pre p1 fill-light mt0'>connectedDevices(serviceUUIDs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></div>
@@ -2586,7 +2587,7 @@ Make sure that services are actually discovered for specified device before call
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>serviceUUIDs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>)</code>
-	    List of service UUIDs. Device must contain as list one of them to be listed.
+	    List of service UUIDs. Device must contain at least one of them to be listed.
 
           </div>
           
@@ -13291,7 +13292,8 @@ specified due to OS specific behavior.</p>
   </div>
   
 
-  <p>Returns a list of the peripherals (containing any of the specified services) currently connected to the system.</p>
+  <p>Returns a list of the peripherals (containing any of the specified services) currently connected to the system
+which have discovered services. Returned devices <strong>may not be connected</strong> to your application.</p>
 
 
   <div class='pre p1 fill-light mt0'>connectedDevices</div>
@@ -13311,8 +13313,8 @@ specified due to OS specific behavior.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifiers</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#deviceid">DeviceId</a>>)</code>
-	    List of device identifiers
+            <span class='code bold'>serviceUUIDs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>)</code>
+	    List of service UUIDs. Device must contain at least one of them to be listed.
 
           </div>
           
