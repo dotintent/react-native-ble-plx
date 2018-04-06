@@ -40,6 +40,9 @@ What this library does NOT support:
 
 * Use `error.errorCode == BleErrorCode.OperationCancelled` instead of `error.message == 'Cancelled'`
 * Use `error.errorCode == BleErrorCode.BluetoothManagerDestroyed` instead of `error.message == 'Destroyed'`
+* Reverted implementation of `monitorCharacteristicForDevice` to properly write to descriptor when last listener
+  is unsubscribed on Android. If you expect to get new notifications as soon as you subscribe for them please use
+  version `0.8` for the time being, as regression is expected.
 
 Other:
 
@@ -76,7 +79,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 ### Important
 
-If you do not have [Carthage](https://github.com/Carthage/Carthage) installed yet and
+If you do not have [Carthage](https://github.com/Carthage/Carthage) (ver. 0.21+) installed yet and
 wish to set up for iOS, please install it first and only then follow the steps given below
 
 ### Automatically

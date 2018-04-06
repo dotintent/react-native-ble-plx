@@ -4,6 +4,9 @@
 
 * Use `error.errorCode == BleErrorCode.OperationCancelled` instead of `error.message == 'Cancelled'`
 * Use `error.errorCode == BleErrorCode.BluetoothManagerDestroyed` instead of `error.message == 'Destroyed'`
+* Reverted implementation of `monitorCharacteristicForDevice` to properly write to descriptor when last listener
+  is unsubscribed on Android. If you expect to get new notifications as soon as you subscribe for them please use
+  version `0.8` for the time being, as regression is expected.
 
 Other:
 
