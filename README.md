@@ -104,7 +104,7 @@ Both on iOS and Android continue manually from step 7.
 5. Move `BleClient.xcodeproj` located in `.node_modules/react-native-ble-plx/ios`
    using drag & drop to `Libraries` folder in your project.
 6. In general settings of a target add `libBleClient.a` to Linked Frameworks and Libraries.
-7. In `Build Settings`/`Search Paths`/`Framework search paths` add path: `$(SRCROOT)/../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS`.
+7. In `Build Settings`/`Search Paths`/`Framework search paths` add path: `$(SRCROOT)/../node_modules/react-native-ble-plx/ios/BleClientManager/Carthage/Build/iOS` and set it to be `recursive`.
 8. In `Build Settings`/`Build Options`/`Always Embed Swift Standard Libraries` set to `Yes`.
 9. In `Build Phases` click on top left button and add `New Run Script Phase`.
 
