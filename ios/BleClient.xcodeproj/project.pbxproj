@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D760681820BBEEA10005ECAF /* BleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D760681720BBEEA10005ECAF /* BleClient.swift */; };
 		D7970CE81D4F8E5D00231A1B /* BleClientManager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CE41D4F8E5D00231A1B /* BleClientManager.framework */; };
 		D7970CE91D4F8E5D00231A1B /* RxBluetoothKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CE51D4F8E5D00231A1B /* RxBluetoothKit.framework */; };
 		D7970CEA1D4F8E5D00231A1B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7970CE61D4F8E5D00231A1B /* RxSwift.framework */; };
@@ -27,6 +28,8 @@
 
 /* Begin PBXFileReference section */
 		D73F06E81D48E17B00AD5963 /* libBleClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBleClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D760681620BBEEA10005ECAF /* BleClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BleClient-Bridging-Header.h"; sourceTree = "<group>"; };
+		D760681720BBEEA10005ECAF /* BleClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleClient.swift; sourceTree = "<group>"; };
 		D7970CE41D4F8E5D00231A1B /* BleClientManager.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BleClientManager.framework; path = BleClientManager/Carthage/Build/iOS/BleClientManager.framework; sourceTree = "<group>"; };
 		D7970CE51D4F8E5D00231A1B /* RxBluetoothKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxBluetoothKit.framework; path = BleClientManager/Carthage/Build/iOS/RxBluetoothKit.framework; sourceTree = "<group>"; };
 		D7970CE61D4F8E5D00231A1B /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = BleClientManager/Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
@@ -56,6 +59,8 @@
 				D7970CE61D4F8E5D00231A1B /* RxSwift.framework */,
 				D7D202771D4F614D00E10F6A /* BleClient.m */,
 				D7D202781D4F614D00E10F6A /* BleClient.h */,
+				D760681720BBEEA10005ECAF /* BleClient.swift */,
+				D760681620BBEEA10005ECAF /* BleClient-Bridging-Header.h */,
 				D73F06E91D48E17B00AD5963 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -99,6 +104,7 @@
 				TargetAttributes = {
 					D73F06E71D48E17B00AD5963 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0930;
 					};
 				};
 			};
@@ -124,6 +130,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D760681820BBEEA10005ECAF /* BleClient.swift in Sources */,
 				D7D202791D4F614D00E10F6A /* BleClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -216,28 +223,37 @@
 		D73F06F21D48E17B00AD5963 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BleClientManager/Carthage/Build/iOS",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BleClient-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
 		D73F06F31D48E17B00AD5963 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BleClientManager/Carthage/Build/iOS",
 				);
 				HEADER_SEARCH_PATHS = "$(SRCROOT)/../../react-native/React/**";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "BleClient-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
