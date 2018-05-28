@@ -7,7 +7,7 @@
 //
 
 #import "BleClient.h"
-@import BleClientManager;
+#import "BleClient-Swift.h"
 
 @interface BleModule () <BleClientManagerDelegate>
 @property(nonatomic) BleClientManager* manager;

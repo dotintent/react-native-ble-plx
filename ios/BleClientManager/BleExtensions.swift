@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import RxBluetoothKit
 import CoreBluetooth
 
 extension RestoredState {

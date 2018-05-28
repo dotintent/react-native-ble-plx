@@ -5,7 +5,6 @@
 //
 
 import Foundation
-import RxSwift
 import CoreBluetooth
 
 extension Sequence where Iterator.Element == String {

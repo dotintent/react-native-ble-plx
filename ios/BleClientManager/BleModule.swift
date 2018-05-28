@@ -6,8 +6,6 @@
 
 import Foundation
 import CoreBluetooth
-import RxBluetoothKit
-import RxSwift
 
 @objc
 public protocol BleClientManagerDelegate {

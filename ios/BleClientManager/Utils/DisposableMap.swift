@@ -6,8 +6,6 @@
 //  Copyright © 2016 Polidea. All rights reserved.
 //
 
-import RxSwift
-
 class DisposableMap<T: Hashable> {
     fileprivate var disposables = Dictionary<T, Disposable>()
 
