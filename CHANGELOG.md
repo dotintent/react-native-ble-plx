@@ -1,3 +1,7 @@
+**0.9.1**
+
+* Update binary frameworks for XCode 9.4.
+
 **0.9.0**
 
 **Breaking changes**:
