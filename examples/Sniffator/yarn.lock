@@ -3122,9 +3122,8 @@ react-devtools-core@^2.5.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-native-ble-plx@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-ble-plx/-/react-native-ble-plx-0.7.0.tgz#71123becd07e2c3273939c1d473596ce36fae6f2"
+"react-native-ble-plx@file:../..":
+  version "0.9.0"
 
 react-native@0.50.4:
   version "0.50.4"
