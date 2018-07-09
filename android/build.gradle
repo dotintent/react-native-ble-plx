@@ -1,9 +1,10 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:2.3.3'
         classpath 'org.codehaus.groovy:groovy-android-gradle-plugin:1.1.0'
     }
 }
@@ -12,12 +13,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'groovyx.android'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 23
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
     }
@@ -28,6 +29,7 @@ android {
 
 repositories {
     mavenCentral()
+    google()
 }
 
 dependencies {
