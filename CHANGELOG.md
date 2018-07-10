@@ -1,3 +1,8 @@
+**0.9.2**
+
+* Update RxAndroidBle dependency to 1.6.0.
+* Propagate `androidErrorCode` properly for `DeviceDisconnected` error.
+
 **0.9.1**
 
 * Update binary frameworks for XCode 9.4.

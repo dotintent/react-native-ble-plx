@@ -34,9 +34,10 @@ What this library does NOT support:
 
 ## Recent Changes
 
-**0.9.1**
+**0.9.2**
 
-* Update binary frameworks for XCode 9.4.
+* Update RxAndroidBle dependency to 1.6.0.
+* Propagate `androidErrorCode` properly for `DeviceDisconnected` error.
 
 [All previous changes](CHANGELOG.md)
 
