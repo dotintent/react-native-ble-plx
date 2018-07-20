@@ -43,21 +43,26 @@ export class BleError extends Error {
   reason: ?string
 
   constructor(nativeBleError: NativeBleError | string) {
+    super()
+    this.message = BleErrorCodeMessage[BleErrorCode.UnknownError]
     if (typeof nativeBleError === 'string') {
-      super(BleErrorCodeMessage[BleErrorCode.UnknownError])
       this.errorCode = BleErrorCode.UnknownError
       this.attErrorCode = null
       this.iosErrorCode = null
       this.androidErrorCode = null
       this.reason = nativeBleError
     } else {
-      super(fillStringWithArguments(BleErrorCodeMessage[nativeBleError.errorCode], nativeBleError))
+      const message = BleErrorCodeMessage[nativeBleError.errorCode]
+      if (message) {
+        this.message = fillStringWithArguments(message, nativeBleError)
+      }
       this.errorCode = nativeBleError.errorCode
       this.attErrorCode = nativeBleError.attErrorCode
       this.iosErrorCode = nativeBleError.iosErrorCode
       this.androidErrorCode = nativeBleError.androidErrorCode
       this.reason = nativeBleError.reason
     }
+    this.name = "BleError"
   }
 }
 
