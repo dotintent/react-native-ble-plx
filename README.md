@@ -2,7 +2,7 @@
   <img alt="react-native-ble-plx" src="docs/logo.png" />
 </p>
 
-React Native Bluetooth Low Energy library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) as it's backend libraries.
+React Native Bluetooth Low Energy library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) as its backend libraries.
 
 Example apps are available in [Google Play](https://play.google.com/store/apps/details?id=com.polidea.sniffator) and [App Store](https://itunes.apple.com/us/app/sniffator/id1147266354?ls=1&mt=8)!
 
@@ -34,38 +34,10 @@ What this library does NOT support:
 
 ## Recent Changes
 
-**0.9.0**
+**0.9.2**
 
-**Breaking changes**:
-
-* Use `error.errorCode == BleErrorCode.OperationCancelled` instead of `error.message == 'Cancelled'`
-* Use `error.errorCode == BleErrorCode.BluetoothManagerDestroyed` instead of `error.message == 'Destroyed'`
-* Reverted implementation of `monitorCharacteristicForDevice` to properly write to descriptor when last listener
-  is unsubscribed on Android. If you expect to get new notifications as soon as you subscribe for them please use
-  version `0.8` for the time being, as regression is expected.
-
-Other:
-
-* All API calls return `BleError` instance in case of errors which contains additional fields:
-  * `errorCode` - returns API independent and stable error code (defined in `BleErrorCode`).
-  * `attErrorCode` _(optional)_ - platform independent ATT error code.
-  * `iosErrorCode` _(optional)_ - iOS specific error code.
-  * `androidErrorCode` _(optional)_ - Android specific error code.
-  * `reason` _(optional)_ - platform specific message.
-* Updated `BleModuleInterface` type to fix flow errors related to usage.
-* Added `refreshGatt` option to `connectToDevice` function.
-* Parse short `localName` advertisement data type on Android.
-* Don't emit state changes when BLE is not supported.
-* Added `devices` and `connectedDevices` functions.
-* Fixed iOS issue related to `requiresMainQueueSetup`.
-* Added `timeout` option to `connectToDevice`.
-
-Docs:
-
-* Updated dev dependencies to the latest ones.
-* Added Expo section to README file.
-* Added About this library section to README file.
-* Updated Wiki pages
+* Update RxAndroidBle dependency to 1.6.0.
+* Propagate `androidErrorCode` properly for `DeviceDisconnected` error.
 
 [All previous changes](CHANGELOG.md)
 
