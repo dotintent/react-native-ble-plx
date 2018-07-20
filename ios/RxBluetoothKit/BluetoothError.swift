@@ -41,7 +41,7 @@ public enum BluetoothError: Error {
     case peripheralRSSIReadFailed(Peripheral, Error?)
     // Services
     case servicesDiscoveryFailed(Peripheral, Error?)
-    case includedServicesDiscoveryFailed(Peripheral, Error?)
+    case includedServicesDiscoveryFailed(Service, Error?)
     // Characteristics
     case characteristicsDiscoveryFailed(Service, Error?)
     case characteristicWriteFailed(Characteristic, Error?)

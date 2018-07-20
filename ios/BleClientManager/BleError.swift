@@ -235,11 +235,10 @@ extension BluetoothError {
         case let .servicesDiscoveryFailed(peripheral, error):
             return error.bleError(errorCode: .ServicesDiscoveryFailed, deviceID: peripheral.identifier.uuidString)
 
-        // TODO: Fix included services discovery failed error in RxBluetoothKit.
-        case let .includedServicesDiscoveryFailed(peripheral, error):
+        case let .includedServicesDiscoveryFailed(service, error):
             return error.bleError(errorCode: .IncludedServicesDiscoveryFailed,
-                                  deviceID: peripheral.identifier.uuidString,
-                                  serviceUUID: nil)
+                                  deviceID: service.peripheral.identifier.uuidString,
+                                  serviceUUID: service.uuid.fullUUIDString)
 
         case let .characteristicsDiscoveryFailed(service, error):
             return error.bleError(errorCode: .CharacteristicsDiscoveryFailed,
