@@ -14,13 +14,26 @@
 @end
 
 @implementation BleModule
+{
+    bool hasListeners;
+}
 
 @synthesize methodQueue = _methodQueue;
 
 RCT_EXPORT_MODULE(BleClientManager);
 
 - (void)dispatchEvent:(NSString * _Nonnull)name value:(id _Nonnull)value {
-    [self sendEventWithName:name body:value];
+    if (hasListeners) {
+        [self sendEventWithName:name body:value];
+    }
+}
+
+- (void)startObserving {
+    hasListeners = YES;
+}
+
+- (void)stopObserving {
+    hasListeners = NO;
 }
 
 - (NSArray<NSString *> *)supportedEvents {
