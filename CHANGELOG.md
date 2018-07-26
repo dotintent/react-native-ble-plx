@@ -1,21 +1,24 @@
 **0.10.0**
 
 **Breaking changes:**
+
 * Deprecate old build system. Carthage is not required anymore. To fix your current project please do following steps:
-  
+
   1. Add empty Swift file if you don't have at least one:
-      * Select File/New/File...
-      * Choose Swift file and click Next.
-      * Name it however you want, select your targets and create it.
-      * Accept to create Objective-C bridging header.
+     * Select File/New/File...
+     * Choose Swift file and click Next.
+     * Name it however you want, select your targets and create it.
+     * Accept to create Objective-C bridging header.
   2. Remove copy-frameworks script if you don't have any other dependency requiring it:
-      * Go to Your Target / Build Phases
-      * Remove run script.
+     * Go to Your Target / Build Phases
+     * Remove run script.
 
 Other:
+
 * Fix warning when no listeners were attached and events were emitted.
 * Show error.message properly. Make sure that invalid errorCodes from implementation side won't trigger another error during construction.
-* Property ServiceUUID is properly propagated to IncludedServicesDiscoveryFailed's error message. 
+* Property ServiceUUID is properly propagated to IncludedServicesDiscoveryFailed's error message.
+* Add missing `deviceServicesNotDiscovered` implementation on Android.
 
 **0.9.2**
 

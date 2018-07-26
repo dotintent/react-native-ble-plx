@@ -28,26 +28,29 @@ What this library does NOT support:
 **0.10.0**
 
 **Breaking changes:**
+
 * Deprecate old build system. Carthage is not required anymore. To fix your current project please do following steps:
-  
+
   1. Add empty Swift file if you don't have at least one:
-      * Select File/New/File...
-      * Choose Swift file and click Next.
-      * Name it however you want, select your targets and create it.
-      * Accept to create Objective-C bridging header.
+     * Select File/New/File...
+     * Choose Swift file and click Next.
+     * Name it however you want, select your targets and create it.
+     * Accept to create Objective-C bridging header.
   2. Remove copy-frameworks script if you don't have any other dependency requiring it:
-      * Go to Your Target / Build Phases
-      * Remove run script.
+     * Go to Your Target / Build Phases
+     * Remove run script.
 
 Other:
+
 * Fix warning when no listeners were attached and events were emitted.
 * Show error.message properly. Make sure that invalid errorCodes from implementation side won't trigger another error during construction.
-* Property ServiceUUID is properly propagated to IncludedServicesDiscoveryFailed's error message. 
-
+* Property ServiceUUID is properly propagated to IncludedServicesDiscoveryFailed's error message.
+* Add missing `deviceServicesNotDiscovered` implementation on Android.
 
 [All previous changes](CHANGELOG.md)
 
 ## Documentation & Support
+
 Interested in React Native project involving Bluetooth Low Energy? [We can help you!](https://www.polidea.com/react-native)
 
 Documentation can be found [here](https://polidea.github.io/react-native-ble-plx/).
@@ -62,15 +65,15 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 2. `react-native link react-native-ble-plx`
 3. In `Build Settings`/`Build Options`/`Always Embed Swift Standard Libraries` set to `Yes`.
 4. Add empty Swift file if you don't have at least one:
-    * Select File/New/File...
-    * Choose Swift file and click Next.
-    * Name it however you want, select your targets and create it.
-    * Accept to create Objective-C bridging header.
+   * Select File/New/File...
+   * Choose Swift file and click Next.
+   * Name it however you want, select your targets and create it.
+   * Accept to create Objective-C bridging header.
 5. Minimal supported version of iOS is 8.0
 6. If you want to support background mode:
-    * In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
-      `Background Modes` section.
-    * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
+   * In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
+     `Background Modes` section.
+   * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
 
 ### Android
 

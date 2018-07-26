@@ -79,6 +79,8 @@ public class BleErrorUtils {
     }
 
     public static BleError deviceServicesNotDiscovered(String deviceID) {
-        return null;
+        BleError bleError = new BleError(BleErrorCode.ServicesNotDiscovered, null, null);
+        bleError.deviceID = deviceID;
+        return bleError;
     }
 }
