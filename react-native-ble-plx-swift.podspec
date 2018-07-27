@@ -14,4 +14,5 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://github.com/Polidea/react-native-ble-plx.git" }
   s.source_files  = "ios/**/*.{swift}"
+  s.pod_target_xcconfig = { 'SWIFT_VERSION' => '4.1' }
 end

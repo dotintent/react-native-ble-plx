@@ -79,7 +79,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 1. Make sure your Expo project is detached. You can read how to do it [here](https://docs.expo.io/versions/latest/expokit/detach) and [here](https://docs.expo.io/versions/latest/expokit/expokit).
 2. `npm install --save react-native-ble-plx`
 3. `react-native link react-native-ble-plx`
-4. Update your Podfile to contain:
+4. Update your `ios/Podfile` to contain:
    ```
    pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
    pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
