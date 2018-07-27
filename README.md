@@ -59,18 +59,34 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 ## Configuration & Installation
 
-### iOS
+### iOS (pure react-native)
 
 1. `npm install --save react-native-ble-plx`
 2. `react-native link react-native-ble-plx`
-3. In `Build Settings`/`Build Options`/`Always Embed Swift Standard Libraries` set to `Yes`.
-4. Add empty Swift file if you don't have at least one:
+3. Add empty Swift file if you don't have at least one:
    * Select File/New/File...
    * Choose Swift file and click Next.
    * Name it however you want, select your targets and create it.
    * Accept to create Objective-C bridging header.
-5. Minimal supported version of iOS is 8.0
-6. If you want to support background mode:
+4. Minimal supported version of iOS is 8.0
+5. If you want to support background mode:
+   * In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
+     `Background Modes` section.
+   * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
+
+### iOS (expo/Podfile)
+
+1. Make sure your Expo project is detached. You can read how to do it [here](https://docs.expo.io/versions/latest/expokit/detach) and [here](https://docs.expo.io/versions/latest/expokit/expokit).
+2. `npm install --save react-native-ble-plx`
+3. `react-native link react-native-ble-plx`
+4. Update your Podfile to contain:
+   ```
+   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
+   pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
+   ```
+5. Enter `ios` folder and run `pod update`
+6. Minimal supported version of iOS is 8.0
+7. If you want to support background mode:
    * In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
@@ -107,10 +123,6 @@ android {
         android:minSdkVersion="18"
         ...
 ```
-
-## Expo
-
-Currently [02.02.2018] to use this library with Expo one must first detach (eject) the project and follow the above instructions. Additionally on iOS there is a must to add a `Header Search Path` to other dependencies which are managed using `Pods`. To do so one has to add `$(SRCROOT)/../../../ios/Pods/Headers/Public/**` to `Header Search Path` in `BleClient` module using `XCode`. This can be further automated by a `git apply patch` executed as a `postinstall` script defined in `package.json`.
 
 ## Troubleshooting
 
