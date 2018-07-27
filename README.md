@@ -79,14 +79,19 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 1. Make sure your Expo project is detached. You can read how to do it [here](https://docs.expo.io/versions/latest/expokit/detach) and [here](https://docs.expo.io/versions/latest/expokit/expokit).
 2. `npm install --save react-native-ble-plx`
 3. `react-native link react-native-ble-plx`
-4. Update your `ios/Podfile` to contain:
+4. Add empty Swift file if you don't have at least one:
+   * Select File/New/File...
+   * Choose Swift file and click Next.
+   * Name it however you want, select your application target and create it.
+   * Accept to create Objective-C bridging header.
+5. Update your `ios/Podfile` to contain:
    ```
    pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
    pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
    ```
-5. Enter `ios` folder and run `pod update`
-6. Minimal supported version of iOS is 8.0
-7. If you want to support background mode:
+6. Enter `ios` folder and run `pod update`
+7. Minimal supported version of iOS is 8.0
+8. If you want to support background mode:
    * In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
