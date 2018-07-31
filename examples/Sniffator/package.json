@@ -9,7 +9,8 @@
   "dependencies": {
     "react": "16.0.0",
     "react-native": "0.50.4",
-    "react-native-ble-plx": "file:../..",
+    "react-native-ble-plx":
+      "https://github.com/paweljaneczek/react-native-ble-plx#067bc34c0178a099cbb425bae120ed4ee1b750a7",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0"

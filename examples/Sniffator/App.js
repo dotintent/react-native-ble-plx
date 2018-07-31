@@ -5,6 +5,7 @@
  */
 
 import React, { Component } from 'react';
+import { central } from 'react-native-ble-plx';
 import {
   Platform,
   StyleSheet,
@@ -20,6 +21,19 @@ const instructions = Platform.select({
 });
 
 export default class App extends Component<{}> {
+
+  componentDidMount() {
+    central.create()
+      .then(result => {
+        console.log('Result', result)
+        debugger
+      })
+      .catch(error => {
+        console.error('Error', error)
+        debugger
+      });
+  }
+
   render() {
     return (
       <View style={styles.container}>

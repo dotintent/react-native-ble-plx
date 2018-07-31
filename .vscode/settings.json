@@ -2,7 +2,7 @@
   // VSCode
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.rulers": [120],
   "javascript.validate.enable": false,
   // Prettier

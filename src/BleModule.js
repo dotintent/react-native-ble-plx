@@ -1,521 +1,326 @@
 // @flow
 'use strict'
 
-import { NativeModules, NativeEventEmitter } from 'react-native'
-import { State, LogLevel } from './TypeDefinition'
+import { NativeModules } from 'react-native'
+import { State } from './TypeDefinition'
+import { LogLevel } from './Logging'
+import type { PeripheralId, Identifier, UUID, Base64, ManagerId, PromiseId } from './TypeDefinition'
+import type { BufferActionOptions, BufferId } from './Buffer'
+import type { CancelOptions } from './Promise'
+import type { NativeBleError } from './BleError'
 import type {
-  DeviceId,
-  Identifier,
-  UUID,
-  TransactionId,
-  Base64,
+  CentralManagerOptions,
+  Peripheral,
+  ConnectionOptions,
+  Service,
+  Characteristic,
   ScanOptions,
-  ConnectionOptions
-} from './TypeDefinition'
+  ScanRecord,
+  RestoredState,
+  MonitorStateOptions
+} from './central'
 
-/**
- * Native device object passed from BleModule.
- * @private
- */
-export interface NativeDevice {
-  /**
-   * Device identifier: MAC address on Android and UUID on iOS.
-   * @private
-   */
-  id: DeviceId;
-  /**
-   * Device name if present
-   * @private
-   */
-  name: ?string;
-  /**
-   * Current Received Signal Strength Indication of device
-   * @private
-   */
-  rssi: ?number;
-  /**
-   * Current Maximum Transmission Unit for this device. When device is not connected
-   * default value of 23 is used.
-   * @private
-   */
-  mtu: number;
-
-  // Advertisement
-
-  /**
-   * Device's custom manufacturer data. Its format is defined by manufacturer.
-   * @private
-   */
-  manufacturerData: ?Base64;
-
-  /**
-   * Map od service UUIDs with associated data.
-   * @private
-   */
-  serviceData: ?{ [uuid: UUID]: Base64 };
-
-  /**
-   * List of available services visible during scanning.
-   * @private
-   */
-  serviceUUIDs: ?Array<UUID>;
-
-  /**
-   * User friendly name of device.
-   * @private
-   */
-  localName: ?string;
-
-  /**
-   * Transmission power level of device.
-   * @private
-   */
-  txPowerLevel: ?number;
-
-  /**
-   * List of solicited service UUIDs.
-   * @private
-   */
-  solicitedServiceUUIDs: ?Array<UUID>;
-
-  /**
-   * Is device connectable.
-   * @private
-   */
-  isConnectable: ?boolean;
-
-  /**
-   * List of overflow service UUIDs.
-   * @private
-   */
-  overflowServiceUUIDs: ?Array<UUID>;
-}
-
-/**
- * Native service object passed from BleModule.
- * @private
- */
-export interface NativeService {
-  /**
-   * Service unique identifier
-   * @private
-   */
-  id: Identifier;
-  /**
-   * Service UUID
-   * @private
-   */
-  uuid: UUID;
-  /**
-   * Device's ID to which service belongs
-   * @private
-   */
-  deviceID: DeviceId;
-  /**
-   * Value indicating whether the type of service is primary or secondary.
-   * @private
-   */
-  isPrimary: boolean;
-}
-
-/**
- * Native characteristic object passed from BleModule.
- * @private
- */
-export interface NativeCharacteristic {
-  /**
-   * Characteristic unique identifier
-   * @private
-   */
-  id: Identifier;
-  /**
-   * Characteristic UUID
-   * @private
-   */
-  uuid: UUID;
-  /**
-   * Service's ID to which characteristic belongs
-   * @private
-   */
-  serviceID: Identifier;
-  /**
-   * Service's UUID to which characteristic belongs
-   * @private
-   */
-  serviceUUID: UUID;
-  /**
-   * Device's ID to which characteristic belongs
-   * @private
-   */
-  deviceID: DeviceId;
-  /**
-   * True if characteristic can be read
-   * @private
-   */
-  isReadable: boolean;
-  /**
-   * True if characteristic can be written with response
-   * @private
-   */
-  isWritableWithResponse: boolean;
-  /**
-   * True if characteristic can be written without response
-   * @private
-   */
-  isWritableWithoutResponse: boolean;
-  /**
-   * True if characteristic can monitor value changes.
-   * @private
-   */
-  isNotifiable: boolean;
-  /**
-   * True if characteristic is monitoring value changes without ACK.
-   * @private
-   */
-  isNotifying: boolean;
-  /**
-   * True if characteristic is monitoring value changes with ACK.
-   * @private
-   */
-  isIndicatable: boolean;
-  /**
-   * Characteristic value if present
-   * @private
-   */
-  value: ?Base64;
-}
-
-/**
- * Object representing information about restored BLE state after application relaunch.
- * @private
- */
-export interface NativeBleRestoredState {
-  /**
-   * List of connected devices after state restoration.
-   * @type {Array<NativeDevice>}
-   * @instance
-   * @memberof NativeBleRestoredState
-   * @private
-   */
-  connectedPeripherals: Array<NativeDevice>;
-}
+export type Callback<T> = (error: ?NativeBleError, data: ?T) => void
 
 /**
  * Native BLE Module interface
  * @private
  */
 export interface BleModuleInterface {
-  // NativeModule methods
-
-  addListener(string): void;
-  removeListeners(number): void;
-
-  // Lifecycle
-
   /**
    * Creates new native module internally. Only one module
    * is allowed to be instantiated.
-   * @param {?string} restoreIdentifierKey Optional unique Id used for state restoration of BLE manager.
+   * @param {?CentralManagerOptions} options Options that are used to create central manager instance
    * @private
    */
-  createClient(restoreIdentifierKey: ?string): void;
+  createCentralClient(options: CentralManagerOptions, callback: Callback<ManagerId>): void;
 
   /**
-   * Destroys previously instantiated module. This function is
-   * only safe when previously BleModule was created.
+   * Destroys previously instantiated central manager.
    * @private
    */
-  destroyClient(): void;
+  destroyCentralClient(managerId: ManagerId): void;
+
+  // Promise
+
+  /**
+   * Cancels promis with id
+   * @private
+   */
+  cancelPromise(managerId: ManagerId, promiseId: PromiseId): void;
+
+  // Buffers
+
+  /**
+   * Calls action on buffer with specified options
+   * @private
+   */
+  actionOnBuffer<T>(
+    managerId: ManagerId,
+    bufferId: BufferId,
+    options: BufferActionOptions,
+    cancelOptions: CancelOptions,
+    callback: Callback<T>
+  ): void;
+
+  /**
+   * Stops specified buffer
+   * @private
+   */
+  stopBuffer<T>(managerId: ManagerId, bufferId: BufferId, callback: Callback<T>): void;
 
   // Monitoring state
 
   /**
-   * Current state of BLE device.
-   *
-   * @returns {Promise<State>} Current state of BLE device.
+   * Current central manager state.
    * @private
    */
-  state(): Promise<$Keys<typeof State>>;
+  getState(managerId: ManagerId, callback: Callback<$Keys<typeof State>>): void;
+
+  /**
+   * Monitor central manager state
+   * @private
+   */
+  monitorState(
+    managerId: ManagerId,
+    options: MonitorStateOptions,
+    callback: Callback<Buffer<$Keys<typeof State>>>
+  ): void;
+
+  monitorRestoreState(managerId: ManagerId, callback: Callback<Buffer<RestoredState>>): void;
 
   // Scanning
 
   /**
    * Starts device scan.
-   *
-   * @param {?Array<UUID>} filteredUUIDs List of UUIDs for services which needs to be present to detect device during
-   * scanning.
-   * @param {?ScanOptions} options Platform dependent options
    * @private
    */
-  startDeviceScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
-
-  /**
-   * Stops device scan.
-   * @private
-   */
-  stopDeviceScan(): void;
+  scanForPeripherals(
+    managerId: ManagerId,
+    filteredUUIDs: ?Array<UUID>,
+    options: ?ScanOptions,
+    callback: Callback<Buffer<ScanRecord>>
+  ): void;
 
   // Device operations
 
   /**
    * Reads RSSI for connected device.
-   *
-   * @param {DeviceId} deviceIdentifier Device identifier.
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<NativeDevice>} Connected device with updated RSSI value.
    * @private
    */
-  readRSSIForDevice(deviceIdentifier: DeviceId, transactionId: TransactionId): Promise<NativeDevice>;
+  readRSSIForPeripheral(
+    managerId: ManagerId,
+    peripheralId: PeripheralId,
+    cancelOptions: CancelOptions,
+    callback: Callback<number>
+  ): void;
 
   /**
    * Request new MTU value for this device. This function currently is not doing anything
    * on iOS platform as MTU exchange is done automatically.
-   * @param {DeviceId} deviceIdentifier Device identifier.
-   * @param {number} mtu New MTU to negotiate.
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<NativeDevice>} Device with updated MTU size. Default value is 23.
    * @private
    */
-  requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number, transactionId: TransactionId): Promise<NativeDevice>;
+  requestMTUForPeripheral(
+    managerId: ManagerId,
+    peripheralId: PeripheralId,
+    mtu: number,
+    cancelOptions: CancelOptions,
+    callback: Callback<number>
+  ): void;
+
+  /**
+   * Returns peripheral's mtu 
+   * @private
+   */
+  getMTUForPeripheral(managerId: ManagerId, peripheralId: PeripheralId, callback: Callback<number>): void;
+
+  /**
+   * Method for starting MTU monitoring. Returns Buffer object in result.
+   * @private
+   */
+  monitorMTUForPeripheral(managerId: ManagerId, peripheralId: PeripheralId, callback: Callback<Buffer<number>>): void;
 
   // Device management
 
   /**
    * Returns a list of known peripherals by their identifiers.
    * @param {Array<DeviceId>} deviceIdentifiers List of device identifiers
+   * 
+   * @private
    */
-  devices(deviceIdentifiers: Array<DeviceId>): Promise<Array<NativeDevice>>;
+  getPeripherals(
+    managerId: ManagerId,
+    deviceIdentifiers: Array<PeripheralId>,
+    callback: Callback<Array<Peripheral>>
+  ): void;
 
   /**
    * Returns a list of the peripherals (containing any of the specified services) currently connected to the system
    * which have discovered services. Returned devices **may not be connected** to your application.
    * @param {Array<UUID>} serviceUUIDs List of service UUIDs. Device must contain at least one of them to be listed.
+   * 
+   * @private
    */
-  connectedDevices(serviceUUIDs: Array<UUID>): Promise<Array<NativeDevice>>;
+  getConnectedPeripherals(managerId: ManagerId, serviceUUIDs: Array<UUID>, callback: Callback<Array<Peripheral>>): void;
 
   // Connection management
 
   /**
-   * Connect to specified device.
-   *
-   * @param {DeviceId} deviceIdentifier Device identifier to connect to.
-   * @param {?ConnectionOptions} options Connection options.
-   * @returns {Promise<NativeDevice>} Connected device.
+   * Connect to specified peripheral.
    * @private
    */
-  connectToDevice(deviceIdentifier: DeviceId, options: ?ConnectionOptions): Promise<NativeDevice>;
+  connectToPeripheral(
+    managerId: ManagerId,
+    peripheralId: PeripheralId,
+    options: ?ConnectionOptions,
+    callback: Callback<Peripheral>
+  ): void;
 
   /**
-   * Cancels pending device connection.
+   * Cancels pending peripheral connection.
    *
-   * @param {DeviceId} deviceIdentifier Device identifier which is already connected.
-   * @returns {Promise<NativeDevice>} Disconnected device.
    * @private
    */
-  cancelDeviceConnection(deviceIdentifier: DeviceId): Promise<NativeDevice>;
+  cancelPeripheralConnection(
+    managerId: ManagerId,
+    peripheralId: PeripheralId,
+    cancelOptions: CancelOptions,
+    callback: Callback<Peripheral>
+  ): void;
 
   /**
-   * Checks if specified device is connected.
-   *
-   * @param {DeviceId} deviceIdentifier Device identifier.
-   * @returns {Promise<boolean>} True if specified device is connected.
+   * Checks if specified peripheral is connected.
    * @private
    */
-  isDeviceConnected(deviceIdentifier: DeviceId): Promise<boolean>;
+  isPeripheralConnected(managerId: ManagerId, peripheralId: PeripheralId, callback: Callback<boolean>): void;
+
+  /**
+   * Monitor peripherals disconnections.
+   * @private
+   */
+  monitorDisconnection(managerId: ManagerId, callback: Callback<Buffer<[Peripheral, ?NativeBleError]>>): void;
+
+  // Name
+
+  /**
+   * Returns peripheral's name
+   * @private
+   */
+  getNameForPeripheral(managerId: ManagerId, peripheralId: PeripheralId, callback: Callback<?String>): void;
+
+  /**
+   * Monitor for peipheral's name changes
+   * @private
+   */
+  monitorPeripheralName(managerId: ManagerId, peripheralId: PeripheralId, callback: Callback<Buffer<?String>>): void;
 
   // Discovery
 
   /**
    * Discovers all services and characteristics for specified device.
-   *
-   * @param {DeviceId} deviceIdentifier Connected device identifier.
-   * @returns {Promise<NativeDevice>} Device which has discovered characteristics and services.
    * @private
    */
-  discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: DeviceId): Promise<NativeDevice>;
+  discoverAllServicesAndCharacteristicsForPeripheral(
+    managerId: ManagerId,
+    peripheralId: PeripheralId,
+    callback: Callback<void>
+  ): void;
 
   // Service and characteristic getters
 
   /**
+   * Returns service for specified uuid and peripheral.
+   * @private
+   */
+  getServiceForPeripheral(
+    managerId: ManagerId,
+    peripheralId: PeripheralId,
+    serviceUUID: UUID,
+    callback: Callback<Service>
+  ): void;
+
+  /**
    * List of discovered services for specified device.
-   *
-   * @param {DeviceId} deviceIdentifier Connected device identifier.
-   * @returns {Promise<Array<NativeService>>} List of services available in device.
    * @private
    */
-  servicesForDevice(deviceIdentifier: DeviceId): Promise<Array<NativeService>>;
+  getServicesForPeripheral(managerId: ManagerId, peripheralId: PeripheralId, callback: Callback<Array<Service>>): void;
+
+  /**
+   * Returns characteristic for service by it's uuid
+   * @private
+   */
+  getCharacteristicForServiceByUUID(
+    managerId: ManagerId,
+    peripheralId: PeripheralId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    callback: Callback<Characteristic>
+  ): void;
+
+  /**
+   * Returns characteristic for service
+   * @private
+   */
+  getCharacteristicForService(
+    managerId: ManagerId,
+    serviceId: Identifier,
+    characteristicUUID: UUID,
+    callback: Callback<Characteristic>
+  ): void;
 
   /**
    * List of discovered characteristics for specified service.
-   *
-   * @param {DeviceId} deviceIdentifier Connected device identifier.
-   * @param {UUID} serviceUUID Service UUID which contains characteristics.
-   * @returns {Promise<Array<NativeCharacteristic>>} List of characteristics available in service.
    * @private
    */
-  characteristicsForDevice(deviceIdentifier: DeviceId, serviceUUID: UUID): Promise<Array<NativeCharacteristic>>;
-
-  /**
-   * List of discovered characteristics for specified service.
-   *
-   * @param {Identifier} serviceIdentifier Service ID which contains characteristics.
-   * @returns {Promise<Array<NativeCharacteristic>>} List of characteristics available in service.
-   * @private
-   */
-  characteristicsForService(serviceIdentifier: Identifier): Promise<Array<NativeCharacteristic>>;
+  getCharacteristicsForService(
+    managerId: ManagerId,
+    serviceId: Identifier,
+    callback: Callback<Array<Characteristic>>
+  ): void;
 
   // Characteristics operations
 
   /**
-   * Read characteristic's value.
-   *
-   * @param {DeviceId} deviceIdentifier Connected device identifier
-   * @param {UUID} serviceUUID Service UUID
-   * @param {UUID} characteristicUUID Characteristic UUID
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<NativeCharacteristic>} Characteristic for which value was read
+   * Read characteristic's value in Base64.
    * @private
    */
-  readCharacteristicForDevice(
-    deviceIdentifier: DeviceId,
-    serviceUUID: UUID,
-    characteristicUUID: UUID,
-    transactionId: TransactionId
-  ): Promise<NativeCharacteristic>;
+  readBase64CharacteristicValue(
+    managerId: ManagerId,
+    characteristicId: Identifier,
+    cancelOptions: CancelOptions,
+    callback: Callback<?String>
+  ): void;
 
   /**
-   * Read characteristic's value.
-   *
-   * @param {Identifier} serviceIdentifier Service ID
-   * @param {UUID} characteristicUUID Characteristic UUID
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<NativeCharacteristic>} Characteristic for which value was read
+   * Write Base64 value to characteristic.
    * @private
    */
-  readCharacteristicForService(
-    serviceIdentifier: Identifier,
-    characteristicUUID: UUID,
-    transactionId: TransactionId
-  ): Promise<NativeCharacteristic>;
-
-  /**
-   * Read characteristic's value.
-   *
-   * @param {Identifier} characteristicIdentifer Characteristic ID
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<NativeCharacteristic>} Characteristic for which value was read
-   * @private
-   */
-  readCharacteristic(characteristicIdentifer: Identifier, transactionId: TransactionId): Promise<NativeCharacteristic>;
-
-  /**
-   * Write value to characteristic.
-   *
-   * @param {DeviceId} deviceIdentifier Connected device identifier
-   * @param {UUID} serviceUUID Service UUID
-   * @param {UUID} characteristicUUID Characteristic UUID
-   * @param {Base64} valueBase64 Value to be set coded in Base64
-   * @param {boolean} withResponse True if write should be with response
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<NativeCharacteristic>} Characteristic which saved passed value
-   * @private
-   */
-  writeCharacteristicForDevice(
-    deviceIdentifier: DeviceId,
-    serviceUUID: UUID,
-    characteristicUUID: UUID,
+  writeBase64CharacteristicValue(
+    managerId: ManagerId,
+    characteristicId: Identifier,
     valueBase64: Base64,
-    withResponse: boolean,
-    transactionId: TransactionId
-  ): Promise<NativeCharacteristic>;
+    response: boolean,
+    cancelOptions: CancelOptions,
+    callback: Callback<void>
+  ): void;
 
   /**
-   * Write value to characteristic.
-   *
-   * @param {Identifier} serviceIdentifier Service ID
-   * @param {UUID} characteristicUUID Characteristic UUID
-   * @param {Base64} valueBase64 Value to be set coded in Base64
-   * @param {boolean} withResponse True if write should be with response
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<NativeCharacteristic>} Characteristic which saved passed value
+   * Setup monitoring of characteristic value in Base64.
    * @private
    */
-  writeCharacteristicForService(
-    serviceIdentifier: Identifier,
-    characteristicUUID: UUID,
-    valueBase64: Base64,
-    withResponse: boolean,
-    transactionId: TransactionId
-  ): Promise<NativeCharacteristic>;
+  monitorBase64CharacteristicValue(
+    managerId: ManagerId,
+    characteristicId: Identifier,
+    callback: Callback<Buffer<string>>
+  ): void;
 
   /**
-   * Write value to characteristic.
-   *
-   * @param {Identifier} characteristicIdentifier Characteristic ID
-   * @param {Base64} valueBase64 Value to be set coded in Base64
-   * @param {boolean} withResponse True if write should be with response
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<NativeCharacteristic>} Characteristic which saved passed value
+   * Returns if specified characteristic is currently not
    * @private
    */
-  writeCharacteristic(
-    characteristicIdentifier: Identifier,
-    valueBase64: Base64,
-    withResponse: boolean,
-    transactionId: TransactionId
-  ): Promise<NativeCharacteristic>;
-
-  /**
-   * Setup monitoring of characteristic value.
-   *
-   * @param {DeviceId} deviceIdentifier Connected device identifier
-   * @param {UUID} serviceUUID Service UUID
-   * @param {UUID} characteristicUUID Characteristic UUID
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
-   * @private
-   */
-  monitorCharacteristicForDevice(
-    deviceIdentifier: DeviceId,
-    serviceUUID: UUID,
-    characteristicUUID: UUID,
-    transactionId: TransactionId
-  ): Promise<void>;
-
-  /**
-   * Setup monitoring of characteristic value.
-   *
-   * @param {Identifier} serviceIdentifier Service ID
-   * @param {UUID} characteristicUUID Characteristic UUID
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
-   * @private
-   */
-  monitorCharacteristicForService(
-    serviceIdentifier: Identifier,
-    characteristicUUID: UUID,
-    transactionId: TransactionId
-  ): Promise<void>;
-
-  /**
-   * Setup monitoring of characteristic value.
-   *
-   * @param {Identifier} characteristicIdentifier Characteristic ID
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
-   * @private
-   */
-  monitorCharacteristic(characteristicIdentifier: Identifier, transactionId: TransactionId): Promise<void>;
+  isCharacteristicNotifying(managerId: ManagerId, characteristicId: Identifier, callback: Callback<boolean>): void;
 
   // Other APIs
-
-  /**
-   * Cancels specified transaction
-   *
-   * @param {TransactionId} transactionId Transaction handle for operation to be cancelled
-   * @private
-   */
-  cancelTransaction(transactionId: TransactionId): void;
 
   /**
    * Sets new log level for native module's logging mechanism.
@@ -529,41 +334,7 @@ export interface BleModuleInterface {
    * @returns {Promise<LogLevel>} Current log level.
    * @private
    */
-  logLevel(): Promise<$Keys<typeof LogLevel>>;
-
-  // Events
-
-  /**
-   * New scanned event arrived as [?Error, ?NativeDevice] object.
-   * @private
-   */
-  ScanEvent: string;
-
-  /**
-   * Characteristic value update broadcasted due to registered notification as
-   * [?Error, ?NativeCharacteristic, ?TransactionId].
-   * @private
-   */
-  ReadEvent: string;
-
-  /**
-   * BLE Manager changed its state as $Keys<typeof State>
-   * @private
-   */
-  StateChangeEvent: string;
-
-  /**
-   * BLE Manager restored its internal state
-   * @private
-   */
-  RestoreStateEvent: string;
-
-  /**
-   * Device disconnected as [Error?, NativeDevice]
-   * @private
-   */
-  DisconnectionEvent: string;
+  getLogLevel(callback: Callback<$Keys<typeof LogLevel>>): void;
 }
 
 export const BleModule: BleModuleInterface = NativeModules.BleClientManager
-export const EventEmitter = NativeEventEmitter
