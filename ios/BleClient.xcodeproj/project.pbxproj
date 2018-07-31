@@ -7,26 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C46F201A20E1154E00E00F27 /* ObjectIdGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F200620E1154E00E00F27 /* ObjectIdGenerator.swift */; };
-		C46F201B20E1154E00E00F27 /* BleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F200720E1154E00E00F27 /* BleExtensions.swift */; };
-		C46F201C20E1154E00E00F27 /* BleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F200820E1154E00E00F27 /* BleUtils.swift */; };
-		C46F201D20E1154E00E00F27 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F200A20E1154E00E00F27 /* Buffer.swift */; };
-		C46F201E20E1154E00E00F27 /* BleError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F200B20E1154E00E00F27 /* BleError.swift */; };
-		C46F201F20E1154E00E00F27 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F200C20E1154E00E00F27 /* Request.swift */; };
-		C46F202020E1154E00E00F27 /* ScannedPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F200D20E1154E00E00F27 /* ScannedPeripheral.swift */; };
-		C46F202120E1154E00E00F27 /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F201020E1154E00E00F27 /* NotificationsHandler.swift */; };
-		C46F202220E1154E00E00F27 /* BufferHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F201120E1154E00E00F27 /* BufferHandler.swift */; };
-		C46F202320E1154E00E00F27 /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F201220E1154E00E00F27 /* RequestHandler.swift */; };
-		C46F202420E1154E00E00F27 /* CacheHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F201320E1154E00E00F27 /* CacheHandler.swift */; };
-		C46F202520E1154E00E00F27 /* CBPeripheralDelegateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F201520E1154E00E00F27 /* CBPeripheralDelegateHandler.swift */; };
-		C46F202620E1154E00E00F27 /* CentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F201620E1154E00E00F27 /* CentralManager.swift */; };
-		C46F202720E1154E00E00F27 /* CentralManager+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F201720E1154E00E00F27 /* CentralManager+Additions.swift */; };
-		C46F202820E1154E00E00F27 /* CBCentralManagerDelegateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F201820E1154E00E00F27 /* CBCentralManagerDelegateHandler.swift */; };
-		C46F205D20E1243F00E00F27 /* BleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C46F205C20E1243E00E00F27 /* BleState.swift */; };
-		C47254B420F4A4D400B5830A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47254B220F4A4D400B5830A /* Constants.swift */; };
-		C47254B520F4A4D400B5830A /* ManagerCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47254B320F4A4D400B5830A /* ManagerCache.swift */; };
-		C47254C420F4AAC700B5830A /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47254C320F4AAC700B5830A /* Logger.swift */; };
-		C47254C820F4D1CD00B5830A /* ManagerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C47254C720F4D1CD00B5830A /* ManagerWrapper.swift */; };
+		C4201A8D211D881400C7B47F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A73211D881300C7B47F /* Constants.swift */; };
+		C4201A8E211D881400C7B47F /* ManagerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A74211D881300C7B47F /* ManagerWrapper.swift */; };
+		C4201A8F211D881400C7B47F /* ObjectIdGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A76211D881300C7B47F /* ObjectIdGenerator.swift */; };
+		C4201A90211D881400C7B47F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A77211D881300C7B47F /* Logger.swift */; };
+		C4201A91211D881400C7B47F /* BleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A78211D881300C7B47F /* BleExtensions.swift */; };
+		C4201A92211D881400C7B47F /* BleState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A79211D881300C7B47F /* BleState.swift */; };
+		C4201A93211D881400C7B47F /* BleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A7A211D881300C7B47F /* BleUtils.swift */; };
+		C4201A94211D881400C7B47F /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A7C211D881300C7B47F /* Buffer.swift */; };
+		C4201A95211D881400C7B47F /* BleError.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A7D211D881300C7B47F /* BleError.swift */; };
+		C4201A96211D881400C7B47F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A7E211D881300C7B47F /* Request.swift */; };
+		C4201A97211D881400C7B47F /* ScannedPeripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A7F211D881300C7B47F /* ScannedPeripheral.swift */; };
+		C4201A98211D881400C7B47F /* ManagerCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A80211D881300C7B47F /* ManagerCache.swift */; };
+		C4201A99211D881400C7B47F /* NotificationsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A83211D881300C7B47F /* NotificationsHandler.swift */; };
+		C4201A9A211D881400C7B47F /* BufferHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A84211D881300C7B47F /* BufferHandler.swift */; };
+		C4201A9B211D881400C7B47F /* RequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A85211D881300C7B47F /* RequestHandler.swift */; };
+		C4201A9C211D881400C7B47F /* CacheHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A86211D881300C7B47F /* CacheHandler.swift */; };
+		C4201A9D211D881400C7B47F /* CBPeripheralDelegateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A88211D881300C7B47F /* CBPeripheralDelegateHandler.swift */; };
+		C4201A9E211D881400C7B47F /* CentralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A89211D881300C7B47F /* CentralManager.swift */; };
+		C4201A9F211D881400C7B47F /* CentralManager+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A8A211D881300C7B47F /* CentralManager+Additions.swift */; };
+		C4201AA0211D881400C7B47F /* CBCentralManagerDelegateHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4201A8B211D881300C7B47F /* CBCentralManagerDelegateHandler.swift */; };
 		D7D202791D4F614D00E10F6A /* BleModule.m in Sources */ = {isa = PBXBuildFile; fileRef = D7D202771D4F614D00E10F6A /* BleModule.m */; };
 /* End PBXBuildFile section */
 
@@ -43,28 +43,28 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C46F200620E1154E00E00F27 /* ObjectIdGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectIdGenerator.swift; sourceTree = "<group>"; };
-		C46F200720E1154E00E00F27 /* BleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleExtensions.swift; sourceTree = "<group>"; };
-		C46F200820E1154E00E00F27 /* BleUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleUtils.swift; sourceTree = "<group>"; };
-		C46F200A20E1154E00E00F27 /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
-		C46F200B20E1154E00E00F27 /* BleError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleError.swift; sourceTree = "<group>"; };
-		C46F200C20E1154E00E00F27 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
-		C46F200D20E1154E00E00F27 /* ScannedPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannedPeripheral.swift; sourceTree = "<group>"; };
-		C46F200E20E1154E00E00F27 /* BleNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BleNative.h; sourceTree = "<group>"; };
-		C46F201020E1154E00E00F27 /* NotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
-		C46F201120E1154E00E00F27 /* BufferHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferHandler.swift; sourceTree = "<group>"; };
-		C46F201220E1154E00E00F27 /* RequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
-		C46F201320E1154E00E00F27 /* CacheHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheHandler.swift; sourceTree = "<group>"; };
-		C46F201520E1154E00E00F27 /* CBPeripheralDelegateHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBPeripheralDelegateHandler.swift; sourceTree = "<group>"; };
-		C46F201620E1154E00E00F27 /* CentralManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CentralManager.swift; sourceTree = "<group>"; };
-		C46F201720E1154E00E00F27 /* CentralManager+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CentralManager+Additions.swift"; sourceTree = "<group>"; };
-		C46F201820E1154E00E00F27 /* CBCentralManagerDelegateHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBCentralManagerDelegateHandler.swift; sourceTree = "<group>"; };
-		C46F201920E1154E00E00F27 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C46F205C20E1243E00E00F27 /* BleState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleState.swift; sourceTree = "<group>"; };
-		C47254B220F4A4D400B5830A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		C47254B320F4A4D400B5830A /* ManagerCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerCache.swift; sourceTree = "<group>"; };
-		C47254C320F4AAC700B5830A /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		C47254C720F4D1CD00B5830A /* ManagerWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerWrapper.swift; sourceTree = "<group>"; };
+		C4201A73211D881300C7B47F /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		C4201A74211D881300C7B47F /* ManagerWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerWrapper.swift; sourceTree = "<group>"; };
+		C4201A76211D881300C7B47F /* ObjectIdGenerator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectIdGenerator.swift; sourceTree = "<group>"; };
+		C4201A77211D881300C7B47F /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		C4201A78211D881300C7B47F /* BleExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleExtensions.swift; sourceTree = "<group>"; };
+		C4201A79211D881300C7B47F /* BleState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleState.swift; sourceTree = "<group>"; };
+		C4201A7A211D881300C7B47F /* BleUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleUtils.swift; sourceTree = "<group>"; };
+		C4201A7C211D881300C7B47F /* Buffer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Buffer.swift; sourceTree = "<group>"; };
+		C4201A7D211D881300C7B47F /* BleError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BleError.swift; sourceTree = "<group>"; };
+		C4201A7E211D881300C7B47F /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		C4201A7F211D881300C7B47F /* ScannedPeripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannedPeripheral.swift; sourceTree = "<group>"; };
+		C4201A80211D881300C7B47F /* ManagerCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagerCache.swift; sourceTree = "<group>"; };
+		C4201A81211D881300C7B47F /* BleNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BleNative.h; sourceTree = "<group>"; };
+		C4201A83211D881300C7B47F /* NotificationsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsHandler.swift; sourceTree = "<group>"; };
+		C4201A84211D881300C7B47F /* BufferHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BufferHandler.swift; sourceTree = "<group>"; };
+		C4201A85211D881300C7B47F /* RequestHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestHandler.swift; sourceTree = "<group>"; };
+		C4201A86211D881300C7B47F /* CacheHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheHandler.swift; sourceTree = "<group>"; };
+		C4201A88211D881300C7B47F /* CBPeripheralDelegateHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBPeripheralDelegateHandler.swift; sourceTree = "<group>"; };
+		C4201A89211D881300C7B47F /* CentralManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CentralManager.swift; sourceTree = "<group>"; };
+		C4201A8A211D881300C7B47F /* CentralManager+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CentralManager+Additions.swift"; sourceTree = "<group>"; };
+		C4201A8B211D881300C7B47F /* CBCentralManagerDelegateHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CBCentralManagerDelegateHandler.swift; sourceTree = "<group>"; };
+		C4201A8C211D881300C7B47F /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D73F06E81D48E17B00AD5963 /* libBleClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libBleClient.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D760681620BBEEA10005ECAF /* BleClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BleClient-Bridging-Header.h"; sourceTree = "<group>"; };
 		D7D202771D4F614D00E10F6A /* BleModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BleModule.m; sourceTree = "<group>"; };
@@ -82,64 +82,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C46F200420E1154E00E00F27 /* BleNative */ = {
+		C4201A72211D881300C7B47F /* BleNative */ = {
 			isa = PBXGroup;
 			children = (
-				C47254C720F4D1CD00B5830A /* ManagerWrapper.swift */,
-				C47254B220F4A4D400B5830A /* Constants.swift */,
-				C47254B320F4A4D400B5830A /* ManagerCache.swift */,
-				C46F200520E1154E00E00F27 /* Utils */,
-				C46F200920E1154E00E00F27 /* Models */,
-				C46F200E20E1154E00E00F27 /* BleNative.h */,
-				C46F200F20E1154E00E00F27 /* Handlers */,
-				C46F201420E1154E00E00F27 /* CentralManager */,
-				C46F201920E1154E00E00F27 /* Info.plist */,
+				C4201A73211D881300C7B47F /* Constants.swift */,
+				C4201A74211D881300C7B47F /* ManagerWrapper.swift */,
+				C4201A75211D881300C7B47F /* Utils */,
+				C4201A7B211D881300C7B47F /* Models */,
+				C4201A80211D881300C7B47F /* ManagerCache.swift */,
+				C4201A81211D881300C7B47F /* BleNative.h */,
+				C4201A82211D881300C7B47F /* Handlers */,
+				C4201A87211D881300C7B47F /* CentralManager */,
+				C4201A8C211D881300C7B47F /* Info.plist */,
 			);
-			name = BleNative;
-			path = "ble-ios-native/BleNative";
+			path = BleNative;
 			sourceTree = "<group>";
 		};
-		C46F200520E1154E00E00F27 /* Utils */ = {
+		C4201A75211D881300C7B47F /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				C47254C320F4AAC700B5830A /* Logger.swift */,
-				C46F205C20E1243E00E00F27 /* BleState.swift */,
-				C46F200620E1154E00E00F27 /* ObjectIdGenerator.swift */,
-				C46F200720E1154E00E00F27 /* BleExtensions.swift */,
-				C46F200820E1154E00E00F27 /* BleUtils.swift */,
+				C4201A76211D881300C7B47F /* ObjectIdGenerator.swift */,
+				C4201A77211D881300C7B47F /* Logger.swift */,
+				C4201A78211D881300C7B47F /* BleExtensions.swift */,
+				C4201A79211D881300C7B47F /* BleState.swift */,
+				C4201A7A211D881300C7B47F /* BleUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		C46F200920E1154E00E00F27 /* Models */ = {
+		C4201A7B211D881300C7B47F /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C46F200A20E1154E00E00F27 /* Buffer.swift */,
-				C46F200B20E1154E00E00F27 /* BleError.swift */,
-				C46F200C20E1154E00E00F27 /* Request.swift */,
-				C46F200D20E1154E00E00F27 /* ScannedPeripheral.swift */,
+				C4201A7C211D881300C7B47F /* Buffer.swift */,
+				C4201A7D211D881300C7B47F /* BleError.swift */,
+				C4201A7E211D881300C7B47F /* Request.swift */,
+				C4201A7F211D881300C7B47F /* ScannedPeripheral.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C46F200F20E1154E00E00F27 /* Handlers */ = {
+		C4201A82211D881300C7B47F /* Handlers */ = {
 			isa = PBXGroup;
 			children = (
-				C46F201020E1154E00E00F27 /* NotificationsHandler.swift */,
-				C46F201120E1154E00E00F27 /* BufferHandler.swift */,
-				C46F201220E1154E00E00F27 /* RequestHandler.swift */,
-				C46F201320E1154E00E00F27 /* CacheHandler.swift */,
+				C4201A83211D881300C7B47F /* NotificationsHandler.swift */,
+				C4201A84211D881300C7B47F /* BufferHandler.swift */,
+				C4201A85211D881300C7B47F /* RequestHandler.swift */,
+				C4201A86211D881300C7B47F /* CacheHandler.swift */,
 			);
 			path = Handlers;
 			sourceTree = "<group>";
 		};
-		C46F201420E1154E00E00F27 /* CentralManager */ = {
+		C4201A87211D881300C7B47F /* CentralManager */ = {
 			isa = PBXGroup;
 			children = (
-				C46F201520E1154E00E00F27 /* CBPeripheralDelegateHandler.swift */,
-				C46F201620E1154E00E00F27 /* CentralManager.swift */,
-				C46F201720E1154E00E00F27 /* CentralManager+Additions.swift */,
-				C46F201820E1154E00E00F27 /* CBCentralManagerDelegateHandler.swift */,
+				C4201A88211D881300C7B47F /* CBPeripheralDelegateHandler.swift */,
+				C4201A89211D881300C7B47F /* CentralManager.swift */,
+				C4201A8A211D881300C7B47F /* CentralManager+Additions.swift */,
+				C4201A8B211D881300C7B47F /* CBCentralManagerDelegateHandler.swift */,
 			);
 			path = CentralManager;
 			sourceTree = "<group>";
@@ -147,7 +146,7 @@
 		D73F06DF1D48E17B00AD5963 = {
 			isa = PBXGroup;
 			children = (
-				C46F200420E1154E00E00F27 /* BleNative */,
+				C4201A72211D881300C7B47F /* BleNative */,
 				D7D202771D4F614D00E10F6A /* BleModule.m */,
 				D7D202781D4F614D00E10F6A /* BleModule.h */,
 				D760681620BBEEA10005ECAF /* BleClient-Bridging-Header.h */,
@@ -220,27 +219,27 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C46F202520E1154E00E00F27 /* CBPeripheralDelegateHandler.swift in Sources */,
-				C46F201E20E1154E00E00F27 /* BleError.swift in Sources */,
-				C46F202820E1154E00E00F27 /* CBCentralManagerDelegateHandler.swift in Sources */,
+				C4201A95211D881400C7B47F /* BleError.swift in Sources */,
+				C4201A99211D881400C7B47F /* NotificationsHandler.swift in Sources */,
+				C4201A90211D881400C7B47F /* Logger.swift in Sources */,
+				C4201A9F211D881400C7B47F /* CentralManager+Additions.swift in Sources */,
+				C4201A91211D881400C7B47F /* BleExtensions.swift in Sources */,
+				C4201A8E211D881400C7B47F /* ManagerWrapper.swift in Sources */,
+				C4201A96211D881400C7B47F /* Request.swift in Sources */,
+				C4201A9B211D881400C7B47F /* RequestHandler.swift in Sources */,
+				C4201A9A211D881400C7B47F /* BufferHandler.swift in Sources */,
+				C4201A8F211D881400C7B47F /* ObjectIdGenerator.swift in Sources */,
+				C4201A9C211D881400C7B47F /* CacheHandler.swift in Sources */,
+				C4201A98211D881400C7B47F /* ManagerCache.swift in Sources */,
 				D7D202791D4F614D00E10F6A /* BleModule.m in Sources */,
-				C46F205D20E1243F00E00F27 /* BleState.swift in Sources */,
-				C46F202720E1154E00E00F27 /* CentralManager+Additions.swift in Sources */,
-				C47254B520F4A4D400B5830A /* ManagerCache.swift in Sources */,
-				C46F202020E1154E00E00F27 /* ScannedPeripheral.swift in Sources */,
-				C46F201C20E1154E00E00F27 /* BleUtils.swift in Sources */,
-				C46F202320E1154E00E00F27 /* RequestHandler.swift in Sources */,
-				C46F201B20E1154E00E00F27 /* BleExtensions.swift in Sources */,
-				C46F202120E1154E00E00F27 /* NotificationsHandler.swift in Sources */,
-				C46F202220E1154E00E00F27 /* BufferHandler.swift in Sources */,
-				C46F201F20E1154E00E00F27 /* Request.swift in Sources */,
-				C46F201D20E1154E00E00F27 /* Buffer.swift in Sources */,
-				C47254C820F4D1CD00B5830A /* ManagerWrapper.swift in Sources */,
-				C47254C420F4AAC700B5830A /* Logger.swift in Sources */,
-				C46F201A20E1154E00E00F27 /* ObjectIdGenerator.swift in Sources */,
-				C46F202420E1154E00E00F27 /* CacheHandler.swift in Sources */,
-				C46F202620E1154E00E00F27 /* CentralManager.swift in Sources */,
-				C47254B420F4A4D400B5830A /* Constants.swift in Sources */,
+				C4201A9D211D881400C7B47F /* CBPeripheralDelegateHandler.swift in Sources */,
+				C4201A93211D881400C7B47F /* BleUtils.swift in Sources */,
+				C4201A8D211D881400C7B47F /* Constants.swift in Sources */,
+				C4201A9E211D881400C7B47F /* CentralManager.swift in Sources */,
+				C4201AA0211D881400C7B47F /* CBCentralManagerDelegateHandler.swift in Sources */,
+				C4201A92211D881400C7B47F /* BleState.swift in Sources */,
+				C4201A97211D881400C7B47F /* ScannedPeripheral.swift in Sources */,
+				C4201A94211D881400C7B47F /* Buffer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

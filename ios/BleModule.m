@@ -25,11 +25,7 @@ RCT_EXPORT_MODULE(BleClientManager);
         _wrapper = [[ManagerWrapper alloc] init];
         _resultHandler = ^DataParser(RCTResponseSenderBlock callback) {
             return ^void(NSDictionary<NSNumber *, id> * result) {
-                callback(@[
-                           result[@(ResultKeyError)],
-                           result[@(ResultKeyData)],
-                           result[@(ResultKeyPromiseId)]
-                           ]);
+                callback(@[result[@(ResultKeyError)], result[@(ResultKeyData)]]);
             };
         };
         
@@ -41,264 +37,240 @@ RCT_EXPORT_METHOD(createCentralClient:(NSDictionary<NSString *, id> *)options ca
     [_wrapper createCentralManagerWithQueue:_methodQueue options:options callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(destroyCentralClient:(NSNumber *)managerId) {
+RCT_EXPORT_METHOD(destroyCentralClient:(nonnull NSNumber *)managerId) {
     [_wrapper destroyCentralManagerWithId:managerId.intValue];
 }
 
 // MARK: - Transactions
 
-RCT_EXPORT_METHOD(cancelPromise:(NSNumber *)centralManagerId promiseId:(NSString*)promiseId) {
+RCT_EXPORT_METHOD(cancelPromise:(nonnull NSNumber *)centralManagerId promiseId:(nonnull NSString*)promiseId) {
     [_wrapper cancelPromiseWithCentralManagerId:centralManagerId.intValue promiseId:promiseId];
 }
 
 // MARK: - Buffers 
 
-RCT_EXPORT_METHOD(actionOnBuffer:(NSNumber *)centralManagerId
-                  bufferId:(NSNumber *)bufferId
+RCT_EXPORT_METHOD(actionOnBuffer:(nonnull NSNumber *)centralManagerId
+                  bufferId:(nonnull NSNumber *)bufferId
                   options:(NSDictionary *)options
                   cancelOptions:(NSDictionary *)cancelOptions
                   callback:(RCTResponseSenderBlock)callback) {
     [_wrapper actionOnBufferWithCentralManagerId:centralManagerId.intValue id:bufferId.intValue options:options cancelOptions:cancelOptions callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(stopBuffer:(NSNumber *)centralManagerId
-                  bufferId:(NSNumber *)bufferId
+RCT_EXPORT_METHOD(stopBuffer:(nonnull NSNumber *)centralManagerId
+                  bufferId:(nonnull NSNumber *)bufferId
                   callback:(RCTResponseSenderBlock)callback) {
     [_wrapper stopBufferWithCentralManagerId:centralManagerId.intValue id:bufferId.intValue callback:self.resultHandler(callback)];
 }
 
 // Mark: Monitoring state ----------------------------------------------------------------------------------------------
 
-RCT_EXPORT_METHOD(state:(NSNumber *)centralManagerId callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper stateWithCentralManagerId:centralManagerId.intValue callback:self.resultHandler(callback)];
+RCT_EXPORT_METHOD(getState:(nonnull NSNumber *)centralManagerId callback:(RCTResponseSenderBlock)callback) {
+    [_wrapper getStateWithCentralManagerId:centralManagerId.intValue callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(monitorState:(NSNumber *)centralManagerId callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper monitorStateWithCentralManagerId:centralManagerId.intValue callback:self.resultHandler(callback)];
+RCT_EXPORT_METHOD(monitorState:(nonnull NSNumber *)centralManagerId options:(NSDictionary *)options callback:(RCTResponseSenderBlock)callback) {
+    [_wrapper monitorStateWithCentralManagerId:centralManagerId.intValue options:options callback:self.resultHandler(callback)];
 }
 
 // MARK: - State restoration
 
-RCT_EXPORT_METHOD(monitorRestoreState:(NSNumber *)centralManagerId callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(monitorRestoreState:(nonnull NSNumber *)centralManagerId callback:(RCTResponseSenderBlock)callback) {
     [_wrapper monitorRestoreStateWithCentralManagerId:centralManagerId.intValue callback:self.resultHandler(callback)];
 }
 
 // Mark: Scanning ------------------------------------------------------------------------------------------------------
 
-RCT_EXPORT_METHOD(startDeviceScan:(NSNumber *)centralManagerId 
+RCT_EXPORT_METHOD(scanForPeripherals:(nonnull NSNumber *)centralManagerId 
                   filteredUUIDs:(NSArray*)filteredUUIDs
                   options:(NSDictionary*)options
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper startDeviceScanWithCentralManagerId:centralManagerId.intValue filteredUUIDs:filteredUUIDs options:options callback:self.resultHandler(callback)];
+    [_wrapper scanForPeripheralsWithCentralManagerId:centralManagerId.intValue filteredUUIDs:filteredUUIDs options:options callback:self.resultHandler(callback)];
 }
 
 // MARK: - Read RSSI
 
-RCT_EXPORT_METHOD(readRSSIForDevice:(NSNumber *)centralManagerId
-                  uuidString:(NSString*)uuidString
+RCT_EXPORT_METHOD(readRSSIForPeripheral:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)uuidString
                   cancelOptions:(NSDictionary*)cancelOptions
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper readRSSIForDeviceWithCentralManagerId:centralManagerId.intValue uuidString:uuidString cancelOptions:cancelOptions callback:self.resultHandler(callback)];
+    [_wrapper readRSSIForPeripheralWithCentralManagerId:centralManagerId.intValue uuidString:uuidString cancelOptions:cancelOptions callback:self.resultHandler(callback)];
 }
 
 // MARK: - MTU
 
-RCT_EXPORT_METHOD(requestMTUForDevice:(NSNumber *)centralManagerId
-                  uuidString:(NSString*)uuidString
+RCT_EXPORT_METHOD(requestMTUForPeripheral:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)uuidString
                   mtu:(NSInteger)mtu
                   cancelOptions:(NSDictionary*)cancelOptions
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper requestMTUForDeviceWithCentralManagerId:centralManagerId.intValue uuidString:uuidString mtu:mtu cancelOptions:cancelOptions callback:self.resultHandler(callback)];
+    [_wrapper requestMTUForPeripheralWithCentralManagerId:centralManagerId.intValue uuidString:uuidString mtu:mtu cancelOptions:cancelOptions callback:self.resultHandler(callback)];
+}
+
+RCT_EXPORT_METHOD(getMTUForPeripheral:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)uuidString
+                  callback:(RCTResponseSenderBlock)callback) {
+    [_wrapper getMTUForPeripheralWithCentralManagerId:centralManagerId.intValue uuidString:uuidString callback:self.resultHandler(callback)];
+}
+
+RCT_EXPORT_METHOD(monitorMTUForPeripheral:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)uuidString
+                  callback:(RCTResponseSenderBlock)callback) {
+    [_wrapper monitorMTUForPeripheralWithCentralManagerId:centralManagerId.intValue uuidString:uuidString callback:self.resultHandler(callback)];
 }
 
 // MARK: - Device managment
 
-RCT_EXPORT_METHOD(devices:(NSNumber *)centralManagerId 
+RCT_EXPORT_METHOD(getPeripherals:(nonnull NSNumber *)centralManagerId 
                   deviceIdentifiers:(NSArray<NSString*> *)deviceIdentifiers
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper devicesWithCentralManagerId:centralManagerId.intValue deviceIdentifiers:deviceIdentifiers callback:self.resultHandler(callback)];
+    [_wrapper getPeripheralsWithCentralManagerId:centralManagerId.intValue deviceIdentifiers:deviceIdentifiers callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(connectedDevices:(NSNumber *)centralManagerId
+RCT_EXPORT_METHOD(getConnectedPeripherals:(nonnull NSNumber *)centralManagerId
                   serviceUuids:(NSArray<NSString*> *)serviceUuids
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper connectedDevicesWithCentralManagerId:centralManagerId.intValue serviceUUIDs:serviceUuids callback:self.resultHandler(callback)];
+    [_wrapper getConnectedPeripheralsWithCentralManagerId:centralManagerId.intValue serviceUUIDs:serviceUuids callback:self.resultHandler(callback)];
 }
 
 // MARK: - Connection managment
 
-RCT_EXPORT_METHOD(connectToDevice:(NSNumber *)centralManagerId 
-                  deviceUUID:(NSString*)deviceUUID
+RCT_EXPORT_METHOD(connectToPeripheral:(nonnull NSNumber *)centralManagerId 
+                  peripheralId:(nonnull NSString*)peripheralUUID
                   options:(NSDictionary<NSString*, id> *)options
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper connectToDeviceWithCentralManagerId:centralManagerId.intValue uuidString:deviceUUID options:options callback:self.resultHandler(callback)];
+    [_wrapper connectToPeripheralWithCentralManagerId:centralManagerId.intValue uuidString:peripheralUUID options:options callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(cancelDeviceConnection:(NSNumber *)centralManagerId
-                  deviceUUID:(NSString*)deviceUUID
+RCT_EXPORT_METHOD(cancelPeripheralConnection:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)peripheralUUID
                   cancelOptions:(NSDictionary<NSString*, id> *)cancelOptions
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper cancelDeviceConnectionWithCentralManagerId:centralManagerId.intValue uuidString:deviceUUID cancelOptions:cancelOptions callback:self.resultHandler(callback)];
+    [_wrapper cancelPeripheralConnectionWithCentralManagerId:centralManagerId.intValue uuidString:peripheralUUID cancelOptions:cancelOptions callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(isDeviceConnected:(NSNumber *)centralManagerId
-                  deviceUUID:(NSString*)deviceUUID
+RCT_EXPORT_METHOD(isPeripheralConnected:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)peripheralUUID
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper isDeviceConnectedWithCentralManagerId:centralManagerId.intValue uuidString:deviceUUID callback:self.resultHandler(callback)];
+    [_wrapper isPeripheralConnectedWithCentralManagerId:centralManagerId.intValue uuidString:peripheralUUID callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(monitorDisconnection:(NSNumber *)centralManagerId callback:(RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(monitorDisconnection:(nonnull NSNumber *)centralManagerId callback:(RCTResponseSenderBlock)callback) {
     [_wrapper monitorDisconnectionWithCentralManagerId:centralManagerId.intValue callback:self.resultHandler(callback)];
+}
+
+// MARK: - Peripheral name
+
+RCT_EXPORT_METHOD(getNameForPeripheral:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)peripheralUUID
+                  callback:(RCTResponseSenderBlock)callback) {
+    [_wrapper getNameForPeripheralWithCentralManagerId:centralManagerId.intValue uuidString:peripheralUUID callback:self.resultHandler(callback)];
+}
+
+RCT_EXPORT_METHOD(monitorPeripheralName:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)peripheralUUID
+                  callback:(RCTResponseSenderBlock)callback) {
+    [_wrapper monitorPeripheralNameWithCentralManagerId:centralManagerId.intValue uuidString:peripheralUUID callback:self.resultHandler(callback)];
 }
 
 // MARK: - Discovery
 
-RCT_EXPORT_METHOD(discoverAllServicesAndCharacteristicsForDevice:(NSNumber *)centralManagerId
-                  deviceUUID:(NSString*)deviceUUID
+RCT_EXPORT_METHOD(discoverAllServicesAndCharacteristicsForPeripheral:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)peripheralUUID
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper discoverAllServicesAndCharacteristicsForDeviceWithCentralManagerId:centralManagerId.intValue uuidString:deviceUUID callback:self.resultHandler(callback)];
+    [_wrapper discoverAllServicesAndCharacteristicsForPeripheralWithCentralManagerId:centralManagerId.intValue uuidString:peripheralUUID callback:self.resultHandler(callback)];
 }
 
 // MARK: - Service and characteristic getters
 
-RCT_EXPORT_METHOD(servicesForDevice:(NSNumber *)centralManagerId
-                  deviceUUID:(NSString*)deviceUUID
+RCT_EXPORT_METHOD(getServiceForPeripheral:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)peripheralUUID
+                  serviceUUID:(nonnull NSString*)serviceUUID
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper servicesForDeviceWithCentralManagerId:centralManagerId.intValue uuidString:deviceUUID callback:self.resultHandler(callback)];
+    [_wrapper getServiceForPeripheralWithCentralManagerId:centralManagerId.intValue uuidString:peripheralUUID serviceUUIDString:serviceUUID callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(characteristicsForDevice:(NSNumber *)centralManagerId
-                  deviceUUID:(NSString*)deviceUUID
-                  serviceUUID:(NSString*)serviceUUID
+RCT_EXPORT_METHOD(getServicesForPeripheral:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)peripheralUUID
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper characteristicsForDeviceWithCentralManagerId:centralManagerId.intValue uuidString:deviceUUID serviceUUID:serviceUUID callback:self.resultHandler(callback)];
+    [_wrapper getServicesForPeripheralWithCentralManagerId:centralManagerId.intValue uuidString:peripheralUUID callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(characteristicsForService:(NSNumber *)centralManagerId
-                  serviceId:(NSNumber *)serviceId
+RCT_EXPORT_METHOD(getCharacteristicForServiceByUUID:(nonnull NSNumber *)centralManagerId
+                  peripheralId:(nonnull NSString*)peripheralUUID
+                  serviceUUID:(nonnull NSString*)serviceUUID
+                  characteristicUUID:(nonnull NSString*)characteristicUUID
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper characteristicsForServiceWithCentralManagerId:centralManagerId.intValue serviceId:serviceId.intValue callback:self.resultHandler(callback)];
+    [_wrapper getCharacteristicForServiceByUUIDWithCentralManagerId:centralManagerId.intValue uuidString:peripheralUUID serviceUUIDString:serviceUUID characteristicUUIDString:characteristicUUID callback:self.resultHandler(callback)];
+}
+
+RCT_EXPORT_METHOD(getCharacteristicForService:(nonnull NSNumber *)centralManagerId
+                  serviceId:(nonnull NSNumber*)serviceId
+                  characteristicUUID:(nonnull NSString *)characteristicUUID
+                  callback:(RCTResponseSenderBlock)callback) {
+    [_wrapper getCharacteristicForServiceWithCentralManagerId:centralManagerId.intValue serviceId:serviceId.intValue characteristicUUIDString:characteristicUUID callback:self.resultHandler(callback)];
+}
+
+RCT_EXPORT_METHOD(getCharacteristicsForService:(nonnull NSNumber *)centralManagerId
+                  serviceId:(nonnull NSNumber*)serviceId
+                  callback:(RCTResponseSenderBlock)callback) {
+    [_wrapper getCharacteristicsForServiceWithCentralManagerId:centralManagerId.intValue serviceId:serviceId.intValue callback:self.resultHandler(callback)];
 }
 
 // MARK: - Reading
 
-RCT_EXPORT_METHOD(readCharacteristicForPeripheral:(NSNumber *)centralManagerId
-                  peripheralUUID:(NSString *)peripheralUUID
-                  serviceUUID:(NSString *)serviceUUID
-                  characteristicUUID:(NSString *)characteristicUUID
+RCT_EXPORT_METHOD(readBase64CharacteristicValue:(nonnull NSNumber *)centralManagerId
+                  characteristicId:(nonnull NSNumber *)characteristicId
                   cancelOptions:(NSDictionary *)cancelOptions
                   callback:(RCTResponseSenderBlock)callback) {
-    
-    [_wrapper readCharacteristicForPeripheralWithCentralManagerId:centralManagerId.intValue 
-                                             peripheralUuidString:peripheralUUID 
-                                                serviceUUIDString:serviceUUID 
-                                         characteristicUUIDString:characteristicUUID
-                                                    cancelOptions:cancelOptions
-                                                         callback:self.resultHandler(callback)];
-}
-
-RCT_EXPORT_METHOD(readCharacteristicForService:(NSNumber *)centralManagerId
-                  serviceId:(NSNumber *)serviceId
-                  characteristicUUID:(NSString *)characteristicUUID
-                  cancelOptions:(NSDictionary *)cancelOptions
-                  callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper readCharacteristicForServiceWithCentralManagerId:centralManagerId.intValue
-                                                     serviceId:serviceId.intValue
-                                      characteristicUUIDString:characteristicUUID 
-                                                 cancelOptions:cancelOptions
-                                                      callback:self.resultHandler(callback)];
-}
-
-RCT_EXPORT_METHOD(readCharacteristic:(NSNumber *)centralManagerId
-                  characteristicId:(NSNumber *)characteristicId
-                  cancelOptions:(NSDictionary *)cancelOptions
-                  callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper readCharacteristicWithCentralManagerId:centralManagerId.intValue
-                                    characteristicId:characteristicId.intValue
-                                       cancelOptions:cancelOptions
-                                            callback:self.resultHandler(callback)];
-}
-
-// MARK: - Writing
-
-RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSNumber *)centralManagerId
-                  deviceUUID:(NSString *)deviceUUID
-                  serviceUUID:(NSString *)serviceUUID
-                  characteristicUUID:(NSString *)characteristicUUID
-                  valueBase64:(NSString *)valueBase64
-                  reponse:(BOOL)response
-                  cancelOptions:(NSDictionary *)cancelOptions
-                  callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper writeCharacteristicForDeviceWithCentralManagerId:centralManagerId.intValue
-                                          peripheralUUIDString:deviceUUID
-                                             serviceUUIDString:serviceUUID
-                                      characteristicUUIDString:characteristicUUID
-                                                   valueBase64:valueBase64
-                                                      response:response
-                                                 cancelOptions:cancelOptions
-                                                      callback:self.resultHandler(callback)];
-}
-
-RCT_EXPORT_METHOD(writeCharacteristicForService:(NSNumber *)centralManagerId
-                  serviceId:(NSNumber *)serviceId
-                  characteristicUUID:(NSString *)characteristicUUID
-                  valueBase64:(NSString *)valueBase64
-                  reponse:(BOOL)response
-                  cancelOptions:(NSDictionary *)cancelOptions
-                  callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper writeCharacteristicForServiceWithCentralManagerId:centralManagerId.intValue
-                                                      serviceId:serviceId.intValue
-                                       characteristicUUIDString:characteristicUUID
-                                                    valueBase64:valueBase64
-                                                       response:response
+    [_wrapper readBase64CharacteristicValueWithCentralManagerId:centralManagerId.intValue
+                                               characteristicId:characteristicId.intValue
                                                   cancelOptions:cancelOptions
                                                        callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(writeCharacteristic:(NSNumber *)centralManagerId
-                  characteristicId:(NSNumber *)characteristicId
-                  valueBase64:(NSString *)valueBase64
+// MARK: - Writing
+
+RCT_EXPORT_METHOD(writeBase64CharacteristicValue:(nonnull NSNumber *)centralManagerId
+                  characteristicId:(nonnull NSNumber *)characteristicId
+                  valueBase64:(nonnull NSString *)valueBase64
                   reponse:(BOOL)response
                   cancelOptions:(NSDictionary *)cancelOptions
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper writeCharacteristicWithCentralManagerId:centralManagerId.intValue
-                                     characteristicId:characteristicId.intValue
-                                          valueBase64:valueBase64 
-                                             response:response
-                                        cancelOptions:cancelOptions
-                                             callback:self.resultHandler(callback)];
+    [_wrapper writeBase64CharacteristicValueWithCentralManagerId:centralManagerId.intValue
+                                                characteristicId:characteristicId.intValue
+                                                     valueBase64:valueBase64 
+                                                        response:response
+                                                   cancelOptions:cancelOptions
+                                                        callback:self.resultHandler(callback)];
 }
 
 // MARK: - Monitoring
 
-RCT_EXPORT_METHOD(monitorCharacteristicForDevice:(NSNumber *)centralManagerId
-                  peripheralUUID:(NSString *)peripheralUUID
-                  serviceUUID:(NSString *)serviceUUID
-                  characteristicUUID:(NSString *)characteristicUUID
+RCT_EXPORT_METHOD(monitorBase64CharacteristicValue:(nonnull NSNumber *)centralManagerId
+                  characteristicId:(nonnull NSNumber *)characteristicId
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper monitorCharacteristicForDeviceWithCentralManagerId:centralManagerId.intValue
-                                            peripheralUUIDString:peripheralUUID
-                                               serviceUUIDString:serviceUUID
-                                        characteristicUUIDString:characteristicUUID
-                                                        callback:self.resultHandler(callback)];
+    [_wrapper monitorBase64CharacteristicValueWithCentralManagerId:centralManagerId.intValue
+                                                  characteristicId:characteristicId.intValue
+                                                          callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(monitorCharacteristicForService:(NSNumber *)centralManagerId
-                  serviceId:(NSNumber *)serviceId
-                  characteristicUUID:(NSString *)characteristicUUID
+RCT_EXPORT_METHOD(isCharacteristicNotifying:(nonnull NSNumber *)centralManagerId
+                  characteristicId:(nonnull NSNumber *)characteristicId
                   callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper monitorCharacteristicForServiceWithCentralManagerId:centralManagerId.intValue
-                                                        serviceId:serviceId.intValue
-                                         characteristicUUIDString:characteristicUUID
-                                                         callback:self.resultHandler(callback)];
+    [_wrapper isCharacteristicNotifyingWithCentralManagerId:centralManagerId.intValue
+                                           characteristicId:characteristicId.intValue
+                                                   callback:self.resultHandler(callback)];
 }
 
-RCT_EXPORT_METHOD(monitorCharacteristic:(NSNumber *)centralManagerId
-                  characteristicId:(NSNumber *)characteristicId
-                  callback:(RCTResponseSenderBlock)callback) {
-    [_wrapper monitorCharacteristicWithCentralManagerId:centralManagerId.intValue
-                                       characteristicId:characteristicId.intValue
-                                               callback:self.resultHandler(callback)];
+// MARK: - Utils
+
+RCT_EXPORT_METHOD(setLogLevel:(nonnull NSString *)logLevel) {
+    [_wrapper setLogLevel:logLevel];
+}
+
+RCT_EXPORT_METHOD(getLogLevel:(RCTResponseSenderBlock)callback) {
+    [_wrapper getLogLevel:self.resultHandler(callback)];
 }
 
 @end

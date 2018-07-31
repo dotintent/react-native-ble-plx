@@ -29,7 +29,8 @@
     "jest": "22.2.1",
     "prettier": "1.10.2",
     "react": "16.2.0",
-    "react-native": "0.53.0"
+    "react-native": "0.53.0",
+    "base64-js": "1.3.0"
   },
   "keywords": ["React", "Native", "Bluetooth", "Low", "Energy", "BLE", "Polidea"],
   "jest": {

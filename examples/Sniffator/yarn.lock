@@ -3122,8 +3122,9 @@ react-devtools-core@^2.5.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-"react-native-ble-plx@file:../..":
+"react-native-ble-plx@https://github.com/paweljaneczek/react-native-ble-plx#067bc34c0178a099cbb425bae120ed4ee1b750a7":
   version "0.9.0"
+  resolved "https://github.com/paweljaneczek/react-native-ble-plx#067bc34c0178a099cbb425bae120ed4ee1b750a7"
 
 react-native@0.50.4:
   version "0.50.4"
