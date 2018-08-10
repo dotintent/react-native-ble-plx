@@ -2,6 +2,7 @@ package com.polidea.reactnativeble;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -37,6 +38,7 @@ import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.reactnativeble.wrapper.Characteristic;
 import com.polidea.reactnativeble.wrapper.Device;
 import com.polidea.reactnativeble.wrapper.Service;
+import com.polidea.rxandroidble.NotificationSetupMode;
 import com.polidea.rxandroidble.RxBleAdapterStateObservable;
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
@@ -58,6 +60,7 @@ import rx.Observer;
 import rx.Subscription;
 import rx.functions.Action0;
 import rx.functions.Action1;
+import rx.functions.Actions;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
@@ -1038,26 +1041,37 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final BluetoothGattCharacteristic gattCharacteristic = characteristic.getNativeCharacteristic();
 
-        final Subscription subscription = Observable.just(connection)
-                .flatMap(new Func1<RxBleConnection, Observable<Observable<byte[]>>>() {
-                    @Override
-                    public Observable<Observable<byte[]>> call(RxBleConnection connection) {
-                        int properties = gattCharacteristic.getProperties();
-                        if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
-                            return connection.setupNotification(gattCharacteristic);
-                        }
+        final int properties = gattCharacteristic.getProperties();
+        final boolean notifications = (properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0;
+        final boolean indications = (properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0;
 
-                        if ((properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-                            return connection.setupIndication(gattCharacteristic);
-                        }
+        final BluetoothGattDescriptor cccDescriptor =
+                gattCharacteristic.getDescriptor(Characteristic.CLIENT_CHARACTERISTIC_CONFIG_UUID);
 
-                        return Observable.error(new CannotMonitorCharacteristicException(gattCharacteristic));
-                    }
-                })
+        final byte[] enableValue = notifications
+                ? BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                : BluetoothGattDescriptor.ENABLE_INDICATION_VALUE;
+        final byte[] disableValue = BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE;
+
+        Observable<Observable<byte[]>> notificationCompatObservable = notifications || indications
+                // NotificationSetupMode.COMPAT does not write CCC Descriptor on it's own
+                ? connection.setupNotification(gattCharacteristic, NotificationSetupMode.COMPAT)
+                : Observable.<Observable<byte[]>>error(new CannotMonitorCharacteristicException(gattCharacteristic));
+
+        final Observable<byte[]> enableNotificationObservable = cccDescriptor != null
+                ? connection.writeDescriptor(cccDescriptor, enableValue)
+                : Observable.<byte[]>empty();
+
+        final Observable<byte[]> disableNotificationObservable = cccDescriptor != null
+                ? connection.writeDescriptor(cccDescriptor, disableValue)
+                : Observable.<byte[]>empty();
+
+        final Subscription subscription = notificationCompatObservable
                 .flatMap(new Func1<Observable<byte[]>, Observable<byte[]>>() {
                     @Override
                     public Observable<byte[]> call(Observable<byte[]> observable) {
-                        return observable;
+                        // Keep in mind that every subscription to this observable will initiate another descriptor write
+                        return observable.mergeWith(enableNotificationObservable.ignoreElements());
                     }
                 })
                 .doOnUnsubscribe(new Action0() {
@@ -1065,6 +1079,8 @@ public class BleModule extends ReactContextBaseJavaModule {
                     public void call() {
                         promise.resolve(null);
                         transactions.removeSubscription(transactionId);
+                        // Try to disable notifications by writing descriptor
+                        disableNotificationObservable.subscribe(Actions.empty(), Actions.<Throwable>toAction1(Actions.empty()));
                     }
                 })
                 .subscribe(new Observer<byte[]>() {
