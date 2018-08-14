@@ -66,7 +66,19 @@ export interface BleManagerOptions {
    * @memberof BleManagerOptions
    * @instance
    */
-  restoreStateFunction?: (restoredState: ?BleRestoredState) => void;
+	restoreStateFunction?: (restoredState: ?BleRestoredState) => void;
+	
+	/**
+	 * Optional mapping of error codes to error messages. Uses {@link BleErrorCodeMessage} 
+	 * by default.
+	 * 
+	 * To override logging UUIDs or MAC adresses in error messages copy the original object 
+	 * and overwrite values of interest to you.
+	 * 
+	 * @memberof BleManagerOptions
+	 * @instance 
+	 */
+	errorMessages?: Array<string>;
 }
 
 /**

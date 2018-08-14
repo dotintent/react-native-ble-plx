@@ -42,9 +42,9 @@ export class BleError extends Error {
    */
   reason: ?string
 
-  constructor(nativeBleError: NativeBleError | string) {
+  constructor(nativeBleError: NativeBleError | string, errorMessagesArray: Array<string>) {
     super()
-    this.message = BleErrorCodeMessage[BleErrorCode.UnknownError]
+    this.message = errorMessagesArray[BleErrorCode.UnknownError]
     if (typeof nativeBleError === 'string') {
       this.errorCode = BleErrorCode.UnknownError
       this.attErrorCode = null
@@ -52,7 +52,7 @@ export class BleError extends Error {
       this.androidErrorCode = null
       this.reason = nativeBleError
     } else {
-      const message = BleErrorCodeMessage[nativeBleError.errorCode]
+      const message = errorMessagesArray[nativeBleError.errorCode]
       if (message) {
         this.message = fillStringWithArguments(message, nativeBleError)
       }
@@ -66,13 +66,14 @@ export class BleError extends Error {
   }
 }
 
-export function parseBleError(errorMessage: string): BleError {
-  let bleError: BleError
+export function parseBleError(errorMessage: string, errorMessagesArray: Array<string>): BleError {
+	let bleError: BleError
+	const dictionary = errorMessagesArray ? errorMessagesArray : BleErrorCodeMessage
   try {
     const nativeBleError = JSON.parse(errorMessage)
-    bleError = new BleError(nativeBleError)
+    bleError = new BleError(nativeBleError, dictionary)
   } catch (parseError) {
-    bleError = new BleError(errorMessage)
+    bleError = new BleError(errorMessage, dictionary)
   }
   return bleError
 }

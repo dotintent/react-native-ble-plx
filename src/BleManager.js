@@ -10,6 +10,7 @@ import {
   parseBleError,
   BleError,
   BleErrorCode,
+  BleErrorCodeMessage,
   BleATTErrorCode,
   BleAndroidErrorCode,
   BleIOSErrorCode
@@ -53,6 +54,9 @@ export class BleManager {
   // Map of active subscriptions
   _activeSubscriptions: { [id: string]: Subscription }
 
+  // Map of error codes to error messages
+  _errorMessages: Array<string>
+
   /**
    * Creates an instance of {@link BleManager}.
    */
@@ -79,6 +83,8 @@ export class BleManager {
         }
       )
     }
+
+    this._errorMessages = options.errorMessages ? options.errorMessages : BleErrorCodeMessage
 
     BleModule.createClient(options.restoreStateIdentifier || null)
   }
@@ -159,7 +165,7 @@ export class BleManager {
       return value
     } catch (error) {
       delete this._activePromises[id]
-      throw parseBleError(error.message)
+      throw parseBleError(error.message, _errorMessages)
     }
   }
 
@@ -295,7 +301,10 @@ export class BleManager {
   ) {
     this.stopDeviceScan()
     const scanListener = ([error, nativeDevice]: [?string, ?NativeDevice]) => {
-      listener(error ? parseBleError(error) : null, nativeDevice ? new Device(nativeDevice, this) : null)
+      listener(
+        error ? parseBleError(error, _errorMessages) : null,
+        nativeDevice ? new Device(nativeDevice, this) : null
+      )
     }
     // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
     this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
@@ -406,7 +415,7 @@ export class BleManager {
   onDeviceDisconnected(deviceIdentifier: DeviceId, listener: (error: ?BleError, device: Device) => void): Subscription {
     const disconnectionListener = ([error, nativeDevice]: [?string, NativeDevice]) => {
       if (deviceIdentifier !== nativeDevice.id) return
-      listener(error ? parseBleError(error) : null, new Device(nativeDevice, this))
+      listener(error ? parseBleError(error, _errorMessages) : null, new Device(nativeDevice, this))
     }
 
     const subscription: Subscription = this._eventEmitter.addListener(
@@ -862,7 +871,7 @@ export class BleManager {
     ]) => {
       if (transactionId !== msgTransactionId) return
       if (error) {
-        listener(parseBleError(error), null)
+        listener(parseBleError(error, _errorMessages), null)
         return
       }
       listener(null, new Characteristic(characteristic, this))
