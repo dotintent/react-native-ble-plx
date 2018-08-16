@@ -17,7 +17,8 @@ toc:
     description: |
       Types and classes related to BLE errors.
   - BleError
-  - BleErrorCode 
+  - BleErrorCode
+  - BleErrorCodeMessage
   - BleATTErrorCode
   - BleAndroidErrorCode
   - BleIOSErrorCode
@@ -26,6 +27,7 @@ toc:
       All Flow aliases and Flow types used in this library.
   - LogLevel
   - State
+  - BleErrorCodeMessageMapping
   - BleManagerOptions
   - BleRestoredState
   - ScanOptions
