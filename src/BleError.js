@@ -1,5 +1,6 @@
 // @flow
 import { fillStringWithArguments } from './Utils'
+import type { BleErrorCodeMessageMapping } from './TypeDefinition'
 
 export interface NativeBleError {
   errorCode: $Values<typeof BleErrorCode>;
@@ -42,9 +43,9 @@ export class BleError extends Error {
    */
   reason: ?string
 
-  constructor(nativeBleError: NativeBleError | string, errorMessagesArray: Array<string>) {
+  constructor(nativeBleError: NativeBleError | string, errorMessageMapping: BleErrorCodeMessageMapping) {
     super()
-    this.message = errorMessagesArray[BleErrorCode.UnknownError]
+    this.message = errorMessageMapping[BleErrorCode.UnknownError]
     if (typeof nativeBleError === 'string') {
       this.errorCode = BleErrorCode.UnknownError
       this.attErrorCode = null
@@ -52,7 +53,7 @@ export class BleError extends Error {
       this.androidErrorCode = null
       this.reason = nativeBleError
     } else {
-      const message = errorMessagesArray[nativeBleError.errorCode]
+      const message = errorMessageMapping[nativeBleError.errorCode]
       if (message) {
         this.message = fillStringWithArguments(message, nativeBleError)
       }
@@ -62,18 +63,18 @@ export class BleError extends Error {
       this.androidErrorCode = nativeBleError.androidErrorCode
       this.reason = nativeBleError.reason
     }
-    this.name = "BleError"
+    this.name = 'BleError'
   }
 }
 
-export function parseBleError(errorMessage: string, errorMessagesArray: Array<string>): BleError {
-	let bleError: BleError
-	const dictionary = errorMessagesArray ? errorMessagesArray : BleErrorCodeMessage
+export function parseBleError(errorMessage: string, errorMessageMapping: BleErrorCodeMessageMapping): BleError {
+  let bleError: BleError
+  const errorMapping = errorMessageMapping ? errorMessageMapping : BleErrorCodeMessage
   try {
     const nativeBleError = JSON.parse(errorMessage)
-    bleError = new BleError(nativeBleError, dictionary)
+    bleError = new BleError(nativeBleError, errorMapping)
   } catch (parseError) {
-    bleError = new BleError(errorMessage, dictionary)
+    bleError = new BleError(errorMessage, errorMapping)
   }
   return bleError
 }
@@ -262,7 +263,11 @@ export const BleErrorCode = {
   LocationServicesDisabled: 601
 }
 
-export const BleErrorCodeMessage = {
+/**
+ * Mapping of error codes to error messages
+ * @name BleErrorCodeMessage
+ */
+export const BleErrorCodeMessage: BleErrorCodeMessageMapping = {
   // Implementation specific errors
   [BleErrorCode.UnknownError]: 'Unknown error occurred. This is probably a bug! Check reason property.',
   [BleErrorCode.BluetoothManagerDestroyed]: 'BleManager was destroyed',

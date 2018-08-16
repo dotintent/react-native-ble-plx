@@ -897,6 +897,16 @@
               
                 
                 <li><a
+                  href='#bleerrorcodemessage'
+                  class="">
+                  BleErrorCodeMessage
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#bleatterrorcode'
                   class=" toggle-sibling">
                   BleATTErrorCode
@@ -1371,6 +1381,16 @@
               
                 
                 <li><a
+                  href='#bleerrorcodemessagemapping'
+                  class="">
+                  BleErrorCodeMessageMapping
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#blemanageroptions'
                   class=" toggle-sibling">
                   BleManagerOptions
@@ -1393,6 +1413,12 @@
                         href='#blemanageroptionsrestorestatefunction'
                         class='regular pre-open'>
                         #restoreStateFunction
+                      </a></li>
+                      
+                      <li><a
+                        href='#blemanageroptionserrorcodestomessagesmapping'
+                        class='regular pre-open'>
+                        #errorCodesToMessagesMapping
                       </a></li>
                       
                     </ul>
@@ -7164,7 +7190,7 @@ library. It contains additional properties which help to identify problems in
 platform independent way.</p>
 
 
-  <div class='pre p1 fill-light mt0'>new BleError(nativeBleError: (NativeBleError | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</div>
+  <div class='pre p1 fill-light mt0'>new BleError(nativeBleError: (NativeBleError | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), errorMessageMapping: <a href="#bleerrorcodemessagemapping">BleErrorCodeMessageMapping</a>)</div>
   
   
     <p>
@@ -7189,6 +7215,14 @@ platform independent way.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>nativeBleError</span> <code class='quiet'>((NativeBleError | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>))</code>
+	    
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>errorMessageMapping</span> <code class='quiet'>(<a href="#bleerrorcodemessagemapping">BleErrorCodeMessageMapping</a>)</code>
 	    
           </div>
           
@@ -9237,6 +9271,53 @@ to cache them.</p>
     </div>
   
 </div>
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='bleerrorcodemessage'>
+      BleErrorCodeMessage
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Mapping of error codes to error messages</p>
+
+
+  <div class='pre p1 fill-light mt0'>BleErrorCodeMessage</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 
@@ -12248,6 +12329,58 @@ received by <a href="#blemanager">BleManager</a></p>
   
   <div class='clearfix'>
     
+    <h3 class='fl m0' id='bleerrorcodemessagemapping'>
+      BleErrorCodeMessageMapping
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Type of error code mapping table</p>
+
+
+  <div class='pre p1 fill-light mt0'>BleErrorCodeMessageMapping</div>
+  
+    <p>
+      Type:
+      {}
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+            <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
     <h3 class='fl m0' id='blemanageroptions'>
       BleManagerOptions
     </h3>
@@ -12284,6 +12417,12 @@ received by <a href="#blemanager">BleManager</a></p>
       
         <div class='space-bottom0'>
           <span class='code bold'>restoreStateFunction</span> <code class='quiet'>(function (restoredState: <a href="#blerestoredstate">BleRestoredState</a>?): void?)</code>
+          
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <span class='code bold'>errorCodesToMessagesMapping</span> <code class='quiet'>(<a href="#bleerrorcodemessagemapping">BleErrorCodeMessageMapping</a>?)</code>
           
           
         </div>
@@ -12369,6 +12508,55 @@ connected peripherals.</p>
 
 
   <div class='pre p1 fill-light mt0'>restoreStateFunction</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='blemanageroptionserrorcodestomessagesmapping'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>errorCodesToMessagesMapping</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Optional mapping of error codes to error messages. Uses <a href="#bleerrorcodemessage">BleErrorCodeMessage</a>
+by default.</p>
+<p>To override logging UUIDs or MAC adresses in error messages copy the original object
+and overwrite values of interest to you.</p>
+
+
+  <div class='pre p1 fill-light mt0'>errorCodesToMessagesMapping</div>
   
   
 

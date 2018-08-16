@@ -2,6 +2,7 @@
 'use strict'
 
 import { Device } from './Device'
+import { BleErrorCode } from './BleError'
 
 /**
  * Bluetooth device id.
@@ -47,6 +48,11 @@ export interface Subscription {
 }
 
 /**
+ * Type of error code mapping table
+ */
+export type BleErrorCodeMessageMapping = { [$Values<typeof BleErrorCode>]: string }
+
+/**
  * Options which can be passed to when creating BLE Manager
  */
 export interface BleManagerOptions {
@@ -66,19 +72,19 @@ export interface BleManagerOptions {
    * @memberof BleManagerOptions
    * @instance
    */
-	restoreStateFunction?: (restoredState: ?BleRestoredState) => void;
-	
-	/**
-	 * Optional mapping of error codes to error messages. Uses {@link BleErrorCodeMessage} 
-	 * by default.
-	 * 
-	 * To override logging UUIDs or MAC adresses in error messages copy the original object 
-	 * and overwrite values of interest to you.
-	 * 
-	 * @memberof BleManagerOptions
-	 * @instance 
-	 */
-	errorMessages?: Array<string>;
+  restoreStateFunction?: (restoredState: ?BleRestoredState) => void;
+
+  /**
+   * Optional mapping of error codes to error messages. Uses {@link BleErrorCodeMessage}
+   * by default.
+   *
+   * To override logging UUIDs or MAC adresses in error messages copy the original object
+   * and overwrite values of interest to you.
+   *
+   * @memberof BleManagerOptions
+   * @instance
+   */
+  errorCodesToMessagesMapping?: BleErrorCodeMessageMapping;
 }
 
 /**
