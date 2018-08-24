@@ -7,7 +7,7 @@ import { peekLatest } from '../Buffer'
 import { createCallback } from '../Utils'
 import type { Peripheral } from './Peripheral'
 import type { Buffer } from '../Buffer'
-import type { Manager, Base64, UUID, StateType } from '../TypeDefinition'
+import type { Manager, Base64, UUID, StateType, ManagerId } from '../TypeDefinition'
 
 export type CentralManager = Manager
 
@@ -82,7 +82,7 @@ export type MonitorStateOptions = {
 
 export function create(options: CentralManagerOptions = {}): Promise<CentralManager> {
   return new Promise((resolve, reject) => {
-    BleModule.createCentralClient(options, (err, data) => {
+    BleModule.createCentralClient(options, (err: ?NativeBleError, data: ?ManagerId) => {
       (data ? resolve({ id: data }) : reject(err))
     })
   })

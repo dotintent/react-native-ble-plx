@@ -19,6 +19,7 @@ import type {
   RestoredState,
   MonitorStateOptions
 } from './central'
+import type { Buffer } from './Buffer'
 
 export type Callback<T> = (error: ?NativeBleError, data: ?T) => void
 
