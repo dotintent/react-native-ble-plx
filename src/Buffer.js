@@ -8,6 +8,7 @@ import type { ManagerId } from './TypeDefinition'
 
 export type BufferId = number
 
+// eslint-disable-next-line no-unused-vars
 export type Buffer<T> = {
   id: BufferId,
   centralId: ManagerId
@@ -49,7 +50,7 @@ export function takeOldest<T>(buffer: Buffer<T>, cancelOptions: CancelOptions = 
     {
       strategy: 'take',
       placement: 'oldest',
-      chunkSize: null
+      chunkSize: 1
     },
     cancelOptions
   ).then(value => value[0])

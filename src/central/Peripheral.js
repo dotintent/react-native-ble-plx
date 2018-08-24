@@ -6,6 +6,7 @@ import { createCallback } from '../Utils'
 import type { CancelOptions } from '../Promise'
 import type { UUID } from '../TypeDefinition'
 import type { Service } from './Service'
+import type { Buffer } from '../Buffer'
 
 /**
  * Peripheral (device) type
