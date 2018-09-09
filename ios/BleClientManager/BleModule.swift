@@ -650,9 +650,14 @@ public class BleClientManager : NSObject {
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
-        guard let value = valueBase64.fromBase64 else {
-            return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
-        }
+        // guard let value = valueBase64.fromBase64 else {
+        //     return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
+        // }
+        // 字符串转Data
+        let data = valueBase64.data(using: String.Encoding.utf8)
+        //Data转byte
+        let bytes = [UInt8](data!)
+        let value = Data(bytes:bytes)   
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: serviceUUID,
@@ -672,9 +677,14 @@ public class BleClientManager : NSObject {
                                                       transactionId: String,
                                                             resolve: @escaping Resolve,
                                                              reject: @escaping Reject) {
-        guard let value = valueBase64.fromBase64 else {
-            return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
-        }
+        // guard let value = valueBase64.fromBase64 else {
+        //     return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
+        // }
+        // 字符串转Data
+        let data = valueBase64.data(using: String.Encoding.utf8)
+        //Data转byte
+        let bytes = [UInt8](data!)
+        let value = Data(bytes:bytes)   
 
         let observable = getCharacteristicForService(serviceIdentifier,
                                                      characteristicUUID: characteristicUUID)
@@ -693,10 +703,15 @@ public class BleClientManager : NSObject {
                                                    transactionId: String,
                                                          resolve: @escaping Resolve,
                                                           reject: @escaping Reject) {
-        guard let value = valueBase64.fromBase64 else {
-            return BleError.invalidWriteDataForCharacteristic(characteristicIdentifier.description, data: valueBase64)
-                .callReject(reject)
-        }
+        // guard let value = valueBase64.fromBase64 else {
+        //     return BleError.invalidWriteDataForCharacteristic(characteristicIdentifier.description, data: valueBase64)
+        //         .callReject(reject)
+        // }
+        // 字符串转Data
+        let data = valueBase64.data(using: String.Encoding.utf8)
+        //Data转byte
+        let bytes = [UInt8](data!)
+        let value = Data(bytes:bytes)   
 
         safeWriteCharacteristicForDevice(getCharacteristic(characteristicIdentifier),
                                          value: value,

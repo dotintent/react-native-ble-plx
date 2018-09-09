@@ -820,20 +820,29 @@ public class BleModule extends ReactContextBaseJavaModule {
                 promise);
     }
 
+      // String转byte[]
+      public static byte[] strToByteArray(String str) {
+        if (str == null) {
+            return null;
+        }
+        byte[] byteArray = str.getBytes();
+        return byteArray;
+    }
+
     private void writeCharacteristicWithValue(final Characteristic characteristic,
                                               final String valueBase64,
                                               final Boolean response,
                                               final String transactionId,
                                               final Promise promise) {
-        final byte[] value;
-        try {
-            value = Base64Converter.decode(valueBase64);
-        } catch (Throwable e) {
-            BleErrorUtils.invalidWriteDataForCharacteristic(valueBase64,
-                    UUIDConverter.fromUUID(characteristic.getNativeCharacteristic().getUuid()))
-                    .reject(promise);
-            return;
-        }
+        final byte[] value = strToByteArray(valueBase64);
+        // try {
+        //     value = Base64Converter.decode(valueBase64);
+        // } catch (Throwable e) {
+        //     BleErrorUtils.invalidWriteDataForCharacteristic(valueBase64,
+        //             UUIDConverter.fromUUID(characteristic.getNativeCharacteristic().getUuid()))
+        //             .reject(promise);
+        //     return;
+        // }
 
         characteristic.getNativeCharacteristic()
                 .setWriteType(response ?
