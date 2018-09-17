@@ -140,6 +140,7 @@ extension BleError {
     static func invalidIdentifiers(_ ids: [String]) -> BleError { return BleError(errorCode: .invalidIdentifiers, internalMessage: ids.joined(separator: ", ")) }
     static func scanStartFailed(_ reason: String) -> BleError { return BleError(errorCode: .scanStartFailed, reason: reason)}
     static func peripheralNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .deviceNotFound, deviceID: uuid) }
+    static func peripheralAlreadyConnected(_ uuid: String) -> BleError { return BleError(errorCode: .deviceAlreadyConnected, deviceID: uuid) }
     static func peripheralNotConnected(_ uuid: String) -> BleError { return BleError(errorCode: .deviceNotConnected, deviceID: uuid) }
     static func peripheralConnectionFailed(_ uuid: UUID) -> BleError { return BleError(errorCode: .deviceConnectionFailed, deviceID: uuid.uuidString) }
     static func serviceNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .serviceNotFound, serviceUUID: uuid) }

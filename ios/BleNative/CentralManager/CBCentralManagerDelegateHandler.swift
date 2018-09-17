@@ -27,6 +27,7 @@ class CBCentralManagerDelegateHandler: NSObject, CBCentralManagerDelegate {
     }
     
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
+        Logger.d("CentralManagerDelegateHandler didUpdateState(state: \(central.state.rawValue))")
         let state = BleState(rawValue: central.state.rawValue) ?? .unsupported
         let updatedBuffers = bufferHandler.appendBufferElement(
             state.asSuccessResult(), 
@@ -37,11 +38,12 @@ class CBCentralManagerDelegateHandler: NSObject, CBCentralManagerDelegate {
         if state != .poweredOn {
             let error = BleError.invalidManagerState(state)
             let invalidatedBuffers = bufferHandler.markBuffersInvalidated(reason: error, exceptTypes: [.state])
-            invalidateBufferRequests(invalidatedBuffers, withError: error, requestHandler: requestHandler, bufferHandler: bufferHandler)
+            invalidateBufferRequests(invalidatedBuffers, withError: error, requestHandler: requestHandler)
         }
     }
     
     public func centralManager(_ central: CBCentralManager, willRestoreState dict: [String: Any]) {
+        Logger.d("CentralManagerDelegateHandler willRestoreState(state: \(dict))")
         fillDiscoveredDataFromRestoreStateDict(dict)
         
         var resultDict: [String: Any] = [:]
@@ -63,6 +65,7 @@ class CBCentralManagerDelegateHandler: NSObject, CBCentralManagerDelegate {
     }
     
     public func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
+        Logger.d("CentralManagerDelegateHandler didDisconnectPeripheral(peripheral: \(peripheral.identifier.uuidString), error: \(String(describing: error))")
         cacheHandler.clearForPeripheral(peripheral)
         
         let peripheralId = ObjectIdGenerators.peripherals.id(for: peripheral)
@@ -71,21 +74,22 @@ class CBCentralManagerDelegateHandler: NSObject, CBCentralManagerDelegate {
         }
         
         let updatedBuffers = bufferHandler.appendBufferElement(
-            peripheral.asSuccessResult(centralId: centralId),
+            peripheral.asDataObject(centralId: centralId),
             forType: .disconnect
         )
         updateBuffersRequests(updatedBuffers, requestHandler: requestHandler, bufferHandler: bufferHandler)
         
-        let error = BleError.peripheralNotConnected(peripheral.identifier.uuidString)
+        let bleError = error?.bleError(errorCode: .deviceNotConnected, deviceID: peripheral.identifier.uuidString) ?? BleError.peripheralNotConnected(peripheral.identifier.uuidString)  
         let invalidatedBuffers = bufferHandler.markBuffersInvalidated(
-            reason: error, 
+            reason: bleError, 
             relatedIdentifier: peripheralId, 
             exceptTypes: [.disconnect]
         )
-        invalidateBufferRequests(invalidatedBuffers, withError: error, requestHandler: requestHandler, bufferHandler: bufferHandler)
+        invalidateBufferRequests(invalidatedBuffers, withError: bleError, requestHandler: requestHandler)
     }
     
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String: Any], rssi RSSI: NSNumber) {
+        Logger.d("CentralManagerDelegateHandler didDiscover(peripheral: \(peripheral.identifier.uuidString), advertisementData: \(advertisementData), rssi: \(RSSI))")
         let device = ScannedPeripheral(peripheral: peripheral, advertisementData: advertisementData, rssi: RSSI)
         let updatedBuffers = bufferHandler.appendBufferElement(
             device.asDataObject(centralId: centralId),
@@ -95,6 +99,7 @@ class CBCentralManagerDelegateHandler: NSObject, CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
+        Logger.d("CentralManagerDelegateHandler didConnect(peripheral: \(peripheral.identifier.uuidString))")
         cacheHandler.clearForPeripheral(peripheral)
         
         peripheral.delegate = peripheralDelegateHandler
@@ -106,11 +111,13 @@ class CBCentralManagerDelegateHandler: NSObject, CBCentralManagerDelegate {
     }
     
     func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
+        Logger.d("CentralManagerDelegateHandler didFailToConnect(peripheral: \(peripheral.identifier.uuidString), error: \(String(describing: error)))")
         let peripheralId = ObjectIdGenerators.peripherals.id(for: peripheral)
         guard let request = requestHandler.removeRequest(relatedIdentifier: peripheralId, type: .connect) else {
             return
         }
-        request.callback(BleError.peripheralConnectionFailed(peripheral.identifier).asErrorResult())
+        let bleError = error?.bleError(errorCode: .deviceConnectionFailed, deviceID: peripheral.identifier.uuidString) ?? BleError.peripheralConnectionFailed(peripheral.identifier) 
+        request.callback(bleError.asErrorResult())
     }
     
     private func fillDiscoveredDataFromRestoreStateDict(_ dict: [String: Any]) {

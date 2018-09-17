@@ -4,7 +4,6 @@ import CoreBluetooth
 public typealias Result = [Int: Any]
 public typealias Callback = (Result) -> Void
 
-
 public class CentralManager: NSObject {
     let manager: CBCentralManager
     
@@ -56,6 +55,7 @@ public class CentralManager: NSObject {
     // MARK: - Transactions
     
     func cancelPromise(_ promiseId: String) {
+        Logger.d("CentralManager cancelPromise(promiseId: \(promiseId))")
         if let request = requestHandler.removeRequest(promiseId: promiseId) {
             request.callback(BleError.cancelled().asErrorResult())
         }
@@ -67,6 +67,7 @@ public class CentralManager: NSObject {
                         options: [String: AnyObject], 
                         cancelOptions: [String: AnyObject], 
                         callback: @escaping Callback) {
+        Logger.d("CentralManager actionOnBuffer(id: \(id), options: \(options), cancelOptions: \(cancelOptions))")
         guard let buffer = bufferHandler.buffer(forId: id) else {
             callback(BleError.bufferNotExist(id).asErrorResult())
             return
@@ -90,6 +91,7 @@ public class CentralManager: NSObject {
     }
     
     func stopBuffer(withId id: Int32, callback: Callback) {
+        Logger.d("CentralManager stopBuffer(id: \(id))")
         guard let buffer = bufferHandler.buffer(forId: id) else {
             callback(BleError.bufferNotExist(id).asErrorResult())
             return
@@ -103,11 +105,13 @@ public class CentralManager: NSObject {
     // MARK: - State
     
     func getState(callback: Callback) {
+        Logger.d("CentralManager getState()")
         let state = BleState(rawValue: manager.state.rawValue) ?? .unsupported
         callback(state.asSuccessResult())
     }
     
     func monitorState(options: [String: AnyObject]?, callback: Callback) {
+        Logger.d("CentralManager monitorState(options: \(options))")
         let buffer = bufferHandler.addBuffer(type: .state)
         if options?.emitCurrentState ?? false {
             let state = BleState(rawValue: manager.state.rawValue) ?? .unsupported
@@ -119,6 +123,7 @@ public class CentralManager: NSObject {
     // MARK: - State restoration
     
     func monitorRestoreState(callback: Callback) {
+        Logger.d("CentralManager monitorRestoreState()")
         guard let buffer = restoreBuffer else {
             callback(BleError.restoreBufferNotExist().asErrorResult())
             return
@@ -129,6 +134,7 @@ public class CentralManager: NSObject {
     // MARK: - Scanning
     
     func scanForPeripherals(_ filteredUUIDs: [String]?, options: [String: AnyObject]?, callback: Callback) {
+        Logger.d("CentralManager scanForPeripherals(filteredUUIDs: \(filteredUUIDs), options: \(options))")
         guard ensureState(callback: callback) else { return }
         
         guard !bufferHandler.hasBuffer(withType: .scan) else {
@@ -160,12 +166,14 @@ public class CentralManager: NSObject {
     }
     
     func stopScanningBuffer() {
+        Logger.d("CentralManager stopScanningBuffer()")
         manager.stopScan()
     } 
     
     // MARK: - Read Name
     
     func getNameForPeripheral(_ uuidString: String, callback: @escaping Callback) {
+        Logger.d("CentralManager getNameForPeripheral(uuidString: \(uuidString))")
         guard ensureState(callback: callback) else { return }
         
         guard let peripheral = retrieveConnectedPeripheral(withUuidString: uuidString, callback: callback) else {
@@ -176,6 +184,7 @@ public class CentralManager: NSObject {
     }
     
     func monitorPeripheralName(_ uuidString: String, callback: @escaping Callback) {
+        Logger.d("CentralManager monitorPeripheralName(uuidString: \(uuidString))")
         guard ensureState(callback: callback) else { return }
         
         guard let peripheral = retrieveConnectedPeripheral(withUuidString: uuidString, callback: callback) else {
@@ -190,6 +199,7 @@ public class CentralManager: NSObject {
     // MARK: - Read RSSI
     
     func readRSSIForPeripheral(_ uuidString: String, cancelOptions: [String: AnyObject], callback: @escaping Callback) {
+        Logger.d("CentralManager readRSSIForPeripheral(uuidString: \(uuidString), cancelOptions: \(cancelOptions))")
         guard ensureState(callback: callback) else { return }
         guard let peripheral = retrieveConnectedPeripheral(withUuidString: uuidString, callback: callback, promiseId: cancelOptions.promiseId) else {
             return
@@ -208,10 +218,14 @@ public class CentralManager: NSObject {
                                  mtu: Int,
                                  cancelOptions: [String: AnyObject],
                                  callback: @escaping Callback) {
+        Logger.d("CentralManager requestMTUForPeripheral(uuidString: \(uuidString), mtu: \(mtu), cancelOptions: \(cancelOptions))")
+        guard ensureState(callback: callback) else { return }
+        
         callback(BleError.methodNotSupported(reason: "Cannot request MTU on iOS").asErrorResult())
     }
     
     func getMTUForPeripheral(_ uuidString: String, callback: @escaping Callback) {
+        Logger.d("CentralManager getMTUForPeripheral(uuidString: \(uuidString))")
         guard ensureState(callback: callback) else { return }
         
         guard let peripheral = retrievePeripheral(withUuidString: uuidString, callback: callback) else {
@@ -222,12 +236,18 @@ public class CentralManager: NSObject {
     }
     
     func monitorMTUForPeripheral(_ uuidString: String, callback: @escaping Callback) {
+        Logger.d("CentralManager monitorMTUForPeripheral(uuidString: \(uuidString))")
+        guard ensureState(callback: callback) else { return }
+        
         callback(BleError.methodNotSupported(reason: "Cannot monitor MTU changes on iOS").asErrorResult())
     }
     
     // MARK: - Device managment
     
     func getPeripherals(_ deviceIdentifiers: [String], callback: Callback) {
+        Logger.d("CentralManager getPeripherals(deviceIdentifiers: \(deviceIdentifiers))")
+        guard ensureState(callback: callback) else { return }
+        
         let uuids = deviceIdentifiers.compactMap { UUID(uuidString: $0) }
         guard uuids.count == deviceIdentifiers.count else {
             callback(BleError.invalidIdentifiers(deviceIdentifiers).asErrorResult())
@@ -241,6 +261,9 @@ public class CentralManager: NSObject {
     }
     
     func getConnectedPeripherals(_ serviceUUIDs: [String], callback: Callback) {
+        Logger.d("CentralManager getConnectedPeripherals(serviceUUIDS: \(serviceUUIDs))")
+        guard ensureState(callback: callback) else { return }
+        
         let uuids = serviceUUIDs.compactMap { $0.toCBUUID() }
         guard uuids.count == serviceUUIDs.count else {
             callback(BleError.invalidIdentifiers(serviceUUIDs).asErrorResult())
@@ -256,11 +279,17 @@ public class CentralManager: NSObject {
     // MARK: - Connection managment
     
     func connectToPeripheral(_ uuidString: String, options: [String: AnyObject], callback: @escaping Callback) {
+        Logger.d("CentralManager connectToPeripheral(uuidString: \(uuidString), options: \(options))")
         guard ensureState(callback: callback) else { return }
         
         guard let peripheral = retrievePeripheral(withUuidString: uuidString, callback: callback) else {
             return
         }
+        
+        guard peripheral.state == .disconnected else {
+            callback(BleError.peripheralAlreadyConnected(uuidString).asErrorResult())
+            return
+        } 
         
         let peripheralId = ObjectIdGenerators.peripherals.id(for: peripheral)
         let request = Request(type: .connect, relatedIdentifier: peripheralId, callback: callback, promiseId: options.promiseId)
@@ -278,6 +307,9 @@ public class CentralManager: NSObject {
     }
     
     func cancelPeripheralConnection(_ uuidString: String, cancelOptions: [String: AnyObject], callback: @escaping Callback) {
+        Logger.d("CentralManager cancelPeripheralConnection(uuidString: \(uuidString), cancelOptions: \(cancelOptions))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let peripheral = retrievePeripheral(withUuidString: uuidString, callback: callback) else {
             return
         }
@@ -289,11 +321,13 @@ public class CentralManager: NSObject {
             
             manager.cancelPeripheralConnection(peripheral)
         } else {
-            callback(BleError.cancelled().asErrorResult())
+            callback(BleError.peripheralNotConnected(uuidString).asErrorResult())
         }
     }
     
     func isPeripheralConnected(_ uuidString: String, callback: Callback) {
+        Logger.d("CentralManager isPeripheralConnected(uuidString: \(uuidString))")
+        guard ensureState(callback: callback) else { return }
         guard let peripheral = retrievePeripheral(withUuidString: uuidString, callback: callback) else {
             return
         }
@@ -302,6 +336,9 @@ public class CentralManager: NSObject {
     }
     
     func monitorDisconnection(callback: Callback) {
+        Logger.d("CentralManager monitorDisconnection()")
+        guard ensureState(callback: callback) else { return }
+        
         let buffer = bufferHandler.addBuffer(type: .disconnect)
         callback(buffer.asSuccessResult(centralId: id))
     }
@@ -310,6 +347,7 @@ public class CentralManager: NSObject {
     
     func discoverAllServicesAndCharacteristicsForPeripheral(_ uuidString: String,
                                                             callback: @escaping Callback) {
+        Logger.d("CentralManager discoverAllServicesAndCharacteristicsForPeripheral(uuidString: \(uuidString))")
         guard ensureState(callback: callback) else { return }
         guard let peripheral = retrieveConnectedPeripheral(withUuidString: uuidString, callback: callback) else {
             return
@@ -356,6 +394,9 @@ public class CentralManager: NSObject {
     // MARK: - Service and characteristic getters
     
     func getServiceForPeripheral(_ uuidString: String, serviceUUIDString: String, callback: Callback) {
+        Logger.d("CentralManager getServiceForPeripheral(uuidString: \(uuidString), serviceUUIDString: \(serviceUUIDString))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let serviceCBUUID = serviceUUIDString.toCBUUID() else {
             callback(BleError.invalidIdentifier(serviceUUIDString).asErrorResult())
             return
@@ -374,6 +415,9 @@ public class CentralManager: NSObject {
     }
     
     func getServicesForPeripheral(_ uuidString: String, callback: Callback) {
+        Logger.d("CentralManager getServicesForPeripheral(uuidString: \(uuidString))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let peripheral = retrieveConnectedPeripheral(withUuidString: uuidString, callback: callback) else {
             return
         }
@@ -383,6 +427,9 @@ public class CentralManager: NSObject {
     }
     
     func getCharacteristicForService(_ uuidString: String, serviceUUIDString: String, characteristicUUIDString: String, callback: Callback) {
+        Logger.d("CentralManager getCharacteristicForService(uuidString: \(uuidString), serviceUUIDString: \(serviceUUIDString), characteristicUUIDString: \(characteristicUUIDString))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let serviceCBUUID = serviceUUIDString.toCBUUID() else {
             callback(BleError.invalidIdentifier(serviceUUIDString).asErrorResult())
             return
@@ -411,6 +458,9 @@ public class CentralManager: NSObject {
     }
     
     func getCharacteristicForService(_ serviceId: Int32, characteristicUUIDString: String, callback: Callback) {
+        Logger.d("CentralManager getCharacteristicForService(serviceId: \(serviceId), characteristicUUIDString: \(characteristicUUIDString))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let characteristicCBUUID = characteristicUUIDString.toCBUUID() else {
             callback(BleError.invalidIdentifier(characteristicUUIDString).asErrorResult())
             return
@@ -430,6 +480,9 @@ public class CentralManager: NSObject {
     }
     
     func getCharacteristicsForService(_ serviceId: Int32, callback: Callback) {
+        Logger.d("CentralManager getCharacteristicsForService(serviceId: \(serviceId))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let service = cacheHandler.service(forId: serviceId) else {
             callback(BleError.serviceNotFound(serviceId.description).asErrorResult())
             return
@@ -444,6 +497,9 @@ public class CentralManager: NSObject {
     func readBase64CharacteristicValue(_ characteristicId: Int32,
                                        cancelOptions: [String: AnyObject],
                                        callback: @escaping Callback) {
+        Logger.d("CentralManager readBase64CharacteristicValue(characteristicId: \(characteristicId), cancelOptions: \(cancelOptions))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let characteristic = retrieveCharacteristic(withId: characteristicId, callback: callback, promiseId: cancelOptions.promiseId) else {
             return
         }
@@ -453,8 +509,6 @@ public class CentralManager: NSObject {
     private func safeReadCharacteristic(_ characteristic: CBCharacteristic,
                                         cancelOptions: [String: AnyObject],
                                         callback: @escaping Callback) {
-        guard ensureState(callback: callback) else { return }
-        
         let characteristicId = ObjectIdGenerators.characteristics.id(for: characteristic)
         let request = Request(type: .read, relatedIdentifier: characteristicId, callback: callback, promiseId: cancelOptions.promiseId)
         requestHandler.addRequest(request, timeout: timeout(fromCancelOptions: cancelOptions))
@@ -469,6 +523,9 @@ public class CentralManager: NSObject {
                                         response: Bool,
                                         cancelOptions: [String: AnyObject],
                                         callback: @escaping Callback) {
+        Logger.d("CentralManager writeBase64CharacteristicValue(characteristicId: \(characteristicId), valueBase64: \(valueBase64), response: \(response), cancelOptions: \(cancelOptions))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let value = valueBase64.fromBase64 else {
             callback(BleError.invalidWriteDataForCharacteristic(characteristicId.description, data: valueBase64).asErrorResult())
             return
@@ -490,8 +547,6 @@ public class CentralManager: NSObject {
                                          response: Bool,
                                          cancelOptions: [String: AnyObject],
                                          callback: @escaping Callback) {
-        guard ensureState(callback: callback) else { return }
-        
         let characteristicId = ObjectIdGenerators.characteristics.id(for: characteristic)
         if response {
             let request = Request(type: .write, relatedIdentifier: characteristicId, callback: callback, promiseId: cancelOptions.promiseId)
@@ -506,6 +561,9 @@ public class CentralManager: NSObject {
     // MARK: - Monitoring
     
     func monitorBase64CharacteristicValue(_ characteristicId: Int32, callback: @escaping Callback) {
+        Logger.d("CentralManager monitorBase64CharacteristicValue(characteristicId: \(characteristicId))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let characteristic = retrieveCharacteristic(withId: characteristicId, callback: callback) else {
             return
         }
@@ -513,8 +571,6 @@ public class CentralManager: NSObject {
     }
     
     private func safeMonitorCharacteristic(_ characteristic: CBCharacteristic, callback: @escaping Callback) {
-        guard ensureState(callback: callback) else { return }
-        
         let characteristicId = ObjectIdGenerators.characteristics.id(for: characteristic)
         
         if !characteristic.isNotifying {
@@ -539,6 +595,9 @@ public class CentralManager: NSObject {
     }
     
     func isCharacteristicNotifying(_ characteristicId: Int32, callback: @escaping Callback) {
+        Logger.d("CentralManager isCharacteristicNotifying(characteristicId: \(characteristicId))")
+        guard ensureState(callback: callback) else { return }
+        
         guard let characteristic = retrieveCharacteristic(withId: characteristicId, callback: callback) else {
             return
         }

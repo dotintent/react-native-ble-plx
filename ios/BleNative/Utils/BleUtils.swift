@@ -35,7 +35,7 @@ func updateBuffersRequests(_ buffers: [Buffer], requestHandler: RequestHandler, 
     }
 }
 
-func invalidateBufferRequests(_ invalidatedBuffers: [Buffer], withError error: BleError, requestHandler: RequestHandler, bufferHandler: BufferHandler) {
+func invalidateBufferRequests(_ invalidatedBuffers: [Buffer], withError error: BleError, requestHandler: RequestHandler) {
     for buffer in invalidatedBuffers {
         guard 
             let request = requestHandler.findRequest(relatedIdentifier: buffer.id, type: buffer.type.requestType) else {
