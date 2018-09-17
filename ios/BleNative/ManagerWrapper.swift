@@ -76,7 +76,7 @@ class ManagerWrapper: NSObject {
         }
     }
     
-    // MARK:- Name
+    // MARK: - Name
     
     @objc
     public func getNameForPeripheral(centralManagerId: Int32, uuidString: String, callback: @escaping Callback) {        
@@ -288,11 +288,13 @@ class ManagerWrapper: NSObject {
     
     @objc
     public func setLogLevel(_ logLevelString: String) {
+        Logger.d("ManagerWrapper setLogLevel(logLevelString: \(logLevelString))")
         Logger.changeLevel(levelString: logLevelString)
     }
     
     @objc
     public func getLogLevel(_ callback: Callback) {
+        Logger.d("ManagerWrapper getLogLevel()")
         callback(createSuccessResult(data: Logger.logLevel.description))
     }
     
