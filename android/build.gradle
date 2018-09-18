@@ -1,23 +1,31 @@
 buildscript {
+    ext.kotlin_version = '1.2.61'
+
     repositories {
         jcenter()
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'org.codehaus.groovy:groovy-android-gradle-plugin:1.1.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 apply plugin: 'groovyx.android'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 28
+    buildToolsVersion '27.0.3'
 
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 23
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
     }
@@ -28,10 +36,14 @@ android {
 
 repositories {
     mavenCentral()
+    maven {
+        url 'https://maven.google.com/'
+        name 'Google'
+    }
 }
 
 dependencies {
-    compile "com.facebook.react:react-native:+"
-    compile "com.polidea.rxandroidble:rxandroidble:1.4.3"
-    testCompile 'org.robospock:robospock:1.0.1'
+    implementation "com.facebook.react:react-native:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    testImplementation 'org.robospock:robospock:1.0.1'
 }
