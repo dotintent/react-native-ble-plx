@@ -1,3 +1,6 @@
 [submodule "ios/ble-ios-native"]
 	path = ios/ble-ios-native
 	url = git@gitlab.polidea.com:pawel.janeczek/ble-ios-native.git
+[submodule "android/ble-android-native"]
+	path = android/ble-android-native
+	url = git@gitlab.polidea.com:wojciech.piwonski/ble-android-native.git
