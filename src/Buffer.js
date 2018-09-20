@@ -140,7 +140,7 @@ export function peekAll<T>(buffer: Buffer<T>, cancelOptions: CancelOptions = {})
   )
 }
 
-// CHANGE:- no api
+// TODO: add method
 // export function flushAll<T>(buffer: Buffer<T>, options: ?CancelOptions): Promise<[T]> {}
 
 export function destroy<T>(buffer: Buffer<T>): Promise<void> {

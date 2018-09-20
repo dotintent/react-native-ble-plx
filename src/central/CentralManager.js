@@ -68,6 +68,7 @@ export type AdvertisementData = {
 
 export type ScanOptions = {
   allowDuplicates?: boolean
+  // TODO: add android scanning options
 }
 
 export type RestoredState = {
@@ -90,6 +91,7 @@ export function create(options: CentralManagerOptions = {}): Promise<CentralMana
 
 export function destroy(central: CentralManager): Promise<void> {
   return new Promise(resolve => {
+    // TODO: add callback to destroyCentralClient
     BleModule.destroyCentralClient(central.id)
     resolve()
   })
