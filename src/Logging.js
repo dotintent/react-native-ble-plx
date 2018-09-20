@@ -39,6 +39,7 @@ export type LogLevelType = $Keys<typeof LogLevel>
 
 export function setLogLevel(logLevel: LogLevelType): Promise<void> {
   return new Promise(resolve => {
+    // TODO: add callback
     BleModule.setLogLevel(logLevel)
     resolve()
   })

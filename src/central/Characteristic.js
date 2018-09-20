@@ -53,8 +53,9 @@ export type Characteristic = {
    */
   isNotifiable: boolean,
   /**
-   * True if characteristic is monitoring value changes with ACK. // TODO: change description
+   * True if characteristic is monitoring value changes with ACK.
    */
+  // TODO: change description
   isIndicatable: boolean, 
 }
 
@@ -151,7 +152,7 @@ export function monitorBase64CharacteristicValue(characteristic: Characteristic)
   })
 }
 
-// CHANGE:- no api
+// TODO: add this method
 // export function monitorCharacteristicValue(characteristic: Characteristic): Promise<Buffer<ArrayBuffer>> {}
 
 export function isCharacteristicNotifying(characteristic: Characteristic): Promise<boolean> {

@@ -9,6 +9,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.polidea.blenative.ManagerWrapper;
 import com.polidea.blenative.utils.ResultKey;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import kotlin.jvm.functions.Function1;
@@ -30,7 +31,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     void createCentralClient(ReadableMap options, final Callback callback) {
-        wrapper.createCentralManager(getReactApplicationContext(), NativeParser.parseToNative(options), callbackWrapper(callback));
+        wrapper.createCentralManager(getReactApplicationContext(), NativeParser.toNative(options), callbackWrapper(callback));
     }
 
     @ReactMethod
@@ -45,7 +46,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     void actionOnBuffer(Integer managerId, Integer bufferId, ReadableMap options, ReadableMap cancelOptions, Callback callback) {
-        wrapper.actionOnBuffer(managerId, bufferId, NativeParser.parseToNative(options), NativeParser.parseToNative(cancelOptions), callbackWrapper(callback));
+        wrapper.actionOnBuffer(managerId, bufferId, NativeParser.toNative(options), NativeParser.toNative(cancelOptions), callbackWrapper(callback));
     }
 
     @ReactMethod
@@ -60,22 +61,32 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     void monitorState(Integer managerId, ReadableMap options, Callback callback) {
-        wrapper.monitorState(managerId, NativeParser.parseToNative(options), callbackWrapper(callback));
+        wrapper.monitorState(managerId, NativeParser.toNative(options), callbackWrapper(callback));
+    }
+
+    @ReactMethod
+    void monitorRestoreState(Integer managerId, Callback callback) {
+        wrapper.monitorRestoreState(managerId, callbackWrapper(callback));
     }
 
     @ReactMethod
     void scanForPeripherals(Integer managerId, ReadableArray filteredUUIDs, ReadableMap options, Callback callback) {
-        wrapper.scanForPeripherals(managerId, (String[]) NativeParser.parseToNative(filteredUUIDs).toArray(), NativeParser.parseToNative(options), callbackWrapper(callback));
+        String[] uuids = null;
+        if (filteredUUIDs != null) {
+            final Object[] objectUuidsArray = NativeParser.toNative(filteredUUIDs).toArray();
+            uuids = Arrays.copyOf(objectUuidsArray, objectUuidsArray.length, String[].class);
+        }
+        wrapper.scanForPeripherals(managerId, uuids, NativeParser.toNative(options), callbackWrapper(callback));
     }
 
     @ReactMethod
     void readRSSIForPeripheral(Integer managerId, String peripheralUuid, ReadableMap cancelOptions, Callback callback) {
-        wrapper.readRSSIForPeripheral(managerId, peripheralUuid, NativeParser.parseToNative(cancelOptions), callbackWrapper(callback));
+        wrapper.readRSSIForPeripheral(managerId, peripheralUuid, NativeParser.toNative(cancelOptions), callbackWrapper(callback));
     }
 
     @ReactMethod
     void requestMTUForPeripheral(Integer managerId, String peripheralUuid, Integer mtu, ReadableMap cancelOptions, Callback callback) {
-        wrapper.requestMTUForPeripheral(managerId, peripheralUuid, mtu, NativeParser.parseToNative(cancelOptions), callbackWrapper(callback));
+        wrapper.requestMTUForPeripheral(managerId, peripheralUuid, mtu, NativeParser.toNative(cancelOptions), callbackWrapper(callback));
     }
 
     @ReactMethod
@@ -90,22 +101,24 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     void getPeripherals(Integer managerId, ReadableArray deviceIdentifiers, Callback callback) {
-        wrapper.getPeripherals(managerId, (String[]) NativeParser.parseToNative(deviceIdentifiers).toArray(), callbackWrapper(callback));
+        final Object[] identifiersObjectArray = NativeParser.toNative(deviceIdentifiers).toArray();
+        wrapper.getPeripherals(managerId, Arrays.copyOf(identifiersObjectArray, identifiersObjectArray.length, String[].class), callbackWrapper(callback));
     }
 
     @ReactMethod
     void getConnectedPeripherals(Integer managerId, ReadableArray serviceUuids, Callback callback) {
-        wrapper.getConnectedPeripherals(managerId, (String[]) NativeParser.parseToNative(serviceUuids).toArray(), callbackWrapper(callback));
+        final Object[] idsObjectArray = NativeParser.toNative(serviceUuids).toArray();
+        wrapper.getConnectedPeripherals(managerId, Arrays.copyOf(idsObjectArray, idsObjectArray.length, String[].class), callbackWrapper(callback));
     }
 
     @ReactMethod
     void connectToPeripheral(Integer managerId, String peripheralUuid, ReadableMap options, Callback callback) {
-        wrapper.connectToPeripheral(managerId, peripheralUuid, NativeParser.parseToNative(options), callbackWrapper(callback));
+        wrapper.connectToPeripheral(managerId, peripheralUuid, NativeParser.toNative(options), callbackWrapper(callback));
     }
 
     @ReactMethod
     void cancelPeripheralConnection(Integer managerId, String peripheralUuid, ReadableMap cancelOptions, Callback callback) {
-        wrapper.cancelPeripheralConnection(managerId, peripheralUuid, NativeParser.parseToNative(cancelOptions), callbackWrapper(callback));
+        wrapper.cancelPeripheralConnection(managerId, peripheralUuid, NativeParser.toNative(cancelOptions), callbackWrapper(callback));
     }
 
     @ReactMethod
@@ -160,12 +173,12 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     void readBase64CharacteristicValue(Integer managerId, Integer characteristicId, ReadableMap cancelOptions, Callback callback) {
-        wrapper.readBase64CharacteristicValue(managerId, characteristicId, NativeParser.parseToNative(cancelOptions), callbackWrapper(callback));
+        wrapper.readBase64CharacteristicValue(managerId, characteristicId, NativeParser.toNative(cancelOptions), callbackWrapper(callback));
     }
 
     @ReactMethod
     void writeBase64CharacteristicValue(Integer managerId, Integer characteristicId, String valueBase64, Boolean response, ReadableMap cancelOptions, Callback callback) {
-        wrapper.writeBase64CharacteristicValue(managerId, characteristicId, valueBase64, response, NativeParser.parseToNative(cancelOptions), callbackWrapper(callback));
+        wrapper.writeBase64CharacteristicValue(managerId, characteristicId, valueBase64, response, NativeParser.toNative(cancelOptions), callbackWrapper(callback));
     }
 
     @ReactMethod
@@ -192,7 +205,10 @@ public class BleModule extends ReactContextBaseJavaModule {
         return new Function1<Map<Integer, ? extends Object>, Void>() {
             @Override
             public Void invoke(Map<Integer, ?> result) {
-                callback.invoke(result.get(ResultKey.ERROR.getValue()), result.get(ResultKey.DATA.getValue()));
+                callback.invoke(
+                        NativeParser.toJs(result.get(ResultKey.ERROR.getValue())),
+                        NativeParser.toJs(result.get(ResultKey.DATA.getValue()))
+                );
                 return null;
             }
         };

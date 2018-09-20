@@ -24,8 +24,7 @@ export type Peripheral = {
 
 export type ConnectionOptions = CancelOptions & {
   autoConnect?: boolean,
-  requestMTU?: boolean,
-  refreshGatt?: boolean,
+  refreshGatt?: boolean, // TODO: add as a separate method
   notifyOnConnection?: boolean,
   notifyOnDisconnection?: boolean,
   notifyOnNotification?: boolean
@@ -95,6 +94,7 @@ export function monitorMTU(peripheral: Peripheral): Promise<Buffer<number>> {
   })
 }
 
+// TODO add cancelOptions
 export function discoverAllServicesAndCharacteristics(peripheral: Peripheral): Promise<void> {
   return new Promise((resolve, reject) => {
     BleModule.discoverAllServicesAndCharacteristicsForPeripheral(
