@@ -79,7 +79,7 @@ class CentralManagerQueueCallbackWrapper(
         val characteristic = item.characteristic
 
         val characteristicId = ObjectIdGenerators.characteristics.idForElement(characteristic)
-        val request = requestHandler.removeRequest(characteristicId, RequestType.READ)
+        val request = requestHandler.findRequest(characteristicId, RequestType.READ)
                 ?: return false
         if (!gatt.readCharacteristic(characteristic)) {
             request.callback.invoke(
@@ -102,7 +102,7 @@ class CentralManagerQueueCallbackWrapper(
         val characteristic = item.characteristic
 
         val characteristicId = ObjectIdGenerators.characteristics.idForElement(characteristic)
-        val request = requestHandler.removeRequest(characteristicId, RequestType.WRITE)
+        val request = requestHandler.findRequest(characteristicId, RequestType.WRITE)
                 ?: return false
 
         characteristic.writeType = if (item.response) BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT else BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE
