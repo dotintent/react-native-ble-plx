@@ -5,27 +5,25 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import com.polidea.blenative.Constants
-import com.polidea.blenative.handlers.BufferHandler
-import com.polidea.blenative.handlers.CacheHandler
-import com.polidea.blenative.handlers.NotificationHandler
-import com.polidea.blenative.handlers.RequestHandler
+import com.polidea.blenative.handlers.*
 import com.polidea.blenative.models.BleError
 import com.polidea.blenative.models.BleErrorCode
 import com.polidea.blenative.models.BufferType
 import com.polidea.blenative.models.RequestType
 import com.polidea.blenative.utils.*
 
-class PeripheralDelegateHandler(
+class PeripheralDelegateWrapper(
         private val centralId: Int,
         private val requestHandler: RequestHandler,
         private val cacheHandler: CacheHandler,
         private val bufferHandler: BufferHandler,
-        private val notificationHandler: NotificationHandler
+        private val notificationHandler: NotificationHandler,
+        private val gattQueueHandler: GattQueueHandler
 ) : BluetoothGattCallback(), Handler.Callback {
     private val handler = Handler(Looper.myLooper(), this)
 
     override fun handleMessage(msg: Message): Boolean {
-        BleLog.d("PeripheralDelegateHandler handleMessage(what: ${msg.what})")
+        BleLog.d("PeripheralDelegateWrapper handleMessage(what: ${msg.what})")
         when (msg.what) {
             Constants.PeripheralCallback.ON_READ_REMOTE_RSSI ->
                 handleOnReadRemoteRssi(msg.gatt!!, msg.rssi!!, msg.status!!)
@@ -48,6 +46,8 @@ class PeripheralDelegateHandler(
     }
 
     private fun handleOnReadRemoteRssi(gatt: BluetoothGatt, rssi: Int, status: Int) {
+        gattQueueHandler.onGattResult()
+
         val device = gatt.device
         val deviceId = ObjectIdGenerators.devices.idForElement(device)
 
@@ -61,6 +61,8 @@ class PeripheralDelegateHandler(
     }
 
     private fun handleOnCharacteristicRead(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
+        gattQueueHandler.onGattResult()
+
         val device = gatt.device
         val characteristicId = ObjectIdGenerators.characteristics.idForElement(characteristic)
 
@@ -82,6 +84,8 @@ class PeripheralDelegateHandler(
     }
 
     private fun handleOnCharacteristicWrite(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic, status: Int) {
+        gattQueueHandler.onGattResult()
+
         val device = gatt.device
         val characteristicId = ObjectIdGenerators.characteristics.idForElement(characteristic)
 
@@ -103,6 +107,8 @@ class PeripheralDelegateHandler(
     }
 
     private fun handleOnServicesDiscovered(gatt: BluetoothGatt, status: Int) {
+        gattQueueHandler.onGattResult()
+
         val device = gatt.device
         val deviceId = ObjectIdGenerators.devices.idForElement(device)
 
@@ -122,6 +128,8 @@ class PeripheralDelegateHandler(
     }
 
     private fun handleOnMtuChanged(gatt: BluetoothGatt, mtu: Int, status: Int) {
+        gattQueueHandler.onGattResult()
+
         val device = gatt.device
         val deviceId = ObjectIdGenerators.devices.idForElement(device)
 
@@ -140,6 +148,8 @@ class PeripheralDelegateHandler(
 
     private fun handleOnDescriptorWrite(gatt: BluetoothGatt, descriptor: BluetoothGattDescriptor, status: Int) {
         if (descriptor.uuid == Constants.CHARACTERISTIC_UPDATE_NOTIFICATION_DESCRIPTOR) {
+            gattQueueHandler.onGattResult()
+
             val characteristicId = ObjectIdGenerators.characteristics.idForElement(descriptor.characteristic)
             val callbacks = notificationHandler.enabledCallbacksForId(characteristicId)
             if (callbacks != null) {
@@ -188,6 +198,8 @@ class PeripheralDelegateHandler(
         }
 
         if (newState == BluetoothProfile.STATE_DISCONNECTED) {
+            gattQueueHandler.invalidate()
+
             val disconnectRequest = requestHandler.removeRequest(deviceId, RequestType.DISCONNECT)
             if (disconnectRequest != null) {
                 disconnectRequest.callback(device.asSuccessResult(centralId))

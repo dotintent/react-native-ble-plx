@@ -59,7 +59,7 @@ fun BleScanResult.asDataObject(centralId: Int): Map<String, Any?> {
             Pair("localName", advData.localName),
             Pair("txPowerLevel", advData.txPowerLevel),
             Pair("solicitedServiceUUIDs", convertedSolicitedServiceUUIDs),
-            Pair("isConnectable", null),
+            Pair("isConnectable", isConnectable),
             Pair("overflowServiceUUIDs", null)
     )
 }
@@ -95,11 +95,11 @@ fun BluetoothGattCharacteristic.asDataObject(centralId: Int, deviceAddress: Stri
         Pair("serviceID", ObjectIdGenerators.services.idForElement(service)),
         Pair("serviceUUID", service.uuid.toString()),
         Pair("deviceID", deviceAddress),
-        Pair("isReadable", CharacteristicUtils.isReadable(this)),
-        Pair("isWritableWithResponse", CharacteristicUtils.isWriteableWithResponse(this)),
-        Pair("isWritableWithoutResponse", CharacteristicUtils.isWriteableWithoutResponse(this)),
-        Pair("isNotifiable", CharacteristicUtils.isNotifiable(this)),
-        Pair("isIndicatable", CharacteristicUtils.isIndicatable(this))
+        Pair("isReadable", isReadable),
+        Pair("isWritableWithResponse", isWritableWithResponse),
+        Pair("isWritableWithoutResponse", isWritableWithoutResponse),
+        Pair("isNotifiable", isNotifiable),
+        Pair("isIndicatable", isIndicatable)
 )
 
 fun BluetoothGattCharacteristic.asSuccessResult(centralId: Int, deviceAddress: String): Result {
@@ -113,10 +113,20 @@ val <T> Map<String, T>.bufferPlacement: BufferActionPlacement?
     get() = BufferActionPlacement.forValue(this[BufferActionKeys.PLACEMENT.value] as? String)
 
 val <T> Map<String, T>.bufferChunkSize: Int?
-    get() = this[BufferActionKeys.CHUNK_SIZE.value] as Int?
+    get() {
+        val value = this[BufferActionKeys.CHUNK_SIZE.value]
+        if (value is Int) return value
+        if (value is Double) return value.toInt()
+        return null
+    }
 
 val <T> Map<String, T>.timeout: Int?
-    get() = this[CancelOptionKeys.TIMEOUT.value] as? Int
+    get() {
+        val value = this[CancelOptionKeys.TIMEOUT.value]
+        if (value is Int) return value
+        if (value is Double) return value.toInt()
+        return null
+    }
 
 val <T> Map<String, T>.ignoreCancelled: Boolean?
     get() = this[CancelOptionKeys.IGNORE_CANCELLED.value] as? Boolean

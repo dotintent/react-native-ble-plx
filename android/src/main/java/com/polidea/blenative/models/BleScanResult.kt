@@ -9,7 +9,8 @@ import java.util.*
 data class BleScanResult(
         val bleDevice: BluetoothDevice,
         val rssi: Int,
-        val scanRecord: ByteArray
+        val scanRecord: ByteArray,
+        val isConnectable: Boolean
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -37,7 +38,8 @@ data class BleScanResult(
             return BleScanResult(
                     scanResult.device,
                     scanResult.rssi,
-                    scanResult.scanRecord.bytes
+                    scanResult.scanRecord.bytes,
+                    scanResult.isConnectable
             )
         }
     }

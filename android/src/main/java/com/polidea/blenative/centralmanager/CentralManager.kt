@@ -6,13 +6,9 @@ import android.bluetooth.BluetoothProfile
 import android.content.Context
 import android.os.Build
 import android.os.Handler
-import android.os.HandlerThread
 import com.polidea.blenative.CancelOptionKeys
 import com.polidea.blenative.Constants
-import com.polidea.blenative.handlers.BufferHandler
-import com.polidea.blenative.handlers.CacheHandler
-import com.polidea.blenative.handlers.NotificationHandler
-import com.polidea.blenative.handlers.RequestHandler
+import com.polidea.blenative.handlers.*
 import com.polidea.blenative.models.*
 import com.polidea.blenative.scan.ScanHelper
 import com.polidea.blenative.scan.ScanHelperImpl19
@@ -48,18 +44,15 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
 
     private val notificationsHandler = NotificationHandler()
 
-    private val delegateHandler = CentralManagerDelegateHandler(id, bufferHandler, cacheHandler, requestHandler)
+    private val gattQueueCallbackHandler = CentralManagerQueueCallbackWrapper(requestHandler, notificationsHandler)
 
-    private val peripheralDelegateHandler = PeripheralDelegateHandler(id, requestHandler, cacheHandler, bufferHandler, notificationsHandler)
+    private val gattQueueHandler = GattQueueHandler(gattQueueCallbackHandler)
 
-    private val messageHandler = CentralManagerMessageHandler(context, peripheralDelegateHandler, requestHandler, cacheHandler, notificationsHandler)
+    private val delegateHandler = CentralManagerDelegateWrapper(id, bufferHandler, cacheHandler, requestHandler)
 
-    private val bleThreadHandler: Handler
+    private val peripheralDelegateHandler = PeripheralDelegateWrapper(id, requestHandler, cacheHandler, bufferHandler, notificationsHandler, gattQueueHandler)
 
     init {
-        val handlerThread = HandlerThread("BleThread")
-        handlerThread.start()
-        bleThreadHandler = Handler(handlerThread.looper, messageHandler)
         delegateHandler.register(context)
     }
 
@@ -140,7 +133,7 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
         callback(BleError.methodNotSupported("Cannot monitor restore state on Android").asErrorResult())
     }
 
-    fun scanForPeripherals(filteredUUIDs: Array<String>, options: Map<String, Any>, callback: Callback) {
+    fun scanForPeripherals(filteredUUIDs: Array<String>?, options: Map<String, Any>, callback: Callback) {
         BleLog.d("CentralManager scanForPeripherals(filteredUUIDs: $filteredUUIDs, $options)")
         if (!ensureState(callback)) {
             return
@@ -152,7 +145,7 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
         }
 
         val uuids = mutableListOf<UUID>()
-        filteredUUIDs.forEach {
+        filteredUUIDs?.forEach {
             val uuid = UUIDConverter.convert(it)
             if (uuid == null) {
                 callback(BleError.invalidIdentifiers(filteredUUIDs).asErrorResult())
@@ -221,7 +214,14 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
         requestHandler.addRequest(request, timeoutFrom(options))
 
         val autoConnect = options.autoConnect ?: false
-        bleThreadHandler.connectToPeripheralMessage(device, autoConnect).sendToTarget()
+
+        val gatt = device.connectGatt(context, autoConnect, peripheralDelegateHandler)
+        if (gatt == null) {
+            request.callback.invoke(BleError.peripheralConnectionFailed(device.address, reason = "Could not create Gatt").asErrorResult())
+            requestHandler.removeRequest(request)
+            return
+        }
+        cacheHandler.addGatt(gatt)
     }
 
     fun cancelPeripheralConnection(address: String, cancelOptions: Map<String, Any>, callback: Callback) {
@@ -247,7 +247,8 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
             val request = Request(RequestType.DISCONNECT, deviceId, cancelOptions.promiseId, null, callback)
             requestHandler.addRequest(request, timeoutFrom(cancelOptions))
 
-            bleThreadHandler.disconnectMessage(gatt).sendToTarget()
+            val queueItem = GattDisconnectQueueItem(gatt)
+            gattQueueHandler.add(queueItem)
         } else {
             callback(BleError.peripheralNotConnected(address).asErrorResult())
         }
@@ -285,7 +286,8 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
         val request = Request(RequestType.DISCOVER_SERVICES, deviceId, callback = callback)
         requestHandler.addRequest(request, null)
 
-        bleThreadHandler.discoverServicesMessage(gatt).sendToTarget()
+        val queueItem = GattDiscoverServicesQueueItem(gatt)
+        gattQueueHandler.add(queueItem)
     }
 
     fun getServiceForPeripheral(address: String, serviceUUIDString: String, callback: Callback) {
@@ -449,7 +451,8 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
         val request = Request(RequestType.READ_RSSI, deviceId, cancelOptions.promiseId, callback = callback)
         requestHandler.addRequest(request, timeoutFrom(cancelOptions))
 
-        bleThreadHandler.readRemoteRssiMessage(gatt).sendToTarget()
+        val queueItem = GattReadRemoteRssiQueueItem(gatt)
+        gattQueueHandler.add(queueItem)
     }
 
     fun requestMTUForPeripheral(address: String, mtu: Int, cancelOptions: Map<String, Any>, callback: Callback) {
@@ -465,7 +468,8 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
             val request = Request(RequestType.MTU, deviceId, cancelOptions.promiseId, callback = callback)
             requestHandler.addRequest(request, timeoutFrom(cancelOptions))
 
-            bleThreadHandler.requestMtu(gatt, mtu).sendToTarget()
+            val queueItem = GattRequestMtuQueueItem(gatt, mtu)
+            gattQueueHandler.add(queueItem)
         } else {
             callback(BleError.methodNotSupported("Request MTU is supported from API 21 on Android. Your version is ${Build.VERSION.SDK_INT}.").asErrorResult())
         }
@@ -513,7 +517,8 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
         val request = Request(RequestType.READ, characteristicId, cancelOptions.promiseId, callback = callback)
         requestHandler.addRequest(request, timeoutFrom(cancelOptions))
 
-        bleThreadHandler.readCharacteristic(gatt, characteristic).sendToTarget()
+        val queueItem = GattReadCharacteristicQueueItem(gatt, characteristic)
+        gattQueueHandler.add(queueItem)
     }
 
     fun writeBase64CharacteristicValue(characteristicId: Int, valueBase64: String, response: Boolean, cancelOptions: Map<String, Any>, callback: Callback) {
@@ -533,7 +538,8 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
         val request = Request(RequestType.WRITE, characteristicId, cancelOptions.promiseId, callback = callback)
         requestHandler.addRequest(request, timeoutFrom(cancelOptions))
 
-        bleThreadHandler.writeCharacteristic(gatt, characteristic, response, valueBase64).sendToTarget()
+        val queueItem = GattWriteCharacteristicQueueItem(gatt, characteristic, response, valueBase64)
+        gattQueueHandler.add(queueItem)
     }
 
     fun monitorBase64CharacteristicValue(characteristicId: Int, callback: Callback) {
@@ -566,7 +572,8 @@ class CentralManager(val context: Context, val bluetoothManager: BluetoothManage
             }
             notificationsHandler.setCallbacksForId(callbacks, characteristicId)
             if (callbacks.size == 1) {
-                bleThreadHandler.setNotificationEnabledMessage(gatt, characteristic, true).sendToTarget()
+                val queueItem = GattSetNotificationEnabledQueueItem(gatt, characteristic, true)
+                gattQueueHandler.add(queueItem)
             }
         }
     }

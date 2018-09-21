@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter
 import android.bluetooth.le.ScanCallback
 import android.bluetooth.le.ScanFilter
 import android.bluetooth.le.ScanResult
+import android.bluetooth.le.ScanSettings
 import android.os.Build
 import android.os.ParcelUuid
 import com.polidea.blenative.models.BleError
@@ -40,7 +41,7 @@ class ScanHelperImpl21(private val adapter: BluetoothAdapter) : ScanHelper {
                 callback.onScanError(mapNativeErrorCode(errorCode))
             }
         }
-        adapter.bluetoothLeScanner.startScan(scanFilters, null, ongoingScanCallback)
+        adapter.bluetoothLeScanner.startScan(scanFilters, ScanSettings.Builder().build(), ongoingScanCallback)
     }
 
     override fun stopScan() {

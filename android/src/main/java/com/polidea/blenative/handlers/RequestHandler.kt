@@ -55,7 +55,7 @@ class RequestHandler(private val taskDispatcher: TaskDispatcher) {
     }
 
     fun findRequest(relatedIdentifier: Int, type: RequestType): Request? {
-        return requests.first { it.relatedIdentifier == relatedIdentifier && it.type == type }
+        return requests.find { it.relatedIdentifier == relatedIdentifier && it.type == type }
     }
 
     private fun addTimeout(timeout: Int, request: Request, onTimeout: (Request) -> Void) {

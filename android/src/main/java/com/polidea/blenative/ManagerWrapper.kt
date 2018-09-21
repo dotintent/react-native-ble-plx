@@ -81,7 +81,7 @@ class ManagerWrapper {
     // MARK: - Scanning
 
     fun scanForPeripherals(centralManagerId: Int,
-                           filteredUUIDs: Array<String>,
+                           filteredUUIDs: Array<String>?,
                            options: Map<String, Any>,
                            callback: Callback) {
         callOnCentralManager(centralManagerId, callback) {
