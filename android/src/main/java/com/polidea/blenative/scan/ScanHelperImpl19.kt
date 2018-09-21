@@ -20,7 +20,7 @@ class ScanHelperImpl19(private val adapter: BluetoothAdapter) : ScanHelper {
         BleLog.d("ScanHelperImpl19 startScan(filteredUUIDs: $filteredUUIDs)")
         ongoingScanCallback = BluetoothAdapter.LeScanCallback { device, rssi, scanRecord ->
             BleLog.d("ScanHelperImpl19 onLeScan(device: ${device.address}, rssi: $rssi, scanRecord: $scanRecord)")
-            val result = BleScanResult(device, rssi, scanRecord)
+            val result = BleScanResult(device, rssi, scanRecord, true)
             callback.onScanResult(listOf(result))
         }
         adapter.startLeScan(filteredUUIDs, ongoingScanCallback)

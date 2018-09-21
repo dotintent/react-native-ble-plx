@@ -18,7 +18,7 @@ import com.polidea.blenative.utils.BufferUtils
 import com.polidea.blenative.utils.asDataObject
 
 
-class CentralManagerDelegateHandler(
+class CentralManagerDelegateWrapper(
         private val centralId: Int,
         private val bufferHandler: BufferHandler,
         private val cacheHandler: CacheHandler,
@@ -42,7 +42,7 @@ class CentralManagerDelegateHandler(
     }
 
     private fun onStateChange(nativeState: Int) {
-        BleLog.d("CentralManagerDelegateHandler onStateChange(nativeState: $nativeState)")
+        BleLog.d("CentralManagerDelegateWrapper onStateChange(nativeState: $nativeState)")
         val state = BleState.fromNativeState(nativeState)
         val updatedBuffers = bufferHandler.appendBufferElement(state.asDataObject(), BufferType.STATE)
         BufferUtils.updateBuffersRequests(updatedBuffers, requestHandler, bufferHandler)
@@ -57,7 +57,7 @@ class CentralManagerDelegateHandler(
     }
 
     override fun onReceive(context: Context, intent: Intent) {
-        BleLog.d("CentralManagerDelegateHandler onReceive(intentAction: ${intent.action})")
+        BleLog.d("CentralManagerDelegateWrapper onReceive(intentAction: ${intent.action})")
         if (BluetoothAdapter.ACTION_STATE_CHANGED == intent.action) {
             val state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1)
             onStateChange(state)
