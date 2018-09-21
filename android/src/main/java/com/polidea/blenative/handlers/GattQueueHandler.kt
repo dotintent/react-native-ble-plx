@@ -22,7 +22,7 @@ class GattQueueHandler(val callback: Callback) {
             return
         }
 
-        val item = queue.remove() ?: return
+        val item = queue.poll() ?: return
 
         isProcessOngoing = true
 
