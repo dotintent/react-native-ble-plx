@@ -213,3 +213,22 @@ export const LogLevel = {
    */
   Error: 'Error'
 }
+
+/**
+ * Connection priority of BLE link determining the balance between power consumption and data throughput.
+ * @name ConnectionPriority
+ */
+export const ConnectionPriority = {
+  /**
+   * Default, recommended option balanced between power consumption and data throughput.
+   */
+  Balanced: 0,
+  /**
+   * High priority, low latency connection, which increases transfer speed at the expense of power consumption.
+   */
+  High: 1,
+  /**
+   * Low power, reduced data rate connection setup.
+   */
+  LowPower: 2
+}

@@ -5,6 +5,7 @@ import { BleManager } from './BleManager'
 import { BleError } from './BleError'
 import { Characteristic } from './Characteristic'
 import { Service } from './Service'
+import { ConnectionPriority } from './TypeDefinition'
 import type { NativeDevice } from './BleModule'
 import type { DeviceId, Base64, UUID, Subscription, TransactionId, ConnectionOptions } from './TypeDefinition'
 
@@ -91,6 +92,20 @@ export class Device implements NativeDevice {
    */
   constructor(nativeDevice: NativeDevice, manager: BleManager) {
     Object.assign(this, nativeDevice, { _manager: manager })
+  }
+
+  /**
+   * {@link #blemanagerrequestconnectionpriorityfordevice|bleManager.requestConnectionPriorityForDevice()} with partially filled arguments.
+   *
+   * @param {ConnectionPriority} connectionPriority: Connection priority.
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation.
+   * @returns {Promise<Device>} Connected device.
+   */
+  requestConnectionPriority(
+    connectionPriority: $Values<typeof ConnectionPriority>,
+    transactionId: ?TransactionId
+  ): Promise<Device> {
+    return this._manager.requestConnectionPriorityForDevice(this.id, connectionPriority, transactionId)
   }
 
   /**

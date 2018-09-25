@@ -2,7 +2,7 @@
 'use strict'
 
 import { NativeModules, NativeEventEmitter } from 'react-native'
-import { State, LogLevel } from './TypeDefinition'
+import { State, LogLevel, ConnectionPriority } from './TypeDefinition'
 import type {
   DeviceId,
   Identifier,
@@ -256,6 +256,22 @@ export interface BleModuleInterface {
   stopDeviceScan(): void;
 
   // Device operations
+
+  /**
+   * Request a connection parameter update. This functions may update connection parameters on Android API level 21 or
+   * above.
+   *
+   * @param {DeviceId} deviceIdentifier Device identifier.
+   * @param {ConnectionPriority} connectionPriority: Connection priority.
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation.
+   * @returns {Promise<NativeDevice>} Connected device.
+   * @private
+   */
+  requestConnectionPriorityForDevice(
+    deviceIdentifier: DeviceId,
+    connectionPriority: $Values<typeof ConnectionPriority>,
+    transactionId: TransactionId
+  ): Promise<NativeDevice>;
 
   /**
    * Reads RSSI for connected device.

@@ -19,7 +19,7 @@
     "babel-eslint": "8.2.1",
     "babel-jest": "23.2.0",
     "babel-preset-react-native": "4.0.0",
-    "documentation": "5.3.5",
+    "documentation": "8.1.2",
     "eslint": "4.15.0",
     "eslint-plugin-flowtype": "2.41.0",
     "eslint-plugin-import": "2.8.0",

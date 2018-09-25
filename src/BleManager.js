@@ -4,7 +4,7 @@
 import { Device } from './Device'
 import { Service } from './Service'
 import { Characteristic } from './Characteristic'
-import { State, LogLevel, type BleErrorCodeMessageMapping } from './TypeDefinition'
+import { State, LogLevel, type BleErrorCodeMessageMapping, ConnectionPriority } from './TypeDefinition'
 import { BleModule, EventEmitter } from './BleModule'
 import {
   parseBleError,
@@ -325,6 +325,29 @@ export class BleManager {
       this._scanEventSubscription = null
     }
     BleModule.stopDeviceScan()
+  }
+
+  /**
+   * Request a connection parameter update. This functions may update connection parameters on Android API level 21 or
+   * above.
+   *
+   * @param {DeviceId} deviceIdentifier Device identifier.
+   * @param {ConnectionPriority} connectionPriority: Connection priority.
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation.
+   * @returns {Promise<Device>} Connected device.
+   */
+  async requestConnectionPriorityForDevice(
+    deviceIdentifier: DeviceId,
+    connectionPriority: $Values<typeof ConnectionPriority>,
+    transactionId: ?TransactionId
+  ): Promise<Device> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeDevice = await this._callPromise(
+      BleModule.requestConnectionPriorityForDevice(deviceIdentifier, connectionPriority, transactionId)
+    )
+    return new Device(nativeDevice, this)
   }
 
   /**

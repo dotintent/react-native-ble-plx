@@ -372,7 +372,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     // Mark: Device operations ---------------------------------------------------------------------
 
     @ReactMethod
-    public void requestConnectionPriority(final String deviceId, int connectionPriority, int delay, final String transactionId, final Promise promise) {
+    public void requestConnectionPriorityForDevice(final String deviceId, int connectionPriority, final String transactionId, final Promise promise) {
         final Device device = getDeviceOrReject(deviceId, promise);
         if (device == null) {
             return;
@@ -386,7 +386,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
             final SafePromise safePromise = new SafePromise(promise);
             final Subscription subscription = connection
-                    .requestConnectionPriority(connectionPriority, Long.valueOf(delay), TimeUnit.MILLISECONDS)
+                    .requestConnectionPriority(connectionPriority, 1, TimeUnit.MILLISECONDS)
                     .doOnUnsubscribe(new Action0() {
                         @Override
                         public void call() {
@@ -397,6 +397,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                         @Override
                         public void call() {
                             transactions.removeSubscription(transactionId);
+                            safePromise.resolve(device.toJSObject(null));
                         }
                     }, new Action1<Throwable>() {
                         @Override
@@ -518,8 +519,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         int requestMtu = 0;
         RefreshGattMoment refreshGattMoment = null;
         Integer timeout = null;
-        int connectionPriority = 0;
-        long connectionPriorityDelay = 1000;
+        int connectionPriority = 0; // CONNECTION_PRIORITY_BALANCED
 
         if (options != null) {
             if (options.hasKey("autoConnect")) {
@@ -537,12 +537,9 @@ public class BleModule extends ReactContextBaseJavaModule {
             if (options.hasKey("connectionPriority")) {
                 connectionPriority = options.getInt("connectionPriority");
             }
-            if (options.hasKey("connectionPriorityDelay")) {
-                connectionPriorityDelay = Long.valueOf(options.getInt("connectionPriorityDelay"));
-            }
         }
 
-        safeConnectToDevice(device, autoConnect, requestMtu, refreshGattMoment, timeout, connectionPriority, connectionPriorityDelay, new SafePromise(promise));
+        safeConnectToDevice(device, autoConnect, requestMtu, refreshGattMoment, timeout, connectionPriority, new SafePromise(promise));
     }
 
     private void safeConnectToDevice(final RxBleDevice device,
@@ -551,7 +548,6 @@ public class BleModule extends ReactContextBaseJavaModule {
                                      final RefreshGattMoment refreshGattMoment,
                                      final Integer timeout,
                                      final int connectionPriority,
-                                     final long connectionPriorityDelay,
                                      final SafePromise promise) {
 
         Observable<RxBleConnection> connect = device
@@ -576,6 +572,18 @@ public class BleModule extends ReactContextBaseJavaModule {
                                     return rxBleConnection;
                                 }
                             });
+                }
+            });
+        }
+
+        if (connectionPriority > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            connect = connect.flatMap(new Func1<RxBleConnection, Observable<RxBleConnection>>() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public Observable<RxBleConnection> call(final RxBleConnection rxBleConnection) {
+                    return rxBleConnection
+                            .requestConnectionPriority(connectionPriority, 1, TimeUnit.MILLISECONDS)
+                            .andThen(Observable.just(rxBleConnection));
                 }
             });
         }
@@ -611,17 +619,6 @@ public class BleModule extends ReactContextBaseJavaModule {
             });
         }
 
-        if (connectionPriority > 0 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            connect = connect.flatMap(new Func1<RxBleConnection, Observable<RxBleConnection>>() {
-                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public Observable<RxBleConnection> call(final RxBleConnection rxBleConnection) {
-                    return rxBleConnection
-                            .requestConnectionPriority(connectionPriority, connectionPriorityDelay, TimeUnit.MILLISECONDS)
-                            .andThen(Observable.just(rxBleConnection));
-                }
-            });
-        }
 
         final Subscription subscription = connect
                 .subscribe(new Observer<RxBleConnection>() {

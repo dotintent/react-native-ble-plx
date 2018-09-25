@@ -74,4 +74,9 @@ describe("Test if Device is properly calling BleManager's utility function: ", (
     await device.requestMTU(24, 'tid')
     expect(bleManager.requestMTUForDevice).toBeCalledWith('id', 24, 'tid')
   })
+
+  test('BleManager properly requests connection parameters', async () => {
+    await device.requestConnectionPriority(1, 'tid')
+    expect(bleManager.requestConnectionPriorityForDevice).toBeCalledWith('id', 1, 'tid')
+  })
 })

@@ -26,6 +26,7 @@ toc:
     description: |
       All Flow aliases and Flow types used in this library.
   - LogLevel
+  - ConnectionPriority
   - State
   - BleErrorCodeMessageMapping
   - BleManagerOptions

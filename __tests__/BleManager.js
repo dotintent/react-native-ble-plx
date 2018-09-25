@@ -34,6 +34,7 @@ beforeEach(() => {
     writeCharacteristicForDevice: jest.fn(),
     monitorCharacteristicForDevice: jest.fn(),
     requestMTUForDevice: jest.fn(),
+    requestConnectionPriorityForDevice: jest.fn(),
     ScanEvent: 'scan_event',
     ReadEvent: 'read_event',
     StateChangeEvent: 'state_change_event',
@@ -320,4 +321,9 @@ test('BleManager properly handles errors while monitoring characteristic values'
 test('BleManager properly requests the MTU', async () => {
   bleManager.requestMTUForDevice('id', 99, 'trId')
   expect(Native.BleModule.requestMTUForDevice).toBeCalledWith('id', 99, 'trId')
+})
+
+test('BleManager properly requests connection priority', async () => {
+  bleManager.requestConnectionPriorityForDevice('id', 2, 'trId')
+  expect(Native.BleModule.requestConnectionPriorityForDevice).toBeCalledWith('id', 2, 'trId')
 })

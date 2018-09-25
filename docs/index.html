@@ -8,6 +8,7 @@
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
   <link href='assets/github.css' type='text/css' rel='stylesheet' />
   <link href='assets/split.css' type='text/css' rel='stylesheet' />
+  <meta name='description' content='React Native Bluetooth Low Energy library'>
 </head>
 <body class='documentation m0'>
     <div class='flex'>
@@ -103,6 +104,12 @@
                         href='#blemanagerstopdevicescan'
                         class='regular pre-open'>
                         #stopDeviceScan
+                      </a></li>
+                      
+                      <li><a
+                        href='#blemanagerrequestconnectionpriorityfordevice'
+                        class='regular pre-open'>
+                        #requestConnectionPriorityForDevice
                       </a></li>
                       
                       <li><a
@@ -287,6 +294,12 @@
                         href='#deviceoverflowserviceuuids'
                         class='regular pre-open'>
                         #overflowServiceUUIDs
+                      </a></li>
+                      
+                      <li><a
+                        href='#devicerequestconnectionpriority'
+                        class='regular pre-open'>
+                        #requestConnectionPriority
                       </a></li>
                       
                       <li><a
@@ -1323,6 +1336,46 @@
               
                 
                 <li><a
+                  href='#connectionpriority'
+                  class=" toggle-sibling">
+                  ConnectionPriority
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#connectionprioritybalanced'
+                        class='regular pre-open'>
+                        .Balanced
+                      </a></li>
+                    
+                      <li><a
+                        href='#connectionpriorityhigh'
+                        class='regular pre-open'>
+                        .High
+                      </a></li>
+                    
+                      <li><a
+                        href='#connectionprioritylowpower'
+                        class='regular pre-open'>
+                        .LowPower
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
                   href='#state'
                   class=" toggle-sibling">
                   State
@@ -1631,14 +1684,15 @@
       <div id='split-right' class='relative overflow-auto height-viewport-100'>
         
           
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+            <div class='keyline-top-not py2'>
+  <section class='py2 clearfix'>
 
-  <h2 id='introduction' class='mt0'>
-    Introduction
-  </h2>
+    <h2 id='introduction' class='mt0'>
+      Introduction
+    </h2>
 
-  
-    <p align="center">
+    
+      <p align="center">
   <a href="https://github.com/Polidea/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
 </p>
 <p>This guide is an introduction to BLE stack and APIs exported by this library. All examples
@@ -1720,29 +1774,199 @@ it can be a long process depending on number of characteristics and services ava
 </ul>
 <p>and other functions which are described in detail in documentation.</p>
 
-  
-</section>
+    
+  </section>
 </div>
           
-        
-          
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
-
-  <h2 id='main-classes' class='mt0'>
-    Main Classes
-  </h2>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
-    <p>Classes described below are main building blocks for your BLE support. They
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='introduction'>
+      Introduction
+    </h3>
+    
+    
+  </div>
+  
+
+  <p align="center">
+  <a href="https://github.com/Polidea/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
+</p>
+<p>This guide is an introduction to BLE stack and APIs exported by this library. All examples
+will be based on CC2541 SensorTag.</p>
+<h2>Creating BLE Manager</h2>
+<p>First step is to create BleManager instance which is an entry point to all available APIs.
+Make sure to create it after application started its execution. For example we can do it in
+Component's constructor:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { BleManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native-ble-plx'</span>;
+
+<span class="hljs-keyword">constructor</span>() {
+    <span class="hljs-keyword">super</span>();
+    <span class="hljs-keyword">this</span>.manager = <span class="hljs-keyword">new</span> BleManager();
+    ...
+}</pre>
+<p>Only one instance of BleManager is allowed. When you don't need any BLE functionality you
+can destroy created instance by calling <code>this.manager.destroy()</code> function. You can then
+recreate <code>BleManager</code> later on as we did above.</p>
+<h2>Waiting for Powered On state</h2>
+<p>When iOS application launches BLE stack is not immediately available and we need to check its status.
+To detect current state and following state changes we can use <code>onStateChange()</code> function:</p>
+<pre class='hljs'>componentWillMount() {
+    <span class="hljs-keyword">const</span> subscription = <span class="hljs-keyword">this</span>.manager.onStateChange(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+        <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'PoweredOn'</span>) {
+            <span class="hljs-keyword">this</span>.scanAndConnect();
+            subscription.remove();
+        }
+    }, <span class="hljs-literal">true</span>);
+}</pre>
+<h2>Scanning devices</h2>
+<p>Devices needs to be scanned first to be able to connect to them. There is a simple function
+which allows only one callback to be registered to handle detected devices:</p>
+<pre class='hljs'>scanAndConnect() {
+    <span class="hljs-keyword">this</span>.manager.startDeviceScan(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, (error, device) =&gt; {
+        <span class="hljs-keyword">if</span> (error) {
+            <span class="hljs-comment">// Handle error (scanning will be stopped automatically)</span>
+            <span class="hljs-keyword">return</span>
+        }
+
+        <span class="hljs-comment">// Check if it is a device you are looking for based on advertisement data</span>
+        <span class="hljs-comment">// or other criteria.</span>
+        <span class="hljs-keyword">if</span> (device.name === <span class="hljs-string">'TI BLE Sensor Tag'</span> || 
+            device.name === <span class="hljs-string">'SensorTag'</span>) {
+            
+            <span class="hljs-comment">// Stop scanning as it's not necessary if you are scanning for one device.</span>
+            <span class="hljs-keyword">this</span>.manager.stopDeviceScan();
+
+            <span class="hljs-comment">// Proceed with connection.</span>
+        }
+    });
+}</pre>
+<p>It is worth to note that scanning function may emit one device multiple times. However
+when device is connected it won't broadcast and needs to be disconnected from central
+to be scanned again. Only one scanning listener can be registered.</p>
+<h2>Connecting and discovering services and characteristics</h2>
+<p>Once device is scanned it is in disconnected state. We need to connect to it and discover
+all services and characteristics it contains. Services may be understood
+as containers grouping characteristics based on their meaning. Characteristic is a
+container for a value which can be read, written and monitored based on available
+capabilities. For example connection may look like this:</p>
+<pre class='hljs'>device.connect()
+    .then(<span class="hljs-function">(<span class="hljs-params">device</span>) =&gt;</span> {
+        <span class="hljs-keyword">return</span> device.discoverAllServicesAndCharacteristics()
+    })
+    .then(<span class="hljs-function">(<span class="hljs-params">device</span>) =&gt;</span> {
+       <span class="hljs-comment">// Do work on device with services and characteristics</span>
+    })
+    .catch(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> {
+        <span class="hljs-comment">// Handle errors</span>
+    });</pre>
+<p>Discovery of services and characteristics is required to be executed only once. Additionally
+it can be a long process depending on number of characteristics and services available.</p>
+<h2>Read, write and monitor values</h2>
+<p>After successful discovery of services you can call </p>
+<ul>
+<li><a href="#blemanagerreadcharacteristicfordevice">BleManager.readCharacteristicForDevice()</a>,</li>
+<li><a href="#blemanagerwritecharacteristicwithresponsefordevice">BleManager.writeCharacteristicWithResponseForDevice()</a>, </li>
+<li><a href="#blemanagermonitorcharacteristicfordevice">BleManager.monitorCharacteristicForDevice()</a></li>
+</ul>
+<p>and other functions which are described in detail in documentation.</p>
+
+ 
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+            <div class='keyline-top-not py2'>
+  <section class='py2 clearfix'>
+
+    <h2 id='main-classes' class='mt0'>
+      Main Classes
+    </h2>
+
+    
+      <p>Classes described below are main building blocks for your BLE support. They
 are presented in order which aligns them with usage.</p>
 
-  
-</section>
+    
+  </section>
 </div>
           
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='main-classes'>
+      Main Classes
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Classes described below are main building blocks for your BLE support. They
+are presented in order which aligns them with usage.</p>
+
+ 
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -1761,8 +1985,10 @@ are presented in order which aligns them with usage.</p>
 <p>In case you want to properly support Background Mode, you should provide <code>restoreStateIdentifier</code> and
 <code>restoreStateFunction</code> in <a href="#blemanageroptions">BleManagerOptions</a>.</p>
 
-
-  <div class='pre p1 fill-light mt0'>new BleManager(options: <a href="#blemanageroptions">BleManagerOptions</a>)</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>new BleManager(options: <a href="#blemanageroptions">BleManagerOptions</a>)</div>
+   
   
   
 
@@ -1827,8 +2053,10 @@ manager.destroy();</pre>
 this library. All operations which were in progress completes with
 <a href="#bleerrorcodebluetoothmanagerdestroyed">BluetoothManagerDestroyed</a> error code.</p>
 
-
-  <div class='pre p1 fill-light mt0'>destroy()</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>destroy()</div>
+   
   
   
 
@@ -1873,8 +2101,10 @@ this library. All operations which were in progress completes with
 
   <p>Sets new log level for native module's logging mechanism.</p>
 
-
-  <div class='pre p1 fill-light mt0'>setLogLevel(logLevel: <a href="#loglevel">LogLevel</a>)</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>setLogLevel(logLevel: <a href="#loglevel">LogLevel</a>)</div>
+   
   
   
 
@@ -1933,8 +2163,10 @@ this library. All operations which were in progress completes with
 
   <p>Get current log level for native module's logging mechanism.</p>
 
-
-  <div class='pre p1 fill-light mt0'>logLevel(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>logLevel(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></div>
+   
   
   
 
@@ -1992,8 +2224,10 @@ promise or a callback which registers errors, <a href="#bleerror">BleError</a> w
 <a href="#bleerrorcodeoperationcancelled">OperationCancelled</a> will be emitted in that case. Cancelling transaction
 which doesn't exist is ignored.</p>
 
-
-  <div class='pre p1 fill-light mt0'>cancelTransaction(transactionId: <a href="#transactionid">TransactionId</a>)</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>cancelTransaction(transactionId: <a href="#transactionid">TransactionId</a>)</div>
+   
   
   
 
@@ -2069,8 +2303,10 @@ setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;
   <p>Current, global <a href="#state">State</a> of a <a href="#blemanager">BleManager</a>. All APIs are working only when active state
 is "PoweredOn".</p>
 
-
-  <div class='pre p1 fill-light mt0'>state(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>state(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></div>
+   
   
   
 
@@ -2123,8 +2359,10 @@ is "PoweredOn".</p>
 
   <p>Notifies about <a href="#state">State</a> changes of a <a href="#blemanager">BleManager</a>.</p>
 
-
-  <div class='pre p1 fill-light mt0'>onStateChange(listener: function (newState: <a href="#state">State</a>), emitCurrentState: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="#subscription">Subscription</a></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>onStateChange(listener: function (newState: <a href="#state">State</a>), emitCurrentState: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="#subscription">Subscription</a></div>
+   
   
   
 
@@ -2217,8 +2455,10 @@ Look at
 
   <p>Starts device scanning. When previous scan is in progress it will be stopped before executing this command.</p>
 
-
-  <div class='pre p1 fill-light mt0'>startDeviceScan(UUIDs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?, options: <a href="#scanoptions">ScanOptions</a>?, listener: function (error: <a href="#bleerror">BleError</a>?, scannedDevice: <a href="#device">Device</a>?))</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>startDeviceScan(UUIDs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?, options: <a href="#scanoptions">ScanOptions</a>?, listener: function (error: <a href="#bleerror">BleError</a>?, scannedDevice: <a href="#device">Device</a>?))</div>
+   
   
   
 
@@ -2317,8 +2557,10 @@ is a scanned
 
   <p>Stops <a href="#device">Device</a> scan if in progress.</p>
 
-
-  <div class='pre p1 fill-light mt0'>stopDeviceScan()</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>stopDeviceScan()</div>
+   
   
   
 
@@ -2349,6 +2591,95 @@ is a scanned
       </div>
     </div>
   
+    <div class='border-bottom' id='blemanagerrequestconnectionpriorityfordevice'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>requestConnectionPriorityForDevice(deviceIdentifier, connectionPriority, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Request a connection parameter update. This functions may update connection parameters on Android API level 21 or
+above.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>requestConnectionPriorityForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, connectionPriority: <a href="#connectionpriority">ConnectionPriority</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
+	    Device identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>connectionPriority</span> <code class='quiet'>(<a href="#connectionpriority">ConnectionPriority</a>)</code>
+	    : Connection priority.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    Transaction handle used to cancel operation.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Connected device.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='blemanagerreadrssifordevice'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -2363,8 +2694,10 @@ is a scanned
 
   <p>Reads RSSI for connected device.</p>
 
-
-  <div class='pre p1 fill-light mt0'>readRSSIForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>readRSSIForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -2441,8 +2774,10 @@ is a scanned
   <p>Request new MTU value for this device. This function currently is not doing anything
 on iOS platform as MTU exchange is done automatically.</p>
 
-
-  <div class='pre p1 fill-light mt0'>requestMTUForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, mtu: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>requestMTUForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, mtu: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -2527,8 +2862,10 @@ on iOS platform as MTU exchange is done automatically.</p>
 
   <p>Returns a list of known peripherals by their identifiers.</p>
 
-
-  <div class='pre p1 fill-light mt0'>devices(deviceIdentifiers: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#deviceid">DeviceId</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>devices(deviceIdentifiers: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#deviceid">DeviceId</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></div>
+   
   
   
 
@@ -2594,8 +2931,10 @@ on iOS platform as MTU exchange is done automatically.</p>
 which have discovered services. Returned devices <strong>may not be connected</strong> to your application. Make sure to check
 if that's the case with function <a href="#blemanagerisdeviceconnected">isDeviceConnected</a>.</p>
 
-
-  <div class='pre p1 fill-light mt0'>connectedDevices(serviceUUIDs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>connectedDevices(serviceUUIDs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></div>
+   
   
   
 
@@ -2659,8 +2998,10 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
 
   <p>Connects to <a href="#device">Device</a> with provided ID.</p>
 
-
-  <div class='pre p1 fill-light mt0'>connectToDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>connectToDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -2739,8 +3080,10 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
 
   <p>Disconnects from <a href="#device">Device</a> if it's connected or cancels pending connection.</p>
 
-
-  <div class='pre p1 fill-light mt0'>cancelDeviceConnection(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>cancelDeviceConnection(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -2810,8 +3153,10 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
 
   <p>Monitors if <a href="#device">Device</a> was disconnected due to any errors or connection problems.</p>
 
-
-  <div class='pre p1 fill-light mt0'>onDeviceDisconnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>, listener: function (error: <a href="#bleerror">BleError</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>onDeviceDisconnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>, listener: function (error: <a href="#bleerror">BleError</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
+   
   
   
 
@@ -2893,8 +3238,10 @@ if available and
 
   <p>Check connection state of a <a href="#device">Device</a>.</p>
 
-
-  <div class='pre p1 fill-light mt0'>isDeviceConnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isDeviceConnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+   
   
   
 
@@ -2966,8 +3313,10 @@ if available and
 
   <p>Discovers all <a href="#service">Service</a>s and <a href="#characteristic">Characteristic</a>s for <a href="#device">Device</a>.</p>
 
-
-  <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -3038,8 +3387,10 @@ characteristics have been discovered.
 
   <p>List of discovered <a href="#service">Service</a>s for <a href="#device">Device</a>.</p>
 
-
-  <div class='pre p1 fill-light mt0'>servicesForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>servicesForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
+   
   
   
 
@@ -3112,8 +3463,10 @@ characteristics have been discovered.
 
   <p>List of discovered <a href="#characteristic">Characteristic</a>s for given <a href="#device">Device</a> and <a href="#service">Service</a>.</p>
 
-
-  <div class='pre p1 fill-light mt0'>characteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>characteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+   
   
   
 
@@ -3198,8 +3551,10 @@ discovered for a
 
   <p>Read <a href="#characteristic">Characteristic</a> value.</p>
 
-
-  <div class='pre p1 fill-light mt0'>readCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>readCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -3306,8 +3661,10 @@ UUID paths. Latest value of
 
   <p>Write <a href="#characteristic">Characteristic</a> value with response.</p>
 
-
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -3421,8 +3778,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p>Write <a href="#characteristic">Characteristic</a> value without response.</p>
 
-
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -3537,8 +3896,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   <p>Monitor value changes of a <a href="#characteristic">Characteristic</a>. If notifications are enabled they will be used
 in favour of indications.</p>
 
-
-  <div class='pre p1 fill-light mt0'>monitorCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>monitorCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+   
   
   
 
@@ -3647,10 +4008,9 @@ in favour of indications.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -3666,8 +4026,10 @@ in favour of indications.</p>
   <p>Device instance which can be retrieved only by calling
 <a href="#blemanagerstartdevicescan">bleManager.startDeviceScan()</a>.</p>
 
-
-  <div class='pre p1 fill-light mt0'>new Device(nativeDevice: NativeDevice, manager: <a href="#blemanager">BleManager</a>)</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>new Device(nativeDevice: NativeDevice, manager: <a href="#blemanager">BleManager</a>)</div>
+   
   
   
 
@@ -3685,7 +4047,8 @@ in favour of indications.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>nativeDevice</span> <code class='quiet'>(NativeDevice)</code>
-	    
+	    Native device properties
+
           </div>
           
         </div>
@@ -3693,7 +4056,9 @@ in favour of indications.</p>
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>manager</span> <code class='quiet'>(<a href="#blemanager">BleManager</a>)</code>
-	    
+	    <a href="#blemanager">BleManager</a>
+ handle
+
           </div>
           
         </div>
@@ -3729,8 +4094,10 @@ in favour of indications.</p>
 
   <p>Device identifier: MAC address on Android and UUID on iOS.</p>
 
-
-  <div class='pre p1 fill-light mt0'>id</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>id</div>
+   
   
     <p>
       Type:
@@ -3780,8 +4147,10 @@ in favour of indications.</p>
 
   <p>Device name if present</p>
 
-
-  <div class='pre p1 fill-light mt0'>name</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>name</div>
+   
   
     <p>
       Type:
@@ -3831,8 +4200,10 @@ in favour of indications.</p>
 
   <p>Current Received Signal Strength Indication of device</p>
 
-
-  <div class='pre p1 fill-light mt0'>rssi</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>rssi</div>
+   
   
     <p>
       Type:
@@ -3883,8 +4254,10 @@ in favour of indications.</p>
   <p>Current Maximum Transmission Unit for this device. When device is not connected
 default value of 23 is used.</p>
 
-
-  <div class='pre p1 fill-light mt0'>mtu</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>mtu</div>
+   
   
     <p>
       Type:
@@ -3934,8 +4307,10 @@ default value of 23 is used.</p>
 
   <p>Device's custom manufacturer data. Its format is defined by manufacturer.</p>
 
-
-  <div class='pre p1 fill-light mt0'>manufacturerData</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>manufacturerData</div>
+   
   
     <p>
       Type:
@@ -3985,8 +4360,10 @@ default value of 23 is used.</p>
 
   <p>Map of service UUIDs (as keys) with associated data (as values).</p>
 
-
-  <div class='pre p1 fill-light mt0'>serviceData</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>serviceData</div>
+   
   
     <p>
       Type:
@@ -4036,8 +4413,10 @@ default value of 23 is used.</p>
 
   <p>List of available services visible during scanning.</p>
 
-
-  <div class='pre p1 fill-light mt0'>serviceUUIDs</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>serviceUUIDs</div>
+   
   
     <p>
       Type:
@@ -4087,8 +4466,10 @@ default value of 23 is used.</p>
 
   <p>User friendly name of device.</p>
 
-
-  <div class='pre p1 fill-light mt0'>localName</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>localName</div>
+   
   
     <p>
       Type:
@@ -4138,8 +4519,10 @@ default value of 23 is used.</p>
 
   <p>Transmission power level of device.</p>
 
-
-  <div class='pre p1 fill-light mt0'>txPowerLevel</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>txPowerLevel</div>
+   
   
     <p>
       Type:
@@ -4189,8 +4572,10 @@ default value of 23 is used.</p>
 
   <p>List of solicited service UUIDs.</p>
 
-
-  <div class='pre p1 fill-light mt0'>solicitedServiceUUIDs</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>solicitedServiceUUIDs</div>
+   
   
     <p>
       Type:
@@ -4240,8 +4625,10 @@ default value of 23 is used.</p>
 
   <p>Is device connectable. [iOS only]</p>
 
-
-  <div class='pre p1 fill-light mt0'>isConnectable</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isConnectable</div>
+   
   
     <p>
       Type:
@@ -4291,8 +4678,10 @@ default value of 23 is used.</p>
 
   <p>List of overflow service UUIDs. [iOS only]</p>
 
-
-  <div class='pre p1 fill-light mt0'>overflowServiceUUIDs</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>overflowServiceUUIDs</div>
+   
   
     <p>
       Type:
@@ -4328,6 +4717,85 @@ default value of 23 is used.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='devicerequestconnectionpriority'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>requestConnectionPriority(connectionPriority, transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p><a href="#blemanagerrequestconnectionpriorityfordevice">bleManager.requestConnectionPriorityForDevice()</a> with partially filled arguments.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>requestConnectionPriority(connectionPriority: <a href="#connectionpriority">ConnectionPriority</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>connectionPriority</span> <code class='quiet'>(<a href="#connectionpriority">ConnectionPriority</a>)</code>
+	    : Connection priority.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    Transaction handle used to cancel operation.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
+        Connected device.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='devicereadrssi'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -4342,8 +4810,10 @@ default value of 23 is used.</p>
 
   <p><a href="#blemanagerreadrssifordevice">bleManager.readRSSIForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>readRSSI(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>readRSSI(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -4410,8 +4880,10 @@ default value of 23 is used.</p>
 
   <p><a href="#blemanagerrequestmtufordevice">bleManager.requestMTUForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>requestMTU(mtu: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>requestMTU(mtu: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -4486,8 +4958,10 @@ default value of 23 is used.</p>
 
   <p><a href="#blemanagerconnecttodevice">bleManager.connectToDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>connect(options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>connect(options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -4556,8 +5030,10 @@ default value of 23 is used.</p>
 
   <p><a href="#blemanagercanceldeviceconnection">bleManager.cancelDeviceConnection()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>cancelConnection(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>cancelConnection(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -4612,8 +5088,10 @@ default value of 23 is used.</p>
 
   <p><a href="#blemanagerisdeviceconnected">bleManager.isDeviceConnected()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>isConnected(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isConnected(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+   
   
   
 
@@ -4670,8 +5148,10 @@ default value of 23 is used.</p>
 
   <p><a href="#blemanagerondevicedisconnected">bleManager.onDeviceDisconnected()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>onDisconnected(listener: function (error: <a href="#bleerror">BleError</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>onDisconnected(listener: function (error: <a href="#bleerror">BleError</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
+   
   
   
 
@@ -4743,8 +5223,10 @@ if available and
 
   <p><a href="#blemanagerdiscoverallservicesandcharacteristicsfordevice">bleManager.discoverAllServicesAndCharacteristicsForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristics(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristics(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+   
   
   
 
@@ -4800,8 +5282,10 @@ characteristics have been discovered.
 
   <p><a href="#blemanagerservicesfordevice">bleManager.servicesForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>services(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>services(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
+   
   
   
 
@@ -4857,8 +5341,10 @@ device.
 
   <p><a href="#blemanagercharacteristicsfordevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>characteristicsForService(serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>characteristicsForService(serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+   
   
   
 
@@ -4933,8 +5419,10 @@ discovered for a
 
   <p><a href="#blemanagerreadcharacteristicfordevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>readCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>readCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -5031,8 +5519,10 @@ UUID paths. Latest value of
 
   <p><a href="#blemanagerwritecharacteristicwithresponsefordevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -5136,8 +5626,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p><a href="#blemanagerwritecharacteristicwithoutresponsefordevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -5241,8 +5733,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p><a href="#blemanagermonitorcharacteristicfordevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>monitorCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>monitorCharacteristicForService(serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+   
   
   
 
@@ -5341,10 +5835,9 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -5359,8 +5852,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p>Service object.</p>
 
-
-  <div class='pre p1 fill-light mt0'>new Service(nativeService: NativeService, manager: <a href="#blemanager">BleManager</a>)</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>new Service(nativeService: NativeService, manager: <a href="#blemanager">BleManager</a>)</div>
+   
   
   
 
@@ -5378,7 +5873,8 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>nativeService</span> <code class='quiet'>(NativeService)</code>
-	    
+	    NativeService properties to be copied.
+
           </div>
           
         </div>
@@ -5386,7 +5882,8 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>manager</span> <code class='quiet'>(<a href="#blemanager">BleManager</a>)</code>
-	    
+	    Current BleManager instance.
+
           </div>
           
         </div>
@@ -5422,8 +5919,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p>Service unique identifier</p>
 
-
-  <div class='pre p1 fill-light mt0'>id</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>id</div>
+   
   
     <p>
       Type:
@@ -5473,8 +5972,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p>Service UUID</p>
 
-
-  <div class='pre p1 fill-light mt0'>uuid</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>uuid</div>
+   
   
     <p>
       Type:
@@ -5524,8 +6025,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p>Device's ID to which service belongs</p>
 
-
-  <div class='pre p1 fill-light mt0'>deviceID</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>deviceID</div>
+   
   
     <p>
       Type:
@@ -5575,8 +6078,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p>Value indicating whether the type of service is primary or secondary.</p>
 
-
-  <div class='pre p1 fill-light mt0'>isPrimary</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isPrimary</div>
+   
   
     <p>
       Type:
@@ -5626,8 +6131,10 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p><a href="#blemanagercharacteristicsfordevice">bleManager.characteristicsForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>characteristics(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>characteristics(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+   
   
   
 
@@ -5683,8 +6190,10 @@ discovered for this service.
 
   <p><a href="#blemanagerreadcharacteristicfordevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>readCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>readCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -5771,8 +6280,10 @@ UUID path. Latest value of
 
   <p><a href="#blemanagerwritecharacteristicwithresponsefordevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -5866,8 +6377,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p><a href="#blemanagerwritecharacteristicwithoutresponsefordevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponse(characteristicUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -5961,8 +6474,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p><a href="#blemanagermonitorcharacteristicfordevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>monitorCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>monitorCharacteristic(characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+   
   
   
 
@@ -6051,10 +6566,9 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -6069,8 +6583,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>Characteristic object.</p>
 
-
-  <div class='pre p1 fill-light mt0'>new Characteristic(nativeCharacteristic: NativeCharacteristic, manager: <a href="#blemanager">BleManager</a>)</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>new Characteristic(nativeCharacteristic: NativeCharacteristic, manager: <a href="#blemanager">BleManager</a>)</div>
+   
   
   
 
@@ -6088,7 +6604,8 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>nativeCharacteristic</span> <code class='quiet'>(NativeCharacteristic)</code>
-	    
+	    NativeCharacteristic
+
           </div>
           
         </div>
@@ -6096,7 +6613,8 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>manager</span> <code class='quiet'>(<a href="#blemanager">BleManager</a>)</code>
-	    
+	    BleManager
+
           </div>
           
         </div>
@@ -6132,8 +6650,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>Characteristic unique identifier</p>
 
-
-  <div class='pre p1 fill-light mt0'>id</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>id</div>
+   
   
     <p>
       Type:
@@ -6183,8 +6703,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>Characteristic UUID</p>
 
-
-  <div class='pre p1 fill-light mt0'>uuid</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>uuid</div>
+   
   
     <p>
       Type:
@@ -6234,8 +6756,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>Service's ID to which characteristic belongs</p>
 
-
-  <div class='pre p1 fill-light mt0'>serviceID</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>serviceID</div>
+   
   
     <p>
       Type:
@@ -6285,8 +6809,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>Service's UUID to which characteristic belongs</p>
 
-
-  <div class='pre p1 fill-light mt0'>serviceUUID</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>serviceUUID</div>
+   
   
     <p>
       Type:
@@ -6336,8 +6862,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>Device's ID to which characteristic belongs</p>
 
-
-  <div class='pre p1 fill-light mt0'>deviceID</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>deviceID</div>
+   
   
     <p>
       Type:
@@ -6387,8 +6915,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>True if characteristic can be read</p>
 
-
-  <div class='pre p1 fill-light mt0'>isReadable</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isReadable</div>
+   
   
     <p>
       Type:
@@ -6438,8 +6968,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>True if characteristic can be written with response</p>
 
-
-  <div class='pre p1 fill-light mt0'>isWritableWithResponse</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isWritableWithResponse</div>
+   
   
     <p>
       Type:
@@ -6489,8 +7021,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>True if characteristic can be written without response</p>
 
-
-  <div class='pre p1 fill-light mt0'>isWritableWithoutResponse</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isWritableWithoutResponse</div>
+   
   
     <p>
       Type:
@@ -6540,8 +7074,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>True if characteristic can monitor value changes.</p>
 
-
-  <div class='pre p1 fill-light mt0'>isNotifiable</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isNotifiable</div>
+   
   
     <p>
       Type:
@@ -6591,8 +7127,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>True if characteristic is monitoring value changes without ACK.</p>
 
-
-  <div class='pre p1 fill-light mt0'>isNotifying</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isNotifying</div>
+   
   
     <p>
       Type:
@@ -6642,8 +7180,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>True if characteristic is monitoring value changes with ACK.</p>
 
-
-  <div class='pre p1 fill-light mt0'>isIndicatable</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>isIndicatable</div>
+   
   
     <p>
       Type:
@@ -6693,8 +7233,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p>Characteristic value if present</p>
 
-
-  <div class='pre p1 fill-light mt0'>value</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>value</div>
+   
   
     <p>
       Type:
@@ -6744,8 +7286,10 @@ UUID path. Latest value of characteristic may not be stored inside returned obje
 
   <p><a href="#blemanagerreadcharacteristicfordevice">bleManager.readCharacteristicForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>read(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>read(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -6820,8 +7364,10 @@ inside returned object.
 
   <p><a href="#blemanagerwritecharacteristicwithresponsefordevice">bleManager.writeCharacteristicWithResponseForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>writeWithResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>writeWithResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -6905,8 +7451,10 @@ not be stored inside returned object.
 
   <p><a href="#blemanagerwritecharacteristicwithoutresponsefordevice">bleManager.writeCharacteristicWithoutResponseForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>writeWithoutResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>writeWithoutResponse(valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+   
   
   
 
@@ -6990,8 +7538,10 @@ not be stored inside returned object.
 
   <p><a href="#blemanagermonitorcharacteristicfordevice">bleManager.monitorCharacteristicForDevice()</a> with partially filled arguments.</p>
 
-
-  <div class='pre p1 fill-light mt0'>monitor(listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>monitor(listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+   
   
   
 
@@ -7070,25 +7620,69 @@ this
   
 </section>
 
-          
         
           
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+            <div class='keyline-top-not py2'>
+  <section class='py2 clearfix'>
 
-  <h2 id='utils' class='mt0'>
-    Utils
-  </h2>
+    <h2 id='utils' class='mt0'>
+      Utils
+    </h2>
+
+    
+      <p>Utility functions and classes.</p>
+
+    
+  </section>
+</div>
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
-    <p>Utility functions and classes.</p>
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='utils'>
+      Utils
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Utility functions and classes.</p>
+
+ 
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 </section>
-</div>
-          
+
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -7103,8 +7697,10 @@ this
 
   <p>Converts UUID to full 128bit, lowercase format which should be used to compare UUID values.</p>
 
-
-  <div class='pre p1 fill-light mt0'>fullUUID(uuid: <a href="#uuid">UUID</a>): <a href="#uuid">UUID</a></div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>fullUUID(uuid: <a href="#uuid">UUID</a>): <a href="#uuid">UUID</a></div>
+   
   
   
 
@@ -7154,25 +7750,69 @@ this
   
 </section>
 
-          
         
           
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+            <div class='keyline-top-not py2'>
+  <section class='py2 clearfix'>
 
-  <h2 id='ble-error' class='mt0'>
-    BLE Error
-  </h2>
+    <h2 id='ble-error' class='mt0'>
+      BLE Error
+    </h2>
+
+    
+      <p>Types and classes related to BLE errors.</p>
+
+    
+  </section>
+</div>
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
-    <p>Types and classes related to BLE errors.</p>
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='ble-error'>
+      BLE Error
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Types and classes related to BLE errors.</p>
+
+ 
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 </section>
-</div>
-          
+
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -7189,8 +7829,10 @@ this
 library. It contains additional properties which help to identify problems in
 platform independent way.</p>
 
-
-  <div class='pre p1 fill-light mt0'>new BleError(nativeBleError: (NativeBleError | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), errorMessageMapping: <a href="#bleerrorcodemessagemapping">BleErrorCodeMessageMapping</a>)</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>new BleError(nativeBleError: (NativeBleError | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>), errorMessageMapping: <a href="#bleerrorcodemessagemapping">BleErrorCodeMessageMapping</a>)</div>
+   
   
   
     <p>
@@ -7259,8 +7901,10 @@ platform independent way.</p>
 
   <p>Platform independent error code. Possible values are defined in <a href="#bleerrorcode">BleErrorCode</a>.</p>
 
-
-  <div class='pre p1 fill-light mt0'>errorCode</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>errorCode</div>
+   
   
     <p>
       Type:
@@ -7310,8 +7954,10 @@ platform independent way.</p>
 
   <p>Platform independent error code related to ATT errors.</p>
 
-
-  <div class='pre p1 fill-light mt0'>attErrorCode</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>attErrorCode</div>
+   
   
     <p>
       Type:
@@ -7361,8 +8007,10 @@ platform independent way.</p>
 
   <p>iOS specific error code (if not an ATT error).</p>
 
-
-  <div class='pre p1 fill-light mt0'>iosErrorCode</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>iosErrorCode</div>
+   
   
     <p>
       Type:
@@ -7412,8 +8060,10 @@ platform independent way.</p>
 
   <p>Android specific error code (if not an ATT error).</p>
 
-
-  <div class='pre p1 fill-light mt0'>androidErrorCode</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>androidErrorCode</div>
+   
   
     <p>
       Type:
@@ -7463,8 +8113,10 @@ platform independent way.</p>
 
   <p>Platform specific error message.</p>
 
-
-  <div class='pre p1 fill-light mt0'>reason</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>reason</div>
+   
   
     <p>
       Type:
@@ -7507,10 +8159,9 @@ platform independent way.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -7525,8 +8176,10 @@ platform independent way.</p>
 
   <p>Platform independent error code map adjusted to this library's use cases.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BleErrorCode</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BleErrorCode</div>
+   
   
   
 
@@ -7566,8 +8219,10 @@ platform independent way.</p>
   <p>This error can be thrown when unexpected error occurred and in most cases it is related to implementation bug.
 Original message is available in <a href="#bleerrorreason">reason</a> property.</p>
 
-
-  <div class='pre p1 fill-light mt0'>UnknownError</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>UnknownError</div>
+   
   
   
 
@@ -7613,8 +8268,10 @@ Original message is available in <a href="#bleerrorreason">reason</a> property.<
   <p>Current promise failed to finish due to BleManager shutdown. It means that user called
 <a href="#blemanagerdestroy">manager.destroy()</a> function before all operations completed.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BluetoothManagerDestroyed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BluetoothManagerDestroyed</div>
+   
   
   
 
@@ -7660,8 +8317,10 @@ Original message is available in <a href="#bleerrorreason">reason</a> property.<
   <p>Promise was explicitly cancelled by a user with <a href="#blemanagercanceltransaction">manager.cancelTransaction()</a>
 function call.</p>
 
-
-  <div class='pre p1 fill-light mt0'>OperationCancelled</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>OperationCancelled</div>
+   
   
   
 
@@ -7706,8 +8365,10 @@ function call.</p>
 
   <p>Operation timed out and was cancelled.</p>
 
-
-  <div class='pre p1 fill-light mt0'>OperationTimedOut</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>OperationTimedOut</div>
+   
   
   
 
@@ -7752,8 +8413,10 @@ function call.</p>
 
   <p>Native module couldn't start operation due to internal state, which doesn't allow to do that.</p>
 
-
-  <div class='pre p1 fill-light mt0'>OperationStartFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>OperationStartFailed</div>
+   
   
   
 
@@ -7798,8 +8461,10 @@ function call.</p>
 
   <p>Invalid UUIDs or IDs were passed to API call.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InvalidIdentifiers</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InvalidIdentifiers</div>
+   
   
   
 
@@ -7844,8 +8509,10 @@ function call.</p>
 
   <p>Bluetooth is not supported for this particular device. It may happen on iOS simulator for example.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BluetoothUnsupported</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BluetoothUnsupported</div>
+   
   
   
 
@@ -7891,8 +8558,10 @@ function call.</p>
   <p>There are no granted permissions which allow to use BLE functionality. On Android it may require
 android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCESS_FINE_LOCATION permission.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BluetoothUnauthorized</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BluetoothUnauthorized</div>
+   
   
   
 
@@ -7937,8 +8606,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>BLE is powered off on device. All previous operations and their state is invalidated.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BluetoothPoweredOff</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BluetoothPoweredOff</div>
+   
   
   
 
@@ -7983,8 +8654,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>BLE stack is in unspecified state.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BluetoothInUnknownState</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BluetoothInUnknownState</div>
+   
   
   
 
@@ -8029,8 +8702,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>BLE stack is resetting.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BluetoothResetting</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BluetoothResetting</div>
+   
   
   
 
@@ -8075,8 +8750,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>Couldn't connect to specified device.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DeviceConnectionFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DeviceConnectionFailed</div>
+   
   
   
 
@@ -8121,8 +8798,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>Device was disconnected.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DeviceDisconnected</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DeviceDisconnected</div>
+   
   
   
 
@@ -8167,8 +8846,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>Couldn't read RSSI from device.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DeviceRSSIReadFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DeviceRSSIReadFailed</div>
+   
   
   
 
@@ -8213,8 +8894,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>Device is already connected. It is not allowed to connect twice to the same device.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DeviceAlreadyConnected</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DeviceAlreadyConnected</div>
+   
   
   
 
@@ -8259,8 +8942,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>Couldn't find device with specified ID.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DeviceNotFound</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DeviceNotFound</div>
+   
   
   
 
@@ -8305,8 +8990,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>Operation failed because device has to be connected to perform it.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DeviceNotConnected</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DeviceNotConnected</div>
+   
   
   
 
@@ -8351,8 +9038,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>Device could not change MTU value.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DeviceMTUChangeFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DeviceMTUChangeFailed</div>
+   
   
   
 
@@ -8397,8 +9086,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>Couldn't discover services for specified device.</p>
 
-
-  <div class='pre p1 fill-light mt0'>ServicesDiscoveryFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ServicesDiscoveryFailed</div>
+   
   
   
 
@@ -8443,8 +9134,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 
   <p>Couldn't discover included services for specified service.</p>
 
-
-  <div class='pre p1 fill-light mt0'>IncludedServicesDiscoveryFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>IncludedServicesDiscoveryFailed</div>
+   
   
   
 
@@ -8491,8 +9184,10 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
 <a href="#blemanagerdiscoverallservicesandcharacteristicsfordevice">manager.discoverAllServicesAndCharacteristicsForDevice</a>
 to cache them.</p>
 
-
-  <div class='pre p1 fill-light mt0'>ServiceNotFound</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ServiceNotFound</div>
+   
   
   
 
@@ -8539,8 +9234,10 @@ to cache them.</p>
 <a href="#blemanagerdiscoverallservicesandcharacteristicsfordevice">manager.discoverAllServicesAndCharacteristicsForDevice</a>
 to cache them.</p>
 
-
-  <div class='pre p1 fill-light mt0'>ServicesNotDiscovered</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ServicesNotDiscovered</div>
+   
   
   
 
@@ -8585,8 +9282,10 @@ to cache them.</p>
 
   <p>Couldn't discover characteristics for specified service.</p>
 
-
-  <div class='pre p1 fill-light mt0'>CharacteristicsDiscoveryFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>CharacteristicsDiscoveryFailed</div>
+   
   
   
 
@@ -8633,8 +9332,10 @@ to cache them.</p>
 <a href="#characteristiciswritablewithresponse">characteristic.isWritableWithResponse</a>
 or <a href="#characteristiciswritablewithoutresponse">characteristic.isWritableWithoutResponse</a> is set to true.</p>
 
-
-  <div class='pre p1 fill-light mt0'>CharacteristicWriteFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>CharacteristicWriteFailed</div>
+   
   
   
 
@@ -8680,8 +9381,10 @@ or <a href="#characteristiciswritablewithoutresponse">characteristic.isWritableW
   <p>Couldn't read from specified characteristic. Make sure that
 <a href="#characteristicisreadable">characteristic.isReadable</a> is set to true.</p>
 
-
-  <div class='pre p1 fill-light mt0'>CharacteristicReadFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>CharacteristicReadFailed</div>
+   
   
   
 
@@ -8728,8 +9431,10 @@ or <a href="#characteristiciswritablewithoutresponse">characteristic.isWritableW
 <a href="#characteristicisnotifiable">characteristic.isNotifiable</a> or
 <a href="#characteristicisindicatable">characteristic.isIndicatable</a> is set to true.</p>
 
-
-  <div class='pre p1 fill-light mt0'>CharacteristicNotifyChangeFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>CharacteristicNotifyChangeFailed</div>
+   
   
   
 
@@ -8776,8 +9481,10 @@ or <a href="#characteristiciswritablewithoutresponse">characteristic.isWritableW
 <a href="#blemanagerdiscoverallservicesandcharacteristicsfordevice">manager.discoverAllServicesAndCharacteristicsForDevice</a>
 to cache them.</p>
 
-
-  <div class='pre p1 fill-light mt0'>CharacteristicNotFound</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>CharacteristicNotFound</div>
+   
   
   
 
@@ -8824,8 +9531,10 @@ to cache them.</p>
 <a href="#blemanagerdiscoverallservicesandcharacteristicsfordevice">manager.discoverAllServicesAndCharacteristicsForDevice</a>
 to cache them.</p>
 
-
-  <div class='pre p1 fill-light mt0'>CharacteristicsNotDiscovered</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>CharacteristicsNotDiscovered</div>
+   
   
   
 
@@ -8870,8 +9579,10 @@ to cache them.</p>
 
   <p>Invalid Base64 format was passed to characteristic API function call.</p>
 
-
-  <div class='pre p1 fill-light mt0'>CharacteristicInvalidDataFormat</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>CharacteristicInvalidDataFormat</div>
+   
   
   
 
@@ -8916,8 +9627,10 @@ to cache them.</p>
 
   <p>Couldn't discover descriptor for specified characteristic.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DescriptorsDiscoveryFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DescriptorsDiscoveryFailed</div>
+   
   
   
 
@@ -8962,8 +9675,10 @@ to cache them.</p>
 
   <p>Couldn't write to specified descriptor.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DescriptorWriteFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DescriptorWriteFailed</div>
+   
   
   
 
@@ -9008,8 +9723,10 @@ to cache them.</p>
 
   <p>Couldn't read from specified descriptor.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DescriptorReadFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DescriptorReadFailed</div>
+   
   
   
 
@@ -9054,8 +9771,10 @@ to cache them.</p>
 
   <p>Couldn't find specified descriptor.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DescriptorNotFound</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DescriptorNotFound</div>
+   
   
   
 
@@ -9100,8 +9819,10 @@ to cache them.</p>
 
   <p>Descriptors are not discovered for specified characteristic.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DescriptorsNotDiscovered</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DescriptorsNotDiscovered</div>
+   
   
   
 
@@ -9146,8 +9867,10 @@ to cache them.</p>
 
   <p>Invalid Base64 format was passed to descriptor API function call.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DescriptorInvalidDataFormat</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DescriptorInvalidDataFormat</div>
+   
   
   
 
@@ -9192,8 +9915,10 @@ to cache them.</p>
 
   <p>Cannot start scanning operation.</p>
 
-
-  <div class='pre p1 fill-light mt0'>ScanStartFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ScanStartFailed</div>
+   
   
   
 
@@ -9238,8 +9963,10 @@ to cache them.</p>
 
   <p>Location services are disabled.</p>
 
-
-  <div class='pre p1 fill-light mt0'>LocationServicesDisabled</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>LocationServicesDisabled</div>
+   
   
   
 
@@ -9279,10 +10006,9 @@ to cache them.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -9297,8 +10023,10 @@ to cache them.</p>
 
   <p>Mapping of error codes to error messages</p>
 
-
-  <div class='pre p1 fill-light mt0'>BleErrorCodeMessage</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BleErrorCodeMessage</div>
+   
   
   
 
@@ -9326,10 +10054,9 @@ to cache them.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -9344,8 +10071,10 @@ to cache them.</p>
 
   <p>Error codes for ATT errors.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BleATTErrorCode</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BleATTErrorCode</div>
+   
   
   
 
@@ -9384,8 +10113,10 @@ to cache them.</p>
 
   <p>The ATT command or request successfully completed.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Success</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Success</div>
+   
   
   
 
@@ -9430,8 +10161,10 @@ to cache them.</p>
 
   <p>The attribute handle is invalid on this device.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InvalidHandle</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InvalidHandle</div>
+   
   
   
 
@@ -9476,8 +10209,10 @@ to cache them.</p>
 
   <p>The attribute’s value cannot be read.</p>
 
-
-  <div class='pre p1 fill-light mt0'>ReadNotPermitted</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ReadNotPermitted</div>
+   
   
   
 
@@ -9522,8 +10257,10 @@ to cache them.</p>
 
   <p>The attribute’s value cannot be written.</p>
 
-
-  <div class='pre p1 fill-light mt0'>WriteNotPermitted</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>WriteNotPermitted</div>
+   
   
   
 
@@ -9568,8 +10305,10 @@ to cache them.</p>
 
   <p>The attribute Protocol Data Unit (PDU) or “message” is invalid.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InvalidPdu</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InvalidPdu</div>
+   
   
   
 
@@ -9614,8 +10353,10 @@ to cache them.</p>
 
   <p>The attribute requires authentication before its value can be read or written.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InsufficientAuthentication</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InsufficientAuthentication</div>
+   
   
   
 
@@ -9660,8 +10401,10 @@ to cache them.</p>
 
   <p>The attribute server does not support the request received by the client.</p>
 
-
-  <div class='pre p1 fill-light mt0'>RequestNotSupported</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>RequestNotSupported</div>
+   
   
   
 
@@ -9706,8 +10449,10 @@ to cache them.</p>
 
   <p>The specified offset value was past the end of the attribute’s value.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InvalidOffset</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InvalidOffset</div>
+   
   
   
 
@@ -9752,8 +10497,10 @@ to cache them.</p>
 
   <p>The attribute requires authorization before its value can be read or written.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InsufficientAuthorization</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InsufficientAuthorization</div>
+   
   
   
 
@@ -9798,8 +10545,10 @@ to cache them.</p>
 
   <p>The prepare queue is full, because too many prepare write requests have been queued.</p>
 
-
-  <div class='pre p1 fill-light mt0'>PrepareQueueFull</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>PrepareQueueFull</div>
+   
   
   
 
@@ -9844,8 +10593,10 @@ to cache them.</p>
 
   <p>The attribute is not found within the specified attribute handle range.</p>
 
-
-  <div class='pre p1 fill-light mt0'>AttributeNotFound</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>AttributeNotFound</div>
+   
   
   
 
@@ -9890,8 +10641,10 @@ to cache them.</p>
 
   <p>The attribute cannot be read or written using the ATT read blob request.</p>
 
-
-  <div class='pre p1 fill-light mt0'>AttributeNotLong</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>AttributeNotLong</div>
+   
   
   
 
@@ -9936,8 +10689,10 @@ to cache them.</p>
 
   <p>The encryption key size used for encrypting this link is insufficient.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InsufficientEncryptionKeySize</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InsufficientEncryptionKeySize</div>
+   
   
   
 
@@ -9982,8 +10737,10 @@ to cache them.</p>
 
   <p>The length of the attribute’s value is invalid for the intended operation.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InvalidAttributeValueLength</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InvalidAttributeValueLength</div>
+   
   
   
 
@@ -10028,8 +10785,10 @@ to cache them.</p>
 
   <p>The ATT request has encountered an unlikely error and therefore could not be completed.</p>
 
-
-  <div class='pre p1 fill-light mt0'>UnlikelyError</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>UnlikelyError</div>
+   
   
   
 
@@ -10074,8 +10833,10 @@ to cache them.</p>
 
   <p>The attribute requires encryption before its value can be read or written.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InsufficientEncryption</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InsufficientEncryption</div>
+   
   
   
 
@@ -10120,8 +10881,10 @@ to cache them.</p>
 
   <p>The attribute type is not a supported grouping attribute as defined by a higher-layer specification.</p>
 
-
-  <div class='pre p1 fill-light mt0'>UnsupportedGroupType</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>UnsupportedGroupType</div>
+   
   
   
 
@@ -10166,8 +10929,10 @@ to cache them.</p>
 
   <p>Resources are insufficient to complete the ATT request.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InsufficientResources</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InsufficientResources</div>
+   
   
   
 
@@ -10207,10 +10972,9 @@ to cache them.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -10225,8 +10989,10 @@ to cache them.</p>
 
   <p>Android specific error codes.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BleAndroidErrorCode</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BleAndroidErrorCode</div>
+   
   
   
 
@@ -10265,8 +11031,10 @@ to cache them.</p>
 
   <p>The device has insufficient resources to complete the intended operation.</p>
 
-
-  <div class='pre p1 fill-light mt0'>NoResources</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>NoResources</div>
+   
   
   
 
@@ -10311,8 +11079,10 @@ to cache them.</p>
 
   <p>Internal error occurred which may happen due to implementation error in BLE stack.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InternalError</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InternalError</div>
+   
   
   
 
@@ -10357,8 +11127,10 @@ to cache them.</p>
 
   <p>BLE stack implementation entered illegal state and operation couldn't complete.</p>
 
-
-  <div class='pre p1 fill-light mt0'>WrongState</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>WrongState</div>
+   
   
   
 
@@ -10403,8 +11175,10 @@ to cache them.</p>
 
   <p>BLE stack didn't allocate sufficient memory buffer for internal caches.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DbFull</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DbFull</div>
+   
   
   
 
@@ -10449,8 +11223,10 @@ to cache them.</p>
 
   <p>Maximum number of pending operations was exceeded.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Busy</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Busy</div>
+   
   
   
 
@@ -10495,8 +11271,10 @@ to cache them.</p>
 
   <p>Generic BLE stack error.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Error</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Error</div>
+   
   
   
 
@@ -10541,8 +11319,10 @@ to cache them.</p>
 
   <p>Command is already queued up in GATT.</p>
 
-
-  <div class='pre p1 fill-light mt0'>CmdStarted</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>CmdStarted</div>
+   
   
   
 
@@ -10587,8 +11367,10 @@ to cache them.</p>
 
   <p>Illegal parameter was passed to internal BLE stack function.</p>
 
-
-  <div class='pre p1 fill-light mt0'>IllegalParameter</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>IllegalParameter</div>
+   
   
   
 
@@ -10633,8 +11415,10 @@ to cache them.</p>
 
   <p>Operation is pending.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Pending</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Pending</div>
+   
   
   
 
@@ -10679,8 +11463,10 @@ to cache them.</p>
 
   <p>Authorization failed before performing read or write operation.</p>
 
-
-  <div class='pre p1 fill-light mt0'>AuthFail</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>AuthFail</div>
+   
   
   
 
@@ -10725,8 +11511,10 @@ to cache them.</p>
 
   <p>More cache entries were loaded then expected.</p>
 
-
-  <div class='pre p1 fill-light mt0'>More</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>More</div>
+   
   
   
 
@@ -10771,8 +11559,10 @@ to cache them.</p>
 
   <p>Invalid configuration</p>
 
-
-  <div class='pre p1 fill-light mt0'>InvalidCfg</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InvalidCfg</div>
+   
   
   
 
@@ -10817,8 +11607,10 @@ to cache them.</p>
 
   <p>GATT service already started.</p>
 
-
-  <div class='pre p1 fill-light mt0'>ServiceStarted</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ServiceStarted</div>
+   
   
   
 
@@ -10863,8 +11655,10 @@ to cache them.</p>
 
   <p>GATT link is encrypted but prone to man in the middle attacks.</p>
 
-
-  <div class='pre p1 fill-light mt0'>EncrypedNoMitm</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>EncrypedNoMitm</div>
+   
   
   
 
@@ -10909,8 +11703,10 @@ to cache them.</p>
 
   <p>GATT link is not encrypted.</p>
 
-
-  <div class='pre p1 fill-light mt0'>NotEncrypted</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>NotEncrypted</div>
+   
   
   
 
@@ -10955,8 +11751,10 @@ to cache them.</p>
 
   <p>ATT command was sent but channel is congested.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Congested</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Congested</div>
+   
   
   
 
@@ -10996,10 +11794,9 @@ to cache them.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -11014,8 +11811,10 @@ to cache them.</p>
 
   <p>iOS specific error codes.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BleIOSErrorCode</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BleIOSErrorCode</div>
+   
   
   
 
@@ -11054,8 +11853,10 @@ to cache them.</p>
 
   <p>An unknown error occurred.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Unknown</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Unknown</div>
+   
   
   
 
@@ -11100,8 +11901,10 @@ to cache them.</p>
 
   <p>The specified parameters are invalid.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InvalidParameters</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InvalidParameters</div>
+   
   
   
 
@@ -11146,8 +11949,10 @@ to cache them.</p>
 
   <p>The specified attribute handle is invalid.</p>
 
-
-  <div class='pre p1 fill-light mt0'>InvalidHandle</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>InvalidHandle</div>
+   
   
   
 
@@ -11192,8 +11997,10 @@ to cache them.</p>
 
   <p>The device is not currently connected.</p>
 
-
-  <div class='pre p1 fill-light mt0'>NotConnected</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>NotConnected</div>
+   
   
   
 
@@ -11238,8 +12045,10 @@ to cache them.</p>
 
   <p>The device has run out of space to complete the intended operation.</p>
 
-
-  <div class='pre p1 fill-light mt0'>OutOfSpace</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>OutOfSpace</div>
+   
   
   
 
@@ -11284,8 +12093,10 @@ to cache them.</p>
 
   <p>The operation is canceled.</p>
 
-
-  <div class='pre p1 fill-light mt0'>OperationCancelled</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>OperationCancelled</div>
+   
   
   
 
@@ -11330,8 +12141,10 @@ to cache them.</p>
 
   <p>The connection timed out.</p>
 
-
-  <div class='pre p1 fill-light mt0'>ConnectionTimeout</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ConnectionTimeout</div>
+   
   
   
 
@@ -11376,8 +12189,10 @@ to cache them.</p>
 
   <p>The peripheral disconnected.</p>
 
-
-  <div class='pre p1 fill-light mt0'>PeripheralDisconnected</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>PeripheralDisconnected</div>
+   
   
   
 
@@ -11422,8 +12237,10 @@ to cache them.</p>
 
   <p>The specified UUID is not permitted.</p>
 
-
-  <div class='pre p1 fill-light mt0'>UuidNotAllowed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>UuidNotAllowed</div>
+   
   
   
 
@@ -11468,8 +12285,10 @@ to cache them.</p>
 
   <p>The peripheral is already advertising.</p>
 
-
-  <div class='pre p1 fill-light mt0'>AlreadyAdvertising</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>AlreadyAdvertising</div>
+   
   
   
 
@@ -11514,8 +12333,10 @@ to cache them.</p>
 
   <p>The connection failed.</p>
 
-
-  <div class='pre p1 fill-light mt0'>ConnectionFailed</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ConnectionFailed</div>
+   
   
   
 
@@ -11560,8 +12381,10 @@ to cache them.</p>
 
   <p>The device already has the maximum number of connections.</p>
 
-
-  <div class='pre p1 fill-light mt0'>ConnectionLimitReached</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ConnectionLimitReached</div>
+   
   
   
 
@@ -11606,8 +12429,10 @@ to cache them.</p>
 
   <p>Unknown device.</p>
 
-
-  <div class='pre p1 fill-light mt0'>UnknownDevice</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>UnknownDevice</div>
+   
   
   
 
@@ -11647,25 +12472,69 @@ to cache them.</p>
   
 </section>
 
-          
         
           
-            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+            <div class='keyline-top-not py2'>
+  <section class='py2 clearfix'>
 
-  <h2 id='flow-types' class='mt0'>
-    Flow Types
-  </h2>
+    <h2 id='flow-types' class='mt0'>
+      Flow Types
+    </h2>
+
+    
+      <p>All Flow aliases and Flow types used in this library.</p>
+
+    
+  </section>
+</div>
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
-    <p>All Flow aliases and Flow types used in this library.</p>
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='flow-types'>
+      Flow Types
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>All Flow aliases and Flow types used in this library.</p>
+
+ 
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 </section>
-</div>
-          
+
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -11680,8 +12549,10 @@ to cache them.</p>
 
   <p>Native module logging log level. By default it is set to None.</p>
 
-
-  <div class='pre p1 fill-light mt0'>LogLevel</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>LogLevel</div>
+   
   
   
 
@@ -11720,8 +12591,10 @@ to cache them.</p>
 
   <p>Logging in native module is disabled</p>
 
-
-  <div class='pre p1 fill-light mt0'>None</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>None</div>
+   
   
   
 
@@ -11766,8 +12639,10 @@ to cache them.</p>
 
   <p>All logs in native module are shown</p>
 
-
-  <div class='pre p1 fill-light mt0'>Verbose</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Verbose</div>
+   
   
   
 
@@ -11812,8 +12687,10 @@ to cache them.</p>
 
   <p>Only debug logs and of higher importance are shown in native module.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Debug</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Debug</div>
+   
   
   
 
@@ -11858,8 +12735,10 @@ to cache them.</p>
 
   <p>Only info logs and of higher importance are shown in native module.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Info</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Info</div>
+   
   
   
 
@@ -11904,8 +12783,10 @@ to cache them.</p>
 
   <p>Only warning logs and of higher importance are shown in native module.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Warning</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Warning</div>
+   
   
   
 
@@ -11950,8 +12831,10 @@ to cache them.</p>
 
   <p>Only error logs and of higher importance are shown in native module.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Error</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Error</div>
+   
   
   
 
@@ -11991,10 +12874,207 @@ to cache them.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='connectionpriority'>
+      ConnectionPriority
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Connection priority of BLE link determining the balance between power consumption and data throughput.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>ConnectionPriority</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='connectionprioritybalanced'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Balanced</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Default, recommended option balanced between power consumption and data throughput.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>Balanced</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='connectionpriorityhigh'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>High</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>High priority, low latency connection, which increases transfer speed at the expense of power consumption.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>High</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='connectionprioritylowpower'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>LowPower</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Low power, reduced data rate connection setup.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>LowPower</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -12010,8 +13090,10 @@ to cache them.</p>
   <p>Device Bluetooth Low Energy state. It's keys are used to check <a href="#blemanagerstate">#blemanagerstate</a> values
 received by <a href="#blemanager">BleManager</a></p>
 
-
-  <div class='pre p1 fill-light mt0'>State</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>State</div>
+   
   
   
 
@@ -12050,8 +13132,10 @@ received by <a href="#blemanager">BleManager</a></p>
 
   <p>The current state of the manager is unknown; an update is imminent.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Unknown</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Unknown</div>
+   
   
   
 
@@ -12096,8 +13180,10 @@ received by <a href="#blemanager">BleManager</a></p>
 
   <p>The connection with the system service was momentarily lost; an update is imminent.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Resetting</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Resetting</div>
+   
   
   
 
@@ -12142,8 +13228,10 @@ received by <a href="#blemanager">BleManager</a></p>
 
   <p>The platform does not support Bluetooth low energy.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Unsupported</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Unsupported</div>
+   
   
   
 
@@ -12188,8 +13276,10 @@ received by <a href="#blemanager">BleManager</a></p>
 
   <p>The app is not authorized to use Bluetooth low energy.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Unauthorized</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Unauthorized</div>
+   
   
   
 
@@ -12234,8 +13324,10 @@ received by <a href="#blemanager">BleManager</a></p>
 
   <p>Bluetooth is currently powered off.</p>
 
-
-  <div class='pre p1 fill-light mt0'>PoweredOff</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>PoweredOff</div>
+   
   
   
 
@@ -12280,8 +13372,10 @@ received by <a href="#blemanager">BleManager</a></p>
 
   <p>Bluetooth is currently powered on and available to use.</p>
 
-
-  <div class='pre p1 fill-light mt0'>PoweredOn</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>PoweredOn</div>
+   
   
   
 
@@ -12321,10 +13415,9 @@ received by <a href="#blemanager">BleManager</a></p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -12339,8 +13432,10 @@ received by <a href="#blemanager">BleManager</a></p>
 
   <p>Type of error code mapping table</p>
 
-
-  <div class='pre p1 fill-light mt0'>BleErrorCodeMessageMapping</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BleErrorCodeMessageMapping</div>
+   
   
     <p>
       Type:
@@ -12373,10 +13468,9 @@ received by <a href="#blemanager">BleManager</a></p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -12391,8 +13485,10 @@ received by <a href="#blemanager">BleManager</a></p>
 
   <p>Options which can be passed to when creating BLE Manager</p>
 
-
-  <div class='pre p1 fill-light mt0'>BleManagerOptions</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BleManagerOptions</div>
+   
   
   
 
@@ -12456,8 +13552,10 @@ received by <a href="#blemanager">BleManager</a></p>
 
   <p>BLE State restoration identifier used to restore state.</p>
 
-
-  <div class='pre p1 fill-light mt0'>restoreStateIdentifier</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>restoreStateIdentifier</div>
+   
   
   
 
@@ -12506,8 +13604,10 @@ is passed. When value is <code>null</code> application is launching for the firs
 it contains saved state which may be used by developer to continue working with
 connected peripherals.</p>
 
-
-  <div class='pre p1 fill-light mt0'>restoreStateFunction</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>restoreStateFunction</div>
+   
   
   
 
@@ -12555,8 +13655,10 @@ by default.</p>
 <p>To override logging UUIDs or MAC adresses in error messages copy the original object
 and overwrite values of interest to you.</p>
 
-
-  <div class='pre p1 fill-light mt0'>errorCodesToMessagesMapping</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>errorCodesToMessagesMapping</div>
+   
   
   
 
@@ -12594,10 +13696,9 @@ and overwrite values of interest to you.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -12612,8 +13713,10 @@ and overwrite values of interest to you.</p>
 
   <p>Object representing information about restored BLE state after application relaunch.</p>
 
-
-  <div class='pre p1 fill-light mt0'>BleRestoredState</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>BleRestoredState</div>
+   
   
   
 
@@ -12665,8 +13768,15 @@ and overwrite values of interest to you.</p>
 
   <p>List of connected devices after state restoration.</p>
 
-
-  <div class='pre p1 fill-light mt0'>connectedPeripherals</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>connectedPeripherals</div>
+   
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>
+    </p>
   
   
 
@@ -12704,10 +13814,9 @@ and overwrite values of interest to you.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -12722,8 +13831,10 @@ and overwrite values of interest to you.</p>
 
   <p>Options which can be passed to scanning function</p>
 
-
-  <div class='pre p1 fill-light mt0'>ScanOptions</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ScanOptions</div>
+   
   
   
 
@@ -12775,8 +13886,10 @@ and overwrite values of interest to you.</p>
 
   <p>By allowing duplicates scanning records are received more frequently [iOS only]</p>
 
-
-  <div class='pre p1 fill-light mt0'>allowDuplicates</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>allowDuplicates</div>
+   
   
   
 
@@ -12814,10 +13927,9 @@ and overwrite values of interest to you.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -12832,8 +13944,10 @@ and overwrite values of interest to you.</p>
 
   <p>Connection specific options to be passed before connection happen. [Not used]</p>
 
-
-  <div class='pre p1 fill-light mt0'>ConnectionOptions</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>ConnectionOptions</div>
+   
   
   
 
@@ -12904,8 +14018,10 @@ and overwrite values of interest to you.</p>
   <p>Whether to directly connect to the remote device (false) or to automatically connect as soon as the remote device
 becomes available (true). [Android only]</p>
 
-
-  <div class='pre p1 fill-light mt0'>autoConnect</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>autoConnect</div>
+   
   
   
 
@@ -12950,8 +14066,10 @@ becomes available (true). [Android only]</p>
 
   <p>Whether MTU size will be negotiated to this value. It is not guaranteed to get it after connection is successful.</p>
 
-
-  <div class='pre p1 fill-light mt0'>requestMTU</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>requestMTU</div>
+   
   
   
 
@@ -12998,8 +14116,10 @@ becomes available (true). [Android only]</p>
 updated and it's services/characteristics were added/removed/altered. [Android only]
 <a href="https://stackoverflow.com/questions/22596951/how-to-programmatically-force-bluetooth-low-energy-service-discovery-on-android">https://stackoverflow.com/questions/22596951/how-to-programmatically-force-bluetooth-low-energy-service-discovery-on-android</a></p>
 
-
-  <div class='pre p1 fill-light mt0'>refreshGatt</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>refreshGatt</div>
+   
   
   
 
@@ -13046,8 +14166,10 @@ updated and it's services/characteristics were added/removed/altered. [Android o
 established right after timeout event, device will be disconnected immediately. Time out may happen earlier then
 specified due to OS specific behavior.</p>
 
-
-  <div class='pre p1 fill-light mt0'>timeout</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>timeout</div>
+   
   
   
 
@@ -13085,10 +14207,9 @@ specified due to OS specific behavior.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -13103,8 +14224,10 @@ specified due to OS specific behavior.</p>
 
   <p>Bluetooth device id.</p>
 
-
-  <div class='pre p1 fill-light mt0'>DeviceId</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>DeviceId</div>
+   
   
     <p>
       Type:
@@ -13137,10 +14260,9 @@ specified due to OS specific behavior.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -13155,8 +14277,10 @@ specified due to OS specific behavior.</p>
 
   <p>Unique identifier for BLE objects.</p>
 
-
-  <div class='pre p1 fill-light mt0'>Identifier</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Identifier</div>
+   
   
     <p>
       Type:
@@ -13189,10 +14313,9 @@ specified due to OS specific behavior.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -13207,8 +14330,10 @@ specified due to OS specific behavior.</p>
 
   <p>Bluetooth UUID</p>
 
-
-  <div class='pre p1 fill-light mt0'>UUID</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>UUID</div>
+   
   
     <p>
       Type:
@@ -13241,10 +14366,9 @@ specified due to OS specific behavior.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -13259,8 +14383,10 @@ specified due to OS specific behavior.</p>
 
   <p>Transaction identifier. All transaction identifiers in numeric form are reserved for internal use.</p>
 
-
-  <div class='pre p1 fill-light mt0'>TransactionId</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>TransactionId</div>
+   
   
     <p>
       Type:
@@ -13293,10 +14419,9 @@ specified due to OS specific behavior.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -13311,8 +14436,10 @@ specified due to OS specific behavior.</p>
 
   <p>Subscription</p>
 
-
-  <div class='pre p1 fill-light mt0'>Subscription</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Subscription</div>
+   
   
   
 
@@ -13351,10 +14478,9 @@ specified due to OS specific behavior.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -13369,8 +14495,10 @@ specified due to OS specific behavior.</p>
 
   <p>Base64 value</p>
 
-
-  <div class='pre p1 fill-light mt0'>Base64</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>Base64</div>
+   
   
     <p>
       Type:
@@ -13403,10 +14531,9 @@ specified due to OS specific behavior.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -13421,8 +14548,10 @@ specified due to OS specific behavior.</p>
 
   <p>Returns a list of known peripherals by their identifiers.</p>
 
-
-  <div class='pre p1 fill-light mt0'>devices</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>devices</div>
+   
   
   
 
@@ -13464,10 +14593,9 @@ specified due to OS specific behavior.</p>
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -13483,8 +14611,10 @@ specified due to OS specific behavior.</p>
   <p>Returns a list of the peripherals (containing any of the specified services) currently connected to the system
 which have discovered services. Returned devices <strong>may not be connected</strong> to your application.</p>
 
-
-  <div class='pre p1 fill-light mt0'>connectedDevices</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>connectedDevices</div>
+   
   
   
 
@@ -13526,10 +14656,9 @@ which have discovered services. Returned devices <strong>may not be connected</s
   
 </section>
 
-          
         
           
-            <section class='p2 mb2 clearfix bg-white minishadow'>
+          <section class='p2 mb2 clearfix bg-white minishadow'>
 
   
   <div class='clearfix'>
@@ -13544,8 +14673,10 @@ which have discovered services. Returned devices <strong>may not be connected</s
 
   <p>[Android only] ConnectionOptions parameter to describe when to call BluetoothGatt.refresh()</p>
 
-
-  <div class='pre p1 fill-light mt0'>RefreshGattMoment</div>
+ 
+  
+    <div class='pre p1 fill-light mt0'>RefreshGattMoment</div>
+   
   
     <p>
       Type:
@@ -13578,7 +14709,6 @@ which have discovered services. Returned devices <strong>may not be connected</s
   
 </section>
 
-          
         
       </div>
     </div>
