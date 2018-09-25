@@ -59,7 +59,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 ## Configuration & Installation
 
-### iOS (pure react-native)
+### iOS (pure react-native, [example setup](https://github.com/Cierpliwy/SensorTag))
 
 1. `npm install --save react-native-ble-plx`
 2. `react-native link react-native-ble-plx`
@@ -74,7 +74,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
      `Background Modes` section.
    * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
 
-### iOS (expo/Podfile)
+### iOS (expo/Podfile, [example setup](https://github.com/Cierpliwy/SensorTagExpo))
 
 1. Make sure your Expo project is detached. You can read how to do it [here](https://docs.expo.io/versions/latest/expokit/detach) and [here](https://docs.expo.io/versions/latest/expokit/expokit).
 2. `npm install --save react-native-ble-plx`
@@ -96,7 +96,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
      `Background Modes` section.
    * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
 
-### Android
+### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 
 1. `npm install --save react-native-ble-plx`
 2. `react-native link react-native-ble-plx`
