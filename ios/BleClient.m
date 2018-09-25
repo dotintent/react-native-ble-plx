@@ -91,6 +91,18 @@ RCT_EXPORT_METHOD(stopDeviceScan) {
     [_manager stopDeviceScan];
 }
 
+RCT_EXPORT_METHOD(requestConnectionPriorityForDevice:(NSString*)deviceIdentifier
+                                  connectionPriority:(NSInteger)connectionPriority
+                                       transactionId:(NSString*)transactionId
+                                            resolver:(RCTPromiseResolveBlock)resolve
+                                            rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager requestConnectionPriorityForDevice:deviceIdentifier
+                              connectionPriority:connectionPriority
+                                   transactionId:transactionId
+                                         resolve:resolve
+                                          reject:reject];
+}
+
 RCT_EXPORT_METHOD(readRSSIForDevice:(NSString*)deviceIdentifier
                       transactionId:(NSString*)transactionId
                            resolver:(RCTPromiseResolveBlock)resolve

@@ -275,6 +275,26 @@ public class BleClientManager : NSObject {
         resolve(peripheral.asJSObject())
     }
 
+    @objc
+    public func requestConnectionPriorityForDevice(_ deviceIdentifier: String,
+                                                   connectionPriority: Int,
+                                                        transactionId: String,
+                                                              resolve: @escaping Resolve,
+                                                               reject: @escaping Reject) {
+
+        guard let deviceId = UUID(uuidString: deviceIdentifier) else {
+            BleError.invalidIdentifiers(deviceIdentifier).callReject(reject)
+            return
+        }
+
+        guard let peripheral = connectedPeripherals[deviceId] else {
+            BleError.peripheralNotConnected(deviceIdentifier).callReject(reject)
+            return
+        }
+
+        resolve(peripheral.asJSObject())
+    }
+
     // Mark: Device management -----------------------------------------------------------------------------------------
 
     @objc
