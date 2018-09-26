@@ -396,8 +396,8 @@ public class BleModule extends ReactContextBaseJavaModule {
                     }).subscribe(new Action0() {
                         @Override
                         public void call() {
-                            transactions.removeSubscription(transactionId);
                             safePromise.resolve(device.toJSObject(null));
+                            transactions.removeSubscription(transactionId);
                         }
                     }, new Action1<Throwable>() {
                         @Override
