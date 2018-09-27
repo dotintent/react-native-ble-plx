@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset='utf-8' />
-  <title>react-native-ble-plx 0.10.0 | Documentation</title>
+  <title>react-native-ble-plx 1.0.0 | Documentation</title>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' type='text/css' rel='stylesheet' />
   <link href='assets/style.css' type='text/css' rel='stylesheet' />
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>react-native-ble-plx</h3>
-          <div class='mb1'><code>0.10.0</code></div>
+          <div class='mb1'><code>1.0.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -3187,7 +3187,10 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
 	    callback returning error as a reason of disconnection
 if available and 
 <a href="#device">Device</a>
- object.
+ object. If an error is null, that means the connection was terminated by
+
+<a href="#blemanagercanceldeviceconnection">bleManager.cancelDeviceConnection()</a>
+ call.
 
           </div>
           
@@ -5172,7 +5175,10 @@ default value of 23 is used.</p>
 	    callback returning error as a reason of disconnection
 if available and 
 <a href="#device">Device</a>
- object.
+ object. If an error is null, that means the connection was terminated by
+
+<a href="#blemanagercanceldeviceconnection">bleManager.cancelDeviceConnection()</a>
+ call.
 
           </div>
           

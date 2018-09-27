@@ -160,7 +160,8 @@ export class Device implements NativeDevice {
    * {@link #blemanagerondevicedisconnected|bleManager.onDeviceDisconnected()} with partially filled arguments.
    *
    * @param {function(error: ?BleError, device: Device)} listener callback returning error as a reason of disconnection
-   *                                                              if available and {@link Device} object.
+   * if available and {@link Device} object. If an error is null, that means the connection was terminated by
+   * {@link #blemanagercanceldeviceconnection|bleManager.cancelDeviceConnection()} call.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
   onDisconnected(listener: (error: ?BleError, device: Device) => void): Subscription {
