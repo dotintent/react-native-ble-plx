@@ -1530,7 +1530,105 @@
                         #allowDuplicates
                       </a></li>
                       
+                      <li><a
+                        href='#scanoptionsscanmode'
+                        class='regular pre-open'>
+                        #scanMode
+                      </a></li>
+                      
+                      <li><a
+                        href='#scanoptionscallbacktype'
+                        class='regular pre-open'>
+                        #callbackType
+                      </a></li>
+                      
                     </ul>
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#scancallbacktype'
+                  class=" toggle-sibling">
+                  ScanCallbackType
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#scancallbacktypeallmatches'
+                        class='regular pre-open'>
+                        .AllMatches
+                      </a></li>
+                    
+                      <li><a
+                        href='#scancallbacktypefirstmatch'
+                        class='regular pre-open'>
+                        .FirstMatch
+                      </a></li>
+                    
+                      <li><a
+                        href='#scancallbacktypematchlost'
+                        class='regular pre-open'>
+                        .MatchLost
+                      </a></li>
+                    
+                    </ul>
+                  
+                  
+                  
+                  
+                </div>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#scanmode'
+                  class=" toggle-sibling">
+                  ScanMode
+                  <span class='icon'>▸</span>
+                </a>
+                
+                <div class='toggle-target display-none'>
+                  
+                  <ul class='list-reset py1-ul pl1'>
+                    <li class='h5'><span>Static members</span></li>
+                    
+                      <li><a
+                        href='#scanmodeopportunistic'
+                        class='regular pre-open'>
+                        .Opportunistic
+                      </a></li>
+                    
+                      <li><a
+                        href='#scanmodelowpower'
+                        class='regular pre-open'>
+                        .LowPower
+                      </a></li>
+                    
+                      <li><a
+                        href='#scanmodebalanced'
+                        class='regular pre-open'>
+                        .Balanced
+                      </a></li>
+                    
+                      <li><a
+                        href='#scanmodelowlatency'
+                        class='regular pre-open'>
+                        .LowLatency
+                      </a></li>
+                    
+                    </ul>
+                  
                   
                   
                   
@@ -1639,26 +1737,6 @@
                   href='#base64'
                   class="">
                   Base64
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#devices'
-                  class="">
-                  devices
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#connecteddevices'
-                  class="">
-                  connectedDevices
                   
                 </a>
                 
@@ -2860,7 +2938,7 @@ on iOS platform as MTU exchange is done automatically.</p>
 
   
 
-  <p>Returns a list of known peripherals by their identifiers.</p>
+  <p>Returns a list of known devices by their identifiers.</p>
 
  
   
@@ -2897,7 +2975,10 @@ on iOS platform as MTU exchange is done automatically.</p>
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></code>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></code>:
+        List of known devices by their identifiers.
+
+      
     
   
 
@@ -2966,7 +3047,10 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></code>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></code>:
+        List of known devices with discovered services as stated in the parameter.
+
+      
     
   
 
@@ -13854,17 +13938,6 @@ and overwrite values of interest to you.</p>
   
 
   
-    <div class='py1 quiet mt1 prose-big'>Properties</div>
-    <div>
-      
-        <div class='space-bottom0'>
-          <span class='code bold'>allowDuplicates</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>?)</code>
-          
-          
-        </div>
-      
-    </div>
-  
 
   
 
@@ -13926,7 +13999,554 @@ and overwrite values of interest to you.</p>
       </div>
     </div>
   
+    <div class='border-bottom' id='scanoptionsscanmode'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>scanMode</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Scan mode for Bluetooth LE scan [Android only]</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>scanMode</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='scanoptionscallbacktype'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>callbackType</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Scan callback type for Bluetooth LE scan [Android only]</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>callbackType</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='scancallbacktype'>
+      ScanCallbackType
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Scan callback type for Bluetooth LE scan.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>ScanCallbackType</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='scancallbacktypeallmatches'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>AllMatches</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Trigger a callback for every Bluetooth advertisement found that matches the filter criteria.
+If no filter is active, all advertisement packets are reported. [default value]</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>AllMatches</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='scancallbacktypefirstmatch'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>FirstMatch</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>A result callback is only triggered for the first advertisement packet received that matches
+the filter criteria.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>FirstMatch</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='scancallbacktypematchlost'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>MatchLost</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Receive a callback when advertisements are no longer received from a device that has been
+previously reported by a first match callback.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>MatchLost</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
+
+  
+
+  
+</section>
+
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='scanmode'>
+      ScanMode
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Scan mode for Bluetooth LE scan.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>ScanMode</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Static Members</div>
+    <div class="clearfix">
+  
+    <div class='border-bottom' id='scanmodeopportunistic'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Opportunistic</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>A special Bluetooth LE scan mode. Applications using this scan mode will passively listen for
+other scan results without starting BLE scans themselves.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>Opportunistic</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='scanmodelowpower'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>LowPower</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Perform Bluetooth LE scan in low power mode. This is the default scan mode as it consumes the
+least power. [default value]</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>LowPower</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='scanmodebalanced'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>Balanced</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Perform Bluetooth LE scan in balanced power mode. Scan results are returned at a rate that
+provides a good trade-off between scan frequency and power consumption.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>Balanced</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='scanmodelowlatency'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>LowLatency</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Scan using highest duty cycle. It's recommended to only use this mode when the application is
+running in the foreground.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>LowLatency</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+</div>
+
+  
 
   
 
@@ -14520,131 +15140,6 @@ specified due to OS specific behavior.</p>
   
   
 
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='devices'>
-      devices
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Returns a list of known peripherals by their identifiers.</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>devices</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>deviceIdentifiers</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#deviceid">DeviceId</a>>)</code>
-	    List of device identifiers
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='connecteddevices'>
-      connectedDevices
-    </h3>
-    
-    
-  </div>
-  
-
-  <p>Returns a list of the peripherals (containing any of the specified services) currently connected to the system
-which have discovered services. Returned devices <strong>may not be connected</strong> to your application.</p>
-
- 
-  
-    <div class='pre p1 fill-light mt0'>connectedDevices</div>
-   
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>serviceUUIDs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>)</code>
-	    List of service UUIDs. Device must contain at least one of them to be listed.
-
-          </div>
-          
-        </div>
-      
-    </div>
   
 
   

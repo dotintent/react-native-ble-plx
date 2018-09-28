@@ -384,8 +384,9 @@ export class BleManager {
   // Mark: Connection management ---------------------------------------------------------------------------------------
 
   /**
-   * Returns a list of known peripherals by their identifiers.
+   * Returns a list of known devices by their identifiers.
    * @param {Array<DeviceId>} deviceIdentifiers List of device identifiers.
+   * @returns {Promise<Array<Device>>} List of known devices by their identifiers.
    */
   async devices(deviceIdentifiers: Array<DeviceId>): Promise<Array<Device>> {
     const nativeDevices = await this._callPromise(BleModule.devices(deviceIdentifiers))
@@ -399,6 +400,7 @@ export class BleManager {
    * which have discovered services. Returned devices **may not be connected** to your application. Make sure to check
    * if that's the case with function {@link #blemanagerisdeviceconnected|isDeviceConnected}.
    * @param {Array<UUID>} serviceUUIDs List of service UUIDs. Device must contain at least one of them to be listed.
+   * @returns {Promise<Array<Device>>} List of known devices with discovered services as stated in the parameter.
    */
   async connectedDevices(serviceUUIDs: Array<UUID>): Promise<Array<Device>> {
     const nativeDevices = await this._callPromise(BleModule.connectedDevices(serviceUUIDs))
@@ -437,7 +439,7 @@ export class BleManager {
    *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier to be monitored.
    * @param {function(error: ?BleError, device: Device)} listener - callback returning error as a reason of disconnection
-   * if available and {@link Device} object. If an error is null, that means the connection was terminated by 
+   * if available and {@link Device} object. If an error is null, that means the connection was terminated by
    * {@link #blemanagercanceldeviceconnection|bleManager.cancelDeviceConnection()} call.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */

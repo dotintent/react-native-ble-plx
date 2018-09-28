@@ -101,7 +101,61 @@ export interface BleRestoredState {
 }
 
 /**
+ * Scan mode for Bluetooth LE scan.
+ */
+export const ScanMode = {
+  /**
+   * A special Bluetooth LE scan mode. Applications using this scan mode will passively listen for
+   * other scan results without starting BLE scans themselves.
+   */
+  Opportunistic: -1,
+
+  /**
+   * Perform Bluetooth LE scan in low power mode. This is the default scan mode as it consumes the
+   * least power. [default value]
+   */
+  LowPower: 0,
+
+  /**
+   * Perform Bluetooth LE scan in balanced power mode. Scan results are returned at a rate that
+   * provides a good trade-off between scan frequency and power consumption.
+   */
+  Balanced: 1,
+
+  /**
+   * Scan using highest duty cycle. It's recommended to only use this mode when the application is
+   * running in the foreground.
+   */
+  LowLatency: 2
+}
+
+/**
+ * Scan callback type for Bluetooth LE scan.
+ * @name ScanCallbackType
+ */
+export const ScanCallbackType = {
+  /**
+   * Trigger a callback for every Bluetooth advertisement found that matches the filter criteria.
+   * If no filter is active, all advertisement packets are reported. [default value]
+   */
+  AllMatches: 1,
+
+  /**
+   * A result callback is only triggered for the first advertisement packet received that matches
+   * the filter criteria.
+   */
+  FirstMatch: 2,
+
+  /**
+   * Receive a callback when advertisements are no longer received from a device that has been
+   * previously reported by a first match callback.
+   */
+  MatchLost: 4
+}
+
+/**
  * Options which can be passed to scanning function
+ * @name ScanOptions
  */
 export interface ScanOptions {
   /**
@@ -110,6 +164,20 @@ export interface ScanOptions {
    * @instance
    */
   allowDuplicates?: boolean;
+
+  /**
+   * Scan mode for Bluetooth LE scan [Android only]
+   * @memberof ScanOptions
+   * @instance
+   */
+  scanMode?: $Values<typeof ScanMode>;
+
+  /**
+   * Scan callback type for Bluetooth LE scan [Android only]
+   * @memberof ScanOptions
+   * @instance
+   */
+  callbackType?: $Values<typeof ScanCallbackType>;
 }
 
 /**

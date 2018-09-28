@@ -299,6 +299,8 @@ export interface BleModuleInterface {
   /**
    * Returns a list of known peripherals by their identifiers.
    * @param {Array<DeviceId>} deviceIdentifiers List of device identifiers
+   * @returns {Promise<Array<NativeDevice>>} List of known devices by their identifiers.
+   * @private
    */
   devices(deviceIdentifiers: Array<DeviceId>): Promise<Array<NativeDevice>>;
 
@@ -306,6 +308,8 @@ export interface BleModuleInterface {
    * Returns a list of the peripherals (containing any of the specified services) currently connected to the system
    * which have discovered services. Returned devices **may not be connected** to your application.
    * @param {Array<UUID>} serviceUUIDs List of service UUIDs. Device must contain at least one of them to be listed.
+   * @returns {Promise<Array<NativeDevice>>} List of known devices with discovered services as stated in the parameter.
+   * @private
    */
   connectedDevices(serviceUUIDs: Array<UUID>): Promise<Array<NativeDevice>>;
 

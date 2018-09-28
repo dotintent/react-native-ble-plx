@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -19,6 +20,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.reactnativeble.converter.RxBleScanResultConverter;
@@ -42,9 +44,11 @@ import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
 import com.polidea.rxandroidble.RxBleDeviceServices;
-import com.polidea.rxandroidble.RxBleScanResult;
 import com.polidea.rxandroidble.exceptions.BleCharacteristicNotFoundException;
 import com.polidea.rxandroidble.internal.RxBleLog;
+import com.polidea.rxandroidble.scan.ScanFilter;
+import com.polidea.rxandroidble.scan.ScanResult;
+import com.polidea.rxandroidble.scan.ScanSettings;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +66,8 @@ import rx.functions.Func0;
 import rx.functions.Func1;
 
 import static com.polidea.reactnativeble.utils.Constants.BluetoothState;
+import static com.polidea.rxandroidble.scan.ScanSettings.CALLBACK_TYPE_ALL_MATCHES;
+import static com.polidea.rxandroidble.scan.ScanSettings.SCAN_MODE_LOW_POWER;
 
 public class BleModule extends ReactContextBaseJavaModule {
 
@@ -266,6 +272,18 @@ public class BleModule extends ReactContextBaseJavaModule {
     public void startDeviceScan(@Nullable ReadableArray filteredUUIDs, @Nullable ReadableMap options) {
         UUID[] uuids = null;
 
+        int scanMode = SCAN_MODE_LOW_POWER;
+        int callbackType = CALLBACK_TYPE_ALL_MATCHES;
+
+        if (options != null) {
+            if (options.hasKey("scanMode") && options.getType("scanMode") == ReadableType.Number) {
+                scanMode = options.getInt("scanMode");
+            }
+            if (options.hasKey("callbackType") && options.getType("callbackType") == ReadableType.Number) {
+                callbackType = options.getInt("callbackType");
+            }
+        }
+
         if (filteredUUIDs != null) {
             uuids = UUIDConverter.convert(filteredUUIDs);
             if (uuids == null) {
@@ -275,23 +293,34 @@ public class BleModule extends ReactContextBaseJavaModule {
             }
         }
 
-        safeStartDeviceScan(uuids);
+        safeStartDeviceScan(uuids, scanMode, callbackType);
     }
 
-    private void safeStartDeviceScan(final UUID[] uuids) {
+    private void safeStartDeviceScan(final UUID[] uuids, int scanMode, int callbackType) {
         if (rxBleClient == null) {
             throw new IllegalStateException("BleManager not created when tried to start device scan");
         }
+
+        ScanSettings scanSettings = new ScanSettings.Builder()
+                .setScanMode(scanMode)
+                .setCallbackType(callbackType)
+                .build();
+
+        ScanFilter filters[] = new ScanFilter[uuids.length];
+        for (int i =0; i< uuids.length; i++) {
+            filters[i] = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(uuids[i].toString())).build();
+        }
+
         scanSubscription = rxBleClient
-                .scanBleDevices(uuids)
-                .subscribe(new Action1<RxBleScanResult>() {
+                .scanBleDevices(scanSettings, filters)
+                .subscribe(new Action1<ScanResult>() {
                     @Override
-                    public void call(RxBleScanResult rxBleScanResult) {
-                        String deviceId = rxBleScanResult.getBleDevice().getMacAddress();
+                    public void call(ScanResult scanResult) {
+                        String deviceId = scanResult.getBleDevice().getMacAddress();
                         if (!discoveredDevices.containsKey(deviceId)) {
-                            discoveredDevices.put(deviceId, new Device(rxBleScanResult.getBleDevice(), null));
+                            discoveredDevices.put(deviceId, new Device(scanResult.getBleDevice(), null));
                         }
-                        sendEvent(Event.ScanEvent, scanConverter.toJSCallback(rxBleScanResult));
+                        sendEvent(Event.ScanEvent, scanConverter.toJSCallback(scanResult));
                     }
                 }, new Action1<Throwable>() {
                     @Override
@@ -522,19 +551,19 @@ public class BleModule extends ReactContextBaseJavaModule {
         int connectionPriority = 0; // CONNECTION_PRIORITY_BALANCED
 
         if (options != null) {
-            if (options.hasKey("autoConnect")) {
+            if (options.hasKey("autoConnect") && options.getType("autoConnect") == ReadableType.Boolean) {
                 autoConnect = options.getBoolean("autoConnect");
             }
-            if (options.hasKey("requestMTU")) {
+            if (options.hasKey("requestMTU") && options.getType("requestMTU") == ReadableType.Number) {
                 requestMtu = options.getInt("requestMTU");
             }
-            if (options.hasKey("refreshGatt")) {
+            if (options.hasKey("refreshGatt") && options.getType("refreshGatt") == ReadableType.String) {
                 refreshGattMoment = RefreshGattMoment.byJavaScriptName(options.getString("refreshGatt"));
             }
-            if (options.hasKey("timeout")) {
+            if (options.hasKey("timeout") && options.getType("timeout") == ReadableType.Number) {
                 timeout = options.getInt("timeout");
             }
-            if (options.hasKey("connectionPriority")) {
+            if (options.hasKey("connectionPriority") && options.getType("connectionPriority") == ReadableType.Number) {
                 connectionPriority = options.getInt("connectionPriority");
             }
         }

@@ -32,6 +32,8 @@ toc:
   - BleManagerOptions
   - BleRestoredState
   - ScanOptions
+  - ScanCallbackType
+  - ScanMode
   - ConnectionOptions
   - DeviceId
   - Identifier

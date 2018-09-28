@@ -9,12 +9,12 @@ import com.polidea.reactnativeble.advertisement.AdvertisementData;
 import com.polidea.reactnativeble.utils.Base64Converter;
 import com.polidea.reactnativeble.utils.Constants;
 import com.polidea.reactnativeble.utils.UUIDConverter;
-import com.polidea.rxandroidble.RxBleScanResult;
+import com.polidea.rxandroidble.scan.ScanResult;
 
 import java.util.Map;
 import java.util.UUID;
 
-public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult> {
+public class RxBleScanResultConverter extends JSObjectConverter<ScanResult> {
 
     interface Metadata {
         String ID = "id";
@@ -33,14 +33,14 @@ public class RxBleScanResultConverter extends JSObjectConverter<RxBleScanResult>
     }
 
     @Override
-    public WritableMap toJSObject(@NonNull RxBleScanResult value) {
+    public WritableMap toJSObject(@NonNull ScanResult value) {
         WritableMap result = Arguments.createMap();
         result.putString(Metadata.ID, value.getBleDevice().getMacAddress());
         result.putString(Metadata.NAME, value.getBleDevice().getName());
         result.putInt(Metadata.RSSI, value.getRssi());
         result.putInt(Metadata.MTU, Constants.MINIMUM_MTU);
 
-        AdvertisementData advData = AdvertisementData.parseScanResponseData(value.getScanRecord());
+        AdvertisementData advData = AdvertisementData.parseScanResponseData(value.getScanRecord().getBytes());
         result.putString(Metadata.MANUFACTURER_DATA,
                 advData.getManufacturerData() != null ?
                         Base64Converter.encode(advData.getManufacturerData()) : null);
