@@ -45,7 +45,7 @@ import CoreBluetooth
         public var peripherals: [Peripheral] {
             let objects = restoredStateData[CBCentralManagerRestoredStatePeripheralsKey] as? [AnyObject]
             guard let arrayOfAnyObjects = objects else { return [] }
-            return arrayOfAnyObjects.flatMap { $0 as? CBPeripheral }
+            return arrayOfAnyObjects.compactMap { $0 as? CBPeripheral }
                 .map(RxCBPeripheral.init)
                 .map { Peripheral(manager: bluetoothManager, peripheral: $0) }
         }
@@ -62,7 +62,7 @@ import CoreBluetooth
         public var services: [Service] {
             let objects = restoredStateData[CBCentralManagerRestoredStateScanServicesKey] as? [AnyObject]
             guard let arrayOfAnyObjects = objects else { return [] }
-            return arrayOfAnyObjects.flatMap { $0 as? CBService }
+            return arrayOfAnyObjects.compactMap { $0 as? CBService }
                 .map(RxCBService.init)
                 .map { Service(peripheral: Peripheral(manager: bluetoothManager,
                                                       peripheral: RxCBPeripheral(peripheral: $0.service.peripheral)),

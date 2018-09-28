@@ -30,7 +30,6 @@ class RxCBService: RxServiceType {
         self.service = service
     }
 
-    @available(*, deprecated)
     var objectId: UInt {
         return UInt(bitPattern: ObjectIdentifier(service))
     }

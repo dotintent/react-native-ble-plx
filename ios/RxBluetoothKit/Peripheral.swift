@@ -253,7 +253,13 @@ public class Peripheral {
         let observable: Observable<Characteristic>
         switch type {
         case .withoutResponse:
-            observable = .just(characteristic)
+            observable = self.peripheral
+                .rx_isReadyToSendWriteWithoutResponse
+                .startWith(peripheral.canSendWriteWithoutResponse)
+                .filter { $0 }
+                .take(1)
+                .map { _ in characteristic }
+
         case .withResponse:
             observable = monitorWrite(for: characteristic).take(1)
         }

@@ -60,7 +60,7 @@ class RxCBCentralManager: RxCentralManagerType {
                                   didDiscover peripheral: CBPeripheral,
                                   advertisementData: [String: Any],
                                   rssi: NSNumber) {
-            RxBluetoothKitLog.d("""
+            RxBluetoothKitLog.v("""
                                 \(central.logDescription) didDiscover(peripheral: \(peripheral.logDescription),
                                 rssi: \(rssi))
                                 """)

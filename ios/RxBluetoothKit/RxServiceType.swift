@@ -24,8 +24,6 @@ import Foundation
 import CoreBluetooth
 
 protocol RxServiceType {
-
-    @available(*, deprecated)
     var objectId: UInt { get }
     var uuid: CBUUID { get }
     var characteristics: [RxCharacteristicType]? { get }

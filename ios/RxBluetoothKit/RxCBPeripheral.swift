@@ -41,7 +41,6 @@ class RxCBPeripheral: RxPeripheralType {
         return peripheral.value(forKey: "identifier") as! NSUUID as UUID
     }
 
-    @available(*, deprecated)
     var objectId: UInt {
         return UInt(bitPattern: ObjectIdentifier(peripheral))
     }
@@ -56,6 +55,14 @@ class RxCBPeripheral: RxPeripheralType {
 
     var services: [RxServiceType]? {
         return peripheral.services?.map(RxCBService.init)
+    }
+
+    var canSendWriteWithoutResponse: Bool {
+        if #available(iOS 11.0, *) {
+            return peripheral.canSendWriteWithoutResponse
+        } else {
+            return true
+        }
     }
 
     var rx_didUpdateName: Observable<String?> {
@@ -104,6 +111,10 @@ class RxCBPeripheral: RxPeripheralType {
 
     var rx_didWriteValueForDescriptor: Observable<(RxDescriptorType, Error?)> {
         return internalDelegate.peripheralDidWriteValueForDescriptorSubject
+    }
+
+    var rx_isReadyToSendWriteWithoutResponse: Observable<Bool> {
+        return internalDelegate.peripheralIsReadyToSendWriteWithoutResponseSubject
     }
 
     func discoverServices(_ serviceUUIDs: [CBUUID]?) {
@@ -219,6 +230,7 @@ class RxCBPeripheral: RxPeripheralType {
             PublishSubject<(RxCharacteristicType, Error?)>()
         let peripheralDidUpdateValueForDescriptorSubject = PublishSubject<(RxDescriptorType, Error?)>()
         let peripheralDidWriteValueForDescriptorSubject = PublishSubject<(RxDescriptorType, Error?)>()
+        let peripheralIsReadyToSendWriteWithoutResponseSubject = PublishSubject<Bool>()
 
         @objc func peripheralDidUpdateName(_ peripheral: CBPeripheral) {
             RxBluetoothKitLog.d("""
@@ -343,6 +355,11 @@ class RxCBPeripheral: RxPeripheralType {
                                 error: \(String(describing: error)))
                                 """)
             peripheralDidWriteValueForDescriptorSubject.onNext((RxCBDescriptor(descriptor: descriptor), error))
+        }
+
+        @objc func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) {
+            RxBluetoothKitLog.d("\(peripheral.logDescription) peripheralIsReady(toSendWriteWithoutResponse:\(peripheral.canSendWriteWithoutResponse)")
+            peripheralIsReadyToSendWriteWithoutResponseSubject.onNext(peripheral.canSendWriteWithoutResponse)
         }
     }
 

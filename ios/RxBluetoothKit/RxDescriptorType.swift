@@ -25,7 +25,6 @@ import CoreBluetooth
 
 protocol RxDescriptorType {
 
-    @available(*, deprecated)
     var objectId: UInt { get }
 
     var uuid: CBUUID { get }

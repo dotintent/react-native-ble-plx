@@ -29,7 +29,6 @@ protocol RxPeripheralType {
 
     var identifier: UUID { get }
 
-    @available(*, deprecated)
     var objectId: UInt { get }
 
     var peripheral: CBPeripheral { get }
@@ -37,6 +36,8 @@ protocol RxPeripheralType {
     var state: CBPeripheralState { get }
 
     var services: [RxServiceType]? { get }
+
+    var canSendWriteWithoutResponse: Bool { get }
 
     var rx_didUpdateName: Observable<String?> { get }
 
@@ -61,6 +62,8 @@ protocol RxPeripheralType {
     var rx_didUpdateValueForDescriptor: Observable<(RxDescriptorType, Error?)> { get }
 
     var rx_didWriteValueForDescriptor: Observable<(RxDescriptorType, Error?)> { get }
+
+    var rx_isReadyToSendWriteWithoutResponse: Observable<Bool> { get }
 
     func discoverServices(_ serviceUUIDs: [CBUUID]?)
 

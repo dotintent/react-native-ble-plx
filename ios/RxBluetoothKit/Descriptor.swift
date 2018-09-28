@@ -33,8 +33,7 @@ public class Descriptor {
     /// Characteristic to which this descriptor belongs.
     public let characteristic: Characteristic
 
-    /// Unique identifier of an object. Should be removed in 4.0
-    @available(*, deprecated)
+    /// Unique identifier of an object.
     public var objectId: UInt {
         return descriptor.objectId
     }

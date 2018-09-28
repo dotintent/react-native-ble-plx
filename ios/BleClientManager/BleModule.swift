@@ -301,7 +301,7 @@ public class BleClientManager : NSObject {
     public func devices(_ deviceIdentifiers: [String],
                                     resolve: @escaping Resolve,
                                      reject: @escaping Reject) {
-        let uuids = deviceIdentifiers.flatMap { UUID(uuidString: $0) }
+        let uuids = deviceIdentifiers.compactMap { UUID(uuidString: $0) }
         if (uuids.count != deviceIdentifiers.count) {
             BleError.invalidIdentifiers(deviceIdentifiers).callReject(reject)
             return
@@ -322,7 +322,7 @@ public class BleClientManager : NSObject {
     public func connectedDevices(_ serviceUUIDs: [String],
                                         resolve: @escaping Resolve,
                                          reject: @escaping Reject) {
-        let uuids = serviceUUIDs.flatMap { $0.toCBUUID() }
+        let uuids = serviceUUIDs.compactMap { $0.toCBUUID() }
         if (uuids.count != serviceUUIDs.count) {
             BleError.invalidIdentifiers(serviceUUIDs).callReject(reject)
             return

@@ -153,7 +153,9 @@ public class BluetoothManager {
                     return Disposables.create { [weak self] in
                         guard let strongSelf = self else { return }
                         // When disposed, stop all scans, and remove scanning operation from queue
-                        strongSelf.centralManager.stopScan()
+                        if strongSelf.centralManager.state == .poweredOn {
+                            strongSelf.centralManager.stopScan()
+                        }
                         disposable.dispose()
                         do { strongSelf.lock.lock(); defer { strongSelf.lock.unlock() }
                             if let index = strongSelf.scanQueue.index(where: { $0 == scanOperationBox.value! }) {
