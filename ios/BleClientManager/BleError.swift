@@ -20,6 +20,7 @@ enum BleErrorCode : Int {
     case BluetoothPoweredOff = 102
     case BluetoothInUnknownState = 103
     case BluetoothResetting = 104
+    case BluetoothStateChangeFailed = 105
 
     case DeviceConnectionFailed = 200
     case DeviceDisconnected = 201

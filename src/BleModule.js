@@ -230,6 +230,22 @@ export interface BleModuleInterface {
   // Monitoring state
 
   /**
+   * Enable Bluetooth. This function blocks until BLE is in PoweredOn state. [Android only]
+   *
+   * @returns {Promise<void>} Promise completes when state transition was successful.
+   * @private
+   */
+  enable(): Promise<void>;
+
+  /**
+   * Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Android only]
+   *
+   * @returns {Promise<void>} Promise completes when state transition was successful.
+   * @private
+   */
+  disable(): Promise<void>;
+
+  /**
    * Current state of BLE device.
    *
    * @returns {Promise<State>} Current state of BLE device.

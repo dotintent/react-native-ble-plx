@@ -134,6 +134,10 @@ export const BleErrorCode = {
    * BLE stack is resetting.
    */
   BluetoothResetting: 104,
+  /**
+   * BLE state change failed.
+   */
+  BluetoothStateChangeFailed: 105,
 
   // Peripheral errors. ------------------------------------------------------------------------------------------------
   /**
@@ -282,6 +286,7 @@ export const BleErrorCodeMessage: BleErrorCodeMessageMapping = {
   [BleErrorCode.BluetoothPoweredOff]: 'BluetoothLE is powered off',
   [BleErrorCode.BluetoothInUnknownState]: 'BluetoothLE is in unknown state',
   [BleErrorCode.BluetoothResetting]: 'BluetoothLE is resetting',
+  [BleErrorCode.BluetoothStateChangeFailed]: 'Bluetooth state change failed',
 
   // Peripheral errors.
   [BleErrorCode.DeviceConnectionFailed]: 'Device {deviceID} connection failed',

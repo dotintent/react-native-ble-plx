@@ -15,6 +15,7 @@ public enum BleErrorCode {
     BluetoothPoweredOff(102),
     BluetoothInUnknownState(103),
     BluetoothResetting(104),
+    BluetoothStateChangeFailed(105),
 
     DeviceConnectionFailed(200),
     DeviceDisconnected(201),

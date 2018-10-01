@@ -137,6 +137,16 @@ public class BleClientManager : NSObject {
 
     // Mark: Monitoring state ------------------------------------------------------------------------------------------
 
+    @objc
+    public func enable(_ resolve: Resolve, reject: Reject) {
+        BleError(errorCode: .BluetoothStateChangeFailed).callReject(reject)
+    }
+
+    @objc
+    public func disable(_ resolve: Resolve, reject: Reject) {
+        BleError(errorCode: .BluetoothStateChangeFailed).callReject(reject)
+    }
+
     // Retrieve current BleManager's state.
     @objc
     public func state(_ resolve: Resolve, reject: Reject) {

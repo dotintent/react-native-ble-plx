@@ -74,6 +74,18 @@ RCT_EXPORT_METHOD(destroyClient) {
 
 // Mark: Monitoring state ----------------------------------------------------------------------------------------------
 
+RCT_EXPORT_METHOD(   enable:(RCTPromiseResolveBlock)resolve
+                   rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager enable:resolve
+              reject:reject];
+}
+
+RCT_EXPORT_METHOD(   disable:(RCTPromiseResolveBlock)resolve
+                    rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager disable:resolve
+               reject:reject];
+}
+
 RCT_EXPORT_METHOD(   state:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager state:resolve

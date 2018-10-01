@@ -20,6 +20,8 @@ beforeEach(() => {
     cancelTransaction: jest.fn(),
     setLogLevel: jest.fn(),
     logLevel: jest.fn(),
+    enable: jest.fn(),
+    disable: jest.fn(),
     state: jest.fn(),
     startDeviceScan: jest.fn(),
     stopDeviceScan: jest.fn(),
@@ -63,6 +65,16 @@ test('BleModule calls destroy function when destroyed', () => {
   bleManager.destroy()
   expect(Native.BleModule.createClient).toBeCalled()
   expect(Native.BleModule.destroyClient).toBeCalled()
+})
+
+test('BleModule calls enable function when enabled', async () => {
+  expect(await bleManager.enable()).toBe(bleManager)
+  expect(Native.BleModule.enable).toBeCalled()
+})
+
+test('BleModule calls disable function when disabled', async () => {
+  expect(await bleManager.disable()).toBe(bleManager)
+  expect(Native.BleModule.disable).toBeCalled()
 })
 
 test('BleModule calls setLogLevel function when logLevel is modified', () => {

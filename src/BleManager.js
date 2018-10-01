@@ -223,6 +223,26 @@ export class BleManager {
   // Mark: Monitoring state --------------------------------------------------------------------------------------------
 
   /**
+   * Enable Bluetooth. This function blocks until BLE is in PoweredOn state. [Android only]
+   *
+   * @returns {Promise<BleManager>} Promise completes when state transition was successful.
+   */
+  async enable(): Promise<BleManager> {
+    await this._callPromise(BleModule.enable())
+    return this
+  }
+
+  /**
+   * Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Android only]
+   *
+   * @returns {Promise<BleManager>} Promise completes when state transition was successful.
+   */
+  async disable(): Promise<BleManager> {
+    await this._callPromise(BleModule.disable())
+    return this
+  }
+
+  /**
    * Current, global {@link State} of a {@link BleManager}. All APIs are working only when active state
    * is "PoweredOn".
    *

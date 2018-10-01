@@ -25,6 +25,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.reactnativeble.converter.RxBleScanResultConverter;
 import com.polidea.reactnativeble.errors.BleError;
+import com.polidea.reactnativeble.errors.BleErrorCode;
 import com.polidea.reactnativeble.errors.BleErrorUtils;
 import com.polidea.reactnativeble.errors.ErrorConverter;
 import com.polidea.reactnativeble.exceptions.CannotMonitorCharacteristicException;
@@ -193,6 +194,66 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     // Mark: Monitoring state ----------------------------------------------------------------------
+
+    @ReactMethod
+    public void enable(final Promise promise) {
+        final ReactApplicationContext context = getReactApplicationContext();
+        final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+        if (bluetoothManager == null) {
+            new BleError(BleErrorCode.BluetoothStateChangeFailed, "BluetoothManager is null", null).reject(promise);
+            return;
+        }
+        final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+        final Subscription subscription = new RxBleAdapterStateObservable(context)
+                .takeUntil(new Func1<RxBleAdapterStateObservable.BleAdapterState, Boolean>() {
+                    @Override
+                    public Boolean call(RxBleAdapterStateObservable.BleAdapterState bleAdapterState) {
+                        return RxBleAdapterStateObservable.BleAdapterState.STATE_ON != bleAdapterState;
+                    }
+                })
+                .toCompletable()
+                .subscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        promise.resolve(null);
+                    }
+                });
+
+        if (!bluetoothAdapter.enable()) {
+            subscription.unsubscribe();
+            new BleError(BleErrorCode.BluetoothStateChangeFailed, "Couldn't enable bluetooth adapter", null).reject(promise);
+        }
+    }
+
+    @ReactMethod
+    public void disable(final Promise promise) {
+        final ReactApplicationContext context = getReactApplicationContext();
+        final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
+        if (bluetoothManager == null) {
+            new BleError(BleErrorCode.BluetoothStateChangeFailed, "BluetoothManager is null", null).reject(promise);
+            return;
+        }
+        final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
+        final Subscription subscription = new RxBleAdapterStateObservable(context)
+                .takeUntil(new Func1<RxBleAdapterStateObservable.BleAdapterState, Boolean>() {
+                    @Override
+                    public Boolean call(RxBleAdapterStateObservable.BleAdapterState bleAdapterState) {
+                        return RxBleAdapterStateObservable.BleAdapterState.STATE_OFF != bleAdapterState;
+                    }
+                })
+                .toCompletable()
+                .subscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        promise.resolve(null);
+                    }
+                });
+
+        if (!bluetoothAdapter.disable()) {
+            subscription.unsubscribe();
+            new BleError(BleErrorCode.BluetoothStateChangeFailed, "Couldn't enable bluetooth adapter", null).reject(promise);
+        }
+    }
 
     @ReactMethod
     public void state(Promise promise) {
