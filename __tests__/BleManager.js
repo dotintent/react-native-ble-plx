@@ -68,13 +68,13 @@ test('BleModule calls destroy function when destroyed', () => {
 })
 
 test('BleModule calls enable function when enabled', async () => {
-  expect(await bleManager.enable()).toBe(bleManager)
-  expect(Native.BleModule.enable).toBeCalled()
+  expect(await bleManager.enable('tid')).toBe(bleManager)
+  expect(Native.BleModule.enable).toBeCalledWith('tid')
 })
 
 test('BleModule calls disable function when disabled', async () => {
-  expect(await bleManager.disable()).toBe(bleManager)
-  expect(Native.BleModule.disable).toBeCalled()
+  expect(await bleManager.disable('tid')).toBe(bleManager)
+  expect(Native.BleModule.disable).toBeCalledWith('tid')
 })
 
 test('BleModule calls setLogLevel function when logLevel is modified', () => {
@@ -229,10 +229,10 @@ test('BleManager properly calls BleModule discovery function', async () => {
   Native.BleModule.discoverAllServicesAndCharacteristicsForDevice = jest
     .fn()
     .mockReturnValueOnce(Promise.resolve({ id: 'id' }))
-  const device = await bleManager.discoverAllServicesAndCharacteristicsForDevice('id')
+  const device = await bleManager.discoverAllServicesAndCharacteristicsForDevice('id', 'tid')
   expect(device).toBeInstanceOf(Device)
   expect(device.id).toBe('id')
-  expect(Native.BleModule.discoverAllServicesAndCharacteristicsForDevice).toBeCalledWith('id')
+  expect(Native.BleModule.discoverAllServicesAndCharacteristicsForDevice).toBeCalledWith('id', 'tid')
 })
 
 test('BleManager properly calls servicesForDevice BleModule function', async () => {

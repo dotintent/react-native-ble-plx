@@ -74,15 +74,19 @@ RCT_EXPORT_METHOD(destroyClient) {
 
 // Mark: Monitoring state ----------------------------------------------------------------------------------------------
 
-RCT_EXPORT_METHOD(   enable:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(   enable:(NSString*)transactionId
+                   resolver:(RCTPromiseResolveBlock)resolve
                    rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager enable:resolve
+    [_manager enable:transactionId
+             resolve:resolve
               reject:reject];
 }
 
-RCT_EXPORT_METHOD(   disable:(RCTPromiseResolveBlock)resolve
+RCT_EXPORT_METHOD(   disable:(NSString*)transactionId
+                    resolver:(RCTPromiseResolveBlock)resolve
                     rejecter:(RCTPromiseRejectBlock)reject) {
-    [_manager disable:resolve
+    [_manager disable:transactionId
+              resolve:resolve
                reject:reject];
 }
 
@@ -186,9 +190,11 @@ RCT_EXPORT_METHOD(isDeviceConnected:(NSString*)deviceIdentifier
 // Mark: Discovery -----------------------------------------------------------------------------------------------------
 
 RCT_EXPORT_METHOD(discoverAllServicesAndCharacteristicsForDevice:(NSString*)deviceIdentifier
+                                                   transactionId:(NSString*)transactionId
                                                         resolver:(RCTPromiseResolveBlock)resolve
                                                         rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager discoverAllServicesAndCharacteristicsForDevice:deviceIdentifier
+                                               transactionId:transactionId
                                                      resolve:resolve
                                                       reject:reject];
 }

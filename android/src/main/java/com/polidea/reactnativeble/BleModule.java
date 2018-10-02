@@ -196,13 +196,14 @@ public class BleModule extends ReactContextBaseJavaModule {
     // Mark: Monitoring state ----------------------------------------------------------------------
 
     @ReactMethod
-    public void enable(final Promise promise) {
+    public void enable(final String transactionId, final Promise promise) {
         final ReactApplicationContext context = getReactApplicationContext();
         final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
         if (bluetoothManager == null) {
             new BleError(BleErrorCode.BluetoothStateChangeFailed, "BluetoothManager is null", null).reject(promise);
             return;
         }
+        final SafePromise safePromise = new SafePromise(promise);
         final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         final Subscription subscription = new RxBleAdapterStateObservable(context)
                 .takeUntil(new Func1<RxBleAdapterStateObservable.BleAdapterState, Boolean>() {
@@ -212,27 +213,44 @@ public class BleModule extends ReactContextBaseJavaModule {
                     }
                 })
                 .toCompletable()
+                .doOnUnsubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        BleErrorUtils.cancelled().reject(safePromise);
+                        transactions.removeSubscription(transactionId);
+                    }
+                })
                 .subscribe(new Action0() {
                     @Override
                     public void call() {
-                        promise.resolve(null);
+                        safePromise.resolve(null);
+                        transactions.removeSubscription(transactionId);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable e) {
+                        errorConverter.toError(e).reject(safePromise);
+                        transactions.removeSubscription(transactionId);
                     }
                 });
 
         if (!bluetoothAdapter.enable()) {
             subscription.unsubscribe();
-            new BleError(BleErrorCode.BluetoothStateChangeFailed, "Couldn't enable bluetooth adapter", null).reject(promise);
+            new BleError(BleErrorCode.BluetoothStateChangeFailed, "Couldn't enable bluetooth adapter", null).reject(safePromise);
+        } else {
+            transactions.replaceSubscription(transactionId, subscription);
         }
     }
 
     @ReactMethod
-    public void disable(final Promise promise) {
+    public void disable(final String transactionId, final Promise promise) {
         final ReactApplicationContext context = getReactApplicationContext();
         final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
         if (bluetoothManager == null) {
             new BleError(BleErrorCode.BluetoothStateChangeFailed, "BluetoothManager is null", null).reject(promise);
             return;
         }
+        final SafePromise safePromise = new SafePromise(promise);
         final BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         final Subscription subscription = new RxBleAdapterStateObservable(context)
                 .takeUntil(new Func1<RxBleAdapterStateObservable.BleAdapterState, Boolean>() {
@@ -242,16 +260,32 @@ public class BleModule extends ReactContextBaseJavaModule {
                     }
                 })
                 .toCompletable()
+                .doOnUnsubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        BleErrorUtils.cancelled().reject(safePromise);
+                        transactions.removeSubscription(transactionId);
+                    }
+                })
                 .subscribe(new Action0() {
                     @Override
                     public void call() {
-                        promise.resolve(null);
+                        safePromise.resolve(null);
+                        transactions.removeSubscription(transactionId);
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable e) {
+                        errorConverter.toError(e).reject(safePromise);
+                        transactions.removeSubscription(transactionId);
                     }
                 });
 
         if (!bluetoothAdapter.disable()) {
             subscription.unsubscribe();
-            new BleError(BleErrorCode.BluetoothStateChangeFailed, "Couldn't enable bluetooth adapter", null).reject(promise);
+            new BleError(BleErrorCode.BluetoothStateChangeFailed, "Couldn't enable bluetooth adapter", null).reject(safePromise);
+        } else {
+            transactions.replaceSubscription(transactionId, subscription);
         }
     }
 
@@ -367,8 +401,9 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .setCallbackType(callbackType)
                 .build();
 
-        ScanFilter filters[] = new ScanFilter[uuids.length];
-        for (int i =0; i< uuids.length; i++) {
+        int length = uuids == null ? 0 : uuids.length;
+        ScanFilter filters[] = new ScanFilter[length];
+        for (int i =0; i< length; i++) {
             filters[i] = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(uuids[i].toString())).build();
         }
 
@@ -792,34 +827,43 @@ public class BleModule extends ReactContextBaseJavaModule {
     // Mark: Discovery -----------------------------------------------------------------------------
 
     @ReactMethod
-    public void discoverAllServicesAndCharacteristicsForDevice(String deviceId, final Promise promise) {
+    public void discoverAllServicesAndCharacteristicsForDevice(String deviceId, final String transactionId, final Promise promise) {
         final Device device = getDeviceOrReject(deviceId, promise);
         if (device == null) {
             return;
         }
 
-        safeDiscoverAllServicesAndCharacteristicsForDevice(device, new SafePromise(promise));
+        safeDiscoverAllServicesAndCharacteristicsForDevice(device, transactionId, new SafePromise(promise));
     }
 
-    // TODO: Transaction for subscription (allows to cancel)
     private void safeDiscoverAllServicesAndCharacteristicsForDevice(final Device device,
+                                                                    final String transactionId,
                                                                     final SafePromise promise) {
         final RxBleConnection connection = getConnectionOrReject(device, promise);
         if (connection == null) {
             return;
         }
 
-        connection
+        final Subscription subscription = connection
                 .discoverServices()
+                .doOnUnsubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        BleErrorUtils.cancelled().reject(promise);
+                        transactions.removeSubscription(transactionId);
+                    }
+                })
                 .subscribe(new Observer<RxBleDeviceServices>() {
                     @Override
                     public void onCompleted() {
                         promise.resolve(device.toJSObject(null));
+                        transactions.removeSubscription(transactionId);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         errorConverter.toError(e).reject(promise);
+                        transactions.removeSubscription(transactionId);
                     }
 
                     @Override
@@ -838,6 +882,8 @@ public class BleModule extends ReactContextBaseJavaModule {
                         device.setServices(services);
                     }
                 });
+
+        transactions.replaceSubscription(transactionId, subscription);
     }
 
     // Mark: Service and characteristic getters ----------------------------------------------------

@@ -232,18 +232,20 @@ export interface BleModuleInterface {
   /**
    * Enable Bluetooth. This function blocks until BLE is in PoweredOn state. [Android only]
    *
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<void>} Promise completes when state transition was successful.
    * @private
    */
-  enable(): Promise<void>;
+  enable(transactionId: TransactionId): Promise<void>;
 
   /**
    * Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Android only]
    *
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<void>} Promise completes when state transition was successful.
    * @private
    */
-  disable(): Promise<void>;
+  disable(transactionId: TransactionId): Promise<void>;
 
   /**
    * Current state of BLE device.
@@ -365,10 +367,14 @@ export interface BleModuleInterface {
    * Discovers all services and characteristics for specified device.
    *
    * @param {DeviceId} deviceIdentifier Connected device identifier.
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<NativeDevice>} Device which has discovered characteristics and services.
    * @private
    */
-  discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: DeviceId): Promise<NativeDevice>;
+  discoverAllServicesAndCharacteristicsForDevice(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<NativeDevice>;
 
   // Service and characteristic getters
 

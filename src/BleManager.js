@@ -225,20 +225,28 @@ export class BleManager {
   /**
    * Enable Bluetooth. This function blocks until BLE is in PoweredOn state. [Android only]
    *
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<BleManager>} Promise completes when state transition was successful.
    */
-  async enable(): Promise<BleManager> {
-    await this._callPromise(BleModule.enable())
+  async enable(transactionId: ?TransactionId): Promise<BleManager> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    await this._callPromise(BleModule.enable(transactionId))
     return this
   }
 
   /**
    * Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Android only]
    *
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<BleManager>} Promise completes when state transition was successful.
    */
-  async disable(): Promise<BleManager> {
-    await this._callPromise(BleModule.disable())
+  async disable(transactionId: ?TransactionId): Promise<BleManager> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    await this._callPromise(BleModule.disable(transactionId))
     return this
   }
 
@@ -503,12 +511,19 @@ export class BleManager {
    * Discovers all {@link Service}s and {@link Characteristic}s for {@link Device}.
    *
    * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<Device>} Promise which emits {@link Device} object if all available services and
    * characteristics have been discovered.
    */
-  async discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: DeviceId): Promise<Device> {
+  async discoverAllServicesAndCharacteristicsForDevice(
+    deviceIdentifier: DeviceId,
+    transactionId: ?TransactionId
+  ): Promise<Device> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
     const nativeDevice = await this._callPromise(
-      BleModule.discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier)
+      BleModule.discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier, transactionId)
     )
     return new Device(nativeDevice, this)
   }
