@@ -19,6 +19,7 @@ Other:
 - Updated `writeWithoutResponse` implementation on iOS to use `canSendWriteWithoutResponse` if available starting from iOS 11.
 - Updated library's development dependencies.
 - Fixed cyclic import warnings.
+- Fixed notification/indication subscription moment. Events are monitored before CCC is written on Android.
 
 **0.10.0**
 

@@ -34,6 +34,6 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-native:+"
-    implementation "com.polidea.rxandroidble:rxandroidble:1.6.0"
+    implementation "com.polidea.rxandroidble:rxandroidble:1.7.0"
     testImplementation 'org.robospock:robospock:1.0.1'
 }

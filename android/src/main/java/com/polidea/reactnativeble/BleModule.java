@@ -40,6 +40,7 @@ import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.reactnativeble.wrapper.Characteristic;
 import com.polidea.reactnativeble.wrapper.Device;
 import com.polidea.reactnativeble.wrapper.Service;
+import com.polidea.rxandroidble.NotificationSetupMode;
 import com.polidea.rxandroidble.RxBleAdapterStateObservable;
 import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
@@ -1240,11 +1241,11 @@ public class BleModule extends ReactContextBaseJavaModule {
                     public Observable<Observable<byte[]>> call(RxBleConnection connection) {
                         int properties = gattCharacteristic.getProperties();
                         if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
-                            return connection.setupNotification(gattCharacteristic);
+                            return connection.setupNotification(gattCharacteristic, NotificationSetupMode.QUICK_SETUP);
                         }
 
                         if ((properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-                            return connection.setupIndication(gattCharacteristic);
+                            return connection.setupIndication(gattCharacteristic, NotificationSetupMode.QUICK_SETUP);
                         }
 
                         return Observable.error(new CannotMonitorCharacteristicException(gattCharacteristic));
