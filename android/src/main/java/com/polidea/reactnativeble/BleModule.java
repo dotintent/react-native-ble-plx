@@ -209,7 +209,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .takeUntil(new Func1<RxBleAdapterStateObservable.BleAdapterState, Boolean>() {
                     @Override
                     public Boolean call(RxBleAdapterStateObservable.BleAdapterState bleAdapterState) {
-                        return RxBleAdapterStateObservable.BleAdapterState.STATE_ON != bleAdapterState;
+                        return RxBleAdapterStateObservable.BleAdapterState.STATE_ON == bleAdapterState;
                     }
                 })
                 .toCompletable()
@@ -256,7 +256,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .takeUntil(new Func1<RxBleAdapterStateObservable.BleAdapterState, Boolean>() {
                     @Override
                     public Boolean call(RxBleAdapterStateObservable.BleAdapterState bleAdapterState) {
-                        return RxBleAdapterStateObservable.BleAdapterState.STATE_OFF != bleAdapterState;
+                        return RxBleAdapterStateObservable.BleAdapterState.STATE_OFF == bleAdapterState;
                     }
                 })
                 .toCompletable()
