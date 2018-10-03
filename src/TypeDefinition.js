@@ -1,7 +1,7 @@
 // @flow
 'use strict'
 
-import { Device } from './Device'
+import type { Device } from './Device'
 import { BleErrorCode } from './BleError'
 
 /**

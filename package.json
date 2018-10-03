@@ -16,25 +16,35 @@
     "url": "git+https://github.com/Polidea/react-native-ble-plx.git"
   },
   "devDependencies": {
-    "babel-eslint": "8.2.1",
-    "babel-jest": "23.2.0",
-    "babel-preset-react-native": "4.0.0",
+    "babel-eslint": "10.0.1",
+    "babel-jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.45.6",
     "documentation": "8.1.2",
-    "eslint": "4.15.0",
-    "eslint-plugin-flowtype": "2.41.0",
-    "eslint-plugin-import": "2.8.0",
-    "eslint-plugin-jest": "21.7.0",
-    "eslint-plugin-react": "7.5.1",
-    "flow-bin": "^0.75.0",
-    "jest": "22.3.0",
-    "prettier": "1.10.2",
-    "react": "16.4.1",
-    "react-native": "0.56.0"
+    "eslint": "5.6.1",
+    "eslint-plugin-flowtype": "2.50.3",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-jest": "21.24.1",
+    "eslint-plugin-react": "7.11.1",
+    "flow-bin": "^0.78.0",
+    "jest": "23.6.0",
+    "prettier": "1.14.3",
+    "react": "16.5.0",
+    "react-native": "0.57.1"
   },
-  "keywords": ["React", "Native", "Bluetooth", "Low", "Energy", "BLE", "Polidea"],
+  "keywords": [
+    "React",
+    "Native",
+    "Bluetooth",
+    "Low",
+    "Energy",
+    "BLE",
+    "Polidea"
+  ],
   "jest": {
     "preset": "react-native",
-    "modulePathIgnorePatterns": ["<rootDir>/examples"]
+    "modulePathIgnorePatterns": [
+      "<rootDir>/examples"
+    ]
   },
   "author": "Polidea",
   "license": "Apache-2.0",

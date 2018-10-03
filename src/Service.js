@@ -1,9 +1,9 @@
 // @flow
 'use strict'
 
-import { BleManager } from './BleManager'
-import { BleError } from './BleError'
-import { Characteristic } from './Characteristic'
+import type { BleManager } from './BleManager'
+import type { BleError } from './BleError'
+import type { Characteristic } from './Characteristic'
 import type { NativeService } from './BleModule'
 import type { DeviceId, Identifier, Base64, UUID, Subscription, TransactionId } from './TypeDefinition'
 
