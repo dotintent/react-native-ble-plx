@@ -8,44 +8,44 @@ This is React Native Bluetooth Low Energy library using [RxBluetoothKit](https:/
 
 It supports:
 
-* [observing device's Bluetooth adapter state](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
-* [scanning BLE devices](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Scanning)
-* [making connections to peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Connecting)
-* [discovering services/characteristics](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Service-Discovery)
-* [reading](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
-* [observing characteristic notifications/indications](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Notifying)
-* [reading RSSI](https://github.com/Polidea/react-native-ble-plx/wiki/RSSI-Reading)
-* [negotiating MTU](https://github.com/Polidea/react-native-ble-plx/wiki/MTU-Negotiation)
+- [observing device's Bluetooth adapter state](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
+- [scanning BLE devices](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Scanning)
+- [making connections to peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Connecting)
+- [discovering services/characteristics](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Service-Discovery)
+- [reading](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
+- [observing characteristic notifications/indications](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Notifying)
+- [reading RSSI](https://github.com/Polidea/react-native-ble-plx/wiki/RSSI-Reading)
+- [negotiating MTU](https://github.com/Polidea/react-native-ble-plx/wiki/MTU-Negotiation)
+- turning the device's Bluetooth adapter on
 
 What this library does NOT support:
 
-* turning the device's Bluetooth adapter on
-* communicating between phones using BLE (Peripheral support)
-* [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Bonding)
+- communicating between phones using BLE (Peripheral support)
+- [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Bonding)
 
 ## Recent Changes
 
-**0.10.0**
+**1.0.0**
 
-**Breaking changes:**
+**Breaking changes**
 
-* Deprecate old build system. Carthage is not required anymore. To fix your current project please do following steps:
-
-  1. Add empty Swift file if you don't have at least one:
-     * Select File/New/File...
-     * Choose Swift file and click Next.
-     * Name it however you want, select your targets and create it.
-     * Accept to create Objective-C bridging header.
-  2. Remove copy-frameworks script if you don't have any other dependency requiring it:
-     * Go to Your Target / Build Phases
-     * Remove run script.
+- Moved to Gradle plugin 3.1.4 and Gradle wrapper to 4.4 (RN 57+ required) on Android.
 
 Other:
 
-* Fix warning when no listeners were attached and events were emitted.
-* Show error.message properly. Make sure that invalid errorCodes from implementation side won't trigger another error during construction.
-* Property ServiceUUID is properly propagated to IncludedServicesDiscoveryFailed's error message.
-* Add missing `deviceServicesNotDiscovered` implementation on Android.
+- Added `requestConnectionPriority` function which increases or decreases connection interval setting on Android Lollipop devices or above.
+- Added `connectionPriority` option to connection options which calls above function just after the connection is established.
+- Added `scanMode` and `callbackType` properties to scan options for Android.
+- Added `enable` and `disable` functions to enable/disable Bluetooth on Android.
+- Added optional `transactionId` argument to `discoverAllServicesAndCharacteristicsForDevice`.
+- Added `errorCodesToMessagesMapping` property to `BleManagerOptions` to be able to override custom BleError messages.
+- Updated `cancelDeviceConnection` documentation.
+- Don't call CBCentralManager's stopScan, when Bluetooth is powered off in internal implementation on iOS.
+- Clean iOS compiler warnings on XCode10.
+- Changed scan record logging from Debug to Verbose on iOS.
+- Updated `writeWithoutResponse` implementation on iOS to use `canSendWriteWithoutResponse` if available starting from iOS 11.
+- Updated library's development dependencies.
+- Fixed cyclic import warnings.
 
 [All previous changes](CHANGELOG.md)
 
@@ -64,15 +64,15 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 1. `npm install --save react-native-ble-plx`
 2. `react-native link react-native-ble-plx`
 3. Add empty Swift file if you don't have at least one:
-   * Select File/New/File...
-   * Choose Swift file and click Next.
-   * Name it however you want, select your targets and create it.
-   * Accept to create Objective-C bridging header.
+   - Select File/New/File...
+   - Choose Swift file and click Next.
+   - Name it however you want, select your targets and create it.
+   - Accept to create Objective-C bridging header.
 4. Minimal supported version of iOS is 8.0
 5. If you want to support background mode:
-   * In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
+   - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
-   * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
+   - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
 
 ### iOS (expo/Podfile, [example setup](https://github.com/Cierpliwy/SensorTagExpo))
 
@@ -80,10 +80,10 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 2. `npm install --save react-native-ble-plx`
 3. `react-native link react-native-ble-plx`
 4. Add empty Swift file if you don't have at least one:
-   * Select File/New/File...
-   * Choose Swift file and click Next.
-   * Name it however you want, select your application target and create it.
-   * Accept to create Objective-C bridging header.
+   - Select File/New/File...
+   - Choose Swift file and click Next.
+   - Name it however you want, select your application target and create it.
+   - Accept to create Objective-C bridging header.
 5. Update your `ios/Podfile` to contain:
    ```
    pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
@@ -92,9 +92,9 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 6. Enter `ios` folder and run `pod update`
 7. Minimal supported version of iOS is 8.0
 8. If you want to support background mode:
-   * In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
+   - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
-   * Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
+   - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
 
 ### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 

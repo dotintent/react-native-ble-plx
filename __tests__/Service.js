@@ -1,6 +1,6 @@
 jest.mock('../src/BleManager')
-import { BleManager } from '../src/BleManager'
-import { Service } from '../src/Service'
+const { BleManager } = require('../src/BleManager')
+const { Service } = require('../src/Service')
 
 describe("Test if Service is properly calling BleManager's utility function: ", () => {
   const bleManager = new BleManager()

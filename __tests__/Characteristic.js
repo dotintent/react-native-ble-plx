@@ -1,6 +1,6 @@
 jest.mock('../src/BleManager')
-import { BleManager } from '../src/BleManager'
-import { Characteristic } from '../src/Characteristic'
+const { BleManager } = require('../src/BleManager')
+const { Characteristic } = require('../src/Characteristic')
 
 describe("Test if Characteristic is properly calling BleManager's utility function: ", () => {
   const bleManager = new BleManager()

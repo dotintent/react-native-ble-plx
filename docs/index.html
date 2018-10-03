@@ -83,6 +83,18 @@
                       </a></li>
                       
                       <li><a
+                        href='#blemanagerenable'
+                        class='regular pre-open'>
+                        #enable
+                      </a></li>
+                      
+                      <li><a
+                        href='#blemanagerdisable'
+                        class='regular pre-open'>
+                        #disable
+                      </a></li>
+                      
+                      <li><a
                         href='#blemanagerstate'
                         class='regular pre-open'>
                         #state
@@ -741,6 +753,12 @@
                         href='#bleerrorcodebluetoothresetting'
                         class='regular pre-open'>
                         .BluetoothResetting
+                      </a></li>
+                    
+                      <li><a
+                        href='#bleerrorcodebluetoothstatechangefailed'
+                        class='regular pre-open'>
+                        .BluetoothStateChangeFailed
                       </a></li>
                     
                       <li><a
@@ -2366,6 +2384,146 @@ setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;
       </div>
     </div>
   
+    <div class='border-bottom' id='blemanagerenable'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>enable(transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Enable Bluetooth. This function blocks until BLE is in PoweredOn state. [Android only]</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>enable(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#blemanager">BleManager</a>></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    Transaction handle used to cancel operation
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#blemanager">BleManager</a>></code>:
+        Promise completes when state transition was successful.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='blemanagerdisable'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>disable(transactionId)</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Android only]</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>disable(transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#blemanager">BleManager</a>></div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    Transaction handle used to cancel operation
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#blemanager">BleManager</a>></code>:
+        Promise completes when state transition was successful.
+
+      
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
     <div class='border-bottom' id='blemanagerstate'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
@@ -3390,7 +3548,7 @@ if available and
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier)</span>
+            <span class='code strong strong truncate'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier, transactionId)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3402,7 +3560,7 @@ if available and
 
  
   
-    <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+    <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
    
   
   
@@ -3423,6 +3581,15 @@ if available and
             <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>transactionId</span> <code class='quiet'>(<a href="#transactionid">TransactionId</a>?)</code>
+	    Transaction handle used to cancel operation
 
           </div>
           
@@ -8795,6 +8962,54 @@ android.permission.ACCESS_COARSE_LOCATION permission or android.permission.ACCES
  
   
     <div class='pre p1 fill-light mt0'>BluetoothResetting</div>
+   
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='bleerrorcodebluetoothstatechangefailed'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>BluetoothStateChangeFailed</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>BLE state change failed.</p>
+
+ 
+  
+    <div class='pre p1 fill-light mt0'>BluetoothStateChangeFailed</div>
    
   
   
