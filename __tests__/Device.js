@@ -35,8 +35,8 @@ describe("Test if Device is properly calling BleManager's utility function: ", (
   })
 
   test('discoverAllServicesAndCharacteristics', async () => {
-    await device.discoverAllServicesAndCharacteristics()
-    expect(bleManager.discoverAllServicesAndCharacteristicsForDevice).toBeCalledWith('id')
+    await device.discoverAllServicesAndCharacteristics('transaction')
+    expect(bleManager.discoverAllServicesAndCharacteristicsForDevice).toBeCalledWith('id', 'transaction')
   })
 
   test('services', async () => {

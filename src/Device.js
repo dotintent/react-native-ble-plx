@@ -171,11 +171,12 @@ export class Device implements NativeDevice {
   /**
    * {@link #blemanagerdiscoverallservicesandcharacteristicsfordevice|bleManager.discoverAllServicesAndCharacteristicsForDevice()} with partially filled arguments.
    *
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<Device>} Promise which emits {@link Device} object if all available services and
    * characteristics have been discovered.
    */
-  discoverAllServicesAndCharacteristics(): Promise<Device> {
-    return this._manager.discoverAllServicesAndCharacteristicsForDevice(this.id)
+  discoverAllServicesAndCharacteristics(transactionId: ?TransactionId): Promise<Device> {
+    return this._manager.discoverAllServicesAndCharacteristicsForDevice(this.id, transactionId)
   }
 
   /**
