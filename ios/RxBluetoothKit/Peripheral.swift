@@ -258,17 +258,31 @@ public class Peripheral {
                 .startWith(peripheral.canSendWriteWithoutResponse)
                 .filter { $0 }
                 .take(1)
-                .map { _ in characteristic }
-
+                .map { [weak self] _ in
+                    self?.peripheral.writeValue(data, for: characteristic.characteristic, type: type)
+                    return characteristic
+                }
+            
         case .withResponse:
-            observable = monitorWrite(for: characteristic).take(1)
+            let action = Observable<Characteristic>.deferred { [weak self] in
+                    self?.peripheral.writeValue(data, for: characteristic.characteristic, type: type)
+                    return .empty()
+                }
+
+            let monitor = peripheral
+                .rx_didWriteValueForCharacteristic
+                .filter { return $0.0 == characteristic.characteristic }
+                .take(1)
+                .map { (_, error) -> Characteristic in
+                    if let error = error {
+                        throw BluetoothError.characteristicWriteFailed(characteristic, error)
+                    }
+                    return characteristic
+                }
+
+            observable = Observable.merge([monitor, action])
         }
-        return ensureValidPeripheralStateAndCallIfSucceeded(
-            for: observable,
-            postSubscriptionCall: { [weak self] in
-                self?.peripheral.writeValue(data, for: characteristic.characteristic, type: type)
-            }
-        )
+        return ensureValidPeripheralState(for: observable)
     }
 
     /// Function that allow to monitor value updates for `Characteristic` instance.
