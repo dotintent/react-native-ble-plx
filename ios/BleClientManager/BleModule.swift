@@ -225,6 +225,30 @@ public class BleClientManager : NSObject {
             })
     }
 
+      // Start BLE scanning.
+    @objc
+    public func startTrackerScan(options:[String:AnyObject]?) {
+
+        // iOS handles allowDuplicates option to receive more scan records.
+        var rxOptions = [String:Any]()
+        if let options = options {
+            if ((options["allowDuplicates"]?.isEqual(to: NSNumber(value: true as Bool))) ?? false) {
+                rxOptions[CBCentralManagerScanOptionAllowDuplicatesKey] = true
+            }
+        }
+
+        // If passed iOS will show only devices with specified service UUIDs.
+        let uuids = ["fff0"].toCBUUIDS()
+
+        // Scanning will emit Scan peripherals as events.
+        scanDisposable.disposable = manager.scanForPeripherals(withServices: uuids, options: rxOptions)
+            .subscribe(onNext: { [weak self] scannedPeripheral in
+                self?.dispatchEvent(BleEvent.scanEvent, value: [NSNull(), scannedPeripheral.asJSObject])
+            }, onError: { [weak self] errorType in
+                self?.dispatchEvent(BleEvent.scanEvent, value: errorType.bleError.toJSResult)
+            })
+    }
+
     // Stop BLE scanning.
     @objc
     public func stopDeviceScan() {
