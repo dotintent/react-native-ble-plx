@@ -344,6 +344,32 @@ export class BleManager {
     BleModule.startDeviceScan(UUIDs, options)
   }
 
+    /**
+   * Starts device scanning. When previous scan is in progress it will be stopped before executing this command.
+   *
+   * scanned {@link Device}. If `null` is passed, all available {@link Device}s will be scanned.
+   * @param {?ScanOptions} options Optional configuration for scanning operation.
+   * @param {function(error: ?BleError, scannedDevice: ?Device)} listener Function which will be called for every scanned
+   * {@link Device} (devices may be scanned multiple times). It's first argument is potential {@link Error} which is set
+   * to non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument
+   * is a scanned {@link Device}.
+   */
+  startTrackerScan(
+    options: ?ScanOptions,
+    listener: (error: ?BleError, scannedDevice: ?Device) => void
+  ) {
+    this.stopDeviceScan()
+    const scanListener = ([error, nativeDevice]: [?string, ?NativeDevice]) => {
+      listener(
+        error ? parseBleError(error, this._errorCodesToMessagesMapping) : null,
+        nativeDevice ? new Device(nativeDevice, this) : null
+      )
+    }
+    // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
+    this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
+    BleModule.startTrackerScan(options)
+  }
+
   /**
    * Stops {@link Device} scan if in progress.
    */
