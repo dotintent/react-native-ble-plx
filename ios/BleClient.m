@@ -103,8 +103,8 @@ RCT_EXPORT_METHOD(startDeviceScan:(NSArray*)filteredUUIDs
     [_manager startDeviceScan:filteredUUIDs options:options];
 }
 
-RCT_EXPORT_METHOD(startTrackerScan:options:(NSDictionary*)options) {
-    [_manager startTrackerScan:options:options];
+RCT_EXPORT_METHOD(startTrackerScan) {
+    [_manager startTrackerScan];
 }
 
 RCT_EXPORT_METHOD(stopDeviceScan) {
