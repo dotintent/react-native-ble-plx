@@ -10,14 +10,14 @@ public class DisposableMap {
 
     final private Map<String, Subscription> subscriptions = new HashMap<>();
 
-    public void replaceSubscription(String key, Subscription subscription) {
+    public synchronized void replaceSubscription(String key, Subscription subscription) {
         Subscription oldSubscription = subscriptions.put(key, subscription);
         if (oldSubscription != null && !oldSubscription.isUnsubscribed()) {
             oldSubscription.unsubscribe();
         }
     }
 
-    public boolean removeSubscription(String key) {
+    public synchronized boolean removeSubscription(String key) {
         Subscription subscription = subscriptions.remove(key);
         if (subscription == null) return false;
         if (!subscription.isUnsubscribed()) {
@@ -26,7 +26,7 @@ public class DisposableMap {
         return true;
     }
 
-    public void removeAllSubscriptions() {
+    public synchronized void removeAllSubscriptions() {
         Iterator<Map.Entry<String, Subscription>> it = subscriptions.entrySet().iterator();
         while (it.hasNext()) {
             Subscription subscription = it.next().getValue();
