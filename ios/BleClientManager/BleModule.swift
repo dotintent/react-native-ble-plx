@@ -225,12 +225,17 @@ public class BleClientManager : NSObject {
             })
     }
 
-      // Start BLE scanning.
+        // Start BLE scanning.
     @objc
-    public func startTrackerScan() {
+    public func startTrackerScan(_ filteredUUIDs: [String]?, options:[String:AnyObject]?) {
+
         // iOS handles allowDuplicates option to receive more scan records.
-       var rxOptions = [String:Any]()
-        rxOptions[CBCentralManagerScanOptionAllowDuplicatesKey] = true
+        var rxOptions = [String:Any]()
+        if let options = options {
+            if ((options["allowDuplicates"]?.isEqual(to: NSNumber(value: true as Bool))) ?? false) {
+                rxOptions[CBCentralManagerScanOptionAllowDuplicatesKey] = true
+            }
+        }
 
         // If passed iOS will show only devices with specified service UUIDs.
         let uuids = ["fff0"].toCBUUIDS()

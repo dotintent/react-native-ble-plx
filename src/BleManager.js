@@ -355,6 +355,7 @@ export class BleManager {
    * is a scanned {@link Device}.
    */
   startTrackerScan(
+    UUIDs: ?Array<UUID>,
     options: ?ScanOptions,
     listener: (error: ?BleError, scannedDevice: ?Device) => void
   ) {
@@ -367,7 +368,7 @@ export class BleManager {
     }
     // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
     this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
-    BleModule.startTrackerScan(options)
+    BleModule.startTrackerScan(UUIDs, options)
   }
 
   /**
