@@ -274,7 +274,7 @@ export interface BleModuleInterface {
    * @param {?ScanOptions} options Platform dependent options
    * @private
    */
-  startTrackerScan(options: ?ScanOptions): void;
+  startTrackerScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
 
   /**
    * Stops device scan.
