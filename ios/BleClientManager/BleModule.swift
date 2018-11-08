@@ -11,6 +11,11 @@ import CoreBluetooth
 public protocol BleClientManagerDelegate {
     func dispatchEvent(_ name: String, value: Any)
 }
+extension Data {
+    var checksum: Int {
+        return self.map { Int($0) }.reduce(0, +) & 0xff
+    }
+}
 
 @objc
 public class BleClientManager : NSObject {
@@ -737,24 +742,36 @@ public class BleClientManager : NSObject {
                                          promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+    public func createNewArray() -> [UInt8] {
+        return [UInt8](repeating: 0x00, count: 16)
+    }
+    
+    public func convertToData(data: [UInt8]) -> Data {
+        return Data(bytes: data, count:data.count)
+    }
+    
+    public func convertFullArray(data: [UInt8]) -> Data {
+//        CLEAN UP THIS FUNCTION. IT WORKS BUT ITS SUPER SLOPPY
+        var data = data
+        let response: Data = convertToData(data: data)
+        let check = response.checksum
+        data[15] = UInt8(check)
+        let value: Data = convertToData(data: data)
+        return value
+    }
+    
+    
+    
         @objc
     public func activateVibration(  _ deviceIdentifier: String,
                                
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
-
-        print("JEFF")
-        var bytes = [UInt8](repeating: 0x00, count: 16)
-        bytes[0] = 0x36
-        bytes[1] = 0x05
-
-
-        let check = Data(bytes: bytes, count: 16)
-        bytes[15] = check
-        let value = Data(bytes: bytes, count: 16)
-
-        print("jf", value)
+        var data = createNewArray()
+        data[0] = 0x36
+        data[1] = 0x05
+        let value = convertFullArray(data: data)
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: "0000fff0-0000-1000-8000-00805f9b34fb",

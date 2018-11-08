@@ -725,9 +725,6 @@ export class BleManager {
 
   async activateVibration(
     deviceIdentifier: DeviceId,
-    serviceUUID: UUID,
-    characteristicUUID: UUID,
-    base64Value: Base64,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
@@ -736,10 +733,6 @@ export class BleManager {
     const nativeCharacteristic = await this._callPromise(
       BleModule.activateVibration(
         deviceIdentifier,
-        serviceUUID,
-        characteristicUUID,
-        base64Value,
-        true,
         transactionId
       )
     )
