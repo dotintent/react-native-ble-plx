@@ -289,10 +289,12 @@ RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSString*)deviceIdentifier
 }
 
 RCT_EXPORT_METHOD(activateVibration:(NSString*)deviceIdentifier
+                                duration: (NSInteger)duration
                                  transactionId:(NSString*)transactionId
                                       resolver:(RCTPromiseResolveBlock)resolve
                                       rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager activateVibration:deviceIdentifier
+                              duration: duration
                              transactionId:transactionId
                                    resolve:resolve
                                     reject:reject];
