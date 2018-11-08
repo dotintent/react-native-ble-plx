@@ -94,12 +94,6 @@ public class BleClientManager : NSObject {
         }
     }
 
-    extension Data {
-      var checksum: Int {
-          return self.map { Int($0) }.reduce(0, +) & 0xff
-      }
-    }
-
     @objc
     public func invalidate() {
         // Disposables
