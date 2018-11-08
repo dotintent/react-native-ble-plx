@@ -480,6 +480,15 @@ export interface BleModuleInterface {
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
 
+  activateVibration(
+    deviceIdentifier: DeviceId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    valueBase64: Base64,
+    withResponse: boolean,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
   /**
    * Write value to characteristic.
    *

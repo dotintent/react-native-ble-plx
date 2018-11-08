@@ -89,6 +89,12 @@ public class BleClientManager : NSObject {
         }
     }
 
+    extension Data {
+      var checksum: Int {
+          return self.map { Int($0) }.reduce(0, +) & 0xff
+      }
+    }
+
     @objc
     public func invalidate() {
         // Disposables
@@ -720,6 +726,41 @@ public class BleClientManager : NSObject {
         guard let value = valueBase64.fromBase64 else {
             return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
         }
+
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: serviceUUID,
+                                                    characteristicUUID: characteristicUUID)
+        safeWriteCharacteristicForDevice(observable,
+                                         value: value,
+                                         response: response,
+                                         transactionId: transactionId,
+                                         promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+        @objc
+    public func activateVibration(  _ deviceIdentifier: String,
+                                                      serviceUUID: String,
+                                               characteristicUUID: String,
+                                                      valueBase64: String,
+                                                         response: Bool,
+                                                    transactionId: String,
+                                                          resolve: @escaping Resolve,
+                                                           reject: @escaping Reject) {
+        guard let value = valueBase64.fromBase64 else {
+            return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
+        }
+
+        print("JEFF")
+        var bytes = [UInt8](repeating: 0x00, count: 16)
+        bytes[0] = 0x36
+        bytes[1] = 0x05
+
+
+        let check = Data(bytes: bytes, count: 16)
+        bytes[15] = check
+        let value = Data(bytes: bytes, count: 16)
+
+        print("jf", value)
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: serviceUUID,

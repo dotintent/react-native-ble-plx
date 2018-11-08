@@ -723,6 +723,29 @@ export class BleManager {
     return new Characteristic(nativeCharacteristic, this)
   }
 
+  async activateVibration(
+    deviceIdentifier: DeviceId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    base64Value: Base64,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.activateVibration(
+        deviceIdentifier,
+        serviceUUID,
+        characteristicUUID,
+        base64Value,
+        true,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
   /**
    * Write {@link Characteristic} value with response.
    *

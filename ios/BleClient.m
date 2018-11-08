@@ -288,6 +288,24 @@ RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSString*)deviceIdentifier
                                     reject:reject];
 }
 
+RCT_EXPORT_METHOD(activateVibration:(NSString*)deviceIdentifier
+                                   serviceUUID:(NSString*)serviceUUID
+                            characteristicUUID:(NSString*)characteristicUUID
+                                   valueBase64:(NSString*)valueBase64
+                                  withResponse:(BOOL)response
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager activateVibration:deviceIdentifier
+                               serviceUUID:serviceUUID
+                        characteristicUUID:characteristicUUID
+                               valueBase64:valueBase64
+                                  response:response
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
 RCT_EXPORT_METHOD(writeCharacteristicForService:(nonnull NSNumber*)serviceIdentifier
                              characteristicUUID:(NSString*)characteristicUUID
                                     valueBase64:(NSString*)valueBase64
