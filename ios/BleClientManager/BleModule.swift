@@ -766,11 +766,12 @@ public class BleClientManager : NSObject {
     public func activateVibration(  _ deviceIdentifier: String,
                                
                                                     transactionId: String,
+                                                    duration: Int,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
         var data = createNewArray()
         data[0] = 0x36
-        data[1] = 0x05
+        data[1] = UInt8(duration)
         let value = convertFullArray(data: data)
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
