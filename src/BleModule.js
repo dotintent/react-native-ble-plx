@@ -482,10 +482,6 @@ export interface BleModuleInterface {
 
   activateVibration(
     deviceIdentifier: DeviceId,
-    serviceUUID: UUID,
-    characteristicUUID: UUID,
-    valueBase64: Base64,
-    withResponse: boolean,
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
 

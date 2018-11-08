@@ -739,16 +739,10 @@ public class BleClientManager : NSObject {
 
         @objc
     public func activateVibration(  _ deviceIdentifier: String,
-                                                      serviceUUID: String,
-                                               characteristicUUID: String,
-                                                      valueBase64: String,
-                                                         response: Bool,
+                               
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
-        guard let value = valueBase64.fromBase64 else {
-            return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
-        }
 
         print("JEFF")
         var bytes = [UInt8](repeating: 0x00, count: 16)
@@ -763,11 +757,11 @@ public class BleClientManager : NSObject {
         print("jf", value)
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
-                                                    serviceUUID: serviceUUID,
-                                                    characteristicUUID: characteristicUUID)
+                                                    serviceUUID: "0000fff0-0000-1000-8000-00805f9b34fb",
+                                                    characteristicUUID: "0000fff6-0000-1000-8000-00805f9b34fb")
         safeWriteCharacteristicForDevice(observable,
                                          value: value,
-                                         response: response,
+                                         response: true,
                                          transactionId: transactionId,
                                          promise: SafePromise(resolve: resolve, reject: reject))
     }
