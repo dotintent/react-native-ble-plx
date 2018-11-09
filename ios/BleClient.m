@@ -300,6 +300,30 @@ RCT_EXPORT_METHOD(activateVibration:(NSString*)deviceIdentifier
                                     reject:reject];
 }
 
+RCT_EXPORT_METHOD(setDeviceTime:(NSString*)deviceIdentifier
+                                date: (NSString*)date
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager setDeviceTime:deviceIdentifier
+                              date: date
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
+RCT_EXPORT_METHOD(setUserPersonalInfo:(NSString*)deviceIdentifier
+                  info:(NSDictionary*)info
+                  transactionId:(NSString*)transactionId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager setUserPersonalInfo:deviceIdentifier
+                       info: info
+              transactionId:transactionId
+                    resolve:resolve
+                     reject:reject];
+}
+
 RCT_EXPORT_METHOD(writeCharacteristicForService:(nonnull NSNumber*)serviceIdentifier
                              characteristicUUID:(NSString*)characteristicUUID
                                     valueBase64:(NSString*)valueBase64
