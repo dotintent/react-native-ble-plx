@@ -725,6 +725,7 @@ export class BleManager {
 
   async activateVibration(
     deviceIdentifier: DeviceId,
+    duration: number,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
@@ -732,6 +733,75 @@ export class BleManager {
     }
     const nativeCharacteristic = await this._callPromise(
       BleModule.activateVibration(
+        deviceIdentifier,
+        duration,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async setDeviceTime(
+    deviceIdentifier: DeviceId,
+    date: string,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.setDeviceTime(
+        deviceIdentifier,
+        date,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async getDeviceTime(
+    deviceIdentifier: DeviceId,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.getDeviceTime(
+        deviceIdentifier,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async setUserPersonalInfo(
+    deviceIdentifier: DeviceId,
+    info: Dictionary<String, Any>,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.setUserPersonalInfo(
+        deviceIdentifier,
+        info,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async getUserPersonalInfo(
+    deviceIdentifier: DeviceId,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.getUserPersonalInfo(
         deviceIdentifier,
         transactionId
       )

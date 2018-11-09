@@ -480,10 +480,25 @@ export interface BleModuleInterface {
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
 
+  // ~~~~~~~ TRACKER ~~~~~~~
   activateVibration(
     deviceIdentifier: DeviceId,
+    duration: number,
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
+
+  setDeviceTime(
+    deviceIdentifier: DeviceId,
+    date: string,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  setUserPersonalInfo(
+    deviceIdentifier: DeviceId,
+    info: Dictionary<String, Any>,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
 
   /**
    * Write value to characteristic.
