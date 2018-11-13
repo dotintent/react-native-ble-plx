@@ -829,20 +829,20 @@ public class BleClientManager : NSObject {
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
 
-        if let info = command.arguments[0] as? Dictionary<String, Any> {
-            let gender = (info["gender"] as! String == "male") ? 1 : 0
-            let age = info["age"] as! UInt8
-            let height = info["height"] as! UInt8
-            let weight = info["weight"] as! UInt8
-            let strideLength = info["strideLength"] as! UInt8
-            
-            var data = createNewArray()
-            data[0] = 0x02
-            data[1] = UInt8(gender)
-            data[2] = age
-            data[3] = height
-            data[4] = weight
-            data[5] = strideLength                                              
+       
+        let gender = (info["gender"] as! String == "male") ? 1 : 0
+        let age = info["age"] as! UInt8
+        let height = info["height"] as! UInt8
+        let weight = info["weight"] as! UInt8
+        let strideLength = info["strideLength"] as! UInt8
+        
+        var data = createNewArray()
+        data[0] = 0x02
+        data[1] = UInt8(gender)
+        data[2] = age
+        data[3] = height
+        data[4] = weight
+        data[5] = strideLength                                              
 
         let value = convertFullArray(data: data)
 
@@ -854,7 +854,7 @@ public class BleClientManager : NSObject {
                                          response: true,
                                          transactionId: transactionId,
                                          promise: SafePromise(resolve: resolve, reject: reject))
-    }}
+    }
 
     @objc
     public func writeCharacteristicForService(  _ serviceIdentifier: Double,
