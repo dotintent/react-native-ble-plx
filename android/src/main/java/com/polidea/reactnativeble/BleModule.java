@@ -392,12 +392,9 @@ public class BleModule extends ReactContextBaseJavaModule {
     safeStartDeviceScan(uuids, scanMode, callbackType);
   }
 
-  // Mark: Scanning
-  // ------------------------------------------------------------------------------
-
   @ReactMethod
   public void startTrackerScan(@Nullable ReadableArray filteredUUIDs, @Nullable ReadableMap options) {
-    UUID[] uuids = "fff0";
+    UUID[] uuids = null;
 
     int scanMode = SCAN_MODE_LOW_POWER;
     int callbackType = CALLBACK_TYPE_ALL_MATCHES;
@@ -422,6 +419,9 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     safeStartDeviceScan(uuids, scanMode, callbackType);
   }
+
+  // Mark: Scanning
+  // ------------------------------------------------------------------------------
 
   private void safeStartDeviceScan(final UUID[] uuids, int scanMode, int callbackType) {
     if (rxBleClient == null) {
