@@ -499,6 +499,51 @@ export interface BleModuleInterface {
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
 
+  getDetailedDayActivity(
+    deviceIdentifier: DeviceId,
+    date: string,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getSummaryDaySleep(
+    deviceIdentifier: DeviceId,
+    info: Dictionary<String, Any>,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getSummaryDayActivity(
+    deviceIdentifier: DeviceId,
+    info: Dictionary<String, Any>,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getLastActivity(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getLastSleepActivity(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  setDistanceUnit(
+    deviceIdentifier: DeviceId,
+    unit: string,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getSoftwareVersion(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  setMode(
+    deviceIdentifier: DeviceId,
+    mode: string,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
 
   /**
    * Write value to characteristic.

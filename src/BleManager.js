@@ -759,21 +759,6 @@ export class BleManager {
     return new Characteristic(nativeCharacteristic, this)
   }
 
-  async getDeviceTime(
-    deviceIdentifier: DeviceId,
-    transactionId: ?TransactionId
-  ): Promise<Characteristic> {
-    if (!transactionId) {
-      transactionId = this._nextUniqueID()
-    }
-    const nativeCharacteristic = await this._callPromise(
-      BleModule.getDeviceTime(
-        deviceIdentifier,
-        transactionId
-      )
-    )
-    return new Characteristic(nativeCharacteristic, this)
-  }
 
   async setUserPersonalInfo(
     deviceIdentifier: DeviceId,
@@ -787,22 +772,6 @@ export class BleManager {
       BleModule.setUserPersonalInfo(
         deviceIdentifier,
         info,
-        transactionId
-      )
-    )
-    return new Characteristic(nativeCharacteristic, this)
-  }
-
-  async getUserPersonalInfo(
-    deviceIdentifier: DeviceId,
-    transactionId: ?TransactionId
-  ): Promise<Characteristic> {
-    if (!transactionId) {
-      transactionId = this._nextUniqueID()
-    }
-    const nativeCharacteristic = await this._callPromise(
-      BleModule.getUserPersonalInfo(
-        deviceIdentifier,
         transactionId
       )
     )
