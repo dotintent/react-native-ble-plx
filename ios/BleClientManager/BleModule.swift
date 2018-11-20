@@ -22,8 +22,11 @@ public class BleClientManager : NSObject {
 
     // Tracker Write Characteristic
     private let trackerWriteCharacteristic : String = "0000fff6-0000-1000-8000-00805f9b34fb"
+
+    // Tracker Read Characteristic
+    private let trackerReadCharacteristic : String = "0000fff7-0000-1000-8000-00805f9b34fb"
     
-    // Tracker Write Characteristic
+    // Tracker Service UUID
     private let trackerServiceUUID : String = "0000fff0-0000-1000-8000-00805f9b34fb"
 
     // Delegate is used to send events to
@@ -877,9 +880,12 @@ public class BleClientManager : NSObject {
 
         let value = convertFullArray(data: data)
 
+        
+
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: self.trackerServiceUUID,
                                                     characteristicUUID: self.trackerWriteCharacteristic)
+                                       
         safeWriteCharacteristicForDevice(observable,
                                          value: value,
                                          response: true,
@@ -966,6 +972,20 @@ public class BleClientManager : NSObject {
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: serviceUUID,
                                                     characteristicUUID: characteristicUUID)
+
+        safeMonitorCharacteristicForDevice(observable,
+                                           transactionId: transactionId,
+                                           promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+        @objc
+    public func monitorTrackerResponse(  _ deviceIdentifier: String,
+                                                      transactionId: String,
+                                                            resolve: @escaping Resolve,
+                                                             reject: @escaping Reject) {
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.trackerReadCharacteristic)
 
         safeMonitorCharacteristicForDevice(observable,
                                            transactionId: transactionId,

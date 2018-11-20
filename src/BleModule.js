@@ -598,6 +598,19 @@ export interface BleModuleInterface {
     transactionId: TransactionId
   ): Promise<void>;
 
+    /**
+   * Setup monitoring of characteristic value.
+   *
+   * @param {DeviceId} deviceIdentifier Connected device identifier
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+   * @private
+   */
+  monitorTrackerResponse(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<void>;
+
   /**
    * Setup monitoring of characteristic value.
    *
