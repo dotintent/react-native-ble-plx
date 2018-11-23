@@ -402,14 +402,48 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .setCallbackType(callbackType)
                 .build();
 
-        int length = uuids == null ? 0 : uuids.length;
-        ScanFilter filters[] = new ScanFilter[length];
-        for (int i =0; i< length; i++) {
-            filters[i] = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(uuids[i].toString())).build();
+        Observable<ScanResult> scanResultObservable;
+        if (uuids != null && uuids.length > 0) {
+            // Use native scanning filtering to limit number of devices to process.
+            ScanFilter scanFilter = new ScanFilter
+                    .Builder()
+                    .setServiceUuid(ParcelUuid.fromString(uuids[0].toString()))
+                    .build();
+
+            // Filter remaining devices which don't contain every service UUID provided.
+            scanResultObservable = rxBleClient
+                    .scanBleDevices(scanSettings, scanFilter)
+                    .filter(new Func1<ScanResult, Boolean>() {
+                        @Override
+                        public Boolean call(ScanResult scanResult) {
+
+                            // If device doesn't contain services it can't meet our requirements.
+                            final List<ParcelUuid> serviceUuids = scanResult.getScanRecord().getServiceUuids();
+                            if (serviceUuids == null) return false;
+
+                            // Check if all UUIDs are present. First UUID can be skipped.
+                            boolean containsAllUUIDs = true;
+                            for (int i = 1; i < uuids.length; i++) {
+                                boolean foundUUID = false;
+                                for (ParcelUuid parcelUuid : serviceUuids) {
+                                    if (parcelUuid.getUuid().equals(uuids[i])) {
+                                        foundUUID = true;
+                                        break;
+                                    }
+                                }
+                                if (!foundUUID) {
+                                    containsAllUUIDs = false;
+                                    break;
+                                }
+                            }
+                            return containsAllUUIDs;
+                        }
+                    });
+        } else {
+            scanResultObservable = rxBleClient.scanBleDevices(scanSettings);
         }
 
-        scanSubscription = rxBleClient
-                .scanBleDevices(scanSettings, filters)
+        scanSubscription = scanResultObservable
                 .subscribe(new Action1<ScanResult>() {
                     @Override
                     public void call(ScanResult scanResult) {
