@@ -1,6 +1,6 @@
 {
   "name": "react-native-ble-plx",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React Native Bluetooth Low Energy library",
   "main": "index.js",
   "directories": {
@@ -18,7 +18,6 @@
   "devDependencies": {
     "babel-eslint": "10.0.1",
     "babel-jest": "23.6.0",
-    "metro-react-native-babel-preset": "0.45.6",
     "documentation": "9.0.0-alpha.0",
     "eslint": "5.6.1",
     "eslint-plugin-flowtype": "2.50.3",
@@ -27,9 +26,10 @@
     "eslint-plugin-react": "7.11.1",
     "flow-bin": "^0.78.0",
     "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.45.6",
     "prettier": "1.14.3",
     "react": "16.5.0",
-    "react-native": "0.57.1"
+    "react-native": "0.57.5"
   },
   "keywords": [
     "React",

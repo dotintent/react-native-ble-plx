@@ -1,3 +1,9 @@
+**1.0.1**
+
+- Fix possible ConcurrentModificationException in Android BleModule.
+- Workaround for when `canSendWriteWithoutResponse` would return false on iOS.
+- Fixed low severity vulnerabilities reported by npm in development dependencies.
+
 **1.0.0**
 
 **Breaking changes**

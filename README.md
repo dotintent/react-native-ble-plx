@@ -25,28 +25,11 @@ What this library does NOT support:
 
 ## Recent Changes
 
-**1.0.0**
+**1.0.1**
 
-**Breaking changes**
-
-- Moved to Gradle plugin 3.1.4 and Gradle wrapper to 4.4 (RN 57+ required) on Android.
-
-Other:
-
-- Added `requestConnectionPriority` function which increases or decreases connection interval setting on Android Lollipop devices or above.
-- Added `connectionPriority` option to connection options which calls above function just after the connection is established.
-- Added `scanMode` and `callbackType` properties to scan options for Android.
-- Added `enable` and `disable` functions to enable/disable Bluetooth on Android.
-- Added optional `transactionId` argument to `discoverAllServicesAndCharacteristicsForDevice`.
-- Added `errorCodesToMessagesMapping` property to `BleManagerOptions` to be able to override custom BleError messages.
-- Updated `cancelDeviceConnection` documentation.
-- Don't call CBCentralManager's stopScan, when Bluetooth is powered off in internal implementation on iOS.
-- Clean iOS compiler warnings on XCode10.
-- Changed scan record logging from Debug to Verbose on iOS.
-- Updated `writeWithoutResponse` implementation on iOS to use `canSendWriteWithoutResponse` if available starting from iOS 11.
-- Updated library's development dependencies.
-- Fixed cyclic import warnings.
-- Fixed notification/indication subscription moment. Events are monitored before CCC is written on Android.
+- Fix possible ConcurrentModificationException in Android BleModule.
+- Workaround for when `canSendWriteWithoutResponse` would return false on iOS.
+- Fixed low severity vulnerabilities reported by npm in development dependencies.
 
 [All previous changes](CHANGELOG.md)
 
