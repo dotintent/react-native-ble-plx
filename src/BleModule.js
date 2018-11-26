@@ -501,7 +501,7 @@ export interface BleModuleInterface {
 
   getDetailedDayActivity(
     deviceIdentifier: DeviceId,
-    date: string,
+    date: number,
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
 
@@ -513,7 +513,7 @@ export interface BleModuleInterface {
 
   getSummaryDayActivity(
     deviceIdentifier: DeviceId,
-    info: Dictionary<String, Any>,
+    date: number,
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
 

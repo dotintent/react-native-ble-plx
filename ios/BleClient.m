@@ -325,11 +325,23 @@ RCT_EXPORT_METHOD(setUserPersonalInfo:(NSString*)deviceIdentifier
 }
 
 RCT_EXPORT_METHOD(getDetailedDayActivity:(NSString*)deviceIdentifier
-                  date:(NSString*)date
+                  date:(NSInteger*)date
                   transactionId:(NSString*)transactionId
                   resolver:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager getDetailedDayActivity:deviceIdentifier
+                       date: date
+              transactionId:transactionId
+                    resolve:resolve
+                     reject:reject];
+}
+
+RCT_EXPORT_METHOD(getSummaryDayActivity:(NSString*)deviceIdentifier
+                  date:(NSInteger*)date
+                  transactionId:(NSString*)transactionId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager getSummaryDayActivity:deviceIdentifier
                        date: date
               transactionId:transactionId
                     resolve:resolve

@@ -780,7 +780,7 @@ export class BleManager {
 
   async getDetailedDayActivity(
     deviceIdentifier: DeviceId,
-    date: String,
+    date: Number,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
@@ -795,6 +795,27 @@ export class BleManager {
     )
     return new Characteristic(nativeCharacteristic, this)
   }
+
+  async getSummaryDayActivity(
+    deviceIdentifier: DeviceId,
+    date: Number,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.getSummaryDayActivity(
+        deviceIdentifier,
+        date,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+
+  getSummaryDayActivity
 
   /**
    * Write {@link Characteristic} value with response.

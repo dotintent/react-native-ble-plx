@@ -861,22 +861,40 @@ public class BleClientManager : NSObject {
 
         @objc
     public func getDetailedDayActivity(  _ deviceIdentifier: String,
-                                                    date: String,
+                                                    date: Int,
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
 
-          // let dateFormatter = DateFormatter()
-          // dateFormatter.dateFormat = "yyyy-MM-dd"
-          // let dateRangeStart = Date()
-          // let dateRangeEnd = dateFormatter.date(from: date)
-          // let components = Calendar.current.dateComponents([.day],
-          //                                                   from: dateRangeEnd!,
-          //                                                   to: dateRangeStart)
-       
         var data = createNewArray()
         data[0] = 0x43
-        data[1] = 0                                   
+        data[1] = UInt8(date)                            
+
+        let value = convertFullArray(data: data)
+
+        
+
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.trackerWriteCharacteristic)
+                                       
+        safeWriteCharacteristicForDevice(observable,
+                                         value: value,
+                                         response: true,
+                                         transactionId: transactionId,
+                                         promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+            @objc
+    public func getSummaryDayActivity(  _ deviceIdentifier: String,
+                                                    date: Int,
+                                                    transactionId: String,
+                                                          resolve: @escaping Resolve,
+                                                           reject: @escaping Reject) {
+
+        var data = createNewArray()
+        data[0] = 0x07
+        data[1] = UInt8(date)                            
 
         let value = convertFullArray(data: data)
 
