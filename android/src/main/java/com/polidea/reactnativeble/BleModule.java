@@ -1071,6 +1071,18 @@ public class BleModule extends ReactContextBaseJavaModule {
     writeProperCharacteristicWithValue(characteristic, message, true, transactionId, promise);
   }
 
+  @ReactMethod
+  public void monitorTrackerResponse(final String deviceId, final String transactionId, final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        trackerReadCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    safeMonitorCharacteristicForDevice(characteristic, transactionId, new SafePromise(promise));
+  }
+
   private void writeProperCharacteristicWithValue(final Characteristic characteristic, final byte[] valueBase64,
       final Boolean response, final String transactionId, final Promise promise) {
     final byte[] value;
