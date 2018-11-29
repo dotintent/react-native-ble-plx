@@ -103,6 +103,11 @@ RCT_EXPORT_METHOD(startDeviceScan:(NSArray*)filteredUUIDs
     [_manager startDeviceScan:filteredUUIDs options:options];
 }
 
+RCT_EXPORT_METHOD(startTrackerScan:(NSArray*)filteredUUIDs
+                          options:(NSDictionary*)options) {
+    [_manager startTrackerScan:filteredUUIDs options:options];
+}
+
 RCT_EXPORT_METHOD(stopDeviceScan) {
     [_manager stopDeviceScan];
 }
@@ -283,6 +288,66 @@ RCT_EXPORT_METHOD(writeCharacteristicForDevice:(NSString*)deviceIdentifier
                                     reject:reject];
 }
 
+RCT_EXPORT_METHOD(activateVibration:(NSString*)deviceIdentifier
+                                duration: (NSInteger)duration
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager activateVibration:deviceIdentifier
+                              duration: duration
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
+RCT_EXPORT_METHOD(setDeviceTime:(NSString*)deviceIdentifier
+                                date: (NSString*)date
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager setDeviceTime:deviceIdentifier
+                              date: date
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
+RCT_EXPORT_METHOD(setUserPersonalInfo:(NSString*)deviceIdentifier
+                  info:(NSDictionary*)info
+                  transactionId:(NSString*)transactionId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager setUserPersonalInfo:deviceIdentifier
+                       info: info
+              transactionId:transactionId
+                    resolve:resolve
+                     reject:reject];
+}
+
+RCT_EXPORT_METHOD(getDetailedDayActivity:(NSString*)deviceIdentifier
+                  date:(NSInteger*)date
+                  transactionId:(NSString*)transactionId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager getDetailedDayActivity:deviceIdentifier
+                       date: date
+              transactionId:transactionId
+                    resolve:resolve
+                     reject:reject];
+}
+
+RCT_EXPORT_METHOD(getSummaryDayActivity:(NSString*)deviceIdentifier
+                  date:(NSInteger*)date
+                  transactionId:(NSString*)transactionId
+                  resolver:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager getSummaryDayActivity:deviceIdentifier
+                       date: date
+              transactionId:transactionId
+                    resolve:resolve
+                     reject:reject];
+}
+
 RCT_EXPORT_METHOD(writeCharacteristicForService:(nonnull NSNumber*)serviceIdentifier
                              characteristicUUID:(NSString*)characteristicUUID
                                     valueBase64:(NSString*)valueBase64
@@ -322,6 +387,16 @@ RCT_EXPORT_METHOD(monitorCharacteristicForDevice:(NSString*)deviceIdentifier
     [_manager monitorCharacteristicForDevice:deviceIdentifier
                                  serviceUUID:serviceUUID
                           characteristicUUID:characteristicUUID
+                               transactionId:transactionId
+                                     resolve:resolve
+                                      reject:reject];
+}
+
+RCT_EXPORT_METHOD(monitorTrackerResponse:(NSString*)deviceIdentifier
+                                   transactionID:(NSString*)transactionId
+                                        resolver:(RCTPromiseResolveBlock)resolve
+                                        rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager monitorTrackerResponse:deviceIdentifier
                                transactionId:transactionId
                                      resolve:resolve
                                       reject:reject];

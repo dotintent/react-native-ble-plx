@@ -344,6 +344,33 @@ export class BleManager {
     BleModule.startDeviceScan(UUIDs, options)
   }
 
+    /**
+   * Starts device scanning. When previous scan is in progress it will be stopped before executing this command.
+   *
+   * scanned {@link Device}. If `null` is passed, all available {@link Device}s will be scanned.
+   * @param {?ScanOptions} options Optional configuration for scanning operation.
+   * @param {function(error: ?BleError, scannedDevice: ?Device)} listener Function which will be called for every scanned
+   * {@link Device} (devices may be scanned multiple times). It's first argument is potential {@link Error} which is set
+   * to non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument
+   * is a scanned {@link Device}.
+   */
+  startTrackerScan(
+    UUIDs: ?Array<UUID>,
+    options: ?ScanOptions,
+    listener: (error: ?BleError, scannedDevice: ?Device) => void
+  ) {
+    this.stopDeviceScan()
+    const scanListener = ([error, nativeDevice]: [?string, ?NativeDevice]) => {
+      listener(
+        error ? parseBleError(error, this._errorCodesToMessagesMapping) : null,
+        nativeDevice ? new Device(nativeDevice, this) : null
+      )
+    }
+    // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
+    this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
+    BleModule.startTrackerScan(UUIDs, options)
+  }
+
   /**
    * Stops {@link Device} scan if in progress.
    */
@@ -696,6 +723,100 @@ export class BleManager {
     return new Characteristic(nativeCharacteristic, this)
   }
 
+  async activateVibration(
+    deviceIdentifier: DeviceId,
+    duration: number,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.activateVibration(
+        deviceIdentifier,
+        duration,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async setDeviceTime(
+    deviceIdentifier: DeviceId,
+    date: string,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.setDeviceTime(
+        deviceIdentifier,
+        date,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+
+  async setUserPersonalInfo(
+    deviceIdentifier: DeviceId,
+    info: Dictionary<String, Any>,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.setUserPersonalInfo(
+        deviceIdentifier,
+        info,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async getDetailedDayActivity(
+    deviceIdentifier: DeviceId,
+    date: Number,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.getDetailedDayActivity(
+        deviceIdentifier,
+        date,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async getSummaryDayActivity(
+    deviceIdentifier: DeviceId,
+    date: Number,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.getSummaryDayActivity(
+        deviceIdentifier,
+        date,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+
+  getSummaryDayActivity
+
   /**
    * Write {@link Characteristic} value with response.
    *
@@ -858,6 +979,32 @@ export class BleManager {
     const filledTransactionId = transactionId || this._nextUniqueID()
     return this._handleMonitorCharacteristic(
       BleModule.monitorCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId),
+      filledTransactionId,
+      listener
+    )
+  }
+
+    /**
+   * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
+   * in favour of indications.
+   *
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener - callback which emits
+   * {@link Characteristic} objects with modified value for each notification.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   */
+  monitorTrackerResponse(
+    deviceIdentifier: DeviceId,
+    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
+    transactionId: ?TransactionId
+  ): Subscription {
+    const filledTransactionId = transactionId || this._nextUniqueID()
+    return this._handleMonitorCharacteristic(
+      BleModule.monitorTrackerResponse(deviceIdentifier, filledTransactionId),
       filledTransactionId,
       listener
     )
