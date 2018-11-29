@@ -76,6 +76,15 @@ public class BleModule extends ReactContextBaseJavaModule {
   // Name of module
   private static final String NAME = "BleClientManager";
 
+  // Tracker Write Characteristic
+  private static final String trackerWriteCharacteristic = "0000fff6-0000-1000-8000-00805f9b34fb";
+
+  // Tracker Read Characteristic
+  private static final String trackerReadCharacteristic = "0000fff7-0000-1000-8000-00805f9b34fb";
+
+  // Tracker Service UUID
+  private static final String trackerServiceUUID = "0000fff0-0000-1000-8000-00805f9b34fb";
+
   // Value converters
   private final ErrorConverter errorConverter = new ErrorConverter();
   private final RxBleScanResultConverter scanConverter = new RxBleScanResultConverter();
@@ -973,6 +982,110 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     writeCharacteristicWithValue(characteristic, valueBase64, response, transactionId, promise);
+  }
+
+  public static byte calculateChecksum(byte[] message) {
+    int crcSum = 0x00;
+    for (int i = 0; i < 15; i++) {
+      crcSum += message[i];
+    }
+    return (byte) (crcSum > 0xFF ? (byte) (crcSum % 256) & 0xFF : (byte) (crcSum) & 0xFF);
+  }
+
+  // Tracker
+
+  @ReactMethod
+  public void activateVibration(final String deviceId, final int duration, final String transactionId,
+      final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        trackerWriteCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    byte[] message = new byte[16];
+    message[0] = 0x36;
+    message[1] = (byte) (duration > 10 ? 10 : duration);
+    message[15] = calculateChecksum(message);
+
+    writeProperCharacteristicWithValue(characteristic, message, true, transactionId, promise);
+  }
+
+  @ReactMethod
+  public void setDeviceTime(final String deviceId, final String date, final String transactionId,
+      final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        trackerWriteCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    byte[] message = new byte[16];
+    message[0] = 0x01;
+    message[1] = Byte.parseByte(date.substring(2, 4), 16);
+    message[2] = Byte.parseByte(date.substring(5, 7), 16);
+    message[3] = Byte.parseByte(date.substring(8, 10), 16);
+    message[4] = Byte.parseByte(date.substring(11, 13), 16);
+    message[5] = Byte.parseByte(date.substring(14, 16), 16);
+    message[6] = Byte.parseByte(date.substring(17, 18), 16);
+    message[15] = calculateChecksum(message);
+
+    writeProperCharacteristicWithValue(characteristic, message, true, transactionId, promise);
+  }
+
+  @ReactMethod
+  public void getDetailedDayActivity(final String deviceId, final int date, final String transactionId,
+      final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        trackerWriteCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    byte[] message = new byte[16];
+    message[0] = 0x43;
+    message[1] = (byte) date;
+    message[15] = calculateChecksum(message);
+
+    writeProperCharacteristicWithValue(characteristic, message, true, transactionId, promise);
+  }
+
+  @ReactMethod
+  public void getSummaryDayActivity(final String deviceId, final int date, final String transactionId,
+      final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        trackerWriteCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    byte[] message = new byte[16];
+    message[0] = 0x07;
+    message[1] = (byte) date;
+    message[15] = calculateChecksum(message);
+
+    writeProperCharacteristicWithValue(characteristic, message, true, transactionId, promise);
+  }
+
+  private void writeProperCharacteristicWithValue(final Characteristic characteristic, final byte[] valueBase64,
+      final Boolean response, final String transactionId, final Promise promise) {
+    final byte[] value;
+    try {
+      value = valueBase64;
+    } catch (Throwable e) {
+      BleErrorUtils.invalidWriteDataForCharacteristic(valueBase64,
+          UUIDConverter.fromUUID(characteristic.getNativeCharacteristic().getUuid())).reject(promise);
+      return;
+    }
+
+    characteristic.getNativeCharacteristic().setWriteType(
+        response ? BluetoothGattCharacteristic.WRITE_TYPE_DEFAULT : BluetoothGattCharacteristic.WRITE_TYPE_NO_RESPONSE);
+
+    safeWriteCharacteristicForDevice(characteristic, value, transactionId, new SafePromise(promise));
   }
 
   @ReactMethod

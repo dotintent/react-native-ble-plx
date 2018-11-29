@@ -897,9 +897,6 @@ public class BleClientManager : NSObject {
         data[1] = UInt8(date)                            
 
         let value = convertFullArray(data: data)
-
-        
-
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: self.trackerServiceUUID,
                                                     characteristicUUID: self.trackerWriteCharacteristic)
