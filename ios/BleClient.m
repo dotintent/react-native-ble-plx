@@ -110,7 +110,7 @@ RCT_EXPORT_METHOD(startTrackerScan:(NSArray*)filteredUUIDs
 
 RCT_EXPORT_METHOD(startScaleScan:options:(NSDictionary*)options) 
 {
-    [_manager startScaleScan:options:options];
+    [_manager startScaleScan:options];
 }
 
 RCT_EXPORT_METHOD(stopDeviceScan) {
