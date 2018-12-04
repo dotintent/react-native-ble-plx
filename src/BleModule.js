@@ -276,6 +276,14 @@ export interface BleModuleInterface {
    */
   startTrackerScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
 
+      /**
+   * Starts device scan.
+   *
+   * @param {?ScanOptions} options Platform dependent options
+   * @private
+   */
+  startScaleScan(options: ?ScanOptions): void;
+
   /**
    * Stops device scan.
    * @private

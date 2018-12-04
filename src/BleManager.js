@@ -371,6 +371,22 @@ export class BleManager {
     BleModule.startTrackerScan(UUIDs, options)
   }
 
+  startScaleScan(
+    options: ?ScanOptions,
+    listener: (error: ?BleError, scannedDevice: ?Device) => void
+  ) {
+    this.stopDeviceScan()
+    const scanListener = ([error, nativeDevice]: [?string, ?NativeDevice]) => {
+      listener(
+        error ? parseBleError(error, this._errorCodesToMessagesMapping) : null,
+        nativeDevice ? new Device(nativeDevice, this) : null
+      )
+    }
+    // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
+    this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
+    BleModule.startScaleScan(options)
+  }
+
   /**
    * Stops {@link Device} scan if in progress.
    */

@@ -429,6 +429,37 @@ public class BleModule extends ReactContextBaseJavaModule {
     safeStartDeviceScan(uuids, scanMode, callbackType);
   }
 
+  // @ReactMethod
+  // public void startScaleScan(@Nullable ReadableArray filteredUUIDs, @Nullable
+  // ReadableMap options) {
+  // UUID[] uuids = null;
+
+  // int scanMode = SCAN_MODE_LOW_POWER;
+  // int callbackType = CALLBACK_TYPE_ALL_MATCHES;
+
+  // if (options != null) {
+  // if (options.hasKey("scanMode") && options.getType("scanMode") ==
+  // ReadableType.Number) {
+  // scanMode = options.getInt("scanMode");
+  // }
+  // if (options.hasKey("callbackType") && options.getType("callbackType") ==
+  // ReadableType.Number) {
+  // callbackType = options.getInt("callbackType");
+  // }
+  // }
+
+  // if (filteredUUIDs != null) {
+  // uuids = UUIDConverter.convert(filteredUUIDs);
+  // if (uuids == null) {
+  // sendEvent(Event.ScanEvent,
+  // BleErrorUtils.invalidIdentifiers(ReadableArrayConverter.toStringArray(filteredUUIDs)).toJSCallback());
+  // return;
+  // }
+  // }
+
+  // safeStartDeviceScan(uuids, scanMode, callbackType);
+  // }
+
   // Mark: Scanning
   // ------------------------------------------------------------------------------
 
