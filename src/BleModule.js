@@ -10,6 +10,7 @@ import type {
   TransactionId,
   Base64,
   ScanOptions,
+  ScaleInfo,
   ConnectionOptions
 } from './TypeDefinition'
 
@@ -275,6 +276,9 @@ export interface BleModuleInterface {
    * @private
    */
   startTrackerScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
+
+
+  setUserProfileToScales(deviceIdentifier: DeviceId, scaleInfo: ScaleInfo): void;
 
       /**
    * Starts device scan.

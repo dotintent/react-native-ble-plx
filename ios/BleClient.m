@@ -305,6 +305,18 @@ RCT_EXPORT_METHOD(activateVibration:(NSString*)deviceIdentifier
                                     reject:reject];
 }
 
+RCT_EXPORT_METHOD(setUserProfileToScales:(NSString*)deviceIdentifier
+                                scaleInfo: (NSDictionary*)scaleInfo
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager setUserProfileToScales:deviceIdentifier
+                              scaleInfo: scaleInfo
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
 RCT_EXPORT_METHOD(setDeviceTime:(NSString*)deviceIdentifier
                                 date: (NSString*)date
                                  transactionId:(NSString*)transactionId

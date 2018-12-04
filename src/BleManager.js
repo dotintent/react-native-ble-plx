@@ -757,6 +757,24 @@ export class BleManager {
     return new Characteristic(nativeCharacteristic, this)
   }
 
+  async setUserProfileToScales(
+    deviceIdentifier: DeviceId,
+    scaleInfo: scaleInfo,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.activateVibration(
+        deviceIdentifier,
+        scaleInfo,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
   async setDeviceTime(
     deviceIdentifier: DeviceId,
     date: string,

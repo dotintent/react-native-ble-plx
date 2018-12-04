@@ -20,6 +20,9 @@ extension Data {
 @objc
 public class BleClientManager : NSObject {
 
+    // Scale Write Characteristic
+    private let scaleWriteCharacteristic : String = "0000fff3-0000-1000-8000-00805f9b34fb"
+
     // Tracker Write Characteristic
     private let trackerWriteCharacteristic : String = "0000fff6-0000-1000-8000-00805f9b34fb"
 
@@ -28,6 +31,9 @@ public class BleClientManager : NSObject {
     
     // Tracker Service UUID
     private let trackerServiceUUID : String = "0000fff0-0000-1000-8000-00805f9b34fb"
+
+    // Tracker Service UUID
+    private let scaleServiceUUID : String = "0000fff0-0000-1000-8000-00805f9b34fb"
 
     // Delegate is used to send events to
     @objc
@@ -798,6 +804,41 @@ public class BleClientManager : NSObject {
         var data = createNewArray()
         data[0] = 0x36
         data[1] = UInt8(duration)
+        let value = convertFullArray(data: data)
+
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.trackerWriteCharacteristic)
+        safeWriteCharacteristicForDevice(observable,
+                                         value: value,
+                                         response: true,
+                                         transactionId: transactionId,
+                                         promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+            @objc
+    public func setUserProfileToScales(  _ deviceIdentifier: String,
+                                                    scaleInfo: Dictionary<String, Any>,
+                                                    transactionId: String,
+                                                          resolve: @escaping Resolve,
+                                                           reject: @escaping Reject) {
+
+        let gender = (scaleInfo["gender"] as! String == "male") ? 1 : 0
+        let age = scaleInfo["age"] as! UInt8
+        let height = scaleInfo["height"] as! UInt8
+        let ageHex = String(format:"%2X", age)
+        let number = (scaleInfo["gender"] as! String == "male") ? UInt8(ageHex, radix: 16)! + 128 : UInt8(ageHex, radix: 16)
+        let heightHex = String(format:"%2X", height)                                                     
+        var data = createNewArray()
+
+        data[0] = 0xFD
+        data[1] = 0x53
+        data[2] = 0x00
+        data[3] = 0x00
+        data[4] = 0x40
+        data[5] = number!
+        data[6] = UInt8(heightHex, radix: 16)!
+
         let value = convertFullArray(data: data)
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
