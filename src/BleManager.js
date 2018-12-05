@@ -766,7 +766,7 @@ export class BleManager {
       transactionId = this._nextUniqueID()
     }
     const nativeCharacteristic = await this._callPromise(
-      BleModule.activateVibration(
+      BleModule.setUserProfileToScales(
         deviceIdentifier,
         scaleInfo,
         transactionId
@@ -1032,6 +1032,32 @@ export class BleManager {
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
   monitorTrackerResponse(
+    deviceIdentifier: DeviceId,
+    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
+    transactionId: ?TransactionId
+  ): Subscription {
+    const filledTransactionId = transactionId || this._nextUniqueID()
+    return this._handleMonitorCharacteristic(
+      BleModule.monitorTrackerResponse(deviceIdentifier, filledTransactionId),
+      filledTransactionId,
+      listener
+    )
+  }
+
+    /**
+   * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
+   * in favour of indications.
+   *
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener - callback which emits
+   * {@link Characteristic} objects with modified value for each notification.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   */
+  monitorScaleResponse(
     deviceIdentifier: DeviceId,
     listener: (error: ?BleError, characteristic: ?Characteristic) => void,
     transactionId: ?TransactionId

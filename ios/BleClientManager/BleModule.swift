@@ -28,6 +28,10 @@ public class BleClientManager : NSObject {
 
     // Tracker Read Characteristic
     private let trackerReadCharacteristic : String = "0000fff7-0000-1000-8000-00805f9b34fb"
+
+
+    // Scale Read Characteristic
+    private let scaleReadCharacteristic : String = "0000fff7-0000-1000-8000-00805f9b34fb"
     
     // Tracker Service UUID
     private let trackerServiceUUID : String = "0000fff0-0000-1000-8000-00805f9b34fb"
@@ -1066,6 +1070,20 @@ public class BleClientManager : NSObject {
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: self.trackerServiceUUID,
                                                     characteristicUUID: self.trackerReadCharacteristic)
+
+        safeMonitorCharacteristicForDevice(observable,
+                                           transactionId: transactionId,
+                                           promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+        @objc
+    public func monitorScaleResponse(  _ deviceIdentifier: String,
+                                                      transactionId: String,
+                                                            resolve: @escaping Resolve,
+                                                             reject: @escaping Reject) {
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.scaleReadCharacteristic)
 
         safeMonitorCharacteristicForDevice(observable,
                                            transactionId: transactionId,

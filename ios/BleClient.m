@@ -419,6 +419,16 @@ RCT_EXPORT_METHOD(monitorTrackerResponse:(NSString*)deviceIdentifier
                                       reject:reject];
 }
 
+RCT_EXPORT_METHOD(monitorScaleResponse:(NSString*)deviceIdentifier
+                                   transactionID:(NSString*)transactionId
+                                        resolver:(RCTPromiseResolveBlock)resolve
+                                        rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager monitorScaleResponse:deviceIdentifier
+                               transactionId:transactionId
+                                     resolve:resolve
+                                      reject:reject];
+}
+
 RCT_EXPORT_METHOD(monitorCharacteristicForService:(nonnull NSNumber*)serviceIdentifier
                                characteristicUUID:(NSString*)characteristicUUID
                                     transactionID:(NSString*)transactionId
