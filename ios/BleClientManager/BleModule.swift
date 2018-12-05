@@ -31,7 +31,7 @@ public class BleClientManager : NSObject {
 
 
     // Scale Read Characteristic
-    private let scaleReadCharacteristic : String = "0000fff7-0000-1000-8000-00805f9b34fb"
+    private let scaleReadCharacteristic : String = "0000fff4-0000-1000-8000-00805f9b34fb"
     
     // Tracker Service UUID
     private let trackerServiceUUID : String = "0000fff0-0000-1000-8000-00805f9b34fb"

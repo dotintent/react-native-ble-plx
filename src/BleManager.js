@@ -1064,7 +1064,7 @@ export class BleManager {
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
     return this._handleMonitorCharacteristic(
-      BleModule.monitorTrackerResponse(deviceIdentifier, filledTransactionId),
+      BleModule.monitorScaleResponse(deviceIdentifier, filledTransactionId),
       filledTransactionId,
       listener
     )
