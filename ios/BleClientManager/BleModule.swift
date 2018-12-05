@@ -847,7 +847,7 @@ public class BleClientManager : NSObject {
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: self.trackerServiceUUID,
-                                                    characteristicUUID: self.trackerWriteCharacteristic)
+                                                    characteristicUUID: self.scaleWriteCharacteristic)
         safeWriteCharacteristicForDevice(observable,
                                          value: value,
                                          response: true,
