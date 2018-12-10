@@ -796,6 +796,12 @@ public class BleClientManager : NSObject {
         let value: Data = convertToData(data: data)
         return value
     }
+
+      public func convertScaleFullArray(data: [UInt8]) -> Data {
+//        CLEAN UP THIS FUNCTION. IT WORKS BUT ITS SUPER SLOPPY
+        let value: Data = convertToData(data: data)
+        return value
+    }
     
     
     
@@ -843,7 +849,7 @@ public class BleClientManager : NSObject {
         data[5] = number!
         data[6] = UInt8(heightHex, radix: 16)!
 
-        let value = convertFullScaleArray(data: data)
+        let value = convertScaleFullArray(data: data)
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: self.trackerServiceUUID,
