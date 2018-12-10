@@ -20,14 +20,24 @@ extension Data {
 @objc
 public class BleClientManager : NSObject {
 
+    // Scale Write Characteristic
+    private let scaleWriteCharacteristic : String = "0000fff3-0000-1000-8000-00805f9b34fb"
+
     // Tracker Write Characteristic
     private let trackerWriteCharacteristic : String = "0000fff6-0000-1000-8000-00805f9b34fb"
 
     // Tracker Read Characteristic
     private let trackerReadCharacteristic : String = "0000fff7-0000-1000-8000-00805f9b34fb"
+
+
+    // Scale Read Characteristic
+    private let scaleReadCharacteristic : String = "0000fff4-0000-1000-8000-00805f9b34fb"
     
     // Tracker Service UUID
     private let trackerServiceUUID : String = "0000fff0-0000-1000-8000-00805f9b34fb"
+
+    // Tracker Service UUID
+    private let scaleServiceUUID : String = "0000fff0-0000-1000-8000-00805f9b34fb"
 
     // Delegate is used to send events to
     @objc
@@ -242,6 +252,30 @@ public class BleClientManager : NSObject {
         // Start BLE scanning.
     @objc
     public func startTrackerScan(_ filteredUUIDs: [String]?, options:[String:AnyObject]?) {
+
+        // iOS handles allowDuplicates option to receive more scan records.
+        var rxOptions = [String:Any]()
+        if let options = options {
+            if ((options["allowDuplicates"]?.isEqual(to: NSNumber(value: true as Bool))) ?? false) {
+                rxOptions[CBCentralManagerScanOptionAllowDuplicatesKey] = true
+            }
+        }
+
+        // If passed iOS will show only devices with specified service UUIDs.
+        let uuids = ["fff0"].toCBUUIDS()
+
+        // Scanning will emit Scan peripherals as events.
+        scanDisposable.disposable = manager.scanForPeripherals(withServices: uuids, options: rxOptions)
+            .subscribe(onNext: { [weak self] scannedPeripheral in
+                self?.dispatchEvent(BleEvent.scanEvent, value: [NSNull(), scannedPeripheral.asJSObject])
+            }, onError: { [weak self] errorType in
+                self?.dispatchEvent(BleEvent.scanEvent, value: errorType.bleError.toJSResult)
+            })
+    }
+
+        // Start BLE scanning.
+    @objc
+    public func startScaleScan(_ options:[String:AnyObject]?) {
 
         // iOS handles allowDuplicates option to receive more scan records.
         var rxOptions = [String:Any]()
@@ -762,6 +796,12 @@ public class BleClientManager : NSObject {
         let value: Data = convertToData(data: data)
         return value
     }
+
+      public func convertScaleFullArray(data: [UInt8]) -> Data {
+//        CLEAN UP THIS FUNCTION. IT WORKS BUT ITS SUPER SLOPPY
+        let value: Data = convertToData(data: data)
+        return value
+    }
     
     
     
@@ -779,6 +819,41 @@ public class BleClientManager : NSObject {
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: self.trackerServiceUUID,
                                                     characteristicUUID: self.trackerWriteCharacteristic)
+        safeWriteCharacteristicForDevice(observable,
+                                         value: value,
+                                         response: true,
+                                         transactionId: transactionId,
+                                         promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+            @objc
+    public func setUserProfileToScales(  _ deviceIdentifier: String,
+                                                    scaleInfo: Dictionary<String, Any>,
+                                                    transactionId: String,
+                                                          resolve: @escaping Resolve,
+                                                           reject: @escaping Reject) {
+
+        let gender = (scaleInfo["gender"] as! String == "male") ? 1 : 0
+        let age = scaleInfo["age"] as! UInt8
+        let height = scaleInfo["height"] as! UInt8
+        let ageHex = String(format:"%2X", age)
+        let number = (scaleInfo["gender"] as! String == "male") ? UInt8(ageHex, radix: 16)! + 128 : UInt8(ageHex, radix: 16)
+        let heightHex = String(format:"%2X", height)                                                     
+        var data = getEmptyRequestScales(count: 7)
+
+        data[0] = 0xFD
+        data[1] = 0x53
+        data[2] = 0x00
+        data[3] = 0x00
+        data[4] = 0x40
+        data[5] = number!
+        data[6] = UInt8(heightHex, radix: 16)!
+
+        let value = convertScaleFullArray(data: data)
+
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.scaleWriteCharacteristic)
         safeWriteCharacteristicForDevice(observable,
                                          value: value,
                                          response: true,
@@ -1007,6 +1082,20 @@ public class BleClientManager : NSObject {
                                            promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+        @objc
+    public func monitorScaleResponse(  _ deviceIdentifier: String,
+                                                      transactionId: String,
+                                                            resolve: @escaping Resolve,
+                                                             reject: @escaping Reject) {
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.scaleReadCharacteristic)
+
+        safeMonitorCharacteristicForDevice(observable,
+                                           transactionId: transactionId,
+                                           promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
     @objc
     public func monitorCharacteristicForService(  _ serviceIdentifier: Double,
                                                    characteristicUUID: String,
@@ -1067,6 +1156,10 @@ public class BleClientManager : NSObject {
             })
 
         transactions.replaceDisposable(transactionId, disposable: disposable)
+    }
+
+    private func getEmptyRequestScales(count: Int) -> [UInt8] {
+        return [UInt8](repeating: 0x00, count: count)
     }
 
     // MARK: Getting characteristics -----------------------------------------------------------------------------------

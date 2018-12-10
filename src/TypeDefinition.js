@@ -181,6 +181,18 @@ export interface ScanOptions {
 }
 
 /**
+ * Options which can be passed to scanning function
+ * @name ScanOptions
+ */
+export interface ScaleInfo {
+
+  gender: string;
+  age: number;
+  height: number;
+
+}
+
+/**
  * Connection specific options to be passed before connection happen. [Not used]
  */
 export interface ConnectionOptions {

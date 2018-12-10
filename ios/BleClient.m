@@ -108,6 +108,11 @@ RCT_EXPORT_METHOD(startTrackerScan:(NSArray*)filteredUUIDs
     [_manager startTrackerScan:filteredUUIDs options:options];
 }
 
+RCT_EXPORT_METHOD(startScaleScan:(NSDictionary*)options) 
+{
+    [_manager startScaleScan:options];
+}
+
 RCT_EXPORT_METHOD(stopDeviceScan) {
     [_manager stopDeviceScan];
 }
@@ -300,6 +305,18 @@ RCT_EXPORT_METHOD(activateVibration:(NSString*)deviceIdentifier
                                     reject:reject];
 }
 
+RCT_EXPORT_METHOD(setUserProfileToScales:(NSString*)deviceIdentifier
+                                scaleInfo: (NSDictionary*)scaleInfo
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager setUserProfileToScales:deviceIdentifier
+                              scaleInfo: scaleInfo
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
 RCT_EXPORT_METHOD(setDeviceTime:(NSString*)deviceIdentifier
                                 date: (NSString*)date
                                  transactionId:(NSString*)transactionId
@@ -397,6 +414,16 @@ RCT_EXPORT_METHOD(monitorTrackerResponse:(NSString*)deviceIdentifier
                                         resolver:(RCTPromiseResolveBlock)resolve
                                         rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager monitorTrackerResponse:deviceIdentifier
+                               transactionId:transactionId
+                                     resolve:resolve
+                                      reject:reject];
+}
+
+RCT_EXPORT_METHOD(monitorScaleResponse:(NSString*)deviceIdentifier
+                                   transactionID:(NSString*)transactionId
+                                        resolver:(RCTPromiseResolveBlock)resolve
+                                        rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager monitorScaleResponse:deviceIdentifier
                                transactionId:transactionId
                                      resolve:resolve
                                       reject:reject];

@@ -371,6 +371,22 @@ export class BleManager {
     BleModule.startTrackerScan(UUIDs, options)
   }
 
+  startScaleScan(
+    options: ?ScanOptions,
+    listener: (error: ?BleError, scannedDevice: ?Device) => void
+  ) {
+    this.stopDeviceScan()
+    const scanListener = ([error, nativeDevice]: [?string, ?NativeDevice]) => {
+      listener(
+        error ? parseBleError(error, this._errorCodesToMessagesMapping) : null,
+        nativeDevice ? new Device(nativeDevice, this) : null
+      )
+    }
+    // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
+    this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
+    BleModule.startScaleScan(options)
+  }
+
   /**
    * Stops {@link Device} scan if in progress.
    */
@@ -741,6 +757,24 @@ export class BleManager {
     return new Characteristic(nativeCharacteristic, this)
   }
 
+  async setUserProfileToScales(
+    deviceIdentifier: DeviceId,
+    scaleInfo: scaleInfo,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.setUserProfileToScales(
+        deviceIdentifier,
+        scaleInfo,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
   async setDeviceTime(
     deviceIdentifier: DeviceId,
     date: string,
@@ -1005,6 +1039,32 @@ export class BleManager {
     const filledTransactionId = transactionId || this._nextUniqueID()
     return this._handleMonitorCharacteristic(
       BleModule.monitorTrackerResponse(deviceIdentifier, filledTransactionId),
+      filledTransactionId,
+      listener
+    )
+  }
+
+    /**
+   * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
+   * in favour of indications.
+   *
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener - callback which emits
+   * {@link Characteristic} objects with modified value for each notification.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   */
+  monitorScaleResponse(
+    deviceIdentifier: DeviceId,
+    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
+    transactionId: ?TransactionId
+  ): Subscription {
+    const filledTransactionId = transactionId || this._nextUniqueID()
+    return this._handleMonitorCharacteristic(
+      BleModule.monitorScaleResponse(deviceIdentifier, filledTransactionId),
       filledTransactionId,
       listener
     )
