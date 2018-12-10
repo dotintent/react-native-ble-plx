@@ -833,7 +833,7 @@ public class BleClientManager : NSObject {
         let ageHex = String(format:"%2X", age)
         let number = (scaleInfo["gender"] as! String == "male") ? UInt8(ageHex, radix: 16)! + 128 : UInt8(ageHex, radix: 16)
         let heightHex = String(format:"%2X", height)                                                     
-        var data = createNewArray()
+        var data = getEmptyRequestScales(count: 7)
 
         data[0] = 0xFD
         data[1] = 0x53
@@ -843,7 +843,7 @@ public class BleClientManager : NSObject {
         data[5] = number!
         data[6] = UInt8(heightHex, radix: 16)!
 
-        let value = convertFullArray(data: data)
+        let value = convertFullScaleArray(data: data)
 
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: self.trackerServiceUUID,
@@ -1150,6 +1150,10 @@ public class BleClientManager : NSObject {
             })
 
         transactions.replaceDisposable(transactionId, disposable: disposable)
+    }
+
+    private func getEmptyRequestScales(count: Int) -> [UInt8] {
+        return [UInt8](repeating: 0x00, count: count)
     }
 
     // MARK: Getting characteristics -----------------------------------------------------------------------------------
