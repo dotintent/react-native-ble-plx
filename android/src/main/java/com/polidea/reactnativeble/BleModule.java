@@ -1132,7 +1132,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     try {
       value = valueBase64;
     } catch (Throwable e) {
-      BleErrorUtils.invalidWriteDataForCharacteristic(valueBase64,
+      BleErrorUtils.invalidWriteDataForCharacteristic("Error",
           UUIDConverter.fromUUID(characteristic.getNativeCharacteristic().getUuid())).reject(promise);
       return;
     }
