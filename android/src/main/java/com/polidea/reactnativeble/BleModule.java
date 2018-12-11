@@ -76,6 +76,12 @@ public class BleModule extends ReactContextBaseJavaModule {
   // Name of module
   private static final String NAME = "BleClientManager";
 
+  // Scale Write Characteristic
+  private static final String scaleWriteCharacteristic = "0000fff3-0000-1000-8000-00805f9b34fb";
+
+  // Scale Read Characteristic
+  private static final String scaleReadCharacteristic = "0000fff4-0000-1000-8000-00805f9b34fb";
+
   // Tracker Write Characteristic
   private static final String trackerWriteCharacteristic = "0000fff6-0000-1000-8000-00805f9b34fb";
 
@@ -429,36 +435,24 @@ public class BleModule extends ReactContextBaseJavaModule {
     safeStartDeviceScan(uuids, scanMode, callbackType);
   }
 
-  // @ReactMethod
-  // public void startScaleScan(@Nullable ReadableArray filteredUUIDs, @Nullable
-  // ReadableMap options) {
-  // UUID[] uuids = null;
+  @ReactMethod
+  public void startScaleScan(@Nullable ReadableMap options) {
+    UUID[] uuids = null;
 
-  // int scanMode = SCAN_MODE_LOW_POWER;
-  // int callbackType = CALLBACK_TYPE_ALL_MATCHES;
+    int scanMode = SCAN_MODE_LOW_POWER;
+    int callbackType = CALLBACK_TYPE_ALL_MATCHES;
 
-  // if (options != null) {
-  // if (options.hasKey("scanMode") && options.getType("scanMode") ==
-  // ReadableType.Number) {
-  // scanMode = options.getInt("scanMode");
-  // }
-  // if (options.hasKey("callbackType") && options.getType("callbackType") ==
-  // ReadableType.Number) {
-  // callbackType = options.getInt("callbackType");
-  // }
-  // }
+    if (options != null) {
+      if (options.hasKey("scanMode") && options.getType("scanMode") == ReadableType.Number) {
+        scanMode = options.getInt("scanMode");
+      }
+      if (options.hasKey("callbackType") && options.getType("callbackType") == ReadableType.Number) {
+        callbackType = options.getInt("callbackType");
+      }
+    }
 
-  // if (filteredUUIDs != null) {
-  // uuids = UUIDConverter.convert(filteredUUIDs);
-  // if (uuids == null) {
-  // sendEvent(Event.ScanEvent,
-  // BleErrorUtils.invalidIdentifiers(ReadableArrayConverter.toStringArray(filteredUUIDs)).toJSCallback());
-  // return;
-  // }
-  // }
-
-  // safeStartDeviceScan(uuids, scanMode, callbackType);
-  // }
+    safeStartDeviceScan(uuids, scanMode, callbackType);
+  }
 
   // Mark: Scanning
   // ------------------------------------------------------------------------------
