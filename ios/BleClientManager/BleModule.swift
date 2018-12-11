@@ -286,7 +286,7 @@ public class BleClientManager : NSObject {
         }
 
         // If passed iOS will show only devices with specified service UUIDs.
-        let uuids = ["fff0"].toCBUUIDS()
+        let uuids = [].toCBUUIDS()
 
         // Scanning will emit Scan peripherals as events.
         scanDisposable.disposable = manager.scanForPeripherals(withServices: uuids, options: rxOptions)
