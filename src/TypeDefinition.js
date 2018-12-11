@@ -185,11 +185,9 @@ export interface ScanOptions {
  * @name ScanOptions
  */
 export interface ScaleInfo {
-
   gender: string;
   age: number;
   height: number;
-
 }
 
 /**
