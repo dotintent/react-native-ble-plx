@@ -1017,6 +1017,33 @@ public class BleModule extends ReactContextBaseJavaModule {
     return (byte) (crcSum > 0xFF ? (byte) (crcSum % 256) & 0xFF : (byte) (crcSum) & 0xFF);
   }
 
+  // Scale
+  @ReactMethod
+  public void setUserProfileToScales(final String deviceId, final Object scaleInfo, final String transactionId,
+      final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        trackerWriteCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    byte[] message = new byte[7];
+    message[0] = (byte) 0xfd;
+    message[1] = (byte) 0x53;
+    message[2] = 0x00;
+    message[3] = 0x00;
+    message[4] = (byte) 0xff;
+    int age = scaleInfo["age"] < 10 ? 10 : scaleInfo["age"];
+    age = age > 98 ? 98 : age;
+    message[5] = (byte) (scaleInfo["age"].equalsIgnoreCase("male") ? age + 128 : age);
+    int height = scaleInfo["height"] < 100 ? 100 : scaleInfo["height"];
+    height = height > 218 ? 218 : height;
+    message[6] = (byte) height;
+
+    writeProperCharacteristicWithValue(characteristic, message, true, transactionId, promise);
+  }
+
   // Tracker
 
   @ReactMethod
