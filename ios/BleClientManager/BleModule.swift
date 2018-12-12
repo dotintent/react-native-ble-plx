@@ -828,16 +828,18 @@ public class BleClientManager : NSObject {
 
             @objc
     public func setUserProfileToScales(  _ deviceIdentifier: String,
-                                                    scaleInfo: Dictionary<String, Any>,
+                                                    height: Int,
+                                                    age: Int,
+                                                    gender: String,
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
 
-        let gender = (scaleInfo["gender"] as! String == "male") ? 1 : 0
-        let age = scaleInfo["age"] as! UInt8
-        let height = scaleInfo["height"] as! UInt8
+        gender = (gender as! String == "male") ? 1 : 0
+        age = age as! UInt8
+        height = height as! UInt8
         let ageHex = String(format:"%2X", age)
-        let number = (scaleInfo["gender"] as! String == "male") ? UInt8(ageHex, radix: 16)! + 128 : UInt8(ageHex, radix: 16)
+        let number = (gender as! String == "male") ? UInt8(ageHex, radix: 16)! + 128 : UInt8(ageHex, radix: 16)
         let heightHex = String(format:"%2X", height)                                                     
         var data = getEmptyRequestScales(count: 7)
 
