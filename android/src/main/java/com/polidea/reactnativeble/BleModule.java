@@ -1048,10 +1048,8 @@ public class BleModule extends ReactContextBaseJavaModule {
     message[2] = 0x00;
     message[3] = 0x00;
     message[4] = (byte) 0xff;
-    int age = 28;
     age = age > 98 ? 98 : age;
     message[5] = (byte) (age + 128);
-    int height = 150;
     height = height > 218 ? 218 : height;
     message[6] = (byte) height;
 
