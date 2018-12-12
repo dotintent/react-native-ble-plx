@@ -835,9 +835,9 @@ public class BleClientManager : NSObject {
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
 
-        gender = (gender as! String == "male") ? 1 : 0
-        age = age as! UInt8
-        height = height as! UInt8
+        let gender = (gender as! String == "male") ? 1 : 0
+        let age = age as! UInt8
+        let height = height as! UInt8
         let ageHex = String(format:"%2X", age)
         let number = (gender as! String == "male") ? UInt8(ageHex, radix: 16)! + 128 : UInt8(ageHex, radix: 16)
         let heightHex = String(format:"%2X", height)                                                     

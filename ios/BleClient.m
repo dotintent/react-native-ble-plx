@@ -306,12 +306,16 @@ RCT_EXPORT_METHOD(activateVibration:(NSString*)deviceIdentifier
 }
 
 RCT_EXPORT_METHOD(setUserProfileToScales:(NSString*)deviceIdentifier
-                                scaleInfo: (NSDictionary*)scaleInfo
+                                height:  (NSInteger)height
+                                  age:  (NSInteger)age
+                                  gender:  (NSString*)gender
                                  transactionId:(NSString*)transactionId
                                       resolver:(RCTPromiseResolveBlock)resolve
                                       rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager setUserProfileToScales:deviceIdentifier
-                              scaleInfo: scaleInfo
+                              height: height
+                                 age: age
+                                 gender: gender
                              transactionId:transactionId
                                    resolve:resolve
                                     reject:reject];
