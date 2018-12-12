@@ -828,8 +828,8 @@ public class BleClientManager : NSObject {
 
             @objc
     public func setUserProfileToScales(  _ deviceIdentifier: String,
-                                                    height: Int,
                                                     age: Int,
+                                                    height: Int,
                                                     gender: String,
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
