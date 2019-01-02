@@ -11,6 +11,7 @@ import android.os.ParcelUuid;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.util.Pair;
 import android.util.SparseArray;
 
 import com.facebook.react.bridge.Arguments;
@@ -402,48 +403,18 @@ public class BleModule extends ReactContextBaseJavaModule {
                 .setCallbackType(callbackType)
                 .build();
 
-        Observable<ScanResult> scanResultObservable;
-        if (uuids != null && uuids.length > 0) {
-            // Use native scanning filtering to limit number of devices to process.
-            ScanFilter scanFilter = new ScanFilter
-                    .Builder()
-                    .setServiceUuid(ParcelUuid.fromString(uuids[0].toString()))
-                    .build();
+        final Pair<ScanFilter[], Func1<ScanResult, Boolean>> nativeAndAdditionalFilters = createNativeAndAdditionalFilters(uuids);
 
-            // Filter remaining devices which don't contain every service UUID provided.
-            scanResultObservable = rxBleClient
-                    .scanBleDevices(scanSettings, scanFilter)
-                    .filter(new Func1<ScanResult, Boolean>() {
-                        @Override
-                        public Boolean call(ScanResult scanResult) {
-
-                            // If device doesn't contain services it can't meet our requirements.
-                            final List<ParcelUuid> serviceUuids = scanResult.getScanRecord().getServiceUuids();
-                            if (serviceUuids == null) return false;
-
-                            // Check if all UUIDs are present. First UUID can be skipped.
-                            boolean containsAllUUIDs = true;
-                            for (int i = 1; i < uuids.length; i++) {
-                                boolean foundUUID = false;
-                                for (ParcelUuid parcelUuid : serviceUuids) {
-                                    if (parcelUuid.getUuid().equals(uuids[i])) {
-                                        foundUUID = true;
-                                        break;
-                                    }
-                                }
-                                if (!foundUUID) {
-                                    containsAllUUIDs = false;
-                                    break;
-                                }
-                            }
-                            return containsAllUUIDs;
-                        }
-                    });
-        } else {
-            scanResultObservable = rxBleClient.scanBleDevices(scanSettings);
-        }
-
-        scanSubscription = scanResultObservable
+        scanSubscription = rxBleClient.scanBleDevices(scanSettings, nativeAndAdditionalFilters.first)
+                .compose(new Observable.Transformer<ScanResult, ScanResult>() {
+                    @Override
+                    public Observable<ScanResult> call(Observable<ScanResult> scanResultObservable) {
+                        Func1<ScanResult, Boolean> additionalFilterFunction = nativeAndAdditionalFilters.second;
+                        return additionalFilterFunction == null
+                                ? scanResultObservable
+                                : scanResultObservable.filter(additionalFilterFunction);
+                    }
+                })
                 .subscribe(new Action1<ScanResult>() {
                     @Override
                     public void call(ScanResult scanResult) {
@@ -459,6 +430,52 @@ public class BleModule extends ReactContextBaseJavaModule {
                         sendEvent(Event.ScanEvent, errorConverter.toError(throwable).toJSCallback());
                     }
                 });
+    }
+
+    private Pair<ScanFilter[], Func1<ScanResult, Boolean>> createNativeAndAdditionalFilters(final UUID[] uuids) {
+        if (uuids == null || uuids.length == 0) {
+            return Pair.create(new ScanFilter[0], null);
+        }
+
+        // Use native scanning filtering to limit number of devices to process.
+        ScanFilter[] nativeScanFilters = new ScanFilter[] { new ScanFilter
+                .Builder()
+                .setServiceUuid(ParcelUuid.fromString(uuids[0].toString()))
+                .build() };
+
+        if (uuids.length == 1) {
+            return Pair.create(nativeScanFilters, null);
+        }
+
+        // Filter remaining devices which don't contain every service UUID provided.
+        Func1<ScanResult, Boolean> additionalFilterFunction = new Func1<ScanResult, Boolean>() {
+            @Override
+            public Boolean call(ScanResult scanResult) {
+
+                // If device doesn't contain services it can't meet our requirements.
+                final List<ParcelUuid> serviceUuids = scanResult.getScanRecord().getServiceUuids();
+                if (serviceUuids == null) return false;
+
+                // Check if all UUIDs are present. First UUID can be skipped.
+                boolean containsAllUUIDs = true;
+                for (int i = 1; i < uuids.length; i++) {
+                    boolean foundUUID = false;
+                    for (ParcelUuid parcelUuid : serviceUuids) {
+                        if (parcelUuid.getUuid().equals(uuids[i])) {
+                            foundUUID = true;
+                            break;
+                        }
+                    }
+                    if (!foundUUID) {
+                        containsAllUUIDs = false;
+                        break;
+                    }
+                }
+                return containsAllUUIDs;
+            }
+        };
+
+        return Pair.create(nativeScanFilters, additionalFilterFunction);
     }
 
     @ReactMethod
