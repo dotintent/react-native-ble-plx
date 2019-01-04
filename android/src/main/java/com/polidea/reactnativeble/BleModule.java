@@ -2,6 +2,7 @@ package com.polidea.reactnativeble;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.Context;
@@ -1235,22 +1236,25 @@ public class BleModule extends ReactContextBaseJavaModule {
 
         final BluetoothGattCharacteristic gattCharacteristic = characteristic.getNativeCharacteristic();
 
-        final Subscription subscription = Observable.just(connection)
-                .flatMap(new Func1<RxBleConnection, Observable<Observable<byte[]>>>() {
-                    @Override
-                    public Observable<Observable<byte[]>> call(RxBleConnection connection) {
-                        int properties = gattCharacteristic.getProperties();
-                        if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
-                            return connection.setupNotification(gattCharacteristic, NotificationSetupMode.QUICK_SETUP);
-                        }
+        final Subscription subscription = Observable.defer(new Func0<Observable<Observable<byte[]>>>() {
+            @Override
+            public Observable<Observable<byte[]>> call() {
+                int properties = gattCharacteristic.getProperties();
+                BluetoothGattDescriptor cccDescriptor = gattCharacteristic.getDescriptor(Characteristic.CLIENT_CHARACTERISTIC_CONFIG_UUID);
+                NotificationSetupMode setupMode = cccDescriptor != null
+                        ? NotificationSetupMode.QUICK_SETUP
+                        : NotificationSetupMode.COMPAT;
+                if ((properties & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) {
+                    return connection.setupNotification(gattCharacteristic, setupMode);
+                }
 
-                        if ((properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
-                            return connection.setupIndication(gattCharacteristic, NotificationSetupMode.QUICK_SETUP);
-                        }
+                if ((properties & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) {
+                    return connection.setupIndication(gattCharacteristic, setupMode);
+                }
 
-                        return Observable.error(new CannotMonitorCharacteristicException(gattCharacteristic));
-                    }
-                })
+                return Observable.error(new CannotMonitorCharacteristicException(gattCharacteristic));
+            }
+        })
                 .flatMap(new Func1<Observable<byte[]>, Observable<byte[]>>() {
                     @Override
                     public Observable<byte[]> call(Observable<byte[]> observable) {
