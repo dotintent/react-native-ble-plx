@@ -82,6 +82,9 @@ public class BleModule extends ReactContextBaseJavaModule {
   // Scale Read Characteristic
   private static final String scaleReadCharacteristic = "0000fff4-0000-1000-8000-00805f9b34fb";
 
+  // Alternative Scale Read Characteristic
+  private static final String alternativeScaleReadCharacteristic = "0000fff3-0000-1000-8000-00805f9b34fb";
+
   // Tracker Write Characteristic
   private static final String trackerWriteCharacteristic = "0000fff6-0000-1000-8000-00805f9b34fb";
 
@@ -1138,6 +1141,18 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
         scaleReadCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    safeMonitorCharacteristicForDevice(characteristic, transactionId, new SafePromise(promise));
+  }
+
+  @ReactMethod
+  public void monitorAlternativeScaleResponse(final String deviceId, final String transactionId, final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        alternativeScaleReadCharacteristic, promise);
     if (characteristic == null) {
       return;
     }
