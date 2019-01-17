@@ -779,6 +779,60 @@ export class BleManager {
     return new Characteristic(nativeCharacteristic, this)
   }
 
+  async setUserProfileToAlternativeScale(
+    deviceIdentifier: DeviceId,
+    height: number,
+    age: number,
+    gender: string
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.setUserProfileToAlternativeScale(
+        deviceIdentifier,
+        height,
+        age,
+        gender,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async synchronizeAlternativeScale(
+    deviceIdentifier: DeviceId,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.synchronizeAlternativeScale(
+        deviceIdentifier,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async selectProfileAlternativeScale(
+    deviceIdentifier: DeviceId,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.selectProfileAlternativeScale(
+        deviceIdentifier,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
   async setDeviceTime(
     deviceIdentifier: DeviceId,
     date: string,

@@ -321,6 +321,42 @@ RCT_EXPORT_METHOD(setUserProfileToScales:(NSString*)deviceIdentifier
                                     reject:reject];
 }
 
+RCT_EXPORT_METHOD(synchronizeAlternativeScale:(NSString*)deviceIdentifier
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager synchronizeAlternativeScale:deviceIdentifier
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
+RCT_EXPORT_METHOD(selectProfileAlternativeScale:(NSString*)deviceIdentifier
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager selectProfileAlternativeScale:deviceIdentifier
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
+RCT_EXPORT_METHOD(setUserProfileToAlternativeScale:(NSString*)deviceIdentifier
+                                age:  (NSInteger)age
+                                height:  (NSInteger)height
+                                  gender:  (NSString*)gender
+                                 transactionId:(NSString*)transactionId
+                                      resolver:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager setUserProfileToAlternativeScale:deviceIdentifier
+                              age: age
+                              height: height
+                              gender: gender
+                             transactionId:transactionId
+                                   resolve:resolve
+                                    reject:reject];
+}
+
 RCT_EXPORT_METHOD(setDeviceTime:(NSString*)deviceIdentifier
                                 date: (NSString*)date
                                  transactionId:(NSString*)transactionId

@@ -279,6 +279,12 @@ export interface BleModuleInterface {
 
   setUserProfileToScales(deviceIdentifier: DeviceId, height: number, age: number, gender: string): void;
 
+  setUserProfileToAlternativeScale(deviceIdentifier: DeviceId, height: number, age: number, gender: string): void;
+
+  synchronizeAlternativeScale(deviceIdentifier: DeviceId): void;
+
+  selectProfileAlternativeScale(deviceIdentifier: DeviceId): void;
+
   /**
 * Starts device scan.
 *
