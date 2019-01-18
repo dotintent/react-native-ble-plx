@@ -923,7 +923,7 @@ public class BleClientManager : NSObject {
                                                     characteristicUUID: self.alternativeScaleWriteCharacteristic)
         safeWriteCharacteristicForDevice(observable,
                                          value: value,
-                                         response: true,
+                                         response: false,
                                          transactionId: transactionId,
                                          promise: SafePromise(resolve: resolve, reject: reject))
     }
@@ -951,7 +951,7 @@ public class BleClientManager : NSObject {
                                                     characteristicUUID: self.alternativeScaleWriteCharacteristic)
         safeWriteCharacteristicForDevice(observable,
                                          value: value,
-                                         response: true,
+                                         response: false,
                                          transactionId: transactionId,
                                          promise: SafePromise(resolve: resolve, reject: reject))
     }
@@ -978,7 +978,7 @@ public class BleClientManager : NSObject {
                                                     characteristicUUID: self.alternativeScaleWriteCharacteristic)
         safeWriteCharacteristicForDevice(observable,
                                          value: value,
-                                         response: true,
+                                         response: false,
                                          transactionId: transactionId,
                                          promise: SafePromise(resolve: resolve, reject: reject))
     }
