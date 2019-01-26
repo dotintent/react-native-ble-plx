@@ -1,6 +1,7 @@
 package com.polidea.reactnativeble.utils;
 
 import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.WritableMap;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -54,6 +55,44 @@ public class SafePromise implements Promise {
     public void reject(Throwable reason) {
         if (isFinished.compareAndSet(false, true)) {
             promise.reject(reason);
+        }
+    }
+
+    /* ---------------------------
+     *  With userInfo WritableMap
+     * --------------------------- */
+    @Override
+    public void reject(Throwable throwable, WritableMap userInfo) {
+        if (isFinished.compareAndSet(false, true)) {
+            promise.reject(throwable, userInfo);
+        }
+    }
+
+    @Override
+    public void reject(String code, WritableMap userInfo) {
+        if (isFinished.compareAndSet(false, true)) {
+            promise.reject(code, userInfo);
+        }
+    }
+
+    @Override
+    public void reject(String code, String message, WritableMap userInfo) {
+        if (isFinished.compareAndSet(false, true)) {
+            promise.reject(code, message, userInfo);
+        }
+    }
+
+    @Override
+    public void reject(String code, Throwable throwable, WritableMap userInfo) {
+        if (isFinished.compareAndSet(false, true)) {
+            promise.reject(code, throwable, userInfo);
+        }
+    }
+
+    @Override
+    public void reject(String code, String message, Throwable throwable, WritableMap userInfo) {
+        if (isFinished.compareAndSet(false, true)) {
+            promise.reject(code, message, throwable, userInfo);
         }
     }
 }
