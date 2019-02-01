@@ -650,23 +650,45 @@ public class BleClientManager : NSObject {
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
-        // guard let value = valueBase64.fromBase64 else {
-        //     return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
-        // }
+       
         // 字符串转Data
-        let data = valueBase64.data(using: String.Encoding.utf8)
+        //let value:Data = valueBase64.data(using: String.Encoding.utf8)
         //Data转byte
-        let bytes = [UInt8](data!)
-        let value = Data(bytes:bytes)   
+        // let bytes = [UInt8](data!)
+        // let value = Data(bytes:bytes)
 
-        let observable = getCharacteristicForDevice(deviceIdentifier,
-                                                    serviceUUID: serviceUUID,
-                                                    characteristicUUID: characteristicUUID)
-        safeWriteCharacteristicForDevice(observable,
-                                         value: value,
-                                         response: response,
-                                         transactionId: transactionId,
-                                         promise: SafePromise(resolve: resolve, reject: reject))
+       //上面的方法是：消息体和结束标志一起发送，不能正确发送[0x0D, 0x0A]结束标志
+       //使用下面的方法将消息主体和结束标志分开发送即可
+       if (valueBase64 != "0D0A") {
+            guard var value = valueBase64.fromBase64 else {
+                return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
+            }
+            let trail:[UInt8] = [0x0D, 0x0A];
+            let trailBytes =  Data(bytes: trail);
+            value.append(contentsOf: trailBytes)
+            
+            let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                        serviceUUID: serviceUUID,
+                                                        characteristicUUID: characteristicUUID)
+            safeWriteCharacteristicForDevice(observable,
+                                             value: value,
+                                             response: response,
+                                             transactionId: transactionId,
+                                             promise: SafePromise(resolve: resolve, reject: reject))
+          
+        } else {  //写入打印结束标志
+            let data:[UInt8] = [0x0D, 0x0A];
+            let value =  Data(bytes: data);
+            
+            let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                        serviceUUID: serviceUUID,
+                                                        characteristicUUID: characteristicUUID)
+            safeWriteCharacteristicForDevice(observable,
+                                             value: value,
+                                             response: response,
+                                             transactionId: transactionId,
+                                             promise: SafePromise(resolve: resolve, reject: reject))
+        }
     }
 
     @objc
@@ -677,23 +699,33 @@ public class BleClientManager : NSObject {
                                                       transactionId: String,
                                                             resolve: @escaping Resolve,
                                                              reject: @escaping Reject) {
-        // guard let value = valueBase64.fromBase64 else {
-        //     return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
-        // }
-        // 字符串转Data
-        let data = valueBase64.data(using: String.Encoding.utf8)
-        //Data转byte
-        let bytes = [UInt8](data!)
-        let value = Data(bytes:bytes)   
+        if (valueBase64 != "0D0A") {
+            guard let value = valueBase64.fromBase64 else {
+                return BleError.invalidWriteDataForCharacteristic(characteristicUUID, data: valueBase64).callReject(reject)
+            }
 
-        let observable = getCharacteristicForService(serviceIdentifier,
-                                                     characteristicUUID: characteristicUUID)
+            let observable = getCharacteristicForService(serviceIdentifier,
+                                                        characteristicUUID: characteristicUUID)
 
-        safeWriteCharacteristicForDevice(observable,
-                                         value: value,
-                                         response: response,
-                                         transactionId: transactionId,
-                                         promise: SafePromise(resolve: resolve, reject: reject))
+            safeWriteCharacteristicForDevice(observable,
+                                            value: value,
+                                            response: response,
+                                            transactionId: transactionId,
+                                            promise: SafePromise(resolve: resolve, reject: reject))
+        } else { //写入打印结束标志
+            let data:[UInt8] = [0x0D, 0x0A];
+            let value =  Data(bytes: data);
+
+            let observable = getCharacteristicForService(serviceIdentifier,
+                                                        characteristicUUID: characteristicUUID)
+
+            safeWriteCharacteristicForDevice(observable,
+                                            value: value,
+                                            response: response,
+                                            transactionId: transactionId,
+                                            promise: SafePromise(resolve: resolve, reject: reject))
+        }
+      
     }
 
     @objc
@@ -703,21 +735,28 @@ public class BleClientManager : NSObject {
                                                    transactionId: String,
                                                          resolve: @escaping Resolve,
                                                           reject: @escaping Reject) {
-        // guard let value = valueBase64.fromBase64 else {
-        //     return BleError.invalidWriteDataForCharacteristic(characteristicIdentifier.description, data: valueBase64)
-        //         .callReject(reject)
-        // }
-        // 字符串转Data
-        let data = valueBase64.data(using: String.Encoding.utf8)
-        //Data转byte
-        let bytes = [UInt8](data!)
-        let value = Data(bytes:bytes)   
+        if (valueBase64 != "0D0A") {
+          guard let value = valueBase64.fromBase64 else {
+            return BleError.invalidWriteDataForCharacteristic(characteristicIdentifier.description, data: valueBase64)
+                .callReject(reject)
+          }     
 
-        safeWriteCharacteristicForDevice(getCharacteristic(characteristicIdentifier),
+          safeWriteCharacteristicForDevice(getCharacteristic(characteristicIdentifier),
                                          value: value,
                                          response: response,
                                          transactionId: transactionId,
                                          promise: SafePromise(resolve: resolve, reject: reject))
+        } else { //写入打印结束标志
+            let data:[UInt8] = [0x0D, 0x0A];
+            let value =  Data(bytes: data);
+            
+            safeWriteCharacteristicForDevice(getCharacteristic(characteristicIdentifier),
+                                        value: value,
+                                        response: response,
+                                        transactionId: transactionId,
+                                        promise: SafePromise(resolve: resolve, reject: reject))
+        }
+       
     }
 
     private func safeWriteCharacteristicForDevice(_ characteristicObservable: Observable<Characteristic>,
