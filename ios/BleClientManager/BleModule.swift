@@ -877,30 +877,9 @@ public class BleClientManager : NSObject {
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
 
-        let ageHex = String(format:"%2X", age)
-        let number = (gender as! String == "male") ? UInt8(ageHex, radix: 16)! + 128 : UInt8(ageHex, radix: 16)
-        let heightHex = String(format:"%2X", height)                                                   
         var data = getEmptyRequestScales(count: 13)
 
-
-        // 8100810000002000AA28010000
-        // // Field
-        // data[0] = 0x81
-        // // User Id
-        // data[1] = 0x00
-        // data[2] = 0x00
-        // data[3] = 0x00
-        // data[4] = 0x00
-        //  // Height
-        // data[5] = 0x00
-        // data[6] = 0x80
-        //  // Age
-        // data[7] = 0x40
-        // // Gender
-        // data[8] = 0x02
-        //  // Target Weight
-        // data[9] = 0x00
-        // data[10] = 0x50
+        let gender = (gender as! String == "male") ? 0 : 1
 
         data[0] = 0x81
         data[1] = 0x00
@@ -908,11 +887,11 @@ public class BleClientManager : NSObject {
         data[3] = 0x00
         data[4] = 0x00
         data[5] = 0x00
-        data[6] = 0x20
+        data[6] = 0x00
         data[7] = 0x00
-        data[8] = 0xAA
-        data[9] = 0x28
-        data[10] = 0x01
+        data[8] =  UInt8(height)
+        data[9] =  UInt8(age)
+        data[10] = UInt8(gender)
         data[11] = 0x00
         data[12] = 0x00
 
