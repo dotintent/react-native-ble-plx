@@ -1225,6 +1225,20 @@ public class BleClientManager : NSObject {
                                                              reject: @escaping Reject) {
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.alternativeScaleReadTemporaryCharacteristic)
+
+        safeMonitorCharacteristicForDevice(observable,
+                                           transactionId: transactionId,
+                                           promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+        @objc
+    public func monitorAlternativeScaleFinalResponse(  _ deviceIdentifier: String,
+                                                      transactionId: String,
+                                                            resolve: @escaping Resolve,
+                                                             reject: @escaping Reject) {
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
                                                     characteristicUUID: self.alternativeScaleReadFinalCharacteristic)
 
         safeMonitorCharacteristicForDevice(observable,
