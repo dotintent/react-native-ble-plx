@@ -35,4 +35,4 @@ matrix:
         - yarn --cwd examples/Barebone
       script:
         - cd examples/Barebone/ios
-        - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Barebone -sdk iphonesimulator
+        - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Barebone -sdk iphonesimulator ONLY_ACTIVE_ARCH=YES
