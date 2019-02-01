@@ -31,7 +31,7 @@ matrix:
       node_js: 8
       xcode_project: ios/BleClientManager/BleClientManager.xcodeproj
       install:
-        - npm install
+        - npm install --ignore-scripts
       script:
         - cd ios/BleClientManager
         - carthage build
