@@ -1,3 +1,8 @@
+**1.0.2**
+
+- Fix build error due to RN 58 changes.
+- Allow registering for notifications and indications on Android despite CCC descriptor being absent.
+
 **1.0.1**
 
 - Fix possible ConcurrentModificationException in Android BleModule.

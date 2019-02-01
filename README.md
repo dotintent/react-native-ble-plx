@@ -25,11 +25,10 @@ What this library does NOT support:
 
 ## Recent Changes
 
-**1.0.1**
+**1.0.2**
 
-- Fix possible ConcurrentModificationException in Android BleModule.
-- Workaround for when `canSendWriteWithoutResponse` would return false on iOS.
-- Fixed low severity vulnerabilities reported by npm in development dependencies.
+- Fix build error due to RN 58 changes.
+- Allow registering for notifications and indications on Android despite CCC descriptor being absent.
 
 [All previous changes](CHANGELOG.md)
 
