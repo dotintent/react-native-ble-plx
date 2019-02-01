@@ -27,10 +27,9 @@ matrix:
 
     - language: objective-c
       os: osx
-      osx_image: xcode9.1
+      osx_image: xcode10.1
       node_js: false
       xcode_project: ios/BleClientManager/BleClientManager.xcodeproj
       script:
-        - cd ios/BleClientManager
-        - carthage bootstrap
-        - xcodebuild -scheme BleClientManager -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+        - cd ios/
+        - xcodebuild -scheme BleClient -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
