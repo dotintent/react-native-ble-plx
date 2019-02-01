@@ -36,4 +36,4 @@ matrix:
         - yarn --cwd examples/Barebone
       script:
         - cd examples/Barebone
-        - RCT_NO_LAUNCH_PACKAGER=true xcodebuild clean build -scheme Barebone -project ios/Barebone.xcodeproj -sdk iphonesimulator
+        - RCT_NO_LAUNCH_PACKAGER=true xcodebuild clean build -scheme Barebone -project ios/Barebone.xcodeproj -sdk iphonesimulator |  xcpretty
