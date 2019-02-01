@@ -6,6 +6,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
+import com.polidea.reactnativeble.utils.SafePromise;
 
 public class BleError {
 
@@ -81,6 +82,10 @@ public class BleError {
     }
 
     public void reject(@NonNull Promise promise) {
+        promise.reject(null, toJS());
+    }
+
+    public void reject(@NonNull SafePromise promise) {
         promise.reject(null, toJS());
     }
 }
