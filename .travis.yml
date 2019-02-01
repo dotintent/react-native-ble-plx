@@ -31,9 +31,9 @@ matrix:
       node_js: 8
       xcode_project: examples/Barebone/ios/Barebone.xcodeproj
       install:
+        - npm install
         - npm install -g yarn
         - yarn --cwd examples/Barebone
       script:
         - cd examples/Barebone
-        - rm -rf ~/Library/Developer/Xcode/DerivedData
-        - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Barebone -project ios/Barebone.xcodeproj -sdk iphonesimulator
+        - RCT_NO_LAUNCH_PACKAGER=true xcodebuild clean build -scheme Barebone -project ios/Barebone.xcodeproj -sdk iphonesimulator
