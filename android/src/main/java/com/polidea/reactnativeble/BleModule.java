@@ -1384,6 +1384,17 @@ public class BleModule extends ReactContextBaseJavaModule {
     }
 
     @Nullable
+    private RxBleConnection getConnectionOrReject(@NonNull final Device device,
+                                                  @NonNull SafePromise promise) {
+        final RxBleConnection connection = device.getConnection();
+        if (connection == null) {
+            BleErrorUtils.deviceNotConnected(device.getNativeDevice().getMacAddress()).reject(promise);
+            return null;
+        }
+        return connection;
+    }
+
+    @Nullable
     private List<Service> getServicesOrReject(@NonNull final Device device,
                                               @NonNull Promise promise) {
         final List<Service> services = device.getServices();
