@@ -68,6 +68,6 @@ matrix:
         - react-native init Setup
         - cd Setup
         - npm install -S ../..
-        - react-native link react-native-ble-plxx
+        - react-native link react-native-ble-plx
         - cd android
         - ./gradlew assemble
