@@ -37,7 +37,7 @@ matrix:
         - yarn
       xcode_project: examples/Barebone/ios/Barebone.xcodeproj
       xcode_scheme: Barebone
-      xcode_destination: platform=iOS Simulator
+      xcode_destination: platform=iOS Simulator,OS=11.3,name=iPhone X
       install:
         - npm install
         - npm install -g yarn
