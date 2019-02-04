@@ -1,4 +1,6 @@
-language: node_js
+language:
+  - android
+  - objective-c
 cache: npm
 node_js:
   - 8
@@ -8,39 +10,39 @@ script:
   - npm run lint
   - npm test
 
-matrix:
-  include:
-    - language: android
-      jdk: oraclejdk8
-      dist: precise
-      node_js: false
-      android:
-        components:
-          - tools
-          - platform-tools
-          - build-tools-27.0.3
-          - android-27
-          - extra-android-m2repository
-          - extra-google-m2repository
-          - extra-android-support
-        licenses:
-          - 'android-sdk-license-.+'
-      script:
-        - cd android
-        - chmod +x gradlew
-        - ./gradlew assembleRelease test
+# matrix:
+#   include:
+#     - language: android
+#       jdk: oraclejdk8
+#       dist: precise
+#       node_js: false
+#       android:
+#         components:
+#           - tools
+#           - platform-tools
+#           - build-tools-27.0.3
+#           - android-27
+#           - extra-android-m2repository
+#           - extra-google-m2repository
+#           - extra-android-support
+#         licenses:
+#           - 'android-sdk-license-.+'
+#       script:
+#         - cd android
+#         - chmod +x gradlew
+#         - ./gradlew assembleRelease test
 
-    - language: objective-c
-      os: osx
-      osx_image: xcode10.1
-      node_js: 10
-      cache:
-        - npm
-        - yarn
-      install:
-        - npm install
-        - npm install -g yarn
-        - yarn --cwd examples/Barebone
-      script:
-        - cd examples/Barebone
-        - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Barebone -project ios/Barebone.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
+#     - language: objective-c
+#       os: osx
+#       osx_image: xcode10.1
+#       node_js: 10
+#       cache:
+#         - npm
+#         - yarn
+#       install:
+#         - npm install
+#         - npm install -g yarn
+#         - yarn --cwd examples/Barebone
+#       script:
+#         - cd examples/Barebone
+#         - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Barebone -project ios/Barebone.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
