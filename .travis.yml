@@ -47,10 +47,7 @@ matrix:
     - language: android
       jdk: oraclejdk8
       dist: precise
-      node_js:
-        - 11
-        - 10
-        - 8
+      node_js: 11
       android:
         components:
           - tools
