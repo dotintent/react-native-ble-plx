@@ -50,6 +50,38 @@ matrix:
         components:
           - tools
           - platform-tools
+          - build-tools-27.0.3
+          - android-26
+          - android-27
+          - extra-android-m2repository
+          - extra-google-m2repository
+          - extra-android-support
+        licenses:
+          - 'android-sdk-license-.+'
+      before_install:
+        - nvm install 11
+        - node --version
+      install:
+        - npm install
+        - npm install -g react-native-cli
+      script:
+        - cd examples
+        - react-native init --version="0.57.2" Setup
+        - bash applyPatches.sh 0.57.2
+        - cd Setup
+        - npm install -S ../..
+        - react-native link react-native-ble-plx
+        - cd android
+        - ./gradlew assemble
+
+    - language: android
+      jdk: oraclejdk8
+      dist: precise
+      cache: npm
+      android:
+        components:
+          - tools
+          - platform-tools
           - build-tools-28.0.3
           - android-27
           - android-28
