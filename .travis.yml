@@ -8,6 +8,7 @@ android:
     - platform-tools
     - build-tools-26.0.3
     - build-tools-27.0.3
+    - android-25
     - android-26
     - android-27
     - extra-android-m2repository
@@ -32,6 +33,9 @@ script:
   - ./gradlew assemble
 
 env:
+  - RN_VERSION=0.53.0
+  - RN_VERSION=0.54.0
+  - RN_VERSION=0.55.0
   - RN_VERSION=0.56.1
   - RN_VERSION=0.57.2
   - RN_VERSION=0.57.5
