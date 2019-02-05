@@ -1,0 +1,25 @@
+From 4e0eace898e0240e444bbced6a52c1c8170a9b6c Mon Sep 17 00:00:00 2001
+From: Piotr Dubiel <piotr.dubiel@polidea.com>
+Date: Tue, 5 Feb 2019 21:04:33 +0100
+Subject: [PATCH] minSdkVersion bump
+
+---
+ examples/Setup/android/build.gradle | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/examples/Setup/android/build.gradle b/examples/Setup/android/build.gradle
+index 3231b29..4c196b0 100644
+--- a/examples/Setup/android/build.gradle
++++ b/examples/Setup/android/build.gradle
+@@ -3,7 +3,7 @@
+ buildscript {
+     ext {
+         buildToolsVersion = "28.0.2"
+-        minSdkVersion = 16
++        minSdkVersion = 18
+         compileSdkVersion = 28
+         targetSdkVersion = 27
+         supportLibVersion = "28.0.0"
+-- 
+2.10.0
+
