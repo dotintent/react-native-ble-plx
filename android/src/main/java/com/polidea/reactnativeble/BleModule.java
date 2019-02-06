@@ -58,6 +58,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 import rx.Observable;
 import rx.Observer;
@@ -412,7 +414,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void startTrackerScan(@Nullable ReadableArray filteredUUIDs, @Nullable ReadableMap options) {
-    UUID[] uuids = null;
+    UUID uuids = UUID.fromString(trackerServiceUUID);
 
     int scanMode = SCAN_MODE_LOW_POWER;
     int callbackType = CALLBACK_TYPE_ALL_MATCHES;
@@ -426,16 +428,37 @@ public class BleModule extends ReactContextBaseJavaModule {
       }
     }
 
-    if (filteredUUIDs != null) {
-      uuids = UUIDConverter.convert(filteredUUIDs);
-      if (uuids == null) {
-        sendEvent(Event.ScanEvent,
-            BleErrorUtils.invalidIdentifiers(ReadableArrayConverter.toStringArray(filteredUUIDs)).toJSCallback());
-        return;
-      }
+    safeStartTrackerScan(uuids, scanMode, callbackType);
+  }
+
+  private void safeStartTrackerScan(final UUID uuids, int scanMode, int callbackType) {
+    if (rxBleClient == null) {
+      throw new IllegalStateException("BleManager not created when tried to start device scan");
     }
 
-    safeStartDeviceScan(uuids, scanMode, callbackType);
+    ScanSettings scanSettings = new ScanSettings.Builder().setScanMode(scanMode).setCallbackType(callbackType).build();
+
+    int length = 1;
+    ScanFilter filters[] = new ScanFilter[length];
+    for (int i = 0; i < length; i++) {
+      filters[i] = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(uuids.toString())).build();
+    }
+
+    scanSubscription = rxBleClient.scanBleDevices(scanSettings, filters).subscribe(new Action1<ScanResult>() {
+      @Override
+      public void call(ScanResult scanResult) {
+        String deviceId = scanResult.getBleDevice().getMacAddress();
+        if (!discoveredDevices.containsKey(deviceId)) {
+          discoveredDevices.put(deviceId, new Device(scanResult.getBleDevice(), null));
+        }
+        sendEvent(Event.ScanEvent, scanConverter.toJSCallback(scanResult));
+      }
+    }, new Action1<Throwable>() {
+      @Override
+      public void call(Throwable throwable) {
+        sendEvent(Event.ScanEvent, errorConverter.toError(throwable).toJSCallback());
+      }
+    });
   }
 
   @ReactMethod
@@ -1069,6 +1092,7 @@ public class BleModule extends ReactContextBaseJavaModule {
   public void setDeviceTime(final String deviceId, final String date, final String transactionId,
       final Promise promise) {
 
+    String sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date());
     final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
         trackerWriteCharacteristic, promise);
     if (characteristic == null) {
@@ -1077,12 +1101,12 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     byte[] message = new byte[16];
     message[0] = 0x01;
-    message[1] = Byte.parseByte(date.substring(2, 4), 16);
-    message[2] = Byte.parseByte(date.substring(5, 7), 16);
-    message[3] = Byte.parseByte(date.substring(8, 10), 16);
-    message[4] = Byte.parseByte(date.substring(11, 13), 16);
-    message[5] = Byte.parseByte(date.substring(14, 16), 16);
-    message[6] = Byte.parseByte(date.substring(17, 18), 16);
+    message[1] = Byte.parseByte(sdf.substring(2, 4), 16);
+    message[2] = Byte.parseByte(sdf.substring(5, 7), 16);
+    message[3] = Byte.parseByte(sdf.substring(8, 10), 16);
+    message[4] = Byte.parseByte(sdf.substring(11, 13), 16);
+    message[5] = Byte.parseByte(sdf.substring(14, 16), 16);
+    message[6] = Byte.parseByte(sdf.substring(17, 19), 16);
     message[15] = calculateChecksum(message);
 
     writeProperCharacteristicWithValue(characteristic, message, true, transactionId, promise);
