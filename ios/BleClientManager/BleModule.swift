@@ -294,7 +294,7 @@ public class BleClientManager : NSObject {
         }
 
         // If passed iOS will show only devices with specified service UUIDs.
-        let uuids = ["fff0"].toCBUUIDS()
+        let uuids = [].toCBUUIDS()
 
         // Scanning will emit Scan peripherals as events.
         scanDisposable.disposable = manager.scanForPeripherals(withServices: uuids, options: rxOptions)
@@ -887,7 +887,7 @@ public class BleClientManager : NSObject {
         data[3] = 0x00
         data[4] = 0x00
         data[5] = 0x00
-        data[6] = 0x00
+        data[6] = 0x20
         data[7] = 0x00
         data[8] =  UInt8(height)
         data[9] =  UInt8(age)
@@ -970,16 +970,14 @@ public class BleClientManager : NSObject {
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
         var dateString = date
+        let date = Date()
         let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        let date = dateFormatter.date(from: dateString)
-        let year = UInt8(calendar.component(.year, from: date!) % 100)
-        let month = UInt8(calendar.component(.month, from: date!))
-        let day = UInt8(calendar.component(.day, from: date!))
-        let hour = UInt8(calendar.component(.hour, from: date!))
-        let minute = UInt8(calendar.component(.minute, from: date!))
-        let second = UInt8(calendar.component(.second, from: date!))
+        let year = UInt8(calendar.component(.year, from: date) % 100)
+        let month = UInt8(calendar.component(.month, from: date))
+        let day = UInt8(calendar.component(.day, from: date))
+        let hour = UInt8(calendar.component(.hour, from: date))
+        let minute = UInt8(calendar.component(.minute, from: date))
+        let second = UInt8(calendar.component(.second, from: date))
         
         var data = createNewArray()
         data[0] = 0x01
