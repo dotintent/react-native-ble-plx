@@ -5,13 +5,13 @@ import { NativeModules, NativeEventEmitter } from 'react-native'
 import { State, LogLevel, ConnectionPriority } from './TypeDefinition'
 import type {
   DeviceId,
-  Identifier,
-  UUID,
-  TransactionId,
-  Base64,
-  ScanOptions,
-  ScaleInfo,
-  ConnectionOptions
+    Identifier,
+    UUID,
+    TransactionId,
+    Base64,
+    ScanOptions,
+    ScaleInfo,
+    ConnectionOptions
 } from './TypeDefinition'
 
 /**
@@ -269,22 +269,28 @@ export interface BleModuleInterface {
   startDeviceScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
 
 
-    /**
-   * Starts device scan.
-   *
-   * @param {?ScanOptions} options Platform dependent options
-   * @private
-   */
+  /**
+ * Starts device scan.
+ *
+ * @param {?ScanOptions} options Platform dependent options
+ * @private
+ */
   startTrackerScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
 
   setUserProfileToScales(deviceIdentifier: DeviceId, height: number, age: number, gender: string): void;
 
-      /**
-   * Starts device scan.
-   *
-   * @param {?ScanOptions} options Platform dependent options
-   * @private
-   */
+  setUserProfileToAlternativeScale(deviceIdentifier: DeviceId, height: number, age: number, gender: string): void;
+
+  synchronizeAlternativeScale(deviceIdentifier: DeviceId): void;
+
+  selectProfileAlternativeScale(deviceIdentifier: DeviceId): void;
+
+  /**
+* Starts device scan.
+*
+* @param {?ScanOptions} options Platform dependent options
+* @private
+*/
   startScaleScan(options: ?ScanOptions): void;
 
   /**
@@ -609,20 +615,33 @@ export interface BleModuleInterface {
     transactionId: TransactionId
   ): Promise<void>;
 
-    /**
-   * Setup monitoring of characteristic value.
-   *
-   * @param {DeviceId} deviceIdentifier Connected device identifier
-   * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
-   * @private
-   */
+  /**
+ * Setup monitoring of characteristic value.
+ *
+ * @param {DeviceId} deviceIdentifier Connected device identifier
+ * @param {TransactionId} transactionId Transaction handle used to cancel operation
+ * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+ * @private
+ */
   monitorTrackerResponse(
     deviceIdentifier: DeviceId,
     transactionId: TransactionId
   ): Promise<void>;
 
-      /**
+  /**
+* Setup monitoring of characteristic value.
+*
+* @param {DeviceId} deviceIdentifier Connected device identifier
+* @param {TransactionId} transactionId Transaction handle used to cancel operation
+* @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+* @private
+*/
+  monitorScaleResponse(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<void>;
+
+  /**
    * Setup monitoring of characteristic value.
    *
    * @param {DeviceId} deviceIdentifier Connected device identifier
@@ -630,11 +649,23 @@ export interface BleModuleInterface {
    * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
    * @private
    */
-  monitorScaleResponse(
+  monitorAlternativeScaleResponse(
     deviceIdentifier: DeviceId,
     transactionId: TransactionId
   ): Promise<void>;
 
+  /**
+   * Setup monitoring of characteristic value.
+   *
+   * @param {DeviceId} deviceIdentifier Connected device identifier
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+   * @private
+   */
+  monitorAlternativeScaleFinalResponse(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<void>;
   /**
    * Setup monitoring of characteristic value.
    *

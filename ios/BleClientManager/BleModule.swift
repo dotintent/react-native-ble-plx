@@ -29,9 +29,17 @@ public class BleClientManager : NSObject {
     // Tracker Read Characteristic
     private let trackerReadCharacteristic : String = "0000fff7-0000-1000-8000-00805f9b34fb"
 
-
     // Scale Read Characteristic
     private let scaleReadCharacteristic : String = "0000fff4-0000-1000-8000-00805f9b34fb"
+
+    // Alternative Scale Read Temporary Characteristic
+    private let alternativeScaleReadTemporaryCharacteristic : String = "0000fff3-0000-1000-8000-00805f9b34fb"
+
+    // Alternative Scale Read Final Characteristic
+    private let alternativeScaleReadFinalCharacteristic : String = "0000fff1-0000-1000-8000-00805f9b34fb"
+    
+    // Alternative Scale Write  Characteristic
+    private let alternativeScaleWriteCharacteristic : String = "0000fff2-0000-1000-8000-00805f9b34fb"
     
     // Tracker Service UUID
     private let trackerServiceUUID : String = "0000fff0-0000-1000-8000-00805f9b34fb"
@@ -286,7 +294,7 @@ public class BleClientManager : NSObject {
         }
 
         // If passed iOS will show only devices with specified service UUIDs.
-        let uuids = ["fff0"].toCBUUIDS()
+        let uuids = [].toCBUUIDS()
 
         // Scanning will emit Scan peripherals as events.
         scanDisposable.disposable = manager.scanForPeripherals(withServices: uuids, options: rxOptions)
@@ -860,6 +868,100 @@ public class BleClientManager : NSObject {
                                          promise: SafePromise(resolve: resolve, reject: reject))
     }
 
+                @objc
+    public func setUserProfileToAlternativeScale(  _ deviceIdentifier: String,
+                                                    age: Int,
+                                                    height: Int,
+                                                    gender: String,
+                                                    transactionId: String,
+                                                          resolve: @escaping Resolve,
+                                                           reject: @escaping Reject) {
+
+        var data = getEmptyRequestScales(count: 13)
+
+        let gender = (gender as! String == "male") ? 0 : 1
+
+        data[0] = 0x81
+        data[1] = 0x00
+        data[2] = 0x81
+        data[3] = 0x00
+        data[4] = 0x00
+        data[5] = 0x00
+        data[6] = 0x20
+        data[7] = 0x00
+        data[8] =  UInt8(height)
+        data[9] =  UInt8(age)
+        data[10] = UInt8(gender)
+        data[11] = 0x00
+        data[12] = 0x00
+
+        let value = convertScaleFullArray(data: data)
+
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.alternativeScaleWriteCharacteristic)
+        safeWriteCharacteristicForDevice(observable,
+                                         value: value,
+                                         response: false,
+                                         transactionId: transactionId,
+                                         promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+                    @objc
+    public func synchronizeAlternativeScale(  _ deviceIdentifier: String,
+                                                    transactionId: String,
+                                                          resolve: @escaping Resolve,
+                                                           reject: @escaping Reject) {
+        
+        var data = getEmptyRequestScales(count: 8)                                                    
+        data[0] = 0x41
+        data[1] = 0x00
+        data[2] = 0x84
+        data[3] = 0x7F
+        data[4] = 0x44
+        data[5] = 0x3C
+        data[6] = 0xFB
+        data[7] = 0x00
+
+        let value = convertScaleFullArray(data: data)
+
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.alternativeScaleWriteCharacteristic)
+        safeWriteCharacteristicForDevice(observable,
+                                         value: value,
+                                         response: false,
+                                         transactionId: transactionId,
+                                         promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+                        @objc
+    public func selectProfileAlternativeScale(  _ deviceIdentifier: String,
+                                                    transactionId: String,
+                                                          resolve: @escaping Resolve,
+                                                           reject: @escaping Reject) {
+   
+        var data = getEmptyRequestScales(count: 7)                                                    
+        data[0] = 0x41
+        data[1] = 0x00
+        data[2] = 0x82
+        data[3] = 0x00
+        data[4] = 0x00
+        data[5] = 0x00
+        data[6] = 0x20
+
+        let value = convertScaleFullArray(data: data)
+
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.alternativeScaleWriteCharacteristic)
+        safeWriteCharacteristicForDevice(observable,
+                                         value: value,
+                                         response: false,
+                                         transactionId: transactionId,
+                                         promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
     @objc
     public func setDeviceTime(  _ deviceIdentifier: String,
                                                     date: String,
@@ -868,16 +970,14 @@ public class BleClientManager : NSObject {
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
         var dateString = date
+        let date = Date()
         let calendar = Calendar.current
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        let date = dateFormatter.date(from: dateString)
-        let year = UInt8(calendar.component(.year, from: date!) % 100)
-        let month = UInt8(calendar.component(.month, from: date!))
-        let day = UInt8(calendar.component(.day, from: date!))
-        let hour = UInt8(calendar.component(.hour, from: date!))
-        let minute = UInt8(calendar.component(.minute, from: date!))
-        let second = UInt8(calendar.component(.second, from: date!))
+        let year = UInt8(calendar.component(.year, from: date) % 100)
+        let month = UInt8(calendar.component(.month, from: date))
+        let day = UInt8(calendar.component(.day, from: date))
+        let hour = UInt8(calendar.component(.hour, from: date))
+        let minute = UInt8(calendar.component(.minute, from: date))
+        let second = UInt8(calendar.component(.second, from: date))
         
         var data = createNewArray()
         data[0] = 0x01
@@ -1089,6 +1189,34 @@ public class BleClientManager : NSObject {
         let observable = getCharacteristicForDevice(deviceIdentifier,
                                                     serviceUUID: self.trackerServiceUUID,
                                                     characteristicUUID: self.scaleReadCharacteristic)
+
+        safeMonitorCharacteristicForDevice(observable,
+                                           transactionId: transactionId,
+                                           promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+    @objc
+    public func monitorAlternativeScaleResponse(  _ deviceIdentifier: String,
+                                                      transactionId: String,
+                                                            resolve: @escaping Resolve,
+                                                             reject: @escaping Reject) {
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.alternativeScaleReadTemporaryCharacteristic)
+
+        safeMonitorCharacteristicForDevice(observable,
+                                           transactionId: transactionId,
+                                           promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+        @objc
+    public func monitorAlternativeScaleFinalResponse(  _ deviceIdentifier: String,
+                                                      transactionId: String,
+                                                            resolve: @escaping Resolve,
+                                                             reject: @escaping Reject) {
+        let observable = getCharacteristicForDevice(deviceIdentifier,
+                                                    serviceUUID: self.trackerServiceUUID,
+                                                    characteristicUUID: self.alternativeScaleReadFinalCharacteristic)
 
         safeMonitorCharacteristicForDevice(observable,
                                            transactionId: transactionId,

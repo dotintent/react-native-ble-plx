@@ -779,6 +779,60 @@ export class BleManager {
     return new Characteristic(nativeCharacteristic, this)
   }
 
+  async setUserProfileToAlternativeScale(
+    deviceIdentifier: DeviceId,
+    height: number,
+    age: number,
+    gender: string,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.setUserProfileToAlternativeScale(
+        deviceIdentifier,
+        height,
+        age,
+        gender,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async synchronizeAlternativeScale(
+    deviceIdentifier: DeviceId,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.synchronizeAlternativeScale(
+        deviceIdentifier,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
+  async selectProfileAlternativeScale(
+    deviceIdentifier: DeviceId,
+    transactionId: ?TransactionId
+  ): Promise<Characteristic> {
+    if (!transactionId) {
+      transactionId = this._nextUniqueID()
+    }
+    const nativeCharacteristic = await this._callPromise(
+      BleModule.selectProfileAlternativeScale(
+        deviceIdentifier,
+        transactionId
+      )
+    )
+    return new Characteristic(nativeCharacteristic, this)
+  }
+
   async setDeviceTime(
     deviceIdentifier: DeviceId,
     date: string,
@@ -1069,6 +1123,58 @@ export class BleManager {
     const filledTransactionId = transactionId || this._nextUniqueID()
     return this._handleMonitorCharacteristic(
       BleModule.monitorScaleResponse(deviceIdentifier, filledTransactionId),
+      filledTransactionId,
+      listener
+    )
+  }
+
+    /**
+   * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
+   * in favour of indications.
+   *
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener - callback which emits
+   * {@link Characteristic} objects with modified value for each notification.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   */
+  monitorAlternativeScaleResponse(
+    deviceIdentifier: DeviceId,
+    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
+    transactionId: ?TransactionId
+  ): Subscription {
+    const filledTransactionId = transactionId || this._nextUniqueID()
+    return this._handleMonitorCharacteristic(
+      BleModule.monitorAlternativeScaleResponse(deviceIdentifier, filledTransactionId),
+      filledTransactionId,
+      listener
+    )
+  }
+
+    /**
+   * Monitor value changes of a {@link Characteristic}. If notifications are enabled they will be used
+   * in favour of indications.
+   *
+   * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener - callback which emits
+   * {@link Characteristic} objects with modified value for each notification.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+   * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
+   */
+  monitorAlternativeScaleFinalResponse(
+    deviceIdentifier: DeviceId,
+    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
+    transactionId: ?TransactionId
+  ): Subscription {
+    const filledTransactionId = transactionId || this._nextUniqueID()
+    return this._handleMonitorCharacteristic(
+      BleModule.monitorAlternativeScaleFinalResponse(deviceIdentifier, filledTransactionId),
       filledTransactionId,
       listener
     )
