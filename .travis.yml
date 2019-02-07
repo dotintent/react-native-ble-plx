@@ -45,6 +45,14 @@ _android_job_template: &android_job_template
     - cd android
     - ./gradlew assemble
 
+_ios_job_template: &ios_job_template
+  <<: *integration_job_template
+  language: objective-c
+  os: osx
+  osx_image: xcode10.1
+  script:
+    - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Setup -project ios/Setup.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
+
 matrix:
   include:
     - language: node_js
@@ -101,4 +109,7 @@ matrix:
       env: RN_VERSION=0.58.0
     - <<: *android_job_template
       name: 'Integrate with RN 0.58.3 Android'
+      env: RN_VERSION=0.58.3
+    - <<: *ios_job_template
+      name: 'Integrate with RN 0.58.3 iOS'
       env: RN_VERSION=0.58.3
