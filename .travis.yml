@@ -1,47 +1,75 @@
-language: android
-jdk: oraclejdk8
-dist: precise
-cache: npm
-android:
-  components:
-    - tools
-    - platform-tools
-    - build-tools-23.0.1
-    - build-tools-26.0.3
-    - build-tools-27.0.3
-    - build-tools-28.0.3
-    - android-25
-    - android-26
-    - android-27
-    - android-28
-    - extra-android-m2repository
-    - extra-google-m2repository
-    - extra-android-support
-  licenses:
-    - 'android-sdk-license-.+'
-before_install:
-  - nvm install 11
-  - node --version
-install:
-  - npm install
-  - npm install -g react-native-cli
-script:
-  - cd examples
-  - react-native init --version="$RN_VERSION" Setup
-  - bash applyPatches.sh $RN_VERSION
-  - cd Setup
-  - npm install -S ../..
-  - react-native link react-native-ble-plx
-  - cd android
-  - ./gradlew assemble
+stages:
+  - self-test
+  - integration
+
+_integration_job_template: &integration_job_template
+  stage: integration
+  cache: npm
+  before_install:
+    - nvm install 11
+    - node --version
+  install:
+    - npm install
+    - npm install -g react-native-cli
+  before_script:
+    - cd examples
+    - react-native init --version="$RN_VERSION" Setup
+    - bash applyPatches.sh $RN_VERSION
+    - cd Setup
+    - npm install -S ../..
+    - react-native link react-native-ble-plx
+
+_android_job_template: &android_job_template
+  <<: *integration_job_template
+  language: android
+  jdk: oraclejdk8
+  dist: precise
+  android:
+    components:
+      - tools
+      - platform-tools
+      - build-tools-23.0.1
+      - build-tools-26.0.3
+      - build-tools-27.0.3
+      - build-tools-28.0.3
+      - android-25
+      - android-26
+      - android-27
+      - android-28
+      - extra-android-m2repository
+      - extra-google-m2repository
+      - extra-android-support
+    licenses:
+      - 'android-sdk-license-.+'
+  script:
+    - cd android
+    - ./gradlew assemble
 
 env:
   - RN_VERSION=0.53.0
   - RN_VERSION=0.54.0
   - RN_VERSION=0.55.0
   - RN_VERSION=0.56.1
-  - RN_VERSION=0.57.2
   - RN_VERSION=0.57.5
   - RN_VERSION=0.57.8
   - RN_VERSION=0.58.0
   - RN_VERSION=0.58.3
+
+matrix:
+  include:
+    - language: node_js
+      stage: self-test
+      node_js: 8
+      script:
+        - npm install
+        - npm run lint
+        - npm test
+
+    # Integration tests for different React Native versions
+    - <<: *android_job_template
+      name: 'Integrate with RN 0.57.2 Android'
+      env: RN_VERSION=0.57.2
+
+    - <<: *android_job_template
+      name: 'Integrate with RN $RN_VERSION Android'
+      env: RN_VERSION=0.58.3
