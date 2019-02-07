@@ -45,16 +45,6 @@ _android_job_template: &android_job_template
     - cd android
     - ./gradlew assemble
 
-env:
-  - RN_VERSION=0.53.0
-  - RN_VERSION=0.54.0
-  - RN_VERSION=0.55.0
-  - RN_VERSION=0.56.1
-  - RN_VERSION=0.57.5
-  - RN_VERSION=0.57.8
-  - RN_VERSION=0.58.0
-  - RN_VERSION=0.58.3
-
 matrix:
   include:
     - language: node_js
@@ -67,9 +57,29 @@ matrix:
 
     # Integration tests for different React Native versions
     - <<: *android_job_template
+      name: 'Integrate with RN 0.53.0 Android'
+      env: RN_VERSION=0.53.0
+    - <<: *android_job_template
+      name: 'Integrate with RN 0.54.0 Android'
+      env: RN_VERSION=0.54.0
+    - <<: *android_job_template
+      name: 'Integrate with RN 0.55.0 Android'
+      env: RN_VERSION=0.55.0
+    - <<: *android_job_template
+      name: 'Integrate with RN 0.56.1 Android'
+      env: RN_VERSION=0.56.1
+    - <<: *android_job_template
       name: 'Integrate with RN 0.57.2 Android'
       env: RN_VERSION=0.57.2
-
     - <<: *android_job_template
-      name: 'Integrate with RN $RN_VERSION Android'
+      name: 'Integrate with RN 0.57.5 Android'
+      env: RN_VERSION=0.57.5
+    - <<: *android_job_template
+      name: 'Integrate with RN 0.57.8 Android'
+      env: RN_VERSION=0.57.8
+    - <<: *android_job_template
+      name: 'Integrate with RN 0.58.0 Android'
+      env: RN_VERSION=0.58.0
+    - <<: *android_job_template
+      name: 'Integrate with RN 0.58.3 Android'
       env: RN_VERSION=0.58.3
