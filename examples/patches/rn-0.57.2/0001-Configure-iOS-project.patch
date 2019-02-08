@@ -1,15 +1,21 @@
-From 94234e59515acc5c006d8a162f4cb4c1eb0d2ea4 Mon Sep 17 00:00:00 2001
+From f99e2453529087b0a54689ec4c94e492fe39d2bd Mon Sep 17 00:00:00 2001
 From: Piotr Dubiel <piotr.dubiel@polidea.com>
-Date: Fri, 8 Feb 2019 17:38:51 +0100
+Date: Fri, 8 Feb 2019 19:08:00 +0100
 Subject: [PATCH] Configure iOS project
 
 ---
- ios/Setup-Bridging-Header.h         |   4 +
- ios/Setup.xcodeproj/project.pbxproj | 262 ++++++++++++++++++++++--------------
- ios/Setup/File.swift                |   9 ++
- 3 files changed, 172 insertions(+), 103 deletions(-)
+ ios/Setup-Bridging-Header.h           |   4 +
+ ios/Setup-tvOS-Bridging-Header.h      |   4 +
+ ios/Setup-tvOSTests-Bridging-Header.h |   4 +
+ ios/Setup.xcodeproj/project.pbxproj   | 298 ++++++++++++++++++++++------------
+ ios/Setup/File.swift                  |   3 +
+ ios/SetupTests-Bridging-Header.h      |   4 +
+ 6 files changed, 214 insertions(+), 103 deletions(-)
  create mode 100644 ios/Setup-Bridging-Header.h
+ create mode 100644 ios/Setup-tvOS-Bridging-Header.h
+ create mode 100644 ios/Setup-tvOSTests-Bridging-Header.h
  create mode 100644 ios/Setup/File.swift
+ create mode 100644 ios/SetupTests-Bridging-Header.h
 
 diff --git a/ios/Setup-Bridging-Header.h b/ios/Setup-Bridging-Header.h
 new file mode 100644
@@ -21,8 +27,28 @@ index 0000000..1b2cb5d
 +//  Use this file to import your target's public headers that you would like to expose to Swift.
 +//
 +
+diff --git a/ios/Setup-tvOS-Bridging-Header.h b/ios/Setup-tvOS-Bridging-Header.h
+new file mode 100644
+index 0000000..1b2cb5d
+--- /dev/null
++++ b/ios/Setup-tvOS-Bridging-Header.h
+@@ -0,0 +1,4 @@
++//
++//  Use this file to import your target's public headers that you would like to expose to Swift.
++//
++
+diff --git a/ios/Setup-tvOSTests-Bridging-Header.h b/ios/Setup-tvOSTests-Bridging-Header.h
+new file mode 100644
+index 0000000..1b2cb5d
+--- /dev/null
++++ b/ios/Setup-tvOSTests-Bridging-Header.h
+@@ -0,0 +1,4 @@
++//
++//  Use this file to import your target's public headers that you would like to expose to Swift.
++//
++
 diff --git a/ios/Setup.xcodeproj/project.pbxproj b/ios/Setup.xcodeproj/project.pbxproj
-index eb4fe25..ae3ec45 100644
+index f046535..1b1c089 100644
 --- a/ios/Setup.xcodeproj/project.pbxproj
 +++ b/ios/Setup.xcodeproj/project.pbxproj
 @@ -5,6 +5,7 @@
@@ -37,43 +63,46 @@ index eb4fe25..ae3ec45 100644
  		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
  		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
  		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-+		232820CD982C44B6ADDD7692 /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FDC6F94F9BF472098D09757 /* libBleClient.a */; };
++		210EB68E82BC4CB3A3580088 /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B035A6082208451884B2D7A0 /* libBleClient.a */; };
  		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
  		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
  		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-@@ -35,11 +37,11 @@
+@@ -35,11 +37,14 @@
  		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
  		2DCD954D1E0B4F2C00145EB5 /* SetupTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* SetupTests.m */; };
  		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
-+		3C66D2EE220DE3F3002CAAA1 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C66D2ED220DE3F3002CAAA1 /* File.swift */; };
++		3C36968A220DFC1A00D72ADB /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C369689220DFC1A00D72ADB /* File.swift */; };
++		3C36968B220DFC1A00D72ADB /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C369689220DFC1A00D72ADB /* File.swift */; };
++		3C36968C220DFC1A00D72ADB /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C369689220DFC1A00D72ADB /* File.swift */; };
++		3C36968D220DFC1A00D72ADB /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C369689220DFC1A00D72ADB /* File.swift */; };
  		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
  		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
  		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
  		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
--		232820CD982C44B6ADDD7692 /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FDC6F94F9BF472098D09757 /* libBleClient.a */; };
+-		210EB68E82BC4CB3A3580088 /* libBleClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B035A6082208451884B2D7A0 /* libBleClient.a */; };
  /* End PBXBuildFile section */
  
  /* Begin PBXContainerItemProxy section */
-@@ -176,19 +178,40 @@
+@@ -176,19 +181,40 @@
  			remoteGlobalIDString = 3D383D621EBD27B9005632C8;
  			remoteInfo = "double-conversion-tvOS";
  		};
 -		2DF0FFEA2056DD460020B375 /* PBXContainerItemProxy */ = {
-+		3C66D2DF220DE3D1002CAAA1 /* PBXContainerItemProxy */ = {
++		3C369678220DFC0300D72ADB /* PBXContainerItemProxy */ = {
 +			isa = PBXContainerItemProxy;
 +			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 +			proxyType = 2;
 +			remoteGlobalIDString = EDEBC6D6214B3E7000DD5AC8;
 +			remoteInfo = jsi;
 +		};
-+		3C66D2E1220DE3D1002CAAA1 /* PBXContainerItemProxy */ = {
++		3C36967A220DFC0300D72ADB /* PBXContainerItemProxy */ = {
 +			isa = PBXContainerItemProxy;
 +			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 +			proxyType = 2;
 +			remoteGlobalIDString = EDEBC73B214B45A300DD5AC8;
 +			remoteInfo = jsiexecutor;
 +		};
-+		3C66D2E3220DE3D1002CAAA1 /* PBXContainerItemProxy */ = {
++		3C36967C220DFC0300D72ADB /* PBXContainerItemProxy */ = {
  			isa = PBXContainerItemProxy;
  			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
  			proxyType = 2;
@@ -83,7 +112,7 @@ index eb4fe25..ae3ec45 100644
 +			remoteInfo = "jsi-tvOS";
  		};
 -		2DF0FFEC2056DD460020B375 /* PBXContainerItemProxy */ = {
-+		3C66D2E5220DE3D1002CAAA1 /* PBXContainerItemProxy */ = {
++		3C36967E220DFC0300D72ADB /* PBXContainerItemProxy */ = {
  			isa = PBXContainerItemProxy;
  			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
  			proxyType = 2;
@@ -92,16 +121,16 @@ index eb4fe25..ae3ec45 100644
 +			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 +			remoteInfo = "jsiexecutor-tvOS";
 +		};
-+		3C66D2EA220DE3D5002CAAA1 /* PBXContainerItemProxy */ = {
++		3C369683220DFC0500D72ADB /* PBXContainerItemProxy */ = {
 +			isa = PBXContainerItemProxy;
-+			containerPortal = E1E7953087FB4D63A9798E98 /* BleClient.xcodeproj */;
++			containerPortal = ED04DF65FE7544E1860C6E13 /* BleClient.xcodeproj */;
 +			proxyType = 2;
 +			remoteGlobalIDString = D73F06E81D48E17B00AD5963;
 +			remoteInfo = BleClient;
  		};
  		3DAD3E831DF850E9000B6D8A /* PBXContainerItemProxy */ = {
  			isa = PBXContainerItemProxy;
-@@ -267,20 +290,6 @@
+@@ -267,20 +293,6 @@
  			remoteGlobalIDString = 3D3CD9321DE5FBEE00167DC4;
  			remoteInfo = "cxxreact-tvOS";
  		};
@@ -122,35 +151,29 @@ index eb4fe25..ae3ec45 100644
  		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
  			isa = PBXContainerItemProxy;
  			containerPortal = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
-@@ -341,14 +350,16 @@
+@@ -341,14 +353,19 @@
  		2D02E47B1E0B4A5D006451C7 /* Setup-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Setup-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
  		2D02E4901E0B4A5D006451C7 /* Setup-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Setup-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
  		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-+		3C66D2EC220DE3F2002CAAA1 /* Setup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Setup-Bridging-Header.h"; sourceTree = "<group>"; };
-+		3C66D2ED220DE3F3002CAAA1 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File.swift; path = Setup/File.swift; sourceTree = "<group>"; };
++		3C369685220DFC1A00D72ADB /* Setup-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Setup-Bridging-Header.h"; sourceTree = "<group>"; };
++		3C369686220DFC1A00D72ADB /* SetupTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SetupTests-Bridging-Header.h"; sourceTree = "<group>"; };
++		3C369687220DFC1A00D72ADB /* Setup-tvOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Setup-tvOS-Bridging-Header.h"; sourceTree = "<group>"; };
++		3C369688220DFC1A00D72ADB /* Setup-tvOSTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Setup-tvOSTests-Bridging-Header.h"; sourceTree = "<group>"; };
++		3C369689220DFC1A00D72ADB /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File.swift; path = Setup/File.swift; sourceTree = "<group>"; };
  		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
-+		6FDC6F94F9BF472098D09757 /* libBleClient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBleClient.a; sourceTree = "<group>"; };
  		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
  		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
  		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
-+		E1E7953087FB4D63A9798E98 /* BleClient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BleClient.xcodeproj; path = "../node_modules/react-native-ble-plx/ios/BleClient.xcodeproj"; sourceTree = "<group>"; };
++		B035A6082208451884B2D7A0 /* libBleClient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBleClient.a; sourceTree = "<group>"; };
++		ED04DF65FE7544E1860C6E13 /* BleClient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BleClient.xcodeproj; path = "../node_modules/react-native-ble-plx/ios/BleClient.xcodeproj"; sourceTree = "<group>"; };
  		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
  		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
--		E1E7953087FB4D63A9798E98 /* BleClient.xcodeproj */ = {isa = PBXFileReference; name = "BleClient.xcodeproj"; path = "../node_modules/react-native-ble-plx/ios/BleClient.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
--		6FDC6F94F9BF472098D09757 /* libBleClient.a */ = {isa = PBXFileReference; name = "libBleClient.a"; path = "libBleClient.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+-		ED04DF65FE7544E1860C6E13 /* BleClient.xcodeproj */ = {isa = PBXFileReference; name = "BleClient.xcodeproj"; path = "../node_modules/react-native-ble-plx/ios/BleClient.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+-		B035A6082208451884B2D7A0 /* libBleClient.a */ = {isa = PBXFileReference; name = "libBleClient.a"; path = "libBleClient.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
  /* End PBXFileReference section */
  
  /* Begin PBXFrameworksBuildPhase section */
-@@ -497,6 +508,8 @@
- 				13B07FB61A68108700A75B9A /* Info.plist */,
- 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
- 				13B07FB71A68108700A75B9A /* main.m */,
-+				3C66D2ED220DE3F3002CAAA1 /* File.swift */,
-+				3C66D2EC220DE3F2002CAAA1 /* Setup-Bridging-Header.h */,
- 			);
- 			name = Setup;
- 			sourceTree = "<group>";
-@@ -510,16 +523,16 @@
+@@ -510,16 +527,16 @@
  				3DAD3EA71DF850E9000B6D8A /* libyoga.a */,
  				3DAD3EA91DF850E9000B6D8A /* libcxxreact.a */,
  				3DAD3EAB1DF850E9000B6D8A /* libcxxreact.a */,
@@ -164,29 +187,29 @@ index eb4fe25..ae3ec45 100644
  				2DF0FFE92056DD460020B375 /* libdouble-conversion.a */,
 -				2DF0FFEB2056DD460020B375 /* libprivatedata.a */,
 -				2DF0FFED2056DD460020B375 /* libprivatedata-tvOS.a */,
-+				3C66D2E0220DE3D1002CAAA1 /* libjsi.a */,
-+				3C66D2E2220DE3D1002CAAA1 /* libjsiexecutor.a */,
-+				3C66D2E4220DE3D1002CAAA1 /* libjsi-tvOS.a */,
-+				3C66D2E6220DE3D1002CAAA1 /* libjsiexecutor-tvOS.a */,
++				3C369679220DFC0300D72ADB /* libjsi.a */,
++				3C36967B220DFC0300D72ADB /* libjsiexecutor.a */,
++				3C36967D220DFC0300D72ADB /* libjsi-tvOS.a */,
++				3C36967F220DFC0300D72ADB /* libjsiexecutor-tvOS.a */,
  			);
  			name = Products;
  			sourceTree = "<group>";
-@@ -534,6 +547,22 @@
+@@ -534,6 +551,22 @@
  			name = Frameworks;
  			sourceTree = "<group>";
  		};
-+		3C66D2B9220DE3CC002CAAA1 /* Recovered References */ = {
++		3C369652220DFC0200D72ADB /* Recovered References */ = {
 +			isa = PBXGroup;
 +			children = (
-+				6FDC6F94F9BF472098D09757 /* libBleClient.a */,
++				B035A6082208451884B2D7A0 /* libBleClient.a */,
 +			);
 +			name = "Recovered References";
 +			sourceTree = "<group>";
 +		};
-+		3C66D2E7220DE3D4002CAAA1 /* Products */ = {
++		3C369680220DFC0500D72ADB /* Products */ = {
 +			isa = PBXGroup;
 +			children = (
-+				3C66D2EB220DE3D5002CAAA1 /* libBleClient.a */,
++				3C369684220DFC0500D72ADB /* libBleClient.a */,
 +			);
 +			name = Products;
 +			sourceTree = "<group>";
@@ -194,16 +217,29 @@ index eb4fe25..ae3ec45 100644
  		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
  			isa = PBXGroup;
  			children = (
-@@ -589,6 +618,7 @@
+@@ -584,11 +617,17 @@
+ 		83CBB9F61A601CBA00E9B192 = {
+ 			isa = PBXGroup;
+ 			children = (
++				3C369689220DFC1A00D72ADB /* File.swift */,
+ 				13B07FAE1A68108700A75B9A /* Setup */,
+ 				832341AE1AAA6A7D00B99B32 /* Libraries */,
  				00E356EF1AD99517003FC87E /* SetupTests */,
  				83CBBA001A601CBA00E9B192 /* Products */,
  				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-+				3C66D2B9220DE3CC002CAAA1 /* Recovered References */,
++				3C369652220DFC0200D72ADB /* Recovered References */,
++				3C369685220DFC1A00D72ADB /* Setup-Bridging-Header.h */,
++				3C369686220DFC1A00D72ADB /* SetupTests-Bridging-Header.h */,
++				3C369687220DFC1A00D72ADB /* Setup-tvOS-Bridging-Header.h */,
++				3C369688220DFC1A00D72ADB /* Setup-tvOSTests-Bridging-Header.h */,
  			);
  			indentWidth = 2;
  			sourceTree = "<group>";
-@@ -703,6 +733,9 @@
+@@ -701,14 +740,20 @@
+ 				TargetAttributes = {
+ 					00E356ED1AD99517003FC87E = {
  						CreatedOnToolsVersion = 6.2;
++						LastSwiftMigration = 1010;
  						TestTargetID = 13B07F861A680F5B00A75B9A;
  					};
 +					13B07F861A680F5B00A75B9A = {
@@ -211,65 +247,73 @@ index eb4fe25..ae3ec45 100644
 +					};
  					2D02E47A1E0B4A5D006451C7 = {
  						CreatedOnToolsVersion = 8.2.1;
++						LastSwiftMigration = 1010;
  						ProvisioningStyle = Automatic;
-@@ -727,6 +760,10 @@
+ 					};
+ 					2D02E48F1E0B4A5D006451C7 = {
+ 						CreatedOnToolsVersion = 8.2.1;
++						LastSwiftMigration = 1010;
+ 						ProvisioningStyle = Automatic;
+ 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
+ 					};
+@@ -727,6 +772,10 @@
  			projectDirPath = "";
  			projectReferences = (
  				{
-+					ProductGroup = 3C66D2E7220DE3D4002CAAA1 /* Products */;
-+					ProjectRef = E1E7953087FB4D63A9798E98 /* BleClient.xcodeproj */;
++					ProductGroup = 3C369680220DFC0500D72ADB /* Products */;
++					ProjectRef = ED04DF65FE7544E1860C6E13 /* BleClient.xcodeproj */;
 +				},
 +				{
  					ProductGroup = 00C302A81ABCB8CE00DB3ED1 /* Products */;
  					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
  				},
-@@ -905,18 +942,39 @@
+@@ -905,18 +954,39 @@
  			remoteRef = 2DF0FFE82056DD460020B375 /* PBXContainerItemProxy */;
  			sourceTree = BUILT_PRODUCTS_DIR;
  		};
 -		2DF0FFEB2056DD460020B375 /* libprivatedata.a */ = {
-+		3C66D2E0220DE3D1002CAAA1 /* libjsi.a */ = {
++		3C369679220DFC0300D72ADB /* libjsi.a */ = {
 +			isa = PBXReferenceProxy;
 +			fileType = archive.ar;
 +			path = libjsi.a;
-+			remoteRef = 3C66D2DF220DE3D1002CAAA1 /* PBXContainerItemProxy */;
++			remoteRef = 3C369678220DFC0300D72ADB /* PBXContainerItemProxy */;
 +			sourceTree = BUILT_PRODUCTS_DIR;
 +		};
-+		3C66D2E2220DE3D1002CAAA1 /* libjsiexecutor.a */ = {
++		3C36967B220DFC0300D72ADB /* libjsiexecutor.a */ = {
++			isa = PBXReferenceProxy;
++			fileType = archive.ar;
++			path = libjsiexecutor.a;
++			remoteRef = 3C36967A220DFC0300D72ADB /* PBXContainerItemProxy */;
++			sourceTree = BUILT_PRODUCTS_DIR;
++		};
++		3C36967D220DFC0300D72ADB /* libjsi-tvOS.a */ = {
  			isa = PBXReferenceProxy;
  			fileType = archive.ar;
 -			path = libprivatedata.a;
 -			remoteRef = 2DF0FFEA2056DD460020B375 /* PBXContainerItemProxy */;
-+			path = libjsiexecutor.a;
-+			remoteRef = 3C66D2E1220DE3D1002CAAA1 /* PBXContainerItemProxy */;
++			path = "libjsi-tvOS.a";
++			remoteRef = 3C36967C220DFC0300D72ADB /* PBXContainerItemProxy */;
  			sourceTree = BUILT_PRODUCTS_DIR;
  		};
 -		2DF0FFED2056DD460020B375 /* libprivatedata-tvOS.a */ = {
-+		3C66D2E4220DE3D1002CAAA1 /* libjsi-tvOS.a */ = {
++		3C36967F220DFC0300D72ADB /* libjsiexecutor-tvOS.a */ = {
  			isa = PBXReferenceProxy;
  			fileType = archive.ar;
 -			path = "libprivatedata-tvOS.a";
 -			remoteRef = 2DF0FFEC2056DD460020B375 /* PBXContainerItemProxy */;
-+			path = "libjsi-tvOS.a";
-+			remoteRef = 3C66D2E3220DE3D1002CAAA1 /* PBXContainerItemProxy */;
-+			sourceTree = BUILT_PRODUCTS_DIR;
-+		};
-+		3C66D2E6220DE3D1002CAAA1 /* libjsiexecutor-tvOS.a */ = {
-+			isa = PBXReferenceProxy;
-+			fileType = archive.ar;
 +			path = "libjsiexecutor-tvOS.a";
-+			remoteRef = 3C66D2E5220DE3D1002CAAA1 /* PBXContainerItemProxy */;
++			remoteRef = 3C36967E220DFC0300D72ADB /* PBXContainerItemProxy */;
 +			sourceTree = BUILT_PRODUCTS_DIR;
 +		};
-+		3C66D2EB220DE3D5002CAAA1 /* libBleClient.a */ = {
++		3C369684220DFC0500D72ADB /* libBleClient.a */ = {
 +			isa = PBXReferenceProxy;
 +			fileType = archive.ar;
 +			path = libBleClient.a;
-+			remoteRef = 3C66D2EA220DE3D5002CAAA1 /* PBXContainerItemProxy */;
++			remoteRef = 3C369683220DFC0500D72ADB /* PBXContainerItemProxy */;
  			sourceTree = BUILT_PRODUCTS_DIR;
  		};
  		3DAD3E841DF850E9000B6D8A /* libRCTImage-tvOS.a */ = {
-@@ -996,20 +1054,6 @@
+@@ -996,20 +1066,6 @@
  			remoteRef = 3DAD3EAA1DF850E9000B6D8A /* PBXContainerItemProxy */;
  			sourceTree = BUILT_PRODUCTS_DIR;
  		};
@@ -290,20 +334,45 @@ index eb4fe25..ae3ec45 100644
  		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
  			isa = PBXReferenceProxy;
  			fileType = archive.ar;
-@@ -1126,6 +1170,7 @@
+@@ -1118,6 +1174,7 @@
+ 			buildActionMask = 2147483647;
+ 			files = (
+ 				00E356F31AD99517003FC87E /* SetupTests.m in Sources */,
++				3C36968B220DFC1A00D72ADB /* File.swift in Sources */,
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+ 		};
+@@ -1126,6 +1183,7 @@
  			buildActionMask = 2147483647;
  			files = (
  				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
-+				3C66D2EE220DE3F3002CAAA1 /* File.swift in Sources */,
++				3C36968A220DFC1A00D72ADB /* File.swift in Sources */,
  				13B07FC11A68108700A75B9A /* main.m in Sources */,
  			);
  			runOnlyForDeploymentPostprocessing = 0;
-@@ -1178,14 +1223,23 @@
+@@ -1135,6 +1193,7 @@
+ 			buildActionMask = 2147483647;
+ 			files = (
+ 				2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */,
++				3C36968C220DFC1A00D72ADB /* File.swift in Sources */,
+ 				2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */,
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+@@ -1144,6 +1203,7 @@
+ 			buildActionMask = 2147483647;
+ 			files = (
+ 				2DCD954D1E0B4F2C00145EB5 /* SetupTests.m in Sources */,
++				3C36968D220DFC1A00D72ADB /* File.swift in Sources */,
+ 			);
+ 			runOnlyForDeploymentPostprocessing = 0;
+ 		};
+@@ -1178,55 +1238,64 @@
  		00E356F61AD99517003FC87E /* Debug */ = {
  			isa = XCBuildConfiguration;
  			buildSettings = {
 +				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
  				BUNDLE_LOADER = "$(TEST_HOST)";
++				CLANG_ENABLE_MODULES = YES;
  				GCC_PREPROCESSOR_DEFINITIONS = (
  					"DEBUG=1",
  					"$(inherited)",
@@ -322,9 +391,12 @@ index eb4fe25..ae3ec45 100644
  				OTHER_LDFLAGS = (
  					"-ObjC",
  					"-lc++",
-@@ -1193,25 +1247,26 @@
+ 				);
  				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
  				PRODUCT_NAME = "$(TARGET_NAME)";
++				SWIFT_OBJC_BRIDGING_HEADER = "SetupTests-Bridging-Header.h";
++				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
++				SWIFT_VERSION = 4.2;
  				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Setup.app/Setup";
 -				LIBRARY_SEARCH_PATHS = (
 -					"$(inherited)",
@@ -342,6 +414,7 @@ index eb4fe25..ae3ec45 100644
  			buildSettings = {
 +				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
  				BUNDLE_LOADER = "$(TEST_HOST)";
++				CLANG_ENABLE_MODULES = YES;
  				COPY_PHASE_STRIP = NO;
 +				HEADER_SEARCH_PATHS = (
 +					"$(inherited)",
@@ -357,9 +430,11 @@ index eb4fe25..ae3ec45 100644
  				OTHER_LDFLAGS = (
  					"-ObjC",
  					"-lc++",
-@@ -1219,14 +1274,6 @@
+ 				);
  				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
  				PRODUCT_NAME = "$(TARGET_NAME)";
++				SWIFT_OBJC_BRIDGING_HEADER = "SetupTests-Bridging-Header.h";
++				SWIFT_VERSION = 4.2;
  				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Setup.app/Setup";
 -				LIBRARY_SEARCH_PATHS = (
 -					"$(inherited)",
@@ -372,12 +447,11 @@ index eb4fe25..ae3ec45 100644
  			};
  			name = Release;
  		};
-@@ -1234,8 +1281,14 @@
+@@ -1234,8 +1303,13 @@
  			isa = XCBuildConfiguration;
  			buildSettings = {
  				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 +				CLANG_ENABLE_MODULES = YES;
-+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
  				CURRENT_PROJECT_VERSION = 1;
  				DEAD_CODE_STRIPPING = NO;
 +				HEADER_SEARCH_PATHS = (
@@ -387,7 +461,7 @@ index eb4fe25..ae3ec45 100644
  				INFOPLIST_FILE = Setup/Info.plist;
  				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
  				OTHER_LDFLAGS = (
-@@ -1245,11 +1298,10 @@
+@@ -1245,11 +1319,10 @@
  				);
  				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
  				PRODUCT_NAME = Setup;
@@ -402,12 +476,11 @@ index eb4fe25..ae3ec45 100644
  			};
  			name = Debug;
  		};
-@@ -1257,7 +1309,13 @@
+@@ -1257,7 +1330,12 @@
  			isa = XCBuildConfiguration;
  			buildSettings = {
  				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 +				CLANG_ENABLE_MODULES = YES;
-+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
  				CURRENT_PROJECT_VERSION = 1;
 +				HEADER_SEARCH_PATHS = (
 +					"$(inherited)",
@@ -416,7 +489,7 @@ index eb4fe25..ae3ec45 100644
  				INFOPLIST_FILE = Setup/Info.plist;
  				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
  				OTHER_LDFLAGS = (
-@@ -1267,11 +1325,9 @@
+@@ -1267,11 +1345,9 @@
  				);
  				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
  				PRODUCT_NAME = Setup;
@@ -430,7 +503,14 @@ index eb4fe25..ae3ec45 100644
  			};
  			name = Release;
  		};
-@@ -1287,8 +1343,16 @@
+@@ -1281,14 +1357,23 @@
+ 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+ 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+ 				CLANG_ANALYZER_NONNULL = YES;
++				CLANG_ENABLE_MODULES = YES;
+ 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+ 				CLANG_WARN_INFINITE_RECURSION = YES;
+ 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
  				DEBUG_INFORMATION_FORMAT = dwarf;
  				ENABLE_TESTABILITY = YES;
  				GCC_NO_COMMON_BLOCKS = YES;
@@ -447,8 +527,13 @@ index eb4fe25..ae3ec45 100644
  				OTHER_LDFLAGS = (
  					"-ObjC",
  					"-lc++",
-@@ -1298,14 +1362,6 @@
+@@ -1296,16 +1381,11 @@
+ 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Setup-tvOS";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
  				SDKROOT = appletvos;
++				SWIFT_OBJC_BRIDGING_HEADER = "Setup-tvOS-Bridging-Header.h";
++				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
++				SWIFT_VERSION = 4.2;
  				TARGETED_DEVICE_FAMILY = 3;
  				TVOS_DEPLOYMENT_TARGET = 9.2;
 -				LIBRARY_SEARCH_PATHS = (
@@ -462,7 +547,14 @@ index eb4fe25..ae3ec45 100644
  			};
  			name = Debug;
  		};
-@@ -1321,8 +1377,16 @@
+@@ -1315,14 +1395,23 @@
+ 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+ 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+ 				CLANG_ANALYZER_NONNULL = YES;
++				CLANG_ENABLE_MODULES = YES;
+ 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+ 				CLANG_WARN_INFINITE_RECURSION = YES;
+ 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
  				COPY_PHASE_STRIP = NO;
  				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
  				GCC_NO_COMMON_BLOCKS = YES;
@@ -479,8 +571,12 @@ index eb4fe25..ae3ec45 100644
  				OTHER_LDFLAGS = (
  					"-ObjC",
  					"-lc++",
-@@ -1332,14 +1396,6 @@
+@@ -1330,32 +1419,36 @@
+ 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Setup-tvOS";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
  				SDKROOT = appletvos;
++				SWIFT_OBJC_BRIDGING_HEADER = "Setup-tvOS-Bridging-Header.h";
++				SWIFT_VERSION = 4.2;
  				TARGETED_DEVICE_FAMILY = 3;
  				TVOS_DEPLOYMENT_TARGET = 9.2;
 -				LIBRARY_SEARCH_PATHS = (
@@ -494,7 +590,16 @@ index eb4fe25..ae3ec45 100644
  			};
  			name = Release;
  		};
-@@ -1354,8 +1410,16 @@
+ 		2D02E4991E0B4A5E006451C7 /* Debug */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
++				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+ 				BUNDLE_LOADER = "$(TEST_HOST)";
+ 				CLANG_ANALYZER_NONNULL = YES;
++				CLANG_ENABLE_MODULES = YES;
+ 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+ 				CLANG_WARN_INFINITE_RECURSION = YES;
+ 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
  				DEBUG_INFORMATION_FORMAT = dwarf;
  				ENABLE_TESTABILITY = YES;
  				GCC_NO_COMMON_BLOCKS = YES;
@@ -511,8 +616,13 @@ index eb4fe25..ae3ec45 100644
  				OTHER_LDFLAGS = (
  					"-ObjC",
  					"-lc++",
-@@ -1365,14 +1429,6 @@
+@@ -1363,32 +1456,37 @@
+ 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Setup-tvOSTests";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
  				SDKROOT = appletvos;
++				SWIFT_OBJC_BRIDGING_HEADER = "Setup-tvOSTests-Bridging-Header.h";
++				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
++				SWIFT_VERSION = 4.2;
  				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Setup-tvOS.app/Setup-tvOS";
  				TVOS_DEPLOYMENT_TARGET = 10.1;
 -				LIBRARY_SEARCH_PATHS = (
@@ -526,7 +636,16 @@ index eb4fe25..ae3ec45 100644
  			};
  			name = Debug;
  		};
-@@ -1387,8 +1443,16 @@
+ 		2D02E49A1E0B4A5E006451C7 /* Release */ = {
+ 			isa = XCBuildConfiguration;
+ 			buildSettings = {
++				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+ 				BUNDLE_LOADER = "$(TEST_HOST)";
+ 				CLANG_ANALYZER_NONNULL = YES;
++				CLANG_ENABLE_MODULES = YES;
+ 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+ 				CLANG_WARN_INFINITE_RECURSION = YES;
+ 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
  				COPY_PHASE_STRIP = NO;
  				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
  				GCC_NO_COMMON_BLOCKS = YES;
@@ -543,8 +662,12 @@ index eb4fe25..ae3ec45 100644
  				OTHER_LDFLAGS = (
  					"-ObjC",
  					"-lc++",
-@@ -1398,14 +1462,6 @@
+@@ -1396,16 +1494,10 @@
+ 				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.Setup-tvOSTests";
+ 				PRODUCT_NAME = "$(TARGET_NAME)";
  				SDKROOT = appletvos;
++				SWIFT_OBJC_BRIDGING_HEADER = "Setup-tvOSTests-Bridging-Header.h";
++				SWIFT_VERSION = 4.2;
  				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Setup-tvOS.app/Setup-tvOS";
  				TVOS_DEPLOYMENT_TARGET = 10.1;
 -				LIBRARY_SEARCH_PATHS = (
@@ -560,19 +683,23 @@ index eb4fe25..ae3ec45 100644
  		};
 diff --git a/ios/Setup/File.swift b/ios/Setup/File.swift
 new file mode 100644
-index 0000000..c59b135
+index 0000000..89b3f30
 --- /dev/null
 +++ b/ios/Setup/File.swift
-@@ -0,0 +1,9 @@
-+//
-+//  File.swift
-+//  Setup
-+//
-+//  Created by Piotrek on 08/02/2019.
-+//  Copyright © 2019 Facebook. All rights reserved.
-+//
+@@ -0,0 +1,3 @@
++// This is required for Swift compilation
 +
 +import Foundation
+diff --git a/ios/SetupTests-Bridging-Header.h b/ios/SetupTests-Bridging-Header.h
+new file mode 100644
+index 0000000..1b2cb5d
+--- /dev/null
++++ b/ios/SetupTests-Bridging-Header.h
+@@ -0,0 +1,4 @@
++//
++//  Use this file to import your target's public headers that you would like to expose to Swift.
++//
++
 -- 
 2.10.0
 
