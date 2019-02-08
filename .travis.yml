@@ -17,7 +17,7 @@ _integration_job_template: &integration_job_template
     - cd Setup
     - npm install -S ../..
     - react-native link react-native-ble-plx
-    - pushd ..; bash applyPatches.sh $RN_VERSION; popd
+    - bash ../applyPatches.sh $RN_VERSION
 
 _android_job_template: &android_job_template
   <<: *integration_job_template
