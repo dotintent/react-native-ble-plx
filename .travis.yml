@@ -17,7 +17,7 @@ _integration_job_template: &integration_job_template
     - cd Setup
     - npm install -S ../..
     - react-native link react-native-ble-plx
-    - bash applyPatches.sh $RN_VERSION
+    - pushd ..; bash applyPatches.sh $RN_VERSION; popd
 
 _android_job_template: &android_job_template
   <<: *integration_job_template
@@ -50,9 +50,6 @@ _ios_job_template: &ios_job_template
   language: objective-c
   os: osx
   osx_image: xcode10.1
-  xcode_project: examples/Setup/ios/Setup.xcodeproj
-  xcode_scheme: Setup
-  xcode_destination: platform=iOS Simulator
   script:
     - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Setup -project ios/Setup.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
 
