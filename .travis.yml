@@ -63,25 +63,6 @@ matrix:
         - npm install
         - npm run lint
         - npm test
-    - name: 'Build Barebone example'
-      stage: self-test
-      language: objective-c
-      os: osx
-      osx_image: xcode10.1
-      node_js: 8
-      cache:
-        - npm
-        - yarn
-      xcode_project: examples/Barebone/ios/Barebone.xcodeproj
-      xcode_scheme: Barebone
-      xcode_destination: platform=iOS Simulator
-      install:
-        - npm install
-        - npm install -g yarn
-        - yarn --cwd examples/Barebone
-      script:
-        - cd examples/Barebone
-        - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Barebone -project ios/Barebone.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
 
     # Integration tests for different React Native versions
     - <<: *android_job_template
@@ -114,3 +95,23 @@ matrix:
     - <<: *ios_job_template
       name: 'Integrate with RN 0.58.3 iOS'
       env: RN_VERSION=0.58.3
+
+    - name: 'Build Barebone example'
+      stage: integration
+      language: objective-c
+      os: osx
+      osx_image: xcode10.1
+      node_js: 8
+      cache:
+        - npm
+        - yarn
+      xcode_project: examples/Barebone/ios/Barebone.xcodeproj
+      xcode_scheme: Barebone
+      xcode_destination: platform=iOS Simulator
+      install:
+        - npm install
+        - npm install -g yarn
+        - yarn --cwd examples/Barebone
+      script:
+        - cd examples/Barebone
+        - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Barebone -project ios/Barebone.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
