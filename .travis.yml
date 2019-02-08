@@ -50,6 +50,9 @@ _ios_job_template: &ios_job_template
   language: objective-c
   os: osx
   osx_image: xcode10.1
+  xcode_project: examples/Setup/ios/Setup.xcodeproj
+  xcode_scheme: Setup
+  xcode_destination: platform=iOS Simulator
   script:
     - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Setup -project ios/Setup.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
 
