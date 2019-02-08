@@ -84,18 +84,6 @@ matrix:
 
     # Integration tests for different React Native versions
     - <<: *android_job_template
-      name: 'Integrate with RN 0.53.0 Android'
-      env: RN_VERSION=0.53.0
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.54.0 Android'
-      env: RN_VERSION=0.54.0
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.55.0 Android'
-      env: RN_VERSION=0.55.0
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.56.1 Android'
-      env: RN_VERSION=0.56.1
-    - <<: *android_job_template
       name: 'Integrate with RN 0.57.2 Android'
       env: RN_VERSION=0.57.2
     - <<: *android_job_template
