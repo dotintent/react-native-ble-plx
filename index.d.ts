@@ -2,6 +2,11 @@ declare module 'react-native-ble-plx' {
   export type RefreshGattMoment = 'OnConnected';
   export type Base64 = string;
   export type UUID = string;
+  export type Identifier = number;
+
+  export interface Subscription {
+    remove(): void;
+  }
 
   /**
    * Converts UUID to full 128bit, lowercase format which should be used to compare UUID values.
@@ -405,10 +410,10 @@ declare module 'react-native-ble-plx' {
 
   export interface NativeBleError {
     errorCode: BleErrorCode;
-    attErrorCode?: BleATTErrorCode;
-    iosErrorCode?: BleIOSErrorCode;
-    androidErrorCode?: BleAndroidErrorCode;
-    reason?: string;
+    attErrorCode: BleATTErrorCode | null;
+    iosErrorCode: BleIOSErrorCode | null;
+    androidErrorCode: BleAndroidErrorCode | null;
+    reason: string | null;
 
     deviceID?: string;
     serviceUUID?: string;
@@ -417,9 +422,7 @@ declare module 'react-native-ble-plx' {
     internalMessage?: string;
   }
 
-  export interface BleErrorCodeMessageMapping {
-    [key in BleErrorCode]: string;
-  }
+  export type BleErrorCodeMessageMapping = { [key in BleErrorCode]: string };
 
   export class BleError extends Error {
     /**
@@ -685,11 +688,7 @@ declare module 'react-native-ble-plx' {
      * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
      * UUID path. Latest value of characteristic may not be stored inside returned object.
      */
-    writeCharacteristicWithResponse(
-      characteristicUUID: UUID,
-      valueBase64: Base64,
-      transactionId?: string
-    ): Promise<Characteristic>;
+    writeCharacteristicWithResponse(characteristicUUID: UUID, valueBase64: Base64, transactionId?: string): Promise<Characteristic>;
 
     /**
      * {@link #blemanagerwritecharacteristicwithoutresponsefordevice|bleManager.writeCharacteristicWithoutResponseForDevice()} with partially filled arguments.
@@ -701,11 +700,7 @@ declare module 'react-native-ble-plx' {
      * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
      * UUID path. Latest value of characteristic may not be stored inside returned object.
      */
-    writeCharacteristicWithoutResponse(
-      characteristicUUID: UUID,
-      valueBase64: Base64,
-      transactionId?: string
-    ): Promise<Characteristic>;
+    writeCharacteristicWithoutResponse(characteristicUUID: UUID, valueBase64: Base64, transactionId?: string): Promise<Characteristic>;
 
     /**
      * {@link #blemanagermonitorcharacteristicfordevice|bleManager.monitorCharacteristicForDevice()} with partially filled arguments.
@@ -719,7 +714,7 @@ declare module 'react-native-ble-plx' {
      */
     monitorCharacteristic(
       characteristicUUID: UUID,
-      listener: (error?: BleError, characteristic?: Characteristic) => void,
+      listener: (error: BleError | null, characteristic?: Characteristic) => void,
       transactionId?: string
     ): Subscription;
   }
@@ -763,7 +758,7 @@ declare module 'react-native-ble-plx' {
      * Map od service UUIDs with associated data.
      * @private
      */
-    serviceData?: { [uuid: UUID]: Base64 };
+    serviceData?: { [uuid: string]: Base64 };
 
     /**
      * List of available services visible during scanning.
@@ -934,7 +929,7 @@ declare module 'react-native-ble-plx' {
     /**
      * Device's ID to which characteristic belongs
      */
-    deviceID: DeviceId;
+    deviceID: Device['id'];
     /**
      * True if characteristic can be read
      */
@@ -1013,10 +1008,7 @@ declare module 'react-native-ble-plx' {
      * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
-    monitor(
-      listener: (error?: BleError, characteristic?: Characteristic) => void,
-      transactionId?: string
-    ): Subscription;
+    monitor(listener: (error: BleError | null, characteristic?: Characteristic) => void, transactionId?: string): Subscription;
   }
 
   export class BleManager {
@@ -1033,7 +1025,7 @@ declare module 'react-native-ble-plx' {
      * Sets new log level for native module's logging mechanism.
      * @param {LogLevel} logLevel New log level to be set.
      */
-    setLogLevel(logLevel: LogLevel);
+    setLogLevel(logLevel: LogLevel): void;
 
     /**
      * Get current log level for native module's logging mechanism.
@@ -1091,9 +1083,7 @@ declare module 'react-native-ble-plx' {
      *
      * @returns {Promise<State>} Promise which emits current state of BleManager.
      */
-    state(): Promise<State> {
-      return this._callPromise(BleModule.state());
-    }
+    state(): Promise<State>;
 
     /**
      * Notifies about {@link State} changes of a {@link BleManager}.
@@ -1112,7 +1102,7 @@ declare module 'react-native-ble-plx' {
      *
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
-    onStateChange(listener: (newState: State) => void, emitCurrentState: boolean = false): Subscription;
+    onStateChange(listener: (newState: State) => void, emitCurrentState?: boolean): Subscription;
 
     // Mark: Scanning ----------------------------------------------------------------------------------------------------
 
@@ -1130,7 +1120,7 @@ declare module 'react-native-ble-plx' {
     startDeviceScan(
       UUIDs: UUID[] | null,
       options: Partial<ScanOptions>,
-      listener: (error?: BleError, scannedDevice?: Device) => void
+      listener: (error: BleError | null, scannedDevice?: Device) => void
     ): void;
 
     /**
@@ -1218,10 +1208,7 @@ declare module 'react-native-ble-plx' {
      * {@link #blemanagercanceldeviceconnection|bleManager.cancelDeviceConnection()} call.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
-    onDeviceDisconnected(
-      deviceIdentifier: Device['id'],
-      listener: (error?: BleError, device: Device) => void
-    ): Subscription;
+    onDeviceDisconnected(deviceIdentifier: Device['id'], listener: (error: BleError | null, device: Device) => void): Subscription;
 
     /**
      * Check connection state of a {@link Device}.
@@ -1241,10 +1228,7 @@ declare module 'react-native-ble-plx' {
      * @returns {Promise<Device>} Promise which emits {@link Device} object if all available services and
      * characteristics have been discovered.
      */
-    discoverAllServicesAndCharacteristicsForDevice(
-      deviceIdentifier: Device['id'],
-      transactionId?: string
-    ): Promise<Device>;
+    discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: Device['id'], transactionId?: string): Promise<Device>;
 
     // Mark: Service and characteristic getters --------------------------------------------------------------------------
 
@@ -1344,10 +1328,8 @@ declare module 'react-native-ble-plx' {
       deviceIdentifier: Device['id'],
       serviceUUID: UUID,
       characteristicUUID: UUID,
-      listener: (error?: BleError, characteristic?: Characteristic) => void,
+      listener: (error: BleError | null, characteristic?: Characteristic) => void,
       transactionId?: string
     ): Subscription;
   }
-
-  export const EventEmitter = NativeEventEmitter;
 }
