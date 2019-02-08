@@ -1,4 +1,6 @@
-#!/bin/sh
+#!/bin/bash
+
+set -eo pipefail
 
 REACT_NATIVE_VERSION=$1
 
