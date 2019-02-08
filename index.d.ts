@@ -609,7 +609,7 @@ declare module 'react-native-ble-plx' {
     monitorCharacteristicForService(
       serviceUUID: UUID,
       characteristicUUID: UUID,
-      listener: (error: BleError | null, characteristic?: Characteristic) => void,
+      listener: (error: BleError | null, characteristic: Characteristic | null) => void,
       transactionId?: TransactionId
     ): Subscription;
   }
@@ -864,7 +864,7 @@ declare module 'react-native-ble-plx' {
      */
     monitorCharacteristic(
       characteristicUUID: UUID,
-      listener: (error: BleError | null, characteristic?: Characteristic) => void,
+      listener: (error: BleError | null, characteristic: Characteristic | null) => void,
       transactionId?: string
     ): Subscription;
   }
@@ -1158,7 +1158,7 @@ declare module 'react-native-ble-plx' {
      * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
-    monitor(listener: (error: BleError | null, characteristic?: Characteristic) => void, transactionId?: string): Subscription;
+    monitor(listener: (error: BleError | null, characteristic: Characteristic | null) => void, transactionId?: string): Subscription;
   }
 
   /**
@@ -1314,7 +1314,7 @@ declare module 'react-native-ble-plx' {
      * to non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument
      * is a scanned {@link Device}.
      */
-    startDeviceScan(UUIDs: UUID[] | null, options: ScanOptions, listener: (error: BleError | null, scannedDevice?: Device) => void): void;
+    startDeviceScan(UUIDs: UUID[] | null, options: ScanOptions, listener: (error: BleError | null, scannedDevice: Device | null) => void): void;
 
     /**
      * Stops {@link Device} scan if in progress.
@@ -1396,12 +1396,12 @@ declare module 'react-native-ble-plx' {
      * Monitors if {@link Device} was disconnected due to any errors or connection problems.
      *
      * @param {DeviceId} deviceIdentifier {@link Device} identifier to be monitored.
-     * @param {function(error?: BleError, device: Device)} listener - callback returning error as a reason of disconnection
+     * @param {function(error?: BleError, device: ?Device)} listener - callback returning error as a reason of disconnection
      * if available and {@link Device} object. If an error is null, that means the connection was terminated by
      * {@link #blemanagercanceldeviceconnection|bleManager.cancelDeviceConnection()} call.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
-    onDeviceDisconnected(deviceIdentifier: DeviceId, listener: (error: BleError | null, device: Device) => void): Subscription;
+    onDeviceDisconnected(deviceIdentifier: DeviceId, listener: (error: BleError | null, device: Device | null) => void): Subscription;
 
     /**
      * Check connection state of a {@link Device}.
@@ -1521,7 +1521,7 @@ declare module 'react-native-ble-plx' {
       deviceIdentifier: DeviceId,
       serviceUUID: UUID,
       characteristicUUID: UUID,
-      listener: (error: BleError | null, characteristic?: Characteristic) => void,
+      listener: (error: BleError | null, characteristic: Characteristic | null) => void,
       transactionId?: string
     ): Subscription;
   }
