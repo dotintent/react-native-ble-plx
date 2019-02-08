@@ -9,11 +9,12 @@ _integration_job_template: &integration_job_template
     - nvm install 11
     - node --version
   install:
+    - gem install xcodeproj
     - npm install
     - npm install -g react-native-cli
   before_script:
     - cd examples
-    - bash ../makeProject.sh $RN_VERSION
+    - bash makeProject.sh $RN_VERSION
     - cd Setup
 
 _android_job_template: &android_job_template
