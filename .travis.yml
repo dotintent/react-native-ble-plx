@@ -14,10 +14,10 @@ _integration_job_template: &integration_job_template
   before_script:
     - cd examples
     - react-native init --version="$RN_VERSION" Setup
-    - bash applyPatches.sh $RN_VERSION
     - cd Setup
     - npm install -S ../..
     - react-native link react-native-ble-plx
+    - bash applyPatches.sh $RN_VERSION
 
 _android_job_template: &android_job_template
   <<: *integration_job_template
