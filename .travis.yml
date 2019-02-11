@@ -10,12 +10,12 @@ _integration_job_template: &integration_job_template
     - node --version
   install:
     - gem install xcodeproj
-    - npm install
     - npm install -g react-native-cli
   before_script:
     - cd examples
     - bash makeProject.sh $RN_VERSION
     - cd Setup
+    - bash ../installFlow.sh
 
 _android_job_template: &android_job_template
   <<: *integration_job_template
@@ -40,6 +40,7 @@ _android_job_template: &android_job_template
     licenses:
       - 'android-sdk-license-.+'
   script:
+    - flow check
     - cd android
     - ./gradlew assemble
 
@@ -52,6 +53,7 @@ _ios_job_template: &ios_job_template
   xcode_scheme: Setup
   xcode_destination: platform=iOS Simulator
   script:
+    - flow check
     - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Setup -project ios/Setup.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
 
 matrix:
