@@ -20,8 +20,8 @@ _integration_job_template: &integration_job_template
 _android_job_template: &android_job_template
   <<: *integration_job_template
   language: android
-  jdk: oraclejdk8
-  dist: precise
+  jdk: openjdk7
+  dist: xenial
   android:
     components:
       - tools
@@ -40,7 +40,7 @@ _android_job_template: &android_job_template
     licenses:
       - 'android-sdk-license-.+'
   script:
-    - flow check
+    - node_modules/.bin/flow check
     - cd android
     - ./gradlew assemble
 
@@ -53,7 +53,7 @@ _ios_job_template: &ios_job_template
   xcode_scheme: Setup
   xcode_destination: platform=iOS Simulator
   script:
-    - flow check
+    - node_modules/.bin/flow check
     - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Setup -project ios/Setup.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
 
 matrix:
