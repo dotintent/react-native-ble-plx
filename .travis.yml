@@ -21,7 +21,7 @@ _integration_job_template: &integration_job_template
 _android_job_template: &android_job_template
   <<: *integration_job_template
   language: android
-  jdk: openjdk7
+  jdk: openjdk8
   android:
     components:
       - tools
