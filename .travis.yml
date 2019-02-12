@@ -11,6 +11,7 @@ _integration_job_template: &integration_job_template
   install:
     - gem install xcodeproj
     - npm install -g react-native-cli
+    - npm install -g yarn
   before_script:
     - cd examples
     - bash makeProject.sh $RN_VERSION
