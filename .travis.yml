@@ -5,9 +5,10 @@ stages:
 _integration_job_template: &integration_job_template
   stage: integration
   cache: npm
-  install:
+  before_install:
     - nvm install 11
     - node --version
+  install:
     - gem install xcodeproj
     - npm install -g react-native-cli
   before_script:
@@ -19,8 +20,7 @@ _integration_job_template: &integration_job_template
 _android_job_template: &android_job_template
   <<: *integration_job_template
   language: android
-  jdk: oraclejdk8
-  dist: precise
+  jdk: openjdk7
   android:
     components:
       - tools
@@ -38,9 +38,6 @@ _android_job_template: &android_job_template
       - extra-android-support
     licenses:
       - 'android-sdk-license-.+'
-  before_install:
-    - sudo apt-get update
-    - sudo apt-get install -y libc6-dev
   script:
     - node_modules/.bin/flow check
     - cd android
