@@ -10,6 +10,7 @@ _integration_job_template: &integration_job_template
     - node --version
   install:
     - gem install xcodeproj
+    - npm install
     - npm install -g react-native-cli
   before_script:
     - cd examples
