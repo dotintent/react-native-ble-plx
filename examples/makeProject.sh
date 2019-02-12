@@ -6,7 +6,7 @@ RN_VERSION=$1
 
 react-native init --version="$RN_VERSION" Setup
 cd Setup
-yarn add ../..
+npm install ../.. --save
 react-native link react-native-ble-plx
 bash ../applyPatches.sh $RN_VERSION
 cd ..
