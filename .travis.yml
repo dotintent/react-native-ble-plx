@@ -47,7 +47,7 @@ _android_job_template: &android_job_template
     - node_modules/.bin/flow check
     - cd android
     - ./gradlew assemble
-    - bash ../runAndroidEmulator.sh
+    - bash ../../runAndroidEmulator.sh
     - npm start &
     - ./gradlew connectedAndroidTest
 
