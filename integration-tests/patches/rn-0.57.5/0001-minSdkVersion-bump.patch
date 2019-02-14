@@ -4,13 +4,13 @@ Date: Tue, 5 Feb 2019 23:16:05 +0100
 Subject: [PATCH] minSdkVersion bump
 
 ---
- examples/Setup/android/build.gradle | 2 +-
+ integration-tests/Setup/android/build.gradle | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/examples/Setup/android/build.gradle b/examples/Setup/android/build.gradle
+diff --git a/integration-tests/Setup/android/build.gradle b/integration-tests/Setup/android/build.gradle
 index 85d8f2f..27debd1 100644
---- a/examples/Setup/android/build.gradle
-+++ b/examples/Setup/android/build.gradle
+--- a/integration-tests/Setup/android/build.gradle
++++ b/integration-tests/Setup/android/build.gradle
 @@ -3,7 +3,7 @@
  buildscript {
      ext {

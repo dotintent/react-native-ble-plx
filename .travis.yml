@@ -13,7 +13,7 @@ _integration_job_template: &integration_job_template
     - npm install
     - npm install -g react-native-cli
   before_script:
-    - cd examples
+    - cd integration-tests
     - bash makeProject.sh $RN_VERSION
     - cd Setup
     - bash ../installFlow.sh
@@ -50,7 +50,7 @@ _ios_job_template: &ios_job_template
   language: objective-c
   os: osx
   osx_image: xcode10.1
-  xcode_project: examples/Setup/ios/Setup.xcodeproj
+  xcode_project: integration-tests/Setup/ios/Setup.xcodeproj
   xcode_scheme: Setup
   xcode_destination: platform=iOS Simulator
   script:
