@@ -1,0 +1,12 @@
+{
+  "name": "on-device-diagnose",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Output test status as a visual component to be detected by UI testing frameworks",
+  "main": "src/index.js",
+  "peerDependencies": {
+    "react-native": "*"
+  },
+  "author": "Piotrek Dubiel <piotr.dubiel@polidea.com>",
+  "license": "MIT"
+}

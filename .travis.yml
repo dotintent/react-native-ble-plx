@@ -40,12 +40,16 @@ _android_job_template: &android_job_template
       - extra-android-m2repository
       - extra-google-m2repository
       - extra-android-support
+      - sys-img-x86-android-26
     licenses:
       - 'android-sdk-license-.+'
   script:
     - node_modules/.bin/flow check
     - cd android
     - ./gradlew assemble
+    - bash ../runAndroidEmulator.sh
+    - npm start &
+    - ./gradlew connectedAndroidTest
 
 _ios_job_template: &ios_job_template
   <<: *integration_job_template
