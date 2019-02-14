@@ -3,9 +3,6 @@
   "version": "1.0.2",
   "description": "React Native Bluetooth Low Energy library",
   "main": "index.js",
-  "directories": {
-    "example": "examples"
-  },
   "scripts": {
     "test": "jest",
     "lint": "flow && documentation lint index.js",
@@ -44,7 +41,7 @@
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
-      "<rootDir>/examples"
+      "<rootDir>/integration-tests"
     ]
   },
   "author": "Polidea",
