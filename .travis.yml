@@ -1,6 +1,7 @@
 stages:
-  - self-test
-  - integration
+  - name: self-test
+  - name: integration
+    if: branch = master OR type = pull_request
 
 _integration_job_template: &integration_job_template
   stage: integration
