@@ -14,6 +14,7 @@ pushd $PROJECT_NAME
 yarn add ../..                          # install react-native-ble-plx
 react-native link react-native-ble-plx  # and link it
 rm -rf node_modules/react-native-ble-plx/node_modules
+rm -rf node_modules/react-native-ble-plx/integration-tests
 
 FLOW_VERSION=$(../scripts/get-flow-version)
 popd
