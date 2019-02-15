@@ -41,9 +41,10 @@ _android_job_template: &android_job_template
     licenses:
       - 'android-sdk-license-.+'
   script:
-    - npm run lint
-    - rm -rf node_modules
-    - cd integration-tests/Setup/android
+    - cd integration-tests/Setup
+    - node_modules/.bin/flow check
+    - rm -rf ../../node_modules
+    - cd android
     - ./gradlew assemble
     - bash ../../scripts/runAndroidEmulator.sh
     - npm start &
@@ -58,9 +59,9 @@ _ios_job_template: &ios_job_template
   xcode_scheme: Setup
   xcode_destination: platform=iOS Simulator
   script:
-    - npm run lint
-    - rm -rf node_modules
     - cd integration-tests/Setup
+    - node_modules/.bin/flow check
+    - rm -rf ../../node_modules
     - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Setup -project ios/Setup.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
 
 matrix:

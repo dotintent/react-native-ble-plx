@@ -17,25 +17,11 @@ rm -rf node_modules/react-native-ble-plx/node_modules
 rm -rf node_modules/react-native-ble-plx/integration-tests
 
 FLOW_VERSION=$(../scripts/get-flow-version)
+npm install flow-bin@$FLOW_VERSION
+
 popd
 
 scripts/patch-project $RN_VERSION
 scripts/enable-swift $PROJECT_NAME
 
 popd
-
-CURRENT_FLOW_VERSION=$(integration-tests/scripts/get-flow-version)
-
-echo "Change flow $CURRENT_FLOW_VERSION -> $FLOW_VERSION..."
-# replace flow version with what's in generated project
-awk -v current="$CURRENT_FLOW_VERSION" -v new="$FLOW_VERSION" '
-  function escape_pattern(pat,   safe) {
-    safe = pat
-    gsub(/[][^$.*?+{}\\()|]/, "\\\\&", safe)
-    return safe
-  }
-  { gsub(escape_pattern(current, ""), new); print }' .flowconfig > .flowconfig.new
-cat .flowconfig.new
-mv .flowconfig.new .flowconfig
-
-npm install flow-bin@$FLOW_VERSION
