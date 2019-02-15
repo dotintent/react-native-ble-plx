@@ -15,11 +15,7 @@ _integration_job_template: &integration_job_template
     - npm install
     - npm install -g react-native-cli
   before_script:
-    - cd integration-tests
-    - bash makeProject.sh $RN_VERSION
-    - cd Setup
-    - bash ../installFlow.sh
-    - rm -rf ../../node_modules
+    - integration-tests/scripts/make-project $RN_VERSION integration-tests/Setup
 
 _android_job_template: &android_job_template
   <<: *integration_job_template
@@ -44,10 +40,11 @@ _android_job_template: &android_job_template
     licenses:
       - 'android-sdk-license-.+'
   script:
-    - node_modules/.bin/flow check
-    - cd android
+    - npm run lint
+    - rm -rf node_modules
+    - cd integration-tests/Setup/android
     - ./gradlew assemble
-    - bash ../../runAndroidEmulator.sh
+    - bash ../../scripts/runAndroidEmulator.sh
     - npm start &
     - ./gradlew connectedAndroidTest
 
@@ -60,7 +57,9 @@ _ios_job_template: &ios_job_template
   xcode_scheme: Setup
   xcode_destination: platform=iOS Simulator
   script:
-    - node_modules/.bin/flow check
+    - npm run lint
+    - rm -rf node_modules
+    - cd integration-tests/Setup
     - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Setup -project ios/Setup.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
 
 matrix:
