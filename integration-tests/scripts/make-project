@@ -11,10 +11,8 @@ pushd $DESTINATION
 react-native init --version="$RN_VERSION" $PROJECT_NAME
 
 pushd $PROJECT_NAME
-yarn add ../..                          # install react-native-ble-plx
+npm install ../.. --save                # install react-native-ble-plx
 react-native link react-native-ble-plx  # and link it
-rm -rf node_modules/react-native-ble-plx/node_modules
-rm -rf node_modules/react-native-ble-plx/integration-tests
 
 FLOW_VERSION=$(../scripts/get-flow-version)
 npm install flow-bin@$FLOW_VERSION
