@@ -40,7 +40,7 @@ _android_job_template: &android_job_template
       - extra-android-m2repository
       - extra-google-m2repository
       - extra-android-support
-      - sys-img-armeabi-v7a-android-28
+      - sys-img-armeabi-v7a-android-22
     licenses:
       - 'android-sdk-license-.+'
   script:
