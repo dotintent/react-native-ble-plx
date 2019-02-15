@@ -17,6 +17,8 @@ react-native link react-native-ble-plx  # and link it
 FLOW_VERSION=$(../scripts/get-flow-version)
 npm install flow-bin@$FLOW_VERSION
 
+rm -rf ../../node_modules
+
 popd
 
 scripts/patch-project $RN_VERSION
