@@ -1,0 +1,383 @@
+From 52d2ba945a02d205d3bd486689a33f41a08a386d Mon Sep 17 00:00:00 2001
+From: Piotr Dubiel <piotr.dubiel@polidea.com>
+Date: Fri, 15 Feb 2019 14:38:44 +0100
+Subject: [PATCH] Add espresso test
+
+---
+ integration-tests/Setup/App.js                     |  73 ++++++-------
+ integration-tests/Setup/TestCase.js                |  39 +++++++
+ integration-tests/Setup/TestSuite.js               |  23 +++++
+ integration-tests/Setup/android/app/build.gradle   |   5 +
+ .../androidTest/java/com/setup/BleManagerTest.java |  39 +++++++
+ .../java/com/setup/EspressoViewFinder.java         | 113 +++++++++++++++++++++
+ integration-tests/Setup/utils.js                   |   9 ++
+ 7 files changed, 257 insertions(+), 44 deletions(-)
+ create mode 100644 integration-tests/Setup/TestCase.js
+ create mode 100644 integration-tests/Setup/TestSuite.js
+ create mode 100644 integration-tests/Setup/android/app/src/androidTest/java/com/setup/BleManagerTest.java
+ create mode 100644 integration-tests/Setup/android/app/src/androidTest/java/com/setup/EspressoViewFinder.java
+ create mode 100644 integration-tests/Setup/utils.js
+
+diff --git a/integration-tests/Setup/App.js b/integration-tests/Setup/App.js
+index bb48232..6b5a116 100644
+--- a/integration-tests/Setup/App.js
++++ b/integration-tests/Setup/App.js
+@@ -1,50 +1,35 @@
+-/**
+- * Sample React Native App
+- * https://github.com/facebook/react-native
+- *
+- * @format
+- * @flow
+- * @lint-ignore-every XPLATJSCOPYRIGHT1
+- */
++// @flow
+ 
+-import React, {Component} from 'react';
+-import {Platform, StyleSheet, Text, View} from 'react-native';
++import React from 'react'
++import TestSuite from './TestSuite'
++import { BleManager } from 'react-native-ble-plx'
+ 
+-const instructions = Platform.select({
+-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+-  android:
+-    'Double tap R on your keyboard to reload,\n' +
+-    'Shake or press menu button for dev menu',
+-});
+-
+-type Props = {};
+-export default class App extends Component<Props> {
++export default class Diagnose extends React.Component<{}> {
+   render() {
+     return (
+-      <View style={styles.container}>
+-        <Text style={styles.welcome}>Welcome to React Native!</Text>
+-        <Text style={styles.instructions}>To get started, edit App.js</Text>
+-        <Text style={styles.instructions}>{instructions}</Text>
+-      </View>
+-    );
++      <TestSuite
++        testCases={[
++          {
++            name: 'Initialize BleManager',
++            run: () => {
++              const unsupportedState = new Promise((resolve, reject) => {
++                if (!BleManager) {
++                  reject('BleManager is null!')
++                }
++                const manager: BleManager = new BleManager()
++                manager.onStateChange(state => {
++                  if (state === 'Unsupported') {
++                    resolve()
++                  } else if (state !== 'Unknown') {
++                    reject('Unexpected state: ' + state)
++                  }
++                }, true)
++              })
++              return unsupportedState
++            }
++          }
++        ]}
++      />
++    )
+   }
+ }
+-
+-const styles = StyleSheet.create({
+-  container: {
+-    flex: 1,
+-    justifyContent: 'center',
+-    alignItems: 'center',
+-    backgroundColor: '#F5FCFF',
+-  },
+-  welcome: {
+-    fontSize: 20,
+-    textAlign: 'center',
+-    margin: 10,
+-  },
+-  instructions: {
+-    textAlign: 'center',
+-    color: '#333333',
+-    marginBottom: 5,
+-  },
+-});
+diff --git a/integration-tests/Setup/TestCase.js b/integration-tests/Setup/TestCase.js
+new file mode 100644
+index 0000000..f95b056
+--- /dev/null
++++ b/integration-tests/Setup/TestCase.js
+@@ -0,0 +1,39 @@
++// @flow
++
++import React from 'react'
++import { View, Text } from 'react-native'
++import { addAccessibilityLabel } from './utils'
++
++export type TestCaseType = { name: string, run: <T>() => Promise<T> }
++
++type Props = TestCaseType
++
++type State = {
++  status: 'pending' | 'success' | 'failure'
++}
++
++export default class TestCase extends React.Component<Props, State> {
++  state = {
++    status: 'pending'
++  }
++
++  async componentDidMount() {
++    const { run } = this.props
++    try {
++      await run()
++      this.setState({ status: 'success' })
++    } catch (e) {
++      this.setState({ status: 'failure' })
++    }
++  }
++
++  render() {
++    const { name } = this.props
++    const { status } = this.state
++    return (
++      <View {...addAccessibilityLabel(`TestCase-${name}`)}>
++        <Text {...addAccessibilityLabel('TestCaseStatus')}>{status}</Text>
++      </View>
++    )
++  }
++}
+diff --git a/integration-tests/Setup/TestSuite.js b/integration-tests/Setup/TestSuite.js
+new file mode 100644
+index 0000000..240cdd3
+--- /dev/null
++++ b/integration-tests/Setup/TestSuite.js
+@@ -0,0 +1,23 @@
++// @flow
++
++import React from 'react'
++import { View } from 'react-native'
++import { addAccessibilityLabel } from './utils'
++import TestCase, { type TestCaseType } from './TestCase'
++
++type Props = {
++  testCases: Array<TestCaseType>
++}
++
++export default class TestSuite extends React.Component<Props> {
++  render() {
++    const { testCases } = this.props
++    return (
++      <View {...addAccessibilityLabel('TestSuite')}>
++        {testCases.map(([testName, testFn]) => (
++          <TestCase key={`testCase-${testName}`} name={testName} run={testFn} />
++        ))}
++      </View>
++    )
++  }
++}
+diff --git a/integration-tests/Setup/android/app/build.gradle b/integration-tests/Setup/android/app/build.gradle
+index 1f01fa3..207d72c 100644
+--- a/integration-tests/Setup/android/app/build.gradle
++++ b/integration-tests/Setup/android/app/build.gradle
+@@ -103,6 +103,7 @@ android {
+         targetSdkVersion rootProject.ext.targetSdkVersion
+         versionCode 1
+         versionName "1.0"
++        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+     }
+     splits {
+         abi {
+@@ -138,6 +139,10 @@ dependencies {
+     implementation fileTree(dir: "libs", include: ["*.jar"])
+     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+     implementation "com.facebook.react:react-native:+"  // From node_modules
++    testImplementation 'junit:junit:4.12'
++    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
++    androidTestImplementation 'androidx.test:runner:1.1.0'
++    androidTestImplementation 'androidx.test:rules:1.1.0'
+ }
+ 
+ // Run this once to be able to run the application with BUCK
+diff --git a/integration-tests/Setup/android/app/src/androidTest/java/com/setup/BleManagerTest.java b/integration-tests/Setup/android/app/src/androidTest/java/com/setup/BleManagerTest.java
+new file mode 100644
+index 0000000..b165df9
+--- /dev/null
++++ b/integration-tests/Setup/android/app/src/androidTest/java/com/setup/BleManagerTest.java
+@@ -0,0 +1,39 @@
++package com.setup;
++
++import org.hamcrest.core.StringStartsWith;
++import org.junit.Before;
++import org.junit.Rule;
++import org.junit.Test;
++import org.junit.runner.RunWith;
++
++import androidx.test.rule.ActivityTestRule;
++import androidx.test.runner.AndroidJUnit4;
++
++import static androidx.test.espresso.Espresso.onView;
++import static androidx.test.espresso.assertion.ViewAssertions.matches;
++import static androidx.test.espresso.assertion.ViewAssertions.selectedDescendantsMatch;
++import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
++import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
++import static androidx.test.espresso.matcher.ViewMatchers.withText;
++import static com.setup.EspressoViewFinder.waitForDisplayed;
++import static org.hamcrest.core.AllOf.allOf;
++
++
++@RunWith(AndroidJUnit4.class)
++public class BleManagerTest {
++
++
++    @Rule
++    public ActivityTestRule<MainActivity> mActivityRule
++            = new ActivityTestRule<>(MainActivity.class);
++
++    @Test
++    public void verifyTestSuite() {
++        waitForDisplayed(withContentDescription("TestSuite")).check(matches(isDisplayed()));
++        onView(withContentDescription(new StringStartsWith("TestCase-")))
++                .check(selectedDescendantsMatch(
++                        withContentDescription("TestCaseStatus"),
++                        withText("success")));
++
++    }
++}
+diff --git a/integration-tests/Setup/android/app/src/androidTest/java/com/setup/EspressoViewFinder.java b/integration-tests/Setup/android/app/src/androidTest/java/com/setup/EspressoViewFinder.java
+new file mode 100644
+index 0000000..2387ed4
+--- /dev/null
++++ b/integration-tests/Setup/android/app/src/androidTest/java/com/setup/EspressoViewFinder.java
+@@ -0,0 +1,113 @@
++package com.setup;
++
++import android.graphics.Rect;
++import android.view.View;
++import android.view.ViewGroup;
++
++import org.hamcrest.Description;
++import org.hamcrest.Matcher;
++import org.hamcrest.TypeSafeMatcher;
++
++import java.util.concurrent.TimeoutException;
++
++import androidx.test.espresso.PerformException;
++import androidx.test.espresso.UiController;
++import androidx.test.espresso.ViewAction;
++import androidx.test.espresso.ViewInteraction;
++import androidx.test.espresso.matcher.ViewMatchers;
++import androidx.test.espresso.util.HumanReadables;
++import androidx.test.espresso.util.TreeIterables;
++
++import static androidx.test.espresso.Espresso.onView;
++import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
++import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
++
++public class EspressoViewFinder {
++    private static long CHECK_INTERVAL = 50L;
++    private static long TIMEOUT_MS = 10 * 1000L;
++
++
++    static ViewInteraction waitForDisplayed(Matcher<View> viewMatcher) {
++
++        return onView(isRoot()).perform(createWaitForDisplayedViewAction(viewMatcher, TIMEOUT_MS));
++    }
++
++    private static ViewAction createWaitForDisplayedViewAction(final Matcher<View> viewMatcher,
++                                                               final Long timeOut) {
++        return new ViewAction() {
++            @Override
++            public Matcher<View> getConstraints() {
++                return isRoot();
++            }
++
++            @Override
++            public String getDescription() {
++                return "waitForDisplayed on viewMatcher <$viewMatcher> without timeOut $timeOut ms.";
++            }
++
++            @Override
++            public void perform(UiController uiController, View view) {
++                uiController.loopMainThreadUntilIdle();
++
++                boolean found = waitForView(uiController, view);
++
++                if (!found) {
++                    throw createPerformException(view);
++                }
++            }
++
++            private boolean waitForView(UiController uiController, View view) {
++
++                long timeOutTimeStamp = System.currentTimeMillis() + timeOut;
++                do {
++                    // find view with required matcher:
++                    for (View child : TreeIterables.breadthFirstViewTraversal(view)) {
++                        if (viewMatcher.matches(child) && isDisplayed(child)) {
++                            return true;
++                        }
++                    }
++                    uiController.loopMainThreadForAtLeast(CHECK_INTERVAL);
++                } while (System.currentTimeMillis() < timeOutTimeStamp);
++
++                return false;
++            }
++
++            private PerformException createPerformException(View view) {
++                return new PerformException.Builder()
++                        .withActionDescription(this.getDescription())
++                        .withViewDescription(HumanReadables.describe(view))
++                        .withCause(new TimeoutException())
++                        .build();
++            }
++        };
++    }
++
++
++    private static boolean isDisplayed(View view) {
++        return view.getGlobalVisibleRect(new Rect()) &&
++                withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE).matches(view);
++    }
++
++    /**
++     * Finds a matcher's view's child at the given index.
++     */
++    Matcher<View> childAtIndex(final Matcher<View> parentMatcher, final int childPosition) {
++        return new TypeSafeMatcher<View>() {
++            @Override
++            protected boolean matchesSafely(View view) {
++                if (view.getParent() instanceof ViewGroup) {
++                    return parentMatcher.matches(view.getParent());
++                }
++
++                ViewGroup group = (ViewGroup) view.getParent();
++                return parentMatcher.matches(view.getParent()) && group.getChildAt(childPosition) == view;
++            }
++
++            @Override
++            public void describeTo(Description description) {
++                description.appendText("childAtIndex $childPosition of type $parentMatcher");
++            }
++        };
++    }
++
++}
+diff --git a/integration-tests/Setup/utils.js b/integration-tests/Setup/utils.js
+new file mode 100644
+index 0000000..7323b06
+--- /dev/null
++++ b/integration-tests/Setup/utils.js
+@@ -0,0 +1,9 @@
++// @flow
++
++import { Platform } from 'react-native'
++
++export const addAccessibilityLabel = (id: string) =>
++  Platform.select({
++    ios: { testID: id },
++    android: { accessible: true, accessibilityLabel: id }
++  })
+-- 
+2.10.0
+
