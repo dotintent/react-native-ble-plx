@@ -2,7 +2,7 @@ stages:
   - name: self-test
     if: type = push
   - name: integration
-    if: branch = master OR type = pull_request OR branch = dev_ops/travis
+    if: branch = master OR type = pull_request OR branch = dev_ops/runtime_tests
 
 _integration_job_template: &integration_job_template
   stage: integration
