@@ -1,5 +1,6 @@
 stages:
   - name: self-test
+    if: type = push
   - name: integration
     if: branch = master OR type = pull_request
 
