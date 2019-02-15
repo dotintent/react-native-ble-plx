@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cp ../scripts/test-utils/{App.js,TestCase.js,TestSuite.js,utils.js} .
+cp -r ../scripts/test-utils/androidTest android/app/src/
+
+git apply ../scripts/test-utils/gradle-espresso-config.patch
