@@ -22,32 +22,35 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-# Android/IJ
+# Android/IntelliJ
 #
+build/
 .idea
 .gradle
-gradlew
-*.iml
-*.swp
-*.bat
 local.properties
-android/gradle/wrapper
+*.iml
 
 # node.js
 #
 node_modules/
-npm-debug.log.*
+npm-debug.log
+yarn-error.log
 
 # BUCK
 buck-out/
 \.buckd/
-android/app/libs
-android/keystores/debug.keystore
+*.keystore
 
-# iOS
-ios/Pods
-ios/Podfile.lock
-Carthage
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/
 
-# IDE
-.vscode/
+*/fastlane/report.xml
+*/fastlane/Preview.html
+*/fastlane/screenshots
+
+# Bundle artifact
+*.jsbundle
