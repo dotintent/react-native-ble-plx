@@ -169,8 +169,8 @@ index 0000000..240cdd3
 +    const { testCases } = this.props
 +    return (
 +      <View {...addAccessibilityLabel('TestSuite')}>
-+        {testCases.map(([testName, testFn]) => (
-+          <TestCase key={`testCase-${testName}`} name={testName} run={testFn} />
++        {testCases.map(({ name, run }) => (
++          <TestCase key={`testCase-${name}`} name={name} run={run} />
 +        ))}
 +      </View>
 +    )

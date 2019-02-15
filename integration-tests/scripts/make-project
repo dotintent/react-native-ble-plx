@@ -11,8 +11,9 @@ pushd $DESTINATION
 react-native init --version="$RN_VERSION" $PROJECT_NAME
 
 pushd $PROJECT_NAME
-npm install ../.. --save                # install react-native-ble-plx
+yarn add ../..                          # install react-native-ble-plx
 react-native link react-native-ble-plx  # and link it
+rm -rf node_modules/react-native-ble-plx/node_modules
 
 FLOW_VERSION=$(../scripts/get-flow-version)
 popd
@@ -21,5 +22,19 @@ scripts/patch-project $RN_VERSION
 scripts/enable-swift $PROJECT_NAME
 
 popd
+
+CURRENT_FLOW_VERSION=$(integration-tests/scripts/get-flow-version)
+
+echo "Change flow $CURRENT_FLOW_VERSION -> $FLOW_VERSION..."
+# replace flow version with what's in generated project
+awk -v current="$CURRENT_FLOW_VERSION" -v new="$FLOW_VERSION" '
+  function escape_pattern(pat,   safe) {
+    safe = pat
+    gsub(/[][^$.*?+{}\\()|]/, "\\\\&", safe)
+    return safe
+  }
+  { gsub(escape_pattern(current, ""), new); print }' .flowconfig > .flowconfig.new
+cat .flowconfig.new
+mv .flowconfig.new .flowconfig
 
 npm install flow-bin@$FLOW_VERSION
