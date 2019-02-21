@@ -1093,19 +1093,19 @@ public class BleModule extends ReactContextBaseJavaModule {
     age = age < 10 ? 10 : age;
     age = age > 98 ? 98 : age;
 
-    data[0] = 0x81
-    data[1] = 0x00
-    data[2] = 0x81
-    data[3] = 0x00
-    data[4] = 0x00
-    data[5] = 0x00
-    data[6] = 0x20
-    data[7] = 0x00
+    data[0] = (byte) 0x81;
+    data[1] = 0x00;
+    data[2] = (byte) 0x81;
+    data[3] = 0x00;
+    data[4] = 0x00;
+    data[5] = 0x00;
+    data[6] = 0x20;
+    data[7] = 0x00;
     data[8] =  (byte) height;
     data[9] =  (byte) age;
     data[10] = (byte) (gender.equalsIgnoreCase("male") ? 0 : 1);
-    data[11] = 0x00
-    data[12] = 0x00
+    data[11] = 0x00;
+    data[12] = 0x00;
 
     writeProperCharacteristicWithValue(characteristic, data, false, transactionId, promise);
   }
@@ -1123,13 +1123,13 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     byte[] data = new byte[8];
                                     
-    data[0] = 0x41
-    data[1] = 0x00
-    data[2] = 0x84
-    data[3] = 0x7F
-    data[4] = 0x44
-    data[5] = 0x3C
-    data[6] = 0xFB
+    data[0] = 0x41;
+    data[1] = 0x00;
+    data[2] = (byte) 0x84;
+    data[3] = 0x7F;
+    data[4] = 0x44;
+    data[5] = 0x3C;
+    data[6] = (byte) 0xFB;
     data[7] = (byte) (measurement.equalsIgnoreCase("metric") ? 0 : 1);
 
     writeProperCharacteristicWithValue(characteristic, data, false, transactionId, promise);
@@ -1150,7 +1150,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     data[0] = 0x41
     data[1] = 0x00
-    data[2] = 0x82
+    data[2] = (byte)0x82
     data[3] = 0x00
     data[4] = 0x00
     data[5] = 0x00
