@@ -322,10 +322,12 @@ RCT_EXPORT_METHOD(setUserProfileToScales:(NSString*)deviceIdentifier
 }
 
 RCT_EXPORT_METHOD(synchronizeAlternativeScale:(NSString*)deviceIdentifier
+                                measurement:  (NSString*)measurement
                                  transactionId:(NSString*)transactionId
                                       resolver:(RCTPromiseResolveBlock)resolve
                                       rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager synchronizeAlternativeScale:deviceIdentifier
+                              measurement:measurement
                              transactionId:transactionId
                                    resolve:resolve
                                     reject:reject];

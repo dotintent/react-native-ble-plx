@@ -87,6 +87,12 @@ public class BleModule extends ReactContextBaseJavaModule {
   // Alternative Scale Read Characteristic
   private static final String alternativeScaleReadCharacteristic = "0000fff3-0000-1000-8000-00805f9b34fb";
 
+  // Alternative Scale Final Read Characteristic
+  private static final String alternativeScaleReadFinalCharacteristic = "0000fff1-0000-1000-8000-00805f9b34fb";
+
+  // Alternative Scale Write Characteristic
+  private static final String alternativeScaleWriteCharacteristic = "0000fff2-0000-1000-8000-00805f9b34fb";
+
   // Tracker Write Characteristic
   private static final String trackerWriteCharacteristic = "0000fff6-0000-1000-8000-00805f9b34fb";
 
@@ -1070,6 +1076,89 @@ public class BleModule extends ReactContextBaseJavaModule {
     writeProperCharacteristicWithValue(characteristic, message, true, transactionId, promise);
   }
 
+    // Scale
+  @ReactMethod
+  public void setUserProfileToAlternativeScale(final String deviceId, int height, int age, String gender,
+      final String transactionId, final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        alternativeScaleWriteCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    byte[] data = new byte[13];
+    height = height < 100 ? 100 : height;
+    height = height > 218 ? 218 : height;
+    age = age < 10 ? 10 : age;
+    age = age > 98 ? 98 : age;
+
+    data[0] = (byte) 0x81;
+    data[1] = 0x00;
+    data[2] = (byte) 0x81;
+    data[3] = 0x00;
+    data[4] = 0x00;
+    data[5] = 0x00;
+    data[6] = 0x20;
+    data[7] = 0x00;
+    data[8] =  (byte) height;
+    data[9] =  (byte) age;
+    data[10] = (byte) (gender.equalsIgnoreCase("male") ? 0 : 1);
+    data[11] = 0x00;
+    data[12] = 0x00;
+
+    writeProperCharacteristicWithValue(characteristic, data, false, transactionId, promise);
+  }
+
+      // Scale
+  @ReactMethod
+  public void synchronizeAlternativeScale(final String deviceId, String measurement,
+      final String transactionId, final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        alternativeScaleWriteCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    byte[] data = new byte[8];
+                                    
+    data[0] = 0x41;
+    data[1] = 0x00;
+    data[2] = (byte) 0x84;
+    data[3] = 0x7F;
+    data[4] = 0x44;
+    data[5] = 0x3C;
+    data[6] = (byte) 0xFB;
+    data[7] = (byte) (measurement.equalsIgnoreCase("metric") ? 0 : 1);
+
+    writeProperCharacteristicWithValue(characteristic, data, false, transactionId, promise);
+  }
+
+        // Scale
+  @ReactMethod
+  public void selectProfileAlternativeScale(final String deviceId,
+      final String transactionId, final Promise promise) {
+
+    final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
+        alternativeScaleWriteCharacteristic, promise);
+    if (characteristic == null) {
+      return;
+    }
+
+    byte[] data = new byte[7];
+
+    data[0] = 0x41
+    data[1] = 0x00
+    data[2] = (byte)0x82
+    data[3] = 0x00
+    data[4] = 0x00
+    data[5] = 0x00
+    data[6] = 0x20
+
+    writeProperCharacteristicWithValue(characteristic, data, false, transactionId, promise);
+  }
+
   // Tracker
 
   @ReactMethod
@@ -1190,7 +1279,7 @@ public class BleModule extends ReactContextBaseJavaModule {
   public void monitorAlternativeScaleFinalResponse(final String deviceId, final String transactionId, final Promise promise) {
 
     final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,
-        alternativeScaleReadCharacteristic, promise);
+        alternativeScaleReadFinalCharacteristic, promise);
     if (characteristic == null) {
       return;
     }
