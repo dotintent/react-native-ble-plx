@@ -909,10 +909,11 @@ public class BleClientManager : NSObject {
 
                     @objc
     public func synchronizeAlternativeScale(  _ deviceIdentifier: String,
+                                                    measurement: String,
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
-        
+        let measurementType = (measurement == "metric") ? 0 : 1
         var data = getEmptyRequestScales(count: 8)                                                    
         data[0] = 0x41
         data[1] = 0x00
@@ -921,7 +922,7 @@ public class BleClientManager : NSObject {
         data[4] = 0x44
         data[5] = 0x3C
         data[6] = 0xFB
-        data[7] = 0x00
+        data[7] = UInt8(measurementType)
 
         let value = convertScaleFullArray(data: data)
 

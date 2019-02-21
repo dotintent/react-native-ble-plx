@@ -803,6 +803,7 @@ export class BleManager {
 
   async synchronizeAlternativeScale(
     deviceIdentifier: DeviceId,
+    measurement: string,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
@@ -811,6 +812,7 @@ export class BleManager {
     const nativeCharacteristic = await this._callPromise(
       BleModule.synchronizeAlternativeScale(
         deviceIdentifier,
+        measurement,
         transactionId
       )
     )
