@@ -100,3 +100,9 @@ matrix:
     - <<: *ios_job_template
       name: 'Integrate with RN 0.58.3 iOS'
       env: RN_VERSION=0.58.3
+    - <<: *android_job_template
+      name: 'Integrate with RN next Android'
+      env: RN_VERSION=next
+    - <<: *ios_job_template
+      name: 'Integrate with RN next iOS'
+      env: RN_VERSION=next
