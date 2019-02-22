@@ -25,10 +25,13 @@ What this library does NOT support:
 
 ## Recent Changes
 
-**1.0.2**
+**1.0.3**
 
-- Fix build error due to RN 58 changes.
-- Allow registering for notifications and indications on Android despite CCC descriptor being absent.
+- Integrated Travis CI to test library and check its integration with multiple RN versions.
+- Library's build.gradle prefers buildToolsVersion, compileSdkVersion & targetSdkVersion specified in rootProject.
+- Added Typescript definitions.
+- Removed outdated example project.
+- Updated dev dependencies and the README file.
 
 [All previous changes](CHANGELOG.md)
 

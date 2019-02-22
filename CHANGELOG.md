@@ -1,3 +1,11 @@
+**1.0.3**
+
+- Integrated Travis CI to test library and check its integration with multiple RN versions.
+- Library's build.gradle prefers buildToolsVersion, compileSdkVersion & targetSdkVersion specified in rootProject.
+- Added Typescript definitions.
+- Removed outdated example project.
+- Updated dev dependencies and the README file.
+
 **1.0.2**
 
 - Fix build error due to RN 58 changes.
