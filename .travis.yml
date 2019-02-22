@@ -29,6 +29,7 @@ _android_job_template: &android_job_template
       - build-tools-26.0.3
       - build-tools-27.0.3
       - build-tools-28.0.3
+      - android-22
       - android-25
       - android-26
       - android-27
