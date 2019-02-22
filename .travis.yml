@@ -50,7 +50,7 @@ _android_job_template: &android_job_template
     - cd android
     - bash -x ../../scripts/runAndroidEmulator.sh
     - npm start &
-    - ./gradlew build check
+    - ./gradlew build connectedAndroidTest
 
 _ios_job_template: &ios_job_template
   <<: *integration_job_template
