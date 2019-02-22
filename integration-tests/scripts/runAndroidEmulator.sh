@@ -5,7 +5,8 @@ EMULATOR_NAME=test
 echo "Creating emulator..."
 echo no | android create avd --force -n $EMULATOR_NAME -t android-22 --abi google_apis/armeabi-v7a
 echo "Booting emulator - $EMULATOR_NAME..."
-emulator -avd $EMULATOR_NAME -no-audio -no-window &
+emulator -avd $EMULATOR_NAME -no-window &
+sleep 2
 echo "Waiting for emulator..."
 android-wait-for-emulator
 echo "Disabling animations..."
