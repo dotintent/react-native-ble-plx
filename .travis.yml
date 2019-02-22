@@ -33,20 +33,23 @@ _android_job_template: &android_job_template
       - android-26
       - android-27
       - android-28
+      - extra-android-support
       - extra-android-m2repository
       - extra-google-m2repository
-      - extra-android-support
-      - sys-img-armeabi-v7a-android-22
+      - extra-google-google_play_services
+      - addon-google_apis-google-22
+      - sys-img-armeabi-v7a-google_apis-22
     licenses:
+      - 'android-sdk-preview-license-.+'
       - 'android-sdk-license-.+'
+      - 'google-gdk-license-.+'
   script:
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
     - cd android
-    - ./gradlew assemble
     - bash ../../scripts/runAndroidEmulator.sh
     - npm start &
-    - ./gradlew connectedAndroidTest
+    - ./gradlew build check
 
 _ios_job_template: &ios_job_template
   <<: *integration_job_template
