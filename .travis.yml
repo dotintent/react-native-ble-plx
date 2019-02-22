@@ -48,7 +48,7 @@ _android_job_template: &android_job_template
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
     - cd android
-    - bash ../../scripts/runAndroidEmulator.sh
+    - bash -x ../../scripts/runAndroidEmulator.sh
     - npm start &
     - ./gradlew build check
 
