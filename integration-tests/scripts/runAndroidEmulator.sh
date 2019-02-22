@@ -8,7 +8,7 @@ echo "Booting emulator - $EMULATOR_NAME..."
 emulator -avd $EMULATOR_NAME -no-window &
 sleep 2
 echo "Waiting for emulator..."
-./wait-for-emulator
+android-wait-for-emulator
 echo "Disabling animations..."
 adb shell settings put global window_animation_scale 0 &
 adb shell settings put global transition_animation_scale 0 &
