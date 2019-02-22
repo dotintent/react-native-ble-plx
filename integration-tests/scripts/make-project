@@ -19,7 +19,6 @@ npm install flow-bin@$FLOW_VERSION
 
 rm -rf ../../node_modules
 
-
 popd
 
 scripts/patch-project $RN_VERSION
