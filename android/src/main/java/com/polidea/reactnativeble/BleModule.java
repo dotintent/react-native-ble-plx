@@ -1148,13 +1148,13 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     byte[] data = new byte[7];
 
-    data[0] = 0x41
-    data[1] = 0x00
-    data[2] = (byte)0x82
-    data[3] = 0x00
-    data[4] = 0x00
-    data[5] = 0x00
-    data[6] = 0x20
+    data[0] = 0x41;
+    data[1] = 0x00;
+    data[2] = (byte)0x82;
+    data[3] = 0x00;
+    data[4] = 0x00;
+    data[5] = 0x00;
+    data[6] = 0x20;
 
     writeProperCharacteristicWithValue(characteristic, data, false, transactionId, promise);
   }
