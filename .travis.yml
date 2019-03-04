@@ -74,11 +74,11 @@ _android_job_template: &android_job_template
     #  - EMU_ADDITIONAL_OPTIONS="-camera-back none -camera-front none -memory 2048"
     - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window $EMU_ADDITIONAL_OPTIONS ${EMU_DEBUG} &
   script:
+    - ./scripts/wait-for-emulator
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
     - cd android
     - npm start &
-    - ./scripts/wait-for-emulator
     - adb shell input keyevent 82
     - adb devices
     - ./gradlew build connectedAndroidTest
