@@ -7,7 +7,6 @@ stages:
 env:
  global:
  - ANDROID_API=25
- - EMULATOR_API=24
  - ADB_INSTALL_TIMEOUT=5 # minutes
 
 _integration_job_template: &integration_job_template
@@ -36,7 +35,7 @@ _android_job_template: &android_job_template
       - build-tools-26.0.3
       - build-tools-27.0.3
       - build-tools-28.0.3
-      - android-24
+      - android-$ANDROID_API_LEVEL
       - android-25
       - android-26
       - android-27
@@ -47,7 +46,7 @@ _android_job_template: &android_job_template
       - extra-google-google_play_services
       - addon-google_apis-google-$ANDROID_API_LEVEL # google play services
       - sys-img-armeabi-v7a-addon-google_apis-google-$ANDROID_API_LEVEL
-      - sys-img-armeabi-v7a-android-$EMULATOR_API_LEVEL # the fix!
+      - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL # the fix!
     licenses:
       - 'android-sdk-preview-license-.+'
       - 'android-sdk-license-.+'
