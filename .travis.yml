@@ -72,14 +72,7 @@ _android_job_template: &android_job_template
     # emulator debug options
     #  - EMU_DEBUG="-debug all -logcat *:e -verbose -show-kernel"
     #  - EMU_ADDITIONAL_OPTIONS="-camera-back none -camera-front none -memory 2048"
-    - |
-      if [[ "${SYS}${ABI}" == "25google_apis;armeabi-v7a" || "${SYS}${ABI}" == "24google_apis;armeabi-v7a" ]]; then
-        EMU_PARAMS="-no-window -gpu swiftshader"
-      else
-        EMU_PARAMS="-no-boot-anim -gpu off"
-      fi
-      # use the absolute emulator path in case older version installed (on default path)
-      $ANDROID_HOME/emulator/emulator -avd test -no-audio $EMU_PARAMS $EMU_ADDITIONAL_OPTIONS ${EMU_DEBUG} &
+    - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window $EMU_ADDITIONAL_OPTIONS ${EMU_DEBUG} &
   script:
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
@@ -87,6 +80,7 @@ _android_job_template: &android_job_template
     - npm start &
     - ./scripts/wait-for-emulator
     - adb shell input keyevent 82
+    - adb devices
     - ./gradlew build connectedAndroidTest
 
 _ios_job_template: &ios_job_template
