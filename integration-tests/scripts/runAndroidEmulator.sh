@@ -2,8 +2,8 @@
 
 EMULATOR_NAME=test
 
-echo "Creating emulator..."
-echo no | android create avd --force -n $EMULATOR_NAME -t android-25 --abi google_apis/armeabi-v7a
+echo "Creating emulator $SYS/$ABI..."
+echo no | android create avd --force -n $EMULATOR_NAME -k "system-images;android-$SYS;$ABI"
 echo "Booting emulator - $EMULATOR_NAME..."
 QEMU_AUDIO_DRV=none emulator -avd $EMULATOR_NAME -no-window &
 sleep 2
