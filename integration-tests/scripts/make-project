@@ -15,14 +15,14 @@ react-native init --version="$RN_VERSION" $PROJECT_NAME
 
 pushd $PROJECT_NAME
 
-# install react-native-ble-plx
-tar -xzvf ../../react-native-ble-plx-*.tgz
-mv package node_modules/react-native-ble-plx
+FLOW_VERSION=$(../scripts/get-flow-version)
+yarn add flow-bin@$FLOW_VERSION --dev
+
+# install react-native-ble-plx using the packed tar to not create symlinks
+tar -xf ../../react-native-ble-plx-*.tgz
+cp -r package node_modules/react-native-ble-plx
 
 react-native link react-native-ble-plx  # and link it
-
-FLOW_VERSION=$(../scripts/get-flow-version)
-npm install flow-bin@$FLOW_VERSION
 
 rm -rf ../../node_modules
 
