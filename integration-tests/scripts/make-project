@@ -6,12 +6,19 @@ RN_VERSION=$1
 DESTINATION=$(dirname $2)
 PROJECT_NAME=$(basename $2)
 
+# pack current react-native-ble-plx
+npm pack
+
 pushd $DESTINATION
 
 react-native init --version="$RN_VERSION" $PROJECT_NAME
 
 pushd $PROJECT_NAME
-npm install ../.. --save                # install react-native-ble-plx
+
+# install react-native-ble-plx
+tar -xzvf ../../react-native-ble-plx-*.tgz
+mv package node_modules/react-native-ble-plx
+
 react-native link react-native-ble-plx  # and link it
 
 FLOW_VERSION=$(../scripts/get-flow-version)
