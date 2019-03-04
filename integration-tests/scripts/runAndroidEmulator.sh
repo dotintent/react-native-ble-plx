@@ -3,9 +3,9 @@
 EMULATOR_NAME=test
 
 echo "Creating emulator..."
-echo no | android create avd --force -n $EMULATOR_NAME -t android-25 --abi google_apis/armeabi-v7a
+echo no | android create avd --force -n $EMULATOR_NAME -t android-$EMULATOR_API --abi google_apis/armeabi-v7a
 echo "Booting emulator - $EMULATOR_NAME..."
-emulator -avd $EMULATOR_NAME -no-audio -no-window &
+QEMU_AUDIO_DRV=none emulator -avd $EMULATOR_NAME -no-window &
 sleep 2
 echo "Waiting for emulator..."
 android-wait-for-emulator
