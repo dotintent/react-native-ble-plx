@@ -27,6 +27,8 @@ _integration_job_template: &integration_job_template
 _android_job_template: &android_job_template
   <<: *integration_job_template
   language: generic
+  sudo: required
+  dist: trusty
   before_install:
     - |
       if [ $TRAVIS_OS_NAME == "linux" ]; then
