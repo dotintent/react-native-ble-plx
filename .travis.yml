@@ -8,7 +8,7 @@ env:
  global:
   - SYS=25
   - ABI="google_apis;armeabi-v7a"
-  - ADB_INSTALL_TIMEOUT=5 # minutes
+  - ADB_INSTALL_TIMEOUT=10 # minutes
 
 _integration_job_template: &integration_job_template
   stage: integration
