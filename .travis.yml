@@ -81,8 +81,8 @@ _android_job_template: &android_job_template
     - node_modules/.bin/flow check
     - cd android
     - npm start &
-    - adb shell input keyevent 82
     - adb devices
+    - adb shell getprop ro.build.version.sdk 
     - ./gradlew build connectedAndroidTest
 
 _ios_job_template: &ios_job_template
