@@ -887,7 +887,7 @@ public class BleClientManager : NSObject {
         data[3] = 0x00
         data[4] = 0x00
         data[5] = 0x00
-        data[6] = 0x20
+        data[6] = 0x00
         data[7] = 0x00
         data[8] =  UInt8(height)
         data[9] =  UInt8(age)
@@ -949,7 +949,7 @@ public class BleClientManager : NSObject {
         data[3] = 0x00
         data[4] = 0x00
         data[5] = 0x00
-        data[6] = 0x20
+        data[6] = 0x00
 
         let value = convertScaleFullArray(data: data)
 

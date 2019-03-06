@@ -1099,7 +1099,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     data[3] = 0x00;
     data[4] = 0x00;
     data[5] = 0x00;
-    data[6] = 0x20;
+    data[6] = 0x00;
     data[7] = 0x00;
     data[8] =  (byte) height;
     data[9] =  (byte) age;
@@ -1154,7 +1154,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     data[3] = 0x00;
     data[4] = 0x00;
     data[5] = 0x00;
-    data[6] = 0x20;
+    data[6] = 0x00;
 
     writeProperCharacteristicWithValue(characteristic, data, false, transactionId, promise);
   }
