@@ -24,7 +24,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibilit
 
 public class EspressoViewFinder {
     private static long CHECK_INTERVAL = 50L;
-    private static long TIMEOUT_MS = 30 * 1000L;
+    private static long TIMEOUT_MS = 60 * 1000L;
 
 
     static ViewInteraction waitForDisplayed(Matcher<View> viewMatcher) {
