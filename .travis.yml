@@ -83,7 +83,7 @@ _android_job_template: &android_job_template
     - node_modules/.bin/flow check
     - cd android
     - npm start &
-    - ./gradlew build connectedAndroidTest
+    - ./gradlew --debug connectedAndroidTest
 
 _ios_job_template: &ios_job_template
   <<: *integration_job_template

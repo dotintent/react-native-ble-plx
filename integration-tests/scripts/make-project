@@ -6,9 +6,6 @@ RN_VERSION=$1
 DESTINATION=$(dirname $2)
 PROJECT_NAME=$(basename $2)
 
-# pack current react-native-ble-plx
-npm pack
-
 pushd $DESTINATION
 
 react-native init --version="$RN_VERSION" $PROJECT_NAME
