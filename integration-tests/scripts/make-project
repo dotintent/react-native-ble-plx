@@ -18,9 +18,9 @@ pushd $PROJECT_NAME
 FLOW_VERSION=$(../scripts/get-flow-version)
 yarn add flow-bin@$FLOW_VERSION --dev
 
-# install react-native-ble-plx using the packed tar to not create symlinks
-tar -xf ../../react-native-ble-plx-*.tgz
-cp -r package node_modules/react-native-ble-plx
+# install react-native-ble-plx using the github commit
+
+yarn add https://github.com/Polidea/react-native-ble-plx#$TRAVIS_COMMIT
 
 react-native link react-native-ble-plx  # and link it
 
