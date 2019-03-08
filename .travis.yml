@@ -84,7 +84,7 @@ _android_job_template: &android_job_template
     - cd android
     - npm start &
     - ./gradlew connectedAndroidTest
-    - cat app/build/reports/androidTests/connected/index.html
+    - cat app/build/reports/androidTests/connected/*
 
 _ios_job_template: &ios_job_template
   <<: *integration_job_template
