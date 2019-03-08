@@ -96,7 +96,7 @@ _ios_job_template: &ios_job_template
   script:
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
-    - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Setup -project ios/Setup.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
+    - xcodebuild test -scheme Setup -project ios/Setup.xcodeproj  -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone XS Max,OS=12.1'
 
 matrix:
   include:
