@@ -1,7 +1,6 @@
 // @flow
 
 import React from "react";
-import { NativeModules } from "react-native";
 import TestSuite from "./TestSuite";
 import {BleManager} from "react-native-ble-plx";
 

@@ -1,0 +1,53 @@
+#!/usr/bin/env ruby
+
+require 'xcodeproj'
+
+project_name = ARGV[0]
+project_path = "#{project_name}/ios/"
+
+Dir.chdir(project_path) do
+  # system("brew update")
+  # system("brew install carthage")
+  File.open("Cartfile.private", 'w') do |file| 
+    file.write <<~EOF
+      github "google/EarlGrey" "1.15.0"
+    EOF
+  end
+  
+  system("carthage update EarlGrey --platform ios")
+  system("carthage bootstrap --platform ios")
+  system("earlgrey install -t SetupTests")
+  
+  File.open("SetupTests/SetupTests.m", 'w') do |file| 
+    file.write <<~EOF
+      @import XCTest;
+      @import EarlGrey;
+      
+      @interface SetupTests : XCTestCase
+      @end
+      
+      @implementation SetupTests
+      
+      - (void)verifyTestSuite {
+        [[EarlGrey selectElementWithMatcher:grey_accessibilityID(@"TestCaseStatus")]
+          assertWithMatcher:grey_accessibilityLabel(@"success")];
+      }
+      
+      @end
+    EOF
+  end
+
+  project = Xcodeproj::Project.open("#{project_name}.xcodeproj")
+
+  project.targets.each do |target|
+    # if target.name == "#{project_name}"
+    #   target.add_file_references [swift_source]
+    # end
+    if target.name == "#{project_name}Tests"
+      puts target.name
+      # target.add_file_references [test_file]
+    end
+  end
+  
+  project.save
+end

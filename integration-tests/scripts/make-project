@@ -28,5 +28,6 @@ popd
 scripts/patch-project $RN_VERSION
 scripts/enable-swift $PROJECT_NAME
 scripts/add-espresso-tests $PROJECT_NAME
+scripts/add-earl-grey-tests $PROJECT_NAME
 
 popd
