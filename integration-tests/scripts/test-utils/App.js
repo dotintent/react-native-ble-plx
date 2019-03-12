@@ -13,7 +13,6 @@ export default class Diagnose extends React.Component<{}> {
             name: "Initialize BleManager",
             run: () => {
               const unsupportedState = new Promise((resolve, reject) => {
-                reject("BleManager is null!");
                 if (!BleManager) {
                   reject("BleManager is null!");
                 }
