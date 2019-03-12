@@ -1078,7 +1078,7 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     // Scale
   @ReactMethod
-  public void setUserProfileToAlternativeScale(final String deviceId, int height, int age, String gender,
+  public void setUserProfileToAlternativeScale(final String deviceId, int age, int height, String gender,
       final String transactionId, final Promise promise) {
 
     final Characteristic characteristic = getCharacteristicOrReject(deviceId, trackerServiceUUID,

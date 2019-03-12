@@ -781,8 +781,8 @@ export class BleManager {
 
   async setUserProfileToAlternativeScale(
     deviceIdentifier: DeviceId,
-    height: number,
     age: number,
+    height: number,
     gender: string,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
@@ -792,8 +792,8 @@ export class BleManager {
     const nativeCharacteristic = await this._callPromise(
       BleModule.setUserProfileToAlternativeScale(
         deviceIdentifier,
-        height,
         age,
+        height,
         gender,
         transactionId
       )
