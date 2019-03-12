@@ -3,6 +3,7 @@
 PROJECT_NAME=$1
 PROJECT_PATH="$PROJECT_NAME/ios/"
 
+gem install earlgrey
 cp scripts/test-utils/SetupTests.m $PROJECT_PATH/SetupTests
 
 pushd $PROJECT_PATH
