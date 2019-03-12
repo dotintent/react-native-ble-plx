@@ -6,7 +6,7 @@
 
 @implementation SetupTests
 
-- (void)verifyTestSuite {
+- (void)testBleManager {
   [[EarlGrey selectElementWithMatcher:grey_accessibilityID(@"TestCaseStatus")]
     assertWithMatcher:grey_accessibilityLabel(@"success")];
 }
