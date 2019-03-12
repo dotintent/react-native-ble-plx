@@ -277,9 +277,9 @@ export interface BleModuleInterface {
  */
   startTrackerScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
 
-  setUserProfileToScales(deviceIdentifier: DeviceId, height: number, age: number, gender: string): void;
+  setUserProfileToScales(deviceIdentifier: DeviceId, age: number, height: number, gender: string): void;
 
-  setUserProfileToAlternativeScale(deviceIdentifier: DeviceId, height: number, age: number, gender: string): void;
+  setUserProfileToAlternativeScale(deviceIdentifier: DeviceId, age: number, height: number, gender: string): void;
 
   synchronizeAlternativeScale(deviceIdentifier: DeviceId, measurement: string): void;
 
