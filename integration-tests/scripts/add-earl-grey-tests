@@ -3,13 +3,14 @@
 PROJECT_NAME=$1
 PROJECT_PATH="$PROJECT_NAME/ios/"
 
+brew update
+brew install carthage
 gem install earlgrey
-cp scripts/test-utils/SetupTests.m $PROJECT_PATH/SetupTests
+cp scripts/test-utils/SetupTests.m $PROJECT_PATH/SetupTests/SetupTests.m
 
 pushd $PROJECT_PATH
-  brew update
-  brew install carthage
   echo 'github "google/EarlGrey" "1.15.0"' > Cartfile.private
+  carthage update EarlGrey --platform ios
   carthage bootstrap --platform ios
   earlgrey install -t SetupTests
 popd
