@@ -101,7 +101,7 @@ _ios_job_template: &ios_job_template
     - npm start &
     - sleep 5
     - curl -s http://localhost:8081/index.bundle\?platform\=ios\&dev\=true\&minify\=false > /dev/null
-    - xcodebuild test -scheme Setup -project ios/Setup.xcodeproj -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone XS Max,OS=12.1'
+    - xcodebuild test -scheme Setup -project ios/Setup.xcodeproj -quiet -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone XS Max,OS=12.1'
 
 matrix:
   include:
