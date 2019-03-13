@@ -83,6 +83,8 @@ _android_job_template: &android_job_template
     - node_modules/.bin/flow check
     - cd android
     - npm start &
+    - sleep 5
+    - curl -s http://localhost:8081/index.bundle\?platform\=ios\&dev\=true\&minify\=false > /dev/null
     - ./gradlew connectedAndroidTest
 
 _ios_job_template: &ios_job_template
@@ -97,8 +99,8 @@ _ios_job_template: &ios_job_template
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
     - npm start &
-    - RCT_NO_LAUNCH_PACKAGER=true xcodebuild -scheme Setup -project ios/Setup.xcodeproj -sdk iphonesimulator -quiet -UseModernBuildSystem=NO
-    - curl http://localhost:8081/index.bundle\?platform\=ios\&dev\=true\&minify\=false
+    - sleep 5
+    - curl -s http://localhost:8081/index.bundle\?platform\=ios\&dev\=true\&minify\=false > /dev/null
     - xcodebuild test -scheme Setup -project ios/Setup.xcodeproj -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone XS Max,OS=12.1'
 
 matrix:
