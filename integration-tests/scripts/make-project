@@ -68,7 +68,7 @@ pushd $DESTINATION
   add-test-suite
 
   if [ $TRAVIS_OS_NAME == "osx" ]; then
-    add-earl-grey-tests
+    add-earl-grey
   else
     add-espresso
   fi
