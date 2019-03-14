@@ -30,6 +30,8 @@ _android_job_template: &android_job_template
   before_install:
     - export ANDROID_HOME=~/android-sdk
     - export DISPLAY=:99.0
+    - sh -e /etc/init.d/xvfb start
+    - sleep 3 # give xvfb some time to start
     - integration-tests/scripts/setup-android-sdk
   # before_script will make project
   script:
