@@ -26,6 +26,3 @@ sdkmanager "build-tools;28.0.3" "build-tools;25.0.2" "platforms;android-28" "pla
 sdkmanager "system-images;android-$SYS;$ABI" > /dev/null
 sdkmanager --list | head -15
 echo no | avdmanager create avd -n test -k "system-images;android-$SYS;$ABI"
-
-# Start emulator
-$ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window $EMU_ADDITIONAL_OPTIONS ${EMU_DEBUG} &
