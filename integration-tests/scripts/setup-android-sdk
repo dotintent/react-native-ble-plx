@@ -2,9 +2,6 @@
 
 # taken from https://github.com/mmcc007/test_emulators
 
-sh -e /etc/init.d/xvfb start
-sleep 3 # give xvfb some time to start
-
 # Install android tools
 ANDROID_TOOLS=4333796 # android-28
 
