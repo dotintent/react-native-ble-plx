@@ -35,13 +35,13 @@ _android_job_template: &android_job_template
     - integration-tests/scripts/setup-android-sdk
   # before_script will make project
   script:
+    - integration-tests/scripts/wait-for-emulator
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
     - cd android
     - npm start &
     - sleep 5
     - curl -s http://localhost:8081/index.bundle\?platform\=ios\&dev\=true\&minify\=false > /dev/null
-    - ../../scripts/wait-for-emulator
     - ./gradlew connectedAndroidTest
 
 _ios_job_template: &ios_job_template
