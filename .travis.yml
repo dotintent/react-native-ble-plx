@@ -29,6 +29,7 @@ _android_job_template: &android_job_template
   dist: trusty
   before_install:
     - export ANDROID_HOME=~/android-sdk
+    - export DISPLAY=:99.0
     - integration-tests/scripts/setup-android-sdk
   # before_script will make project
   script:
