@@ -33,6 +33,8 @@ _android_job_template: &android_job_template
     - sh -e /etc/init.d/xvfb start
     - sleep 3 # give xvfb some time to start
     - integration-tests/scripts/setup-android-sdk
+    # Start emulator
+    - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
   # before_script will make project
   script:
     - integration-tests/scripts/wait-for-emulator
