@@ -55,8 +55,8 @@ function add-earl-grey {
 
   pushd $PROJECT_PATH
     echo 'github "google/EarlGrey" "1.15.0"' > Cartfile.private
-    carthage update EarlGrey --platform ios
-    carthage bootstrap --platform ios
+    carthage update EarlGrey --platform ios || true
+    carthage bootstrap --platform ios || true
     earlgrey install -t SetupTests
   popd
 }
