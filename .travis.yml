@@ -8,8 +8,6 @@ env:
  global:
   - SYS=22
   - ABI="default;armeabi-v7a"
-  # - SYS=25
-  # - ABI="google_apis;armeabi-v7a"
   - ADB_INSTALL_TIMEOUT=10 # minutes
 
 _integration_job_template: &integration_job_template
@@ -25,14 +23,14 @@ _integration_job_template: &integration_job_template
   before_script:
     - integration-tests/scripts/make-project $RN_VERSION integration-tests/Setup
 
-# taken from https://github.com/mmcc007/test_emulators
 _android_job_template: &android_job_template
   <<: *integration_job_template
   language: generic
-  # sudo: required
   dist: trusty
   before_install:
+    - export ANDROID_HOME=~/android-sdk
     - integration-tests/scripts/setup-android-sdk
+  # before_script will make project
   script:
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
@@ -51,6 +49,7 @@ _ios_job_template: &ios_job_template
   xcode_project: integration-tests/Setup/ios/Setup.xcodeproj
   xcode_scheme: Setup
   xcode_destination: platform=iOS Simulator
+  # before_script will make project
   script:
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
