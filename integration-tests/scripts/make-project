@@ -48,8 +48,8 @@ function add-espresso {
 function add-earl-grey {
   PROJECT_PATH="$PROJECT_NAME/ios/"
 
-  brew update
-  brew install carthage
+  brew update || true
+  brew install carthage || true
   gem install earlgrey
   cp scripts/test-utils/SetupTests.m $PROJECT_PATH/SetupTests/SetupTests.m
 
