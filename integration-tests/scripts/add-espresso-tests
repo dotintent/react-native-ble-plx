@@ -1,6 +1,0 @@
-#!/bin/bash
-
-PROJECT_NAME=$1
-
-cp scripts/test-utils/{App.js,TestCase.js,TestSuite.js,utils.js} $PROJECT_NAME
-cp -r scripts/test-utils/androidTest $PROJECT_NAME/android/app/src/

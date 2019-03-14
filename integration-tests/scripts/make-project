@@ -6,29 +6,70 @@ RN_VERSION=$1
 DESTINATION=$(dirname $2)
 PROJECT_NAME=$(basename $2)
 
+function get-flow-version {
+  cat .flowconfig| grep -A 1 '\[version\]' | tail -1
+}
+
+function generate-project {
+  react-native init --version="$RN_VERSION" $PROJECT_NAME
+
+  pushd $PROJECT_NAME
+    FLOW_VERSION=$(get-flow-version)
+    yarn add flow-bin@$FLOW_VERSION --dev
+    # install react-native-ble-plx using the github commit
+    CURRENT_COMMIT=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
+    echo "Installing react-native-ble-plx revision $CURRENT_COMMIT"
+    yarn add https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
+    react-native link react-native-ble-plx  # and link it
+    rm -rf ../../node_modules
+  popd
+}
+
+function patch-project {
+  for filename in patches/common/*.patch; do
+    echo "Applying common patch - $filename"
+    git apply "$filename" || echo Patch not applied.
+  done
+
+  for filename in patches/rn-$RN_VERSION/*.patch; do
+    echo "Applying patch specifically for $RN_VERSION - $filename"
+    git apply "$filename" || echo Patch not applied.
+  done
+}
+
+function add-test-suite {
+  cp scripts/test-utils/{App.js,TestCase.js,TestSuite.js,utils.js} $PROJECT_NAME
+}
+
+function add-espresso {
+  cp -r scripts/test-utils/androidTest $PROJECT_NAME/android/app/src/
+}
+
+function add-earl-grey {
+  PROJECT_PATH="$PROJECT_NAME/ios/"
+
+  brew update
+  brew install carthage
+  gem install earlgrey
+  cp scripts/test-utils/SetupTests.m $PROJECT_PATH/SetupTests/SetupTests.m
+
+  pushd $PROJECT_PATH
+    echo 'github "google/EarlGrey" "1.15.0"' > Cartfile.private
+    carthage update EarlGrey --platform ios
+    carthage bootstrap --platform ios
+    earlgrey install -t SetupTests
+  popd
+}
+
 pushd $DESTINATION
+  generate-project
+  patch-project
+  scripts/enable-swift $PROJECT_NAME
+  add-test-suite
 
-react-native init --version="$RN_VERSION" $PROJECT_NAME
-
-pushd $PROJECT_NAME
-
-FLOW_VERSION=$(../scripts/get-flow-version)
-yarn add flow-bin@$FLOW_VERSION --dev
-
-# install react-native-ble-plx using the github commit
-CURRENT_COMMIT=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
-echo "Installing react-native-ble-plx revision $CURRENT_COMMIT"
-yarn add https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
-
-react-native link react-native-ble-plx  # and link it
-
-rm -rf ../../node_modules
-
-popd
-
-scripts/patch-project $RN_VERSION
-scripts/enable-swift $PROJECT_NAME
-scripts/add-espresso-tests $PROJECT_NAME
-scripts/add-earl-grey-tests $PROJECT_NAME
-
+  if [ $TRAVIS_OS_NAME == "osx" ]; then
+    add-earl-grey-tests
+  else
+    add-espresso
+  fi
 popd
