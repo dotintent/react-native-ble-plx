@@ -1,3 +1,0 @@
-#!/bin/bash
-
-cat .flowconfig| grep -A 1 '\[version\]' | tail -1
