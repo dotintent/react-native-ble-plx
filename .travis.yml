@@ -28,10 +28,10 @@ _android_job_template: &android_job_template
   language: generic
   dist: trusty
   before_install:
-    - export ANDROID_HOME=~/android-sdk
     - export DISPLAY=:99.0
     - sh -e /etc/init.d/xvfb start
     - sleep 3 # give xvfb some time to start
+    - eval $(integration-tests/scripts/android-env)
     - integration-tests/scripts/setup-android-sdk
     # Start emulator
     - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
