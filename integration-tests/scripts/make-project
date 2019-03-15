@@ -19,7 +19,7 @@ function generate-project {
     # install react-native-ble-plx using the github commit
     CURRENT_COMMIT=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
     echo "Installing react-native-ble-plx revision $CURRENT_COMMIT"
-    yarn add https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
+    yarn add https://github.com/Polidea/react-native-ble-plx#1.0.2
     react-native link react-native-ble-plx  # and link it
     rm -rf ../../node_modules
   popd
