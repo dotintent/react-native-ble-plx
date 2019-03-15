@@ -1,5 +1,7 @@
 ---
-title: 'Project setup'
+name: 'Project Setup'
+about: 'Describe your problem related to the project setup.'
+title: 'Project Setup'
 labels: setup
 ---
 

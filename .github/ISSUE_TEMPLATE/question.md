@@ -1,4 +1,6 @@
 ---
+name: 'Question'
+about: 'Ask question related to the library.'
 title: 'Question'
 labels: question
 ---

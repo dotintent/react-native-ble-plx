@@ -1,5 +1,7 @@
 ---
-title: 'Feature request'
+name: 'Feature Request'
+about: 'Propose new feature.'
+title: 'Feature Request'
 labels: enhancement
 ---
 

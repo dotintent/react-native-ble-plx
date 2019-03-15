@@ -1,5 +1,7 @@
 ---
-title: 'Bug fix'
+name: 'Bug Fix'
+about: 'Send a bug fix.'
+title: 'Bug Fix'
 labels: bug
 ---
 

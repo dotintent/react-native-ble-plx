@@ -1,5 +1,7 @@
 ---
-title: 'New feature'
+name: 'New Feature'
+about: 'Send a new feature.'
+title: 'New Feature'
 labels: enhancement
 ---
 
