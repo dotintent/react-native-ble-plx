@@ -93,6 +93,12 @@ matrix:
 
     # Integration tests for different React Native versions
     - <<: *android_job_template
+      name: 'Integrate with RN 0.55.4 Android'
+      env: RN_VERSION=0.55.4
+    - <<: *ios_job_template
+      name: 'Integrate with RN 0.55.4 iOS'
+      env: RN_VERSION=0.55.4
+    - <<: *android_job_template
       name: 'Integrate with RN 0.56.1 Android'
       env: RN_VERSION=0.56.1
     - <<: *ios_job_template
@@ -135,5 +141,7 @@ matrix:
       name: 'Integrate with RN 0.59.0 iOS'
       env: RN_VERSION=0.59.0
   allow_failures:
+    - name: 'Integrate with RN 0.55.4 Android'
+    - name: 'Integrate with RN 0.55.4 iOS'
     - name: 'Integrate with RN 0.56.1 Android'
     - name: 'Integrate with RN 0.56.1 iOS'
