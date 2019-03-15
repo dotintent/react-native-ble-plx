@@ -29,13 +29,14 @@ Please provide detailed steps for reproducing the issue.
 
 ### Context
 
-Please provide any relevant information about your setup. This is important in case the issue is not reproducible except for under certain conditions.
+Please provide any relevant information about your setup. This is important in case the issue is not reproducible except for under certain conditions. Both JS and platform logs can be enabled via [setLogLevel](https://polidea.github.io/react-native-ble-plx/#blemanagersetloglevel) function call. 
 
 * Library version: X.Y.Z
 * Platform: Android/iOS.
 * Platform logs (logcat/XCode):
-* JS logs (enable them via `bleManager.setLogLevel` function call):
-* Formatted code sample or link to repository:
+* JS logs:
+* Contents of the `package.json` file:
+* Formatted code sample or link to a repository:
 
 ```js
 function example(): string {
