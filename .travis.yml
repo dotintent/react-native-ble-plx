@@ -140,6 +140,12 @@ matrix:
     - <<: *ios_job_template
       name: 'Integrate with RN 0.59.0 iOS'
       env: RN_VERSION=0.59.0
+    - <<: *android_job_template
+      name: 'Integrate with RN 0.59.1 Android'
+      env: RN_VERSION=0.59.1
+    - <<: *ios_job_template
+      name: 'Integrate with RN 0.59.1 iOS'
+      env: RN_VERSION=0.59.1
   allow_failures:
     - name: 'Integrate with RN 0.55.4 Android'
     - name: 'Integrate with RN 0.55.4 iOS'
