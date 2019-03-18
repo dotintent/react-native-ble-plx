@@ -949,7 +949,7 @@ public class BleClientManager : NSObject {
         data[3] = 0x00
         data[4] = 0x00
         data[5] = 0x00
-        data[6] = 0x3C
+        data[6] = 0x00
 
         let value = convertScaleFullArray(data: data)
 
