@@ -1093,7 +1093,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     age = age < 10 ? 10 : age;
     age = age > 98 ? 98 : age;
 
-    data[0] = (byte) 0x81;
+    data[0] = (byte) 0x41;
     data[1] = 0x00;
     data[2] = (byte) 0x81;
     data[3] = 0x00;
