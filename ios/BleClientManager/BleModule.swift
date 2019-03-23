@@ -879,9 +879,7 @@ public class BleClientManager : NSObject {
 
         var data = getEmptyRequestScales(count: 13)
 
-        let gender = (gender as! String == "male") ? 0 : 1
-
-        data[0] = 0x41
+        data[0] = 0x81
         data[1] = 0x00
         data[2] = 0x81
         data[3] = 0x00

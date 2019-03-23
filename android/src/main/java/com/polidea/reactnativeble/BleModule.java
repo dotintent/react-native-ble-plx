@@ -1103,7 +1103,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     data[7] = 0x00;
     data[8] =  (byte) height;
     data[9] =  (byte) age;
-    data[10] = (byte) (gender.equalsIgnoreCase("male") ? 0 : 1);
+    data[10] = (byte) gender;
     data[11] = 0x00;
     data[12] = 0x00;
 

@@ -279,7 +279,7 @@ export interface BleModuleInterface {
 
   setUserProfileToScales(deviceIdentifier: DeviceId, age: number, height: number, gender: string): void;
 
-  setUserProfileToAlternativeScale(deviceIdentifier: DeviceId, age: number, height: number, gender: string): void;
+  setUserProfileToAlternativeScale(deviceIdentifier: DeviceId, age: number, height: number, gender: number): void;
 
   synchronizeAlternativeScale(deviceIdentifier: DeviceId, measurement: string): void;
 

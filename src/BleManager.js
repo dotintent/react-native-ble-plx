@@ -783,7 +783,7 @@ export class BleManager {
     deviceIdentifier: DeviceId,
     age: number,
     height: number,
-    gender: string,
+    gender: number,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {

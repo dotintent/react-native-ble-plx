@@ -346,7 +346,7 @@ RCT_EXPORT_METHOD(selectProfileAlternativeScale:(NSString*)deviceIdentifier
 RCT_EXPORT_METHOD(setUserProfileToAlternativeScale:(NSString*)deviceIdentifier
                                 age:  (NSInteger)age
                                 height:  (NSInteger)height
-                                  gender:  (NSString*)gender
+                                  gender:  (NSInteger*)gender
                                  transactionId:(NSString*)transactionId
                                       resolver:(RCTPromiseResolveBlock)resolve
                                       rejecter:(RCTPromiseRejectBlock)reject) {
