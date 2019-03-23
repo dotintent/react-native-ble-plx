@@ -872,7 +872,7 @@ public class BleClientManager : NSObject {
     public func setUserProfileToAlternativeScale(  _ deviceIdentifier: String,
                                                     age: Int,
                                                     height: Int,
-                                                    gender: String,
+                                                    gender: Int,
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
