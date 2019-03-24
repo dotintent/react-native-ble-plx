@@ -884,10 +884,10 @@ public class BleClientManager : NSObject {
         data[0] = 0x81
         data[1] = 0x00
         data[2] = 0x81
-        data[3] = UInt8(String(Array(userArray)[0]) + String(Array(userArray)[1]))
-        data[4] = UInt8(String(Array(userArray)[2]) + String(Array(userArray)[3]))
-        data[5] = UInt8(String(Array(userArray)[4]) + String(Array(userArray)[5]))
-        data[6] = UInt8(String(Array(userArray)[6]) + String(Array(userArray)[7]))
+        data[3] = UInt8(String(Array(userArray)[0]) + String(Array(userArray)[1]))!
+        data[4] = UInt8(String(Array(userArray)[2]) + String(Array(userArray)[3]))!
+        data[5] = UInt8(String(Array(userArray)[4]) + String(Array(userArray)[5]))!
+        data[6] = UInt8(String(Array(userArray)[6]) + String(Array(userArray)[7]))!
         data[7] = 0x00
         data[8] =  UInt8(height)
         data[9] =  UInt8(age)
@@ -921,10 +921,10 @@ public class BleClientManager : NSObject {
         data[0] = 0x41
         data[1] = 0x00
         data[2] = 0x84
-        data[3] = UInt8(String(Array(userArray)[0]) + String(Array(userArray)[1]))
-        data[4] = UInt8(String(Array(userArray)[2]) + String(Array(userArray)[3]))
-        data[5] = UInt8(String(Array(userArray)[4]) + String(Array(userArray)[5]))
-        data[6] = UInt8(String(Array(userArray)[6]) + String(Array(userArray)[7]))
+        data[3] = UInt8(String(Array(userArray)[0]) + String(Array(userArray)[1]))!
+        data[4] = UInt8(String(Array(userArray)[2]) + String(Array(userArray)[3]))!
+        data[5] = UInt8(String(Array(userArray)[4]) + String(Array(userArray)[5]))!
+        data[6] = UInt8(String(Array(userArray)[6]) + String(Array(userArray)[7]))!
         data[7] = UInt8(measurementType)
 
         let value = convertScaleFullArray(data: data)
@@ -952,10 +952,10 @@ public class BleClientManager : NSObject {
         data[0] = 0x41
         data[1] = 0x00
         data[2] = 0x82
-        data[3] = UInt8(String(Array(userArray)[0]) + String(Array(userArray)[1]))
-        data[4] = UInt8(String(Array(userArray)[2]) + String(Array(userArray)[3]))
-        data[5] = UInt8(String(Array(userArray)[4]) + String(Array(userArray)[5]))
-        data[6] = UInt8(String(Array(userArray)[6]) + String(Array(userArray)[7]))
+        data[3] = UInt8(String(Array(userArray)[0]) + String(Array(userArray)[1]))!
+        data[4] = UInt8(String(Array(userArray)[2]) + String(Array(userArray)[3]))!
+        data[5] = UInt8(String(Array(userArray)[4]) + String(Array(userArray)[5]))!
+        data[6] = UInt8(String(Array(userArray)[6]) + String(Array(userArray)[7]))!
 
         let value = convertScaleFullArray(data: data)
 
