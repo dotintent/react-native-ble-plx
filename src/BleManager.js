@@ -781,6 +781,7 @@ export class BleManager {
 
   async setUserProfileToAlternativeScale(
     deviceIdentifier: DeviceId,
+    user: string,
     age: number,
     height: number,
     gender: number,
@@ -792,6 +793,7 @@ export class BleManager {
     const nativeCharacteristic = await this._callPromise(
       BleModule.setUserProfileToAlternativeScale(
         deviceIdentifier,
+        user,
         age,
         height,
         gender,
@@ -803,6 +805,7 @@ export class BleManager {
 
   async synchronizeAlternativeScale(
     deviceIdentifier: DeviceId,
+    user: string,
     measurement: string,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
@@ -812,6 +815,7 @@ export class BleManager {
     const nativeCharacteristic = await this._callPromise(
       BleModule.synchronizeAlternativeScale(
         deviceIdentifier,
+        user,
         measurement,
         transactionId
       )
@@ -821,6 +825,7 @@ export class BleManager {
 
   async selectProfileAlternativeScale(
     deviceIdentifier: DeviceId,
+    user: string,
     transactionId: ?TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
@@ -829,6 +834,7 @@ export class BleManager {
     const nativeCharacteristic = await this._callPromise(
       BleModule.selectProfileAlternativeScale(
         deviceIdentifier,
+        user,
         transactionId
       )
     )
