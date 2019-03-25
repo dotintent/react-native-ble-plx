@@ -870,24 +870,24 @@ public class BleClientManager : NSObject {
 
                 @objc
     public func setUserProfileToAlternativeScale(  _ deviceIdentifier: String,
+                                                    user: String,
                                                     age: Int,
                                                     height: Int,
-                                                    gender: String,
+                                                    gender: Int,
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
-
+         // This is a test with user. Clean this up if it works                                             
+        var userArray = Array(user)                                                          
         var data = getEmptyRequestScales(count: 13)
 
-        let gender = (gender as! String == "male") ? 0 : 1
-
-        data[0] = 0x41
+        data[0] = 0x81
         data[1] = 0x00
         data[2] = 0x81
-        data[3] = 0x00
-        data[4] = 0x00
-        data[5] = 0x00
-        data[6] = 0x00
+        data[3] = UInt8(String(Array(userArray)[0]) + String(Array(userArray)[1]))!
+        data[4] = UInt8(String(Array(userArray)[2]) + String(Array(userArray)[3]))!
+        data[5] = UInt8(String(Array(userArray)[4]) + String(Array(userArray)[5]))!
+        data[6] = UInt8(String(Array(userArray)[6]) + String(Array(userArray)[7]))!
         data[7] = 0x00
         data[8] =  UInt8(height)
         data[9] =  UInt8(age)
@@ -909,19 +909,22 @@ public class BleClientManager : NSObject {
 
                     @objc
     public func synchronizeAlternativeScale(  _ deviceIdentifier: String,
+                                                    user: String,
                                                     measurement: String,
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
+        // This is a test with user. Clean this up if it works                                             
+        var userArray = Array(user)          
         let measurementType = (measurement == "metric") ? 0 : 1
         var data = getEmptyRequestScales(count: 8)                                                    
         data[0] = 0x41
         data[1] = 0x00
         data[2] = 0x84
-        data[3] = 0x7F
-        data[4] = 0x44
-        data[5] = 0x3C
-        data[6] = 0xFB
+        data[3] = UInt8(String(Array(userArray)[0]) + String(Array(userArray)[1]))!
+        data[4] = UInt8(String(Array(userArray)[2]) + String(Array(userArray)[3]))!
+        data[5] = UInt8(String(Array(userArray)[4]) + String(Array(userArray)[5]))!
+        data[6] = UInt8(String(Array(userArray)[6]) + String(Array(userArray)[7]))!
         data[7] = UInt8(measurementType)
 
         let value = convertScaleFullArray(data: data)
@@ -938,18 +941,21 @@ public class BleClientManager : NSObject {
 
                         @objc
     public func selectProfileAlternativeScale(  _ deviceIdentifier: String,
+                                                    user: String,
                                                     transactionId: String,
                                                           resolve: @escaping Resolve,
                                                            reject: @escaping Reject) {
-   
+
+        // This is a test with user. Clean this up if it works                                             
+        var userArray = Array(user)                                                     
         var data = getEmptyRequestScales(count: 7)                                                    
         data[0] = 0x41
         data[1] = 0x00
         data[2] = 0x82
-        data[3] = 0x00
-        data[4] = 0x00
-        data[5] = 0x00
-        data[6] = 0x00
+        data[3] = UInt8(String(Array(userArray)[0]) + String(Array(userArray)[1]))!
+        data[4] = UInt8(String(Array(userArray)[2]) + String(Array(userArray)[3]))!
+        data[5] = UInt8(String(Array(userArray)[4]) + String(Array(userArray)[5]))!
+        data[6] = UInt8(String(Array(userArray)[6]) + String(Array(userArray)[7]))!
 
         let value = convertScaleFullArray(data: data)
 

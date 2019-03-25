@@ -322,11 +322,13 @@ RCT_EXPORT_METHOD(setUserProfileToScales:(NSString*)deviceIdentifier
 }
 
 RCT_EXPORT_METHOD(synchronizeAlternativeScale:(NSString*)deviceIdentifier
+                                user:(NSString*)user
                                 measurement:  (NSString*)measurement
                                  transactionId:(NSString*)transactionId
                                       resolver:(RCTPromiseResolveBlock)resolve
                                       rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager synchronizeAlternativeScale:deviceIdentifier
+                              user:user
                               measurement:measurement
                              transactionId:transactionId
                                    resolve:resolve
@@ -334,23 +336,27 @@ RCT_EXPORT_METHOD(synchronizeAlternativeScale:(NSString*)deviceIdentifier
 }
 
 RCT_EXPORT_METHOD(selectProfileAlternativeScale:(NSString*)deviceIdentifier
+                                  user:(NSString*)user
                                  transactionId:(NSString*)transactionId
                                       resolver:(RCTPromiseResolveBlock)resolve
                                       rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager selectProfileAlternativeScale:deviceIdentifier
+                            user: user
                              transactionId:transactionId
                                    resolve:resolve
                                     reject:reject];
 }
 
 RCT_EXPORT_METHOD(setUserProfileToAlternativeScale:(NSString*)deviceIdentifier
+                                user:(NSString*)user
                                 age:  (NSInteger)age
                                 height:  (NSInteger)height
-                                  gender:  (NSString*)gender
+                                  gender:  (NSInteger*)gender
                                  transactionId:(NSString*)transactionId
                                       resolver:(RCTPromiseResolveBlock)resolve
                                       rejecter:(RCTPromiseRejectBlock)reject) {
     [_manager setUserProfileToAlternativeScale:deviceIdentifier
+                              user: user
                               age: age
                               height: height
                               gender: gender
