@@ -25,17 +25,20 @@ What this library does NOT support:
 
 ## Compatibility
 
-| React Native | 1.0.3              |
-| ------------ | ------------------ |
-| 0.59.1       | :white_check_mark: |
-| 0.59.0       | :white_check_mark: |
-| 0.58.3       | :white_check_mark: |
-| 0.58.0       | :white_check_mark: |
-| 0.57.8       | :white_check_mark: |
-| 0.57.5       | :white_check_mark: |
-| 0.57.2       | :white_check_mark: |
-| 0.56.1       | :boom:<sup>1</sup> |
-| 0.55.4       | :boom:<sup>1</sup> |
+Result of generating empty React Native project and setting up `react-native-ble-plx`.
+Keep in mind that library might work on some versions after changes in project configuration (for example – gradle).
+
+| React Native | 1.0.3              | 1.0.2              | 1.0.1              | 1.0.0              | 0.10.0             |
+| ------------ | ------------------ | ------------------ | ------------------ | ------------------ | ------------------ |
+| 0.59.1       | :white_check_mark: | :boom:             | :boom:             | :boom:             | :boom:             |
+| 0.59.0       | :white_check_mark: | :boom:             | :boom:             | :boom:             | :boom:             |
+| 0.58.3       | :white_check_mark: | :boom:             | :boom:             | :boom:             | :boom:             |
+| 0.58.0       | :white_check_mark: | :boom:             | :boom:             | :boom:             | :boom:             |
+| 0.57.8       | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| 0.57.5       | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| 0.57.2       | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| 0.56.1       | :boom:<sup>1</sup> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| 0.55.4       | :boom:<sup>1</sup> | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 <sup>1</sup> fails on Android, although might work after updating gradle
 

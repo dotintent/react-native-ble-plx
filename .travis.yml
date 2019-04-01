@@ -90,13 +90,12 @@ matrix:
         - npm test
 
     # Integration tests for different React Native versions
-
     - <<: *android_job_template
-      name: 'Integrate with RN latest Android'
-      env: RN_VERSION=facebook/react-native
+      name: 'Integrate with RN next Android'
+      env: RN_VERSION=next
     - <<: *ios_job_template
-      name: 'Integrate with RN latest iOS'
-      env: RN_VERSION=facebook/react-native
+      name: 'Integrate with RN next iOS'
+      env: RN_VERSION=next
 
     # - <<: *android_job_template
     #   name: 'Integrate with RN 0.59.1 Android'
