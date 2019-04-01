@@ -1,8 +1,8 @@
 diff --git a/integration-tests/Setup/android/app/build.gradle b/integration-tests/Setup/android/app/build.gradle
-index 1f01fa3..207d72c 100644
+index 366adaf..d43fe1c 100644
 --- a/integration-tests/Setup/android/app/build.gradle
 +++ b/integration-tests/Setup/android/app/build.gradle
-@@ -103,6 +103,7 @@ android {
+@@ -107,6 +107,7 @@ android {
          targetSdkVersion rootProject.ext.targetSdkVersion
          versionCode 1
          versionName "1.0"
@@ -10,9 +10,9 @@ index 1f01fa3..207d72c 100644
      }
      splits {
          abi {
-@@ -138,6 +139,10 @@ dependencies {
+@@ -155,6 +156,10 @@ dependencies {
+     implementation project(':react-native-ble-plx')
      implementation fileTree(dir: "libs", include: ["*.jar"])
-     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
      implementation "com.facebook.react:react-native:+"  // From node_modules
 +    testImplementation 'junit:junit:4.12'
 +    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
@@ -21,3 +21,31 @@ index 1f01fa3..207d72c 100644
  }
  
  // Run this once to be able to run the application with BUCK
+diff --git a/integration-tests/patches/rn-next/0002-gradle-espresso-config.patch b/integration-tests/patches/rn-next/0002-gradle-espresso-config.patch
+index 2f991ea..e69de29 100644
+--- a/integration-tests/patches/rn-next/0002-gradle-espresso-config.patch
++++ b/integration-tests/patches/rn-next/0002-gradle-espresso-config.patch
+@@ -1,23 +0,0 @@
+-diff --git a/integration-tests/Setup/android/app/build.gradle b/integration-tests/Setup/android/app/build.gradle
+-index 1f01fa3..207d72c 100644
+---- a/integration-tests/Setup/android/app/build.gradle
+-+++ b/integration-tests/Setup/android/app/build.gradle
+-@@ -103,6 +103,7 @@ android {
+-         targetSdkVersion rootProject.ext.targetSdkVersion
+-         versionCode 1
+-         versionName "1.0"
+-+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+-     }
+-     splits {
+-         abi {
+-@@ -138,6 +139,10 @@ dependencies {
+-     implementation fileTree(dir: "libs", include: ["*.jar"])
+-     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
+-     implementation "com.facebook.react:react-native:+"  // From node_modules
+-+    testImplementation 'junit:junit:4.12'
+-+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+-+    androidTestImplementation 'androidx.test:runner:1.1.0'
+-+    androidTestImplementation 'androidx.test:rules:1.1.0'
+- }
+- 
+- // Run this once to be able to run the application with BUCK
