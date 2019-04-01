@@ -22,7 +22,7 @@
     "eslint-plugin-import": "2.14.0",
     "eslint-plugin-jest": "21.24.1",
     "eslint-plugin-react": "7.11.1",
-    "flow-bin": "^0.95.1",
+    "flow-bin": "^0.86.0",
     "jest": "24.1.0",
     "metro-react-native-babel-preset": "0.51.1",
     "prettier": "1.14.3",
@@ -49,8 +49,5 @@
   "bugs": {
     "url": "https://github.com/Polidea/react-native-ble-plx/issues"
   },
-  "homepage": "https://github.com/Polidea/react-native-ble-plx#readme",
-  "dependencies": {
-    "react-native-ble-plx": "https://github.com/Polidea/react-native-ble-plx#0.10.0"
-  }
+  "homepage": "https://github.com/Polidea/react-native-ble-plx#readme"
 }
