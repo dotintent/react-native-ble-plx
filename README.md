@@ -25,17 +25,17 @@ What this library does NOT support:
 
 ## Compatibility
 
-React Native | 1.0.3
------------- | -------------
-0.55.4 | :boom:<sup>1</sup>
-0.56.1 | :boom:<sup>1</sup>
-0.57.2 | :white_check_mark:
-0.57.5 | :white_check_mark:
-0.57.8 | :white_check_mark:
-0.58.0 | :white_check_mark:
-0.58.3 | :white_check_mark:
-0.59.0 | :white_check_mark:
-0.59.1 | :white_check_mark:
+| React Native | 1.0.3              |
+| ------------ | ------------------ |
+| 0.59.1       | :white_check_mark: |
+| 0.59.0       | :white_check_mark: |
+| 0.58.3       | :white_check_mark: |
+| 0.58.0       | :white_check_mark: |
+| 0.57.8       | :white_check_mark: |
+| 0.57.5       | :white_check_mark: |
+| 0.57.2       | :white_check_mark: |
+| 0.56.1       | :boom:<sup>1</sup> |
+| 0.55.4       | :boom:<sup>1</sup> |
 
 <sup>1</sup> fails on Android, although might work after updating gradle
 
