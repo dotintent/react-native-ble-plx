@@ -67,7 +67,7 @@ pushd $DESTINATION
   scripts/enable-swift $PROJECT_NAME
   add-test-suite
 
-  if [ $TRAVIS_OS_NAME == "osx" ]; then
+  if [ "system-$TRAVIS_OS_NAME" == "system-osx" ]; then
     add-earl-grey
   else
     add-espresso
