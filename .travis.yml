@@ -7,7 +7,7 @@ stages:
 
 env:
   global:
-    - FORCE_VERSION=0.10.0
+    # - FORCE_VERSION=0.10.0
     - SYS=22
     - ABI="default;armeabi-v7a"
     - ADB_INSTALL_TIMEOUT=10 # minutes
@@ -164,61 +164,61 @@ matrix:
     #   name: 'Integrate with RN 0.55.4 iOS'
     #   env: RN_VERSION=0.55.4
 
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.54.4 Android'
-      env: RN_VERSION=0.54.4
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.54.4 iOS'
-      env: RN_VERSION=0.54.4
+    # - <<: *android_job_template
+    #   name: 'Integrate with RN 0.54.4 Android'
+    #   env: RN_VERSION=0.54.4
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.54.4 iOS'
+    #   env: RN_VERSION=0.54.4
 
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.53.3 Android'
-      env: RN_VERSION=0.53.3
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.53.3 iOS'
-      env: RN_VERSION=0.53.3
+    # - <<: *android_job_template
+    #   name: 'Integrate with RN 0.53.3 Android'
+    #   env: RN_VERSION=0.53.3
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.53.3 iOS'
+    #   env: RN_VERSION=0.53.3
 
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.52.3 Android'
-      env: RN_VERSION=0.52.3
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.52.3 iOS'
-      env: RN_VERSION=0.52.3
+    # - <<: *android_job_template
+    #   name: 'Integrate with RN 0.52.3 Android'
+    #   env: RN_VERSION=0.52.3
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.52.3 iOS'
+    #   env: RN_VERSION=0.52.3
 
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.51.1 Android'
-      env: RN_VERSION=0.51.1
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.51.1 iOS'
-      env: RN_VERSION=0.51.1
+    # - <<: *android_job_template
+    #   name: 'Integrate with RN 0.51.1 Android'
+    #   env: RN_VERSION=0.51.1
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.51.1 iOS'
+    #   env: RN_VERSION=0.51.1
 
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.50.4 Android'
-      env: RN_VERSION=0.50.4
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.50.4 iOS'
-      env: RN_VERSION=0.50.4
+    # - <<: *android_job_template
+    #   name: 'Integrate with RN 0.50.4 Android'
+    #   env: RN_VERSION=0.50.4
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.50.4 iOS'
+    #   env: RN_VERSION=0.50.4
 
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.49.3 Android'
-      env: RN_VERSION=0.49.3
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.49.3 iOS'
-      env: RN_VERSION=0.49.3
+    # - <<: *android_job_template
+    #   name: 'Integrate with RN 0.49.3 Android'
+    #   env: RN_VERSION=0.49.3
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.49.3 iOS'
+    #   env: RN_VERSION=0.49.3
 
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.48.3 Android'
-      env: RN_VERSION=0.48.3
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.48.3 iOS'
-      env: RN_VERSION=0.48.3
+    # - <<: *android_job_template
+    #   name: 'Integrate with RN 0.48.3 Android'
+    #   env: RN_VERSION=0.48.3
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.48.3 iOS'
+    #   env: RN_VERSION=0.48.3
 
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.47.2 Android'
-      env: RN_VERSION=0.47.2
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.47.2 iOS'
-      env: RN_VERSION=0.47.2
+    # - <<: *android_job_template
+    #   name: 'Integrate with RN 0.47.2 Android'
+    #   env: RN_VERSION=0.47.2
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.47.2 iOS'
+    #   env: RN_VERSION=0.47.2
 
   allow_failures:
     - name: 'Integrate with RN 0.55.4 Android'
