@@ -13,7 +13,7 @@ function get-flow-version {
 function generate-project {
   [ "$RN_VERSION" = "next" ] &&
     react-native init --version=facebook/react-native $PROJECT_NAME ||
-    react-native init --version=$RN_VERSION $PROJECT_NAME ||
+    react-native init --version=$RN_VERSION $PROJECT_NAME
 
   pushd $PROJECT_NAME
     FLOW_VERSION=$(get-flow-version)
