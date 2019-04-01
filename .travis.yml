@@ -1,9 +1,13 @@
 stages:
   - name: self-test
+    if: type = push
   - name: integration
+    # FIXME re-enable
+    # if: branch = master OR type = pull_request
 
 env:
   global:
+    - FORCE_VERSION=0.10.0
     - SYS=22
     - ABI="default;armeabi-v7a"
     - ADB_INSTALL_TIMEOUT=10 # minutes
