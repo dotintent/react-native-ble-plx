@@ -2,7 +2,14 @@
 ### 专为小票打印机修改源码
 尝试将结束标志[0x0D, 0x0A]跟消息体一起发送，但由于时间有限，swift和java也不熟悉，自己也没有小票打印机测试。
 所以将消息体和结束标志分开发送，先发送消息体，如"Hello, World!"，再发送结果标志"0D0A"，即可成功打印。
-如果你的小票打印结束标志不是"0D0A"，在源码中修改下if判断语句即可，如果有谁能解决一次性发送的问题，麻烦告知下，谢谢！
+如果你的小票打印结束标志不是"0D0A"，可以根据comomit记录自行在源码中修改下if判断语句即可，如果有谁能解决一次性发送的问题，麻烦告知下，谢谢！
+
+##### 可直接安装我修改后的版本
+##### yarn安装：
+yarn add https://github.com/zhanguangao/react-native-ble-plx.git
+
+##### npm安装：
+npm install git+https://git@github.com/zhanguangao/react-native-ble-plx.git
 
 
 <p align="center">
