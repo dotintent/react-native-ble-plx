@@ -27,6 +27,7 @@ What this library does NOT support:
 
 | React Native | 1.0.3              |
 | ------------ | ------------------ |
+| 0.59.3       | :white_check_mark: |
 | 0.59.1       | :white_check_mark: |
 | 0.59.0       | :white_check_mark: |
 | 0.58.3       | :white_check_mark: |
