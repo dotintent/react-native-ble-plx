@@ -5,12 +5,13 @@ import { NativeModules, NativeEventEmitter } from 'react-native'
 import { State, LogLevel, ConnectionPriority } from './TypeDefinition'
 import type {
   DeviceId,
-  Identifier,
-  UUID,
-  TransactionId,
-  Base64,
-  ScanOptions,
-  ConnectionOptions
+    Identifier,
+    UUID,
+    TransactionId,
+    Base64,
+    ScanOptions,
+    ScaleInfo,
+    ConnectionOptions
 } from './TypeDefinition'
 
 /**
@@ -267,6 +268,31 @@ export interface BleModuleInterface {
    */
   startDeviceScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
 
+
+  /**
+ * Starts device scan.
+ *
+ * @param {?ScanOptions} options Platform dependent options
+ * @private
+ */
+  startTrackerScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
+
+  setUserProfileToScales(deviceIdentifier: DeviceId, age: number, height: number, gender: string): void;
+
+  setUserProfileToAlternativeScale(deviceIdentifier: DeviceId, user: string, age: number, height: number, gender: number): void;
+
+  synchronizeAlternativeScale(deviceIdentifier: DeviceId, user: string, measurement: string): void;
+
+  selectProfileAlternativeScale(deviceIdentifier: DeviceId, user: string): void;
+
+  /**
+* Starts device scan.
+*
+* @param {?ScanOptions} options Platform dependent options
+* @private
+*/
+  startScaleScan(options: ?ScanOptions): void;
+
   /**
    * Stops device scan.
    * @private
@@ -471,6 +497,71 @@ export interface BleModuleInterface {
     transactionId: TransactionId
   ): Promise<NativeCharacteristic>;
 
+  // ~~~~~~~ TRACKER ~~~~~~~
+  activateVibration(
+    deviceIdentifier: DeviceId,
+    duration: number,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  setDeviceTime(
+    deviceIdentifier: DeviceId,
+    date: string,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  setUserPersonalInfo(
+    deviceIdentifier: DeviceId,
+    info: Dictionary<String, Any>,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getDetailedDayActivity(
+    deviceIdentifier: DeviceId,
+    date: number,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getSummaryDaySleep(
+    deviceIdentifier: DeviceId,
+    info: Dictionary<String, Any>,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getSummaryDayActivity(
+    deviceIdentifier: DeviceId,
+    date: number,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getLastActivity(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getLastSleepActivity(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  setDistanceUnit(
+    deviceIdentifier: DeviceId,
+    unit: string,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  getSoftwareVersion(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+  setMode(
+    deviceIdentifier: DeviceId,
+    mode: string,
+    transactionId: TransactionId
+  ): Promise<NativeCharacteristic>;
+
+
   /**
    * Write value to characteristic.
    *
@@ -524,6 +615,57 @@ export interface BleModuleInterface {
     transactionId: TransactionId
   ): Promise<void>;
 
+  /**
+ * Setup monitoring of characteristic value.
+ *
+ * @param {DeviceId} deviceIdentifier Connected device identifier
+ * @param {TransactionId} transactionId Transaction handle used to cancel operation
+ * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+ * @private
+ */
+  monitorTrackerResponse(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<void>;
+
+  /**
+* Setup monitoring of characteristic value.
+*
+* @param {DeviceId} deviceIdentifier Connected device identifier
+* @param {TransactionId} transactionId Transaction handle used to cancel operation
+* @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+* @private
+*/
+  monitorScaleResponse(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<void>;
+
+  /**
+   * Setup monitoring of characteristic value.
+   *
+   * @param {DeviceId} deviceIdentifier Connected device identifier
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+   * @private
+   */
+  monitorAlternativeScaleResponse(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<void>;
+
+  /**
+   * Setup monitoring of characteristic value.
+   *
+   * @param {DeviceId} deviceIdentifier Connected device identifier
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
+   * @private
+   */
+  monitorAlternativeScaleFinalResponse(
+    deviceIdentifier: DeviceId,
+    transactionId: TransactionId
+  ): Promise<void>;
   /**
    * Setup monitoring of characteristic value.
    *
