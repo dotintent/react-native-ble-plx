@@ -33,6 +33,9 @@ public class BleClientManager : NSObject {
     // Map of discovered characteristics in any of connected devices.
     private var discoveredCharacteristics = [Double: Characteristic]()
 
+    // Map of discovered descriptors in any of connected devices.
+    private var discoveredDescriptors = [Double: Descriptor]()
+
     // Map of currently connected peripherals.
     private var connectedPeripherals = Dictionary<UUID, Peripheral>()
 
@@ -101,6 +104,7 @@ public class BleClientManager : NSObject {
         // Caches
         discoveredServices.removeAll()
         discoveredCharacteristics.removeAll()
+        discoveredDescriptors.removeAll()
         monitoredCharacteristics.removeAll()
         connectedPeripherals.forEach { (_, device) in
             _ = device.cancelConnection().subscribe()
@@ -516,10 +520,17 @@ public class BleClientManager : NSObject {
                 return Observable.from(services)
             }
             .flatMap { $0.discoverCharacteristics(nil) }
+            .flatMap { [weak self] characteristics -> Observable<Characteristic> in
+                for characteristic in characteristics {
+                    self?.discoveredCharacteristics[characteristic.jsIdentifier] = characteristic
+                }
+                return Observable.from(characteristics)
+            }
+            .flatMap { $0.discoverDescriptors() }
             .subscribe(
-                onNext: { [weak self] characteristics in
-                    for characteristic in characteristics {
-                        self?.discoveredCharacteristics[characteristic.jsIdentifier] = characteristic
+                onNext: { [weak self] descriptors in
+                    for descriptor in descriptors {
+                        self?.discoveredDescriptors[descriptor.jsIdentifier] = descriptor
                     }
                 },
                 onError: { error in error.bleError.callReject(promise) },
@@ -606,6 +617,82 @@ public class BleClientManager : NSObject {
             } ?? []
 
         resolve(characteristics)
+    }
+
+    @objc
+    public func descriptorsForDevice(_ deviceIdentifier: String,
+                                            serviceUUID: String,
+                                     characteristicUUID: String,
+                                                resolve: Resolve,
+                                                 reject: Reject) {
+        guard let deviceId = UUID(uuidString: deviceIdentifier),
+              let serviceId = serviceUUID.toCBUUID(),
+              let characteristicId = characteristicUUID.toCBUUID() else {
+                BleError.invalidIdentifiers([deviceIdentifier, serviceUUID, characteristicUUID]).callReject(reject)
+                return
+        }
+
+        guard let peripheral = connectedPeripherals[deviceId] else {
+            BleError.peripheralNotConnected(deviceIdentifier).callReject(reject)
+            return
+        }
+
+        guard let service = (peripheral.services?.first { serviceId == $0.uuid }) else {
+            BleError.serviceNotFound(serviceUUID).callReject(reject)
+            return
+        }
+
+        guard let characteristic = (service.characteristics?.first { characteristicId == $0.uuid }) else {
+            BleError.characteristicNotFound(characteristicUUID).callReject(reject)
+            return
+        }
+
+        descriptorsForCharacteristic(characteristic, resolve: resolve, reject: reject)
+    }
+
+    @objc
+    public func descriptorsForService(_ serviceIdentifier: Double,
+                                      characteristicUUID: String,
+                                      resolve: Resolve,
+                                      reject: Reject) {
+        guard let characteristicId = characteristicUUID.toCBUUID() else {
+            BleError.invalidIdentifiers(characteristicUUID).callReject(reject)
+            return
+        }
+
+        guard let service = discoveredServices[serviceIdentifier] else {
+            BleError.serviceNotFound(serviceIdentifier.description).callReject(reject)
+            return
+        }
+
+        guard let characteristic = (service.characteristics?.first { characteristicId == $0.uuid }) else {
+            BleError.characteristicNotFound(characteristicUUID).callReject(reject)
+            return
+        }
+
+        descriptorsForCharacteristic(characteristic, resolve: resolve, reject: reject)
+    }
+
+    @objc
+    public func descriptorsForCharacteristic(_ characteristicIdentifier: Double,
+                                             resolve: Resolve,
+                                             reject: Reject) {
+        guard let characteristic = discoveredCharacteristics[characteristicIdentifier] else {
+            BleError.characteristicNotFound(characteristicIdentifier.description).callReject(reject)
+            return
+        }
+
+        descriptorsForCharacteristic(characteristic, resolve: resolve, reject: reject)
+    }
+
+    private func descriptorsForCharacteristic(_ characteristic: Characteristic, resolve: Resolve, reject: Reject) {
+        let descriptors = characteristic.descriptors?
+            .map { [weak self] descriptor in
+                self?.discoveredDescriptors[descriptor.jsIdentifier] = descriptor
+                return descriptor.asJSObject
+            } ?? []
+
+        resolve(descriptors)
     }
 
     // Mark: Reading ---------------------------------------------------------------------------------------------------
@@ -933,10 +1020,242 @@ public class BleClientManager : NSObject {
         }
     }
 
+    // MARK: Descriptors -----------------------------------------------------------------------------------------------
+
+    private func getDescriptorForDevice(_ deviceId: String,
+                                          serviceUUID: String,
+                                          characteristicUUID: String,
+                                          descriptorUUID: String) -> Observable<Descriptor> {
+        return getDescriptorByUUID(descriptorUUID, characteristicObservable: getCharacteristicForDevice(deviceId, serviceUUID: serviceUUID, characteristicUUID: characteristicUUID))
+    }
+
+    private func getDescriptorForService(_ serviceId: Double,
+                                         characteristicUUID: String,
+                                         descriptorUUID: String) -> Observable<Descriptor> {
+        return getDescriptorByUUID(descriptorUUID, characteristicObservable: getCharacteristicForService(serviceId, characteristicUUID: characteristicUUID))
+    }
+
+    private func getDescriptorForCharacteristic(_ characteristicId: Double,
+                                                descriptorUUID: String) -> Observable<Descriptor> {
+        return getDescriptorByUUID(descriptorUUID, characteristicObservable: getCharacteristic(characteristicId))
+    }
+
+    private func getDescriptorByUUID(_ descriptorUUID: String, characteristicObservable: Observable<Characteristic>) -> Observable<Descriptor> {
+        guard let descriptorCBUUID = descriptorUUID.toCBUUID() else {
+            return Observable.error(BleError.invalidIdentifiers(descriptorUUID))
+        }
+
+        return characteristicObservable.flatMap { characteristic -> Observable<Descriptor> in
+            guard let descriptor = (characteristic.descriptors?.first { $0.uuid == descriptorCBUUID }) else {
+                return Observable.error(BleError.descriptorNotFound(descriptorUUID))
+            }
+            return Observable.just(descriptor)
+        }
+    }
+
+    private func getDescriptorByID(_ descriptorId: Double) -> Observable<Descriptor> {
+        return Observable.create { [weak self] observer in
+            guard let descriptor = self?.discoveredDescriptors[descriptorId] else {
+                observer.onError(BleError.descriptorNotFound(descriptorId.description))
+                return Disposables.create()
+            }
+
+            observer.onNext(descriptor)
+            observer.onCompleted()
+            return Disposables.create()
+        }
+    }
+
+    private func safeReadDescriptor(_ descriptorObservable: Observable<Descriptor>,
+                                             transactionId: String,
+                                                   promise: SafePromise) {
+        let disposable = descriptorObservable
+            .flatMap { descriptor -> Observable<Descriptor> in
+                return descriptor.readValue()
+            }
+            .subscribe(
+                onNext: { descriptor in
+                    promise.resolve(descriptor.asJSObject)
+            },
+                onError: { error in
+                    error.bleError.callReject(promise)
+            },
+                onCompleted: nil,
+                onDisposed: { [weak self] in
+                    self?.transactions.removeDisposable(transactionId)
+                    BleError.cancelled().callReject(promise)
+                }
+        )
+
+        transactions.replaceDisposable(transactionId, disposable: disposable)
+    }
+
+    @objc
+    public func readDescriptorForDevice(_ deviceIdentifier: String,
+                                               serviceUUID: String,
+                                        characteristicUUID: String,
+                                            descriptorUUID: String,
+                                             transactionId: String,
+                                                   resolve: @escaping Resolve,
+                                                    reject: @escaping Reject) {
+        let descriptor = getDescriptorForDevice(deviceIdentifier,
+                               serviceUUID: serviceUUID,
+                               characteristicUUID: characteristicUUID,
+                               descriptorUUID: descriptorUUID)
+        safeReadDescriptor(descriptor,
+                           transactionId: transactionId,
+                           promise: SafePromise.init(resolve: resolve, reject: reject))
+    }
+
+    @objc
+    public func readDescriptorForService(_ serviceId: Double,
+                                  characteristicUUID: String,
+                                      descriptorUUID: String,
+                                       transactionId: String,
+                                             resolve: @escaping Resolve,
+                                              reject: @escaping Reject) {
+        let descriptor = getDescriptorForService(serviceId,
+                                                characteristicUUID: characteristicUUID,
+                                                descriptorUUID: descriptorUUID)
+        safeReadDescriptor(descriptor,
+                           transactionId: transactionId,
+                           promise: SafePromise.init(resolve: resolve, reject: reject))
+    }
+
+    @objc
+    public func readDescriptorForCharacteristic(_ characteristicID: Double,
+                                                    descriptorUUID: String,
+                                                     transactionId: String,
+                                                           resolve: @escaping Resolve,
+                                                            reject: @escaping Reject) {
+        let descriptor = getDescriptorForCharacteristic(characteristicID, descriptorUUID: descriptorUUID)
+        safeReadDescriptor(descriptor,
+                           transactionId: transactionId,
+                           promise: SafePromise.init(resolve: resolve, reject: reject))
+    }
+
+    @objc
+    public func readDescriptor(_ descriptorID: Double,
+                                transactionId: String,
+                                      resolve: @escaping Resolve,
+                                       reject: @escaping Reject) {
+        safeReadDescriptor(getDescriptorByID(descriptorID),
+                           transactionId: transactionId,
+                           promise: SafePromise.init(resolve: resolve, reject: reject))
+    }
+
+    private func safeWriteDescriptor(_ descriptorObservable: Observable<Descriptor>,
+                                     transactionId: String,
+                                     value: Data,
+                                     promise: SafePromise) {
+        let disposable = descriptorObservable
+            .flatMap { descriptor -> Observable<Descriptor> in
+                return descriptor.writeValue(value)
+            }
+            .subscribe(
+                onNext: { descriptor in
+                    promise.resolve(descriptor.asJSObject)
+            },
+                onError: { error in
+                    error.bleError.callReject(promise)
+            },
+                onCompleted: nil,
+                onDisposed: { [weak self] in
+                    self?.transactions.removeDisposable(transactionId)
+                    BleError.cancelled().callReject(promise)
+                }
+        )
+
+        transactions.replaceDisposable(transactionId, disposable: disposable)
+    }
+
+    @objc
+    public func writeDescriptorForDevice(_ deviceIdentifier: String,
+                                         serviceUUID: String,
+                                         characteristicUUID: String,
+                                         descriptorUUID: String,
+                                         valueBase64: String,
+                                         transactionId: String,
+                                         resolve: @escaping Resolve,
+                                         reject: @escaping Reject) {
+        guard let value = valueBase64.fromBase64 else {
+            return BleError.invalidWriteDataForDescriptor(descriptorUUID, data: valueBase64).callReject(reject)
+        }
+
+        let descriptor = getDescriptorForDevice(deviceIdentifier,
+                                                serviceUUID: serviceUUID,
+                                                characteristicUUID: characteristicUUID,
+                                                descriptorUUID: descriptorUUID)
+        safeWriteDescriptor(descriptor,
+                            transactionId: transactionId,
+                            value: value,
+                            promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+    @objc
+    public func writeDescriptorForService(_ serviceID: Double,
+                                          characteristicUUID: String,
+                                          descriptorUUID: String,
+                                          valueBase64: String,
+                                          transactionId: String,
+                                          resolve: @escaping Resolve,
+                                          reject: @escaping Reject) {
+        guard let value = valueBase64.fromBase64 else {
+            return BleError.invalidWriteDataForDescriptor(descriptorUUID, data: valueBase64).callReject(reject)
+        }
+
+        let descriptor = getDescriptorForService(serviceID,
+                                                 characteristicUUID: characteristicUUID,
+                                                 descriptorUUID: descriptorUUID)
+        safeWriteDescriptor(descriptor,
+                            transactionId: transactionId,
+                            value: value,
+                            promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+    @objc
+    public func writeDescriptorForCharacteristic(_ characteristicID: Double,
+                                                 descriptorUUID: String,
+                                                 valueBase64: String,
+                                                 transactionId: String,
+                                                 resolve: @escaping Resolve,
+                                                 reject: @escaping Reject) {
+        guard let value = valueBase64.fromBase64 else {
+            return BleError.invalidWriteDataForDescriptor(descriptorUUID, data: valueBase64).callReject(reject)
+        }
+
+        let descriptor = getDescriptorForCharacteristic(characteristicID, descriptorUUID: descriptorUUID)
+
+        safeWriteDescriptor(descriptor,
+                            transactionId: transactionId,
+                            value: value,
+                            promise: SafePromise(resolve: resolve, reject: reject))
+    }
+
+    @objc
+    public func writeDescriptor(_ descriptorID: Double,
+                                valueBase64: String,
+                                transactionId: String,
+                                resolve: @escaping Resolve,
+                                reject: @escaping Reject) {
+        guard let value = valueBase64.fromBase64 else {
+            return BleError.invalidWriteDataForDescriptor(descriptorID.description, data: valueBase64).callReject(reject)
+        }
+
+        safeWriteDescriptor(getDescriptorByID(descriptorID),
+                            transactionId: transactionId,
+                            value: value,
+                            promise: SafePromise(resolve: resolve, reject: reject))
+    }
 
     // MARK: Private interface -----------------------------------------------------------------------------------------
 
     private func clearCacheForPeripheral(peripheral: Peripheral) {
+        for (key, value) in discoveredDescriptors {
+            if value.characteristic.service.peripheral == peripheral {
+                discoveredDescriptors[key] = nil
+            }
+        }
         for (key, value) in discoveredCharacteristics {
             if value.service.peripheral == peripheral {
                 discoveredCharacteristics[key] = nil

@@ -108,6 +108,9 @@ extension Service {
 }
 
 extension Characteristic {
+    var valueBase64: String? {
+        return value?.base64
+    }
     var jsIdentifier: Double {
         return Double(UInt64(objectId) & ((1 << 53) - 1))
     }
@@ -124,6 +127,52 @@ extension Characteristic {
             "isNotifiable": properties.contains(.notify),
             "isNotifying": isNotifying,
             "isIndicatable": properties.contains(.indicate),
+            "value": valueBase64 as Any
+        ]
+    }
+}
+
+extension Descriptor {
+    var valueBase64: String? {
+        guard let value = self.value else {
+            return nil
+        }
+        switch uuid.uuidString {
+            // UInt16 types.
+            case CBUUIDCharacteristicExtendedPropertiesString:
+                fallthrough
+            case CBUUIDClientCharacteristicConfigurationString:
+                fallthrough
+            case CBUUIDServerCharacteristicConfigurationString:
+                var data = (value as! NSNumber).uint16Value.littleEndian
+                return Data.init(bytes: &data, count: 2).base64
+
+            // String types.
+            case CBUUIDCharacteristicUserDescriptionString:
+                let data = (value as! String).data(using: String.Encoding.utf8)
+                return data?.base64
+
+            // Data types.
+            case CBUUIDCharacteristicFormatString:
+                fallthrough
+            case CBUUIDCharacteristicAggregateFormatString:
+                return (value as! Data).base64
+        default:
+            return nil
+        }
+    }
+    var jsIdentifier: Double {
+        return Double(UInt64(objectId) & ((1 << 53) - 1))
+    }
+    var asJSObject: [AnyHashable: Any] {
+        return [
+            "id": jsIdentifier,
+            "uuid": uuid.fullUUIDString,
+            "characteristicUUID": characteristic.uuid.fullUUIDString,
+            "characteristicID": characteristic.jsIdentifier,
+            "serviceID": characteristic.service.jsIdentifier,
+            "serviceUUID": characteristic.service.uuid.fullUUIDString,
+            "deviceID": characteristic.service.peripheral.identifier.uuidString,
             "value": valueBase64 as Any
         ]
     }
@@ -164,11 +213,5 @@ extension BluetoothState {
         case .poweredOff: return "PoweredOff"
         case .poweredOn: return "PoweredOn"
         }
-    }
-}
-
-extension Characteristic {
-    var valueBase64: String? {
-        return value?.base64
     }
 }
