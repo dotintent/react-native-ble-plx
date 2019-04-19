@@ -291,6 +291,8 @@ extension BleError {
     static func peripheralNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .DeviceNotFound, deviceID: uuid) }
     static func peripheralNotConnected(_ uuid: String) -> BleError { return BleError(errorCode: .DeviceNotConnected, deviceID: uuid) }
     static func characteristicNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .CharacteristicNotFound, characteristicUUID: uuid) }
+    static func descriptorNotFound(_ uuid: String) -> BleError { return BleError(errorCode: .DescriptorNotFound, descriptorUUID: uuid) }
+
     static func invalidWriteDataForCharacteristic(_ uuid: String, data: String) -> BleError {
         return BleError(errorCode: .CharacteristicInvalidDataFormat, characteristicUUID: uuid, internalMessage: data)
     }
