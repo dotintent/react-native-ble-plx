@@ -1255,15 +1255,15 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                 return Observable.error(new CannotMonitorCharacteristicException(gattCharacteristic));
             }
-        })      
-                .onBackpressureBuffer()
-                .observeOn(Schedulers.computation())
+        })                      
                 .flatMap(new Func1<Observable<byte[]>, Observable<byte[]>>() {
                     @Override
                     public Observable<byte[]> call(Observable<byte[]> observable) {
                         return observable;
                     }
                 })
+                .onBackpressureBuffer()
+                .observeOn(Schedulers.computation())
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {
