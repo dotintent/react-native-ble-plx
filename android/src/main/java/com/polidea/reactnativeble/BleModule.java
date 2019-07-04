@@ -63,6 +63,7 @@ import java.util.concurrent.TimeUnit;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.schedulers.Schedulers;
 import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func0;
@@ -1254,7 +1255,9 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                 return Observable.error(new CannotMonitorCharacteristicException(gattCharacteristic));
             }
-        })
+        })      
+                .onBackpressureBuffer()
+                .observeOn(Schedulers.computation())
                 .flatMap(new Func1<Observable<byte[]>, Observable<byte[]>>() {
                     @Override
                     public Observable<byte[]> call(Observable<byte[]> observable) {
