@@ -3,6 +3,7 @@ import { BleErrorCode, BleErrorCodeMessage } from '../src/BleError'
 import * as Native from '../src/BleModule'
 
 import { NativeEventEmitter } from './Utils'
+import { Descriptor } from '../src/Descriptor'
 Native.EventEmitter = NativeEventEmitter
 
 /* eslint-disable no-unused-vars */
@@ -32,9 +33,12 @@ beforeEach(() => {
     discoverAllServicesAndCharacteristicsForDevice: jest.fn(),
     servicesForDevice: jest.fn(),
     characteristicsForDevice: jest.fn(),
+    descriptorsForDevice: jest.fn(),
     readCharacteristicForDevice: jest.fn(),
     writeCharacteristicForDevice: jest.fn(),
     monitorCharacteristicForDevice: jest.fn(),
+    readDescriptorForDevice: jest.fn(),
+    writeDescriptorForDevice: jest.fn(),
     requestMTUForDevice: jest.fn(),
     requestConnectionPriorityForDevice: jest.fn(),
     ScanEvent: 'scan_event',
@@ -261,6 +265,19 @@ test('BleManager properly calls characteristicsForDevice BleModule function', as
   expect(Native.BleModule.characteristicsForDevice).toBeCalledWith('id', 'aa')
 })
 
+test('BleManager properly calls descriptorsForDevice BleModule function', async () => {
+  Native.BleModule.descriptorsForDevice = jest
+    .fn()
+    .mockReturnValueOnce(Promise.resolve([{ uuid: 'a', deviceId: 'id' }, { uuid: 'b', deviceId: 'id' }]))
+  const descriptors = await bleManager.descriptorsForDevice('deviceId', 'serviceUUID', 'characteristicUUID')
+  expect(descriptors.length).toBe(2)
+  expect(descriptors[0]).toBeInstanceOf(Descriptor)
+  expect(descriptors[1]).toBeInstanceOf(Descriptor)
+  expect(descriptors[0].uuid).toBe('a')
+  expect(descriptors[1].uuid).toBe('b')
+  expect(Native.BleModule.descriptorsForDevice).toBeCalledWith('deviceId', 'serviceUUID', 'characteristicUUID')
+})
+
 test('BleManager properly reads characteristic value', async () => {
   Native.BleModule.readCharacteristicForDevice = jest
     .fn()
@@ -338,4 +355,52 @@ test('BleManager properly requests the MTU', async () => {
 test('BleManager properly requests connection priority', async () => {
   bleManager.requestConnectionPriorityForDevice('id', 2, 'trId')
   expect(Native.BleModule.requestConnectionPriorityForDevice).toBeCalledWith('id', 2, 'trId')
+})
+
+test('BleManager properly reads descriptors value', async () => {
+  Native.BleModule.readDescriptorForDevice = jest
+    .fn()
+    .mockReturnValueOnce(Promise.resolve({ uuid: 'aaaa', value: '=AA' }))
+  const descriptor = await bleManager.readDescriptorForDevice(
+    'id',
+    'serviceUUID',
+    'characteristicUUID',
+    'descriptorUUID',
+    'trans'
+  )
+  expect(descriptor).toBeInstanceOf(Descriptor)
+  expect(descriptor.uuid).toBe('aaaa')
+  expect(descriptor.value).toBe('=AA')
+  expect(Native.BleModule.readDescriptorForDevice).toBeCalledWith(
+    'id',
+    'serviceUUID',
+    'characteristicUUID',
+    'descriptorUUID',
+    'trans'
+  )
+})
+
+test('BleManager properly writes descriptors value', async () => {
+  Native.BleModule.writeDescriptorForDevice = jest
+    .fn()
+    .mockReturnValueOnce(Promise.resolve({ uuid: 'aaaa', value: 'value' }))
+  const descriptor = await bleManager.writeDescriptorForDevice(
+    'id',
+    'serviceUUID',
+    'characteristicUUID',
+    'descriptorUUID',
+    'value',
+    'trans'
+  )
+  expect(descriptor).toBeInstanceOf(Descriptor)
+  expect(descriptor.uuid).toBe('aaaa')
+  expect(descriptor.value).toBe('value')
+  expect(Native.BleModule.writeDescriptorForDevice).toBeCalledWith(
+    'id',
+    'serviceUUID',
+    'characteristicUUID',
+    'descriptorUUID',
+    'value',
+    'trans'
+  )
 })
