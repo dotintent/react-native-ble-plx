@@ -5,8 +5,6 @@ import type { BleManager } from './BleManager'
 import type { NativeDescriptor } from './BleModule'
 import type { DeviceId, Identifier, UUID, TransactionId, Base64 } from './TypeDefinition'
 
-// "value": valueBase64 as Any
-
 /**
  * Descriptor object.
  */
