@@ -6,7 +6,8 @@ daysUntilStale: 60
 daysUntilClose: 7
 
 # Issues or Pull Requests with these labels will never be considered stale. Set to `[]` to disable
-exemptLabels: []
+exemptLabels:
+ - pending
 
 # Label to use when marking as stale
 staleLabel: stale
