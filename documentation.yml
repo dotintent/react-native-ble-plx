@@ -9,6 +9,7 @@ toc:
   - Device
   - Service
   - Characteristic
+  - Descriptor
   - name: Utils
     description: |
       Utility functions and classes.
