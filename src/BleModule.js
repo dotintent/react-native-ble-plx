@@ -186,6 +186,53 @@ export interface NativeCharacteristic {
 }
 
 /**
+ * Native descriptor object passed from BleModule.
+ * @private
+ */
+export interface NativeDescriptor {
+  /**
+   * Descriptor unique identifier
+   * @private
+   */
+  id: Identifier;
+  /**
+   * Descriptor UUID
+   * @private
+   */
+  uuid: UUID;
+  /**
+   * Characteristic's ID to which descriptor belongs
+   * @private
+   */
+  characteristicID: Identifier;
+  /**
+   * Characteristic's UUID to which descriptor belongs
+   * @private
+   */
+  characteristicUUID: UUID;
+  /**
+   * Service's ID to which descriptor belongs
+   * @private
+   */
+  serviceID: Identifier;
+  /**
+   * Service's UUID to which descriptor belongs
+   * @private
+   */
+  serviceUUID: UUID;
+  /**
+   * Device's ID to which descriptor belongs
+   * @private
+   */
+  deviceID: DeviceId;
+  /**
+   * Descriptor value if present
+   * @private
+   */
+  value: ?Base64;
+}
+
+/**
  * Object representing information about restored BLE state after application relaunch.
  * @private
  */
@@ -364,7 +411,7 @@ export interface BleModuleInterface {
   // Discovery
 
   /**
-   * Discovers all services and characteristics for specified device.
+   * Discovers all services, characteristics and descriptors for specified device.
    *
    * @param {DeviceId} deviceIdentifier Connected device identifier.
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
@@ -405,6 +452,40 @@ export interface BleModuleInterface {
    * @private
    */
   characteristicsForService(serviceIdentifier: Identifier): Promise<Array<NativeCharacteristic>>;
+
+  /**
+   * List of discovered descriptors for specified characteristic.
+   *
+   * @param {DeviceId} deviceIdentifier Connected device identifier.
+   * @param {UUID} serviceUUID Service UUID which contains descriptors.
+   * @param {UUID} characteristicUUID Characteristic UUID which contains descriptors.
+   * @returns {Promise<Array<NativeDescriptor>>} List of descriptors available in characteristic.
+   * @private
+   */
+  descriptorsForDevice(
+    deviceIdentifier: DeviceId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID
+  ): Promise<Array<NativeDescriptor>>;
+
+  /**
+   * List of discovered descriptors for specified characteristic.
+   *
+   * @param {Identifier} serviceIdentifier Service identifier which contains descriptors.
+   * @param {UUID} characteristicUUID Characteristic UUID which contains descriptors.
+   * @returns {Promise<Array<NativeDescriptor>>} List of descriptors available in characteristic.
+   * @private
+   */
+  descriptorsForService(serviceIdentifier: Identifier, characteristicUUID: UUID): Promise<Array<NativeDescriptor>>;
+
+  /**
+   * List of discovered descriptors for specified characteristic.
+   *
+   * @param {Identifier} characteristicIdentifier Characteristic identifier which contains descriptors.
+   * @returns {Promise<Array<NativeDescriptor>>} List of descriptors available in characteristic.
+   * @private
+   */
+  descriptorsForCharacteristic(characteristicIdentifier: Identifier): Promise<Array<NativeDescriptor>>;
 
   // Characteristics operations
 
@@ -548,6 +629,141 @@ export interface BleModuleInterface {
    * @private
    */
   monitorCharacteristic(characteristicIdentifier: Identifier, transactionId: TransactionId): Promise<void>;
+
+  // Descriptor operations
+
+  /**
+   * Read descriptor's value.
+   *
+   * @param {DeviceId} deviceIdentifier Connected device identifier
+   * @param {UUID} serviceUUID Service UUID
+   * @param {UUID} characteristicUUID Characteristic UUID
+   * @param {UUID} descriptorUUID Descriptor UUID
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeDescriptor>} Descriptor for which value was read
+   * @private
+   */
+  readDescriptorForDevice(
+    deviceIdentifier: DeviceId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    descriptorUUID: UUID,
+    transactionId: TransactionId
+  ): Promise<NativeDescriptor>;
+
+  /**
+   * Read descriptor's value.
+   *
+   * @param {Identifier} serviceIdentifier Service identifier
+   * @param {UUID} characteristicUUID Characteristic UUID
+   * @param {UUID} descriptorUUID Descriptor UUID
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeDescriptor>} Descriptor for which value was read
+   * @private
+   */
+  readDescriptorForService(
+    serviceIdentifier: Identifier,
+    characteristicUUID: UUID,
+    descriptorUUID: UUID,
+    transactionId: TransactionId
+  ): Promise<NativeDescriptor>;
+
+  /**
+   * Read descriptor's value.
+   *
+   * @param {Identifier} characteristicIdentifier Characteristic identifier
+   * @param {UUID} descriptorUUID Descriptor UUID
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeDescriptor>} Descriptor for which value was read
+   * @private
+   */
+  readDescriptorForCharacteristic(
+    characteristicIdentifier: Identifier,
+    descriptorUUID: UUID,
+    transactionId: TransactionId
+  ): Promise<NativeDescriptor>;
+
+  /**
+   * Read descriptor's value.
+   *
+   * @param {Identifier} descriptorIdentifier Descriptor identifier
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeDescriptor>} Descriptor for which value was read
+   * @private
+   */
+  readDescriptor(descriptorIdentifier: Identifier, transactionId: TransactionId): Promise<NativeDescriptor>;
+
+  /**
+   * Write value to descriptor.
+   *
+   * @param {DeviceId} deviceIdentifier Connected device identifier
+   * @param {UUID} serviceUUID Service UUID
+   * @param {UUID} characteristicUUID Characteristic UUID
+   * @param {UUID} descriptorUUID Descriptor UUID
+   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeDescriptor>} Descriptor which saved passed value
+   * @private
+   */
+  writeDescriptorForDevice(
+    deviceIdentifier: DeviceId,
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    descriptorUUID: UUID,
+    valueBase64: Base64,
+    transactionId: TransactionId
+  ): Promise<NativeDescriptor>;
+
+  /**
+   * Write value to descriptor.
+   *
+   * @param {Identifier} serviceIdentifier Service identifier
+   * @param {UUID} characteristicUUID Characteristic UUID
+   * @param {UUID} descriptorUUID Descriptor UUID
+   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeDescriptor>} Descriptor which saved passed value
+   * @private
+   */
+  writeDescriptorForService(
+    serviceIdentifier: Identifier,
+    characteristicUUID: UUID,
+    descriptorUUID: UUID,
+    valueBase64: Base64,
+    transactionId: TransactionId
+  ): Promise<NativeDescriptor>;
+
+  /**
+   * Write value to descriptor.
+   *
+   * @param {Identifier} characteristicIdentifier Characteristic identifier
+   * @param {UUID} descriptorUUID Descriptor UUID
+   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeDescriptor>} Descriptor which saved passed value
+   * @private
+   */
+  writeDescriptorForCharacteristic(
+    characteristicIdentifier: Identifier,
+    descriptorUUID: UUID,
+    valueBase64: Base64,
+    transactionId: TransactionId
+  ): Promise<NativeDescriptor>;
+
+  /**
+   * Write value to descriptor.
+   *
+   * @param {Identifier} descriptorIdentifier Descriptor identifier
+   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<NativeDescriptor>} Descriptor which saved passed value
+   * @private
+   */
+  writeDescriptor(
+    descriptorIdentifier: Identifier,
+    valueBase64: Base64,
+    transactionId: TransactionId
+  ): Promise<NativeDescriptor>;
 
   // Other APIs
 
