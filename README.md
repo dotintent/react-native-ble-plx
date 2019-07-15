@@ -64,24 +64,9 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 ## Configuration & Installation
 
-### iOS (pure react-native, [example setup](https://github.com/Cierpliwy/SensorTag))
+### iOS (expo/Podfile and RN 0.60+, [example setup](https://github.com/Cierpliwy/SensorTagExpo))
 
-1. `npm install --save react-native-ble-plx`
-2. `react-native link react-native-ble-plx`
-3. Add empty Swift file if you don't have at least one:
-   - Select File/New/File...
-   - Choose Swift file and click Next.
-   - Name it however you want, select your targets and create it.
-   - Accept to create Objective-C bridging header.
-4. Minimal supported version of iOS is 8.0
-5. If you want to support background mode:
-   - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
-     `Background Modes` section.
-   - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
-
-### iOS (expo/Podfile, [example setup](https://github.com/Cierpliwy/SensorTagExpo))
-
-1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.io/versions/v32.0.0/expokit/eject/) and [here](https://docs.expo.io/versions/latest/expokit/expokit).
+1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.io/versions/v32.0.0/expokit/eject/) and [here](https://docs.expo.io/versions/latest/expokit/expokit). (only for expo)
 2. `npm install --save react-native-ble-plx`
 3. `react-native link react-native-ble-plx`
 4. Add empty Swift file if you don't have at least one:
@@ -97,6 +82,22 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 6. Enter `ios` folder and run `pod update`
 7. Minimal supported version of iOS is 8.0
 8. If you want to support background mode:
+   - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
+     `Background Modes` section.
+   - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
+
+### iOS (react-native < 0.60, [example setup](https://github.com/Cierpliwy/SensorTag/tree/rn59))
+
+1. `npm install --save react-native-ble-plx`
+2. `react-native link react-native-ble-plx`
+3. Add empty Swift file if you don't have at least one:
+   - Select File/New/File...
+   - Choose Swift file and click Next.
+   - Name it however you want, select your targets and create it.
+   - Accept to create Objective-C bridging header.
+4. Minimal supported version of iOS is 8.0
+5. If you want to support background mode:
+
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
@@ -133,6 +134,16 @@ android {
         android:minSdkVersion="18"
         ...
 ```
+
+5. If you are using AndroidX, then for the time being you need to convert import statements in the Android library with [jetifier](https://www.npmjs.com/package/jetifier). These steps apply for all react-native packages, which are during the transition period:
+
+- `npm install --save-dev jetifier`
+- Run `jetify` script after `npm install`. You can do it by adding "postinstall" script to the `package.json` file:
+  ```json
+   ...
+   "postinstall": "npx jetify",
+   ...
+  ```
 
 ## Troubleshooting
 
