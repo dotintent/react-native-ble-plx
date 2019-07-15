@@ -1,5 +1,10 @@
 <p align="center">
-  <img alt="react-native-ble-plx" src="docs/logo.png" />
+  <img
+    alt="react-native-ble-plx library logo"
+    src="docs/logo.png"
+    height="300"
+    style="margin-top: 20px; margin-bottom: 20px;"
+  />
 </p>
 
 ## About this library
