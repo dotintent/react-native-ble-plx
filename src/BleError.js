@@ -255,6 +255,10 @@ export const BleErrorCode = {
    * Invalid Base64 format was passed to descriptor API function call.
    */
   DescriptorInvalidDataFormat: 505,
+  /**
+   * Issued a write to a descriptor, which is handled by OS.
+   */
+  DescriptorWriteNotAllowed: 506,
 
   // Scanning errors ---------------------------------------------------------------------------------------------------
   /**
@@ -331,6 +335,7 @@ export const BleErrorCodeMessage: BleErrorCodeMessageMapping = {
     'Descriptors not discovered for device {deviceID}, service {serviceUUID} and characteristic {characteristicUUID}',
   [BleErrorCode.DescriptorInvalidDataFormat]:
     'Cannot write to descriptor {descriptorUUID} with invalid data format: {internalMessage}',
+  [BleErrorCode.DescriptorWriteNotAllowed]: "Cannot write to descriptor {descriptorUUID}. It's not allowed by iOS.",
 
   // Scanning
   [BleErrorCode.ScanStartFailed]: 'Cannot start scanning operation',
