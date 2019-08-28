@@ -415,6 +415,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A8F13BF923166F8B00A70E91 /* MultiPlatformBLEAdapter */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = MultiPlatformBLEAdapter;
+			sourceTree = "<group>";
+		};
 		D73A55C020BBFA8100BB1C1E /* BleClientManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -733,6 +740,7 @@
 		D73F06DF1D48E17B00AD5963 = {
 			isa = PBXGroup;
 			children = (
+				A8F13BF923166F8B00A70E91 /* MultiPlatformBLEAdapter */,
 				D73A59CC20BBFEC800BB1C1E /* RxSwift */,
 				D73A585420BBFE0D00BB1C1E /* RxBluetoothKit */,
 				D73A55C020BBFA8100BB1C1E /* BleClientManager */,
@@ -791,6 +799,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = D73F06DF1D48E17B00AD5963;
