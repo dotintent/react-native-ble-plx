@@ -419,7 +419,8 @@
 			isa = PBXGroup;
 			children = (
 			);
-			path = MultiPlatformBLEAdapter;
+			name = MultiPlatformBLEAdapter;
+			path = MultiplatformBLEAdapter;
 			sourceTree = "<group>";
 		};
 		D73A55C020BBFA8100BB1C1E /* BleClientManager */ = {
