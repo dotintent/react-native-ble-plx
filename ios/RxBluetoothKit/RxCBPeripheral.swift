@@ -361,8 +361,19 @@ class RxCBPeripheral: RxPeripheralType {
         }
 
         @objc func peripheralIsReady(toSendWriteWithoutResponse peripheral: CBPeripheral) {
-            RxBluetoothKitLog.d("\(peripheral.logDescription) peripheralIsReady(toSendWriteWithoutResponse:\(peripheral.canSendWriteWithoutResponse)")
-            peripheralIsReadyToSendWriteWithoutResponseSubject.onNext(peripheral.canSendWriteWithoutResponse)
+            //resolve build errors with XCode 11 / iOS 13
+            if #available(iOS 11.0, *) {
+              RxBluetoothKitLog.d("\(peripheral.logDescription) peripheralIsReady(toSendWriteWithoutResponse:\(peripheral.canSendWriteWithoutResponse)")
+            } else {
+              // Fallback on earlier versions
+              RxBluetoothKitLog.d("\(peripheral.logDescription) peripheralIsReady(toSendWriteWithoutResponse: false")
+            }
+            if #available(iOS 11.0, *) {
+              peripheralIsReadyToSendWriteWithoutResponseSubject.onNext(peripheral.canSendWriteWithoutResponse)
+            } else {
+              // Fallback on earlier versions
+              peripheralIsReadyToSendWriteWithoutResponseSubject.onNext(false)
+            }
         }
     }
 
