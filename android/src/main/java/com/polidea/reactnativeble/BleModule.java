@@ -39,6 +39,7 @@ import com.polidea.reactnativeble.utils.RefreshGattCustomOperation;
 import com.polidea.reactnativeble.utils.SafePromise;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.reactnativeble.wrapper.Characteristic;
+import com.polidea.reactnativeble.wrapper.Descriptor;
 import com.polidea.reactnativeble.wrapper.Device;
 import com.polidea.reactnativeble.wrapper.Service;
 import com.polidea.rxandroidble.NotificationSetupMode;
@@ -47,7 +48,6 @@ import com.polidea.rxandroidble.RxBleClient;
 import com.polidea.rxandroidble.RxBleConnection;
 import com.polidea.rxandroidble.RxBleDevice;
 import com.polidea.rxandroidble.RxBleDeviceServices;
-import com.polidea.rxandroidble.exceptions.BleCharacteristicNotFoundException;
 import com.polidea.rxandroidble.internal.RxBleLog;
 import com.polidea.rxandroidble.scan.ScanFilter;
 import com.polidea.rxandroidble.scan.ScanResult;
@@ -96,6 +96,9 @@ public class BleModule extends ReactContextBaseJavaModule {
 
     // Map of discovered characteristics
     private SparseArray<Characteristic> discoveredCharacteristics = new SparseArray<>();
+
+    // Map of discovered descriptors
+    private SparseArray<Descriptor> discoveredDescriptors = new SparseArray<>();
 
     // Currently pending transactions
     private final DisposableMap transactions = new DisposableMap();
@@ -163,6 +166,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         // Caches
         discoveredServices.clear();
         discoveredCharacteristics.clear();
+        discoveredDescriptors.clear();
         connectedDevices.clear();
         discoveredDevices.clear();
 
@@ -879,6 +883,11 @@ public class BleModule extends ReactContextBaseJavaModule {
                             for (BluetoothGattCharacteristic gattCharacteristic : gattService.getCharacteristics()) {
                                 Characteristic characteristic = new Characteristic(service, gattCharacteristic);
                                 discoveredCharacteristics.put(characteristic.getId(), characteristic);
+
+                                for (BluetoothGattDescriptor gattDescriptor : gattCharacteristic.getDescriptors()) {
+                                    Descriptor descriptor = new Descriptor(characteristic, gattDescriptor);
+                                    discoveredDescriptors.put(descriptor.getId(), descriptor);
+                                }
                             }
                         }
                         device.setServices(services);
@@ -888,7 +897,7 @@ public class BleModule extends ReactContextBaseJavaModule {
         transactions.replaceSubscription(transactionId, subscription);
     }
 
-    // Mark: Service and characteristic getters ----------------------------------------------------
+    // Mark: Service, characteristic and descriptor getters ----------------------------------------
 
     @ReactMethod
     public void servicesForDevice(final String deviceId, final Promise promise) {
@@ -951,6 +960,82 @@ public class BleModule extends ReactContextBaseJavaModule {
             jsCharacteristics.pushMap(characteristic.toJSObject(null));
         }
         promise.resolve(jsCharacteristics);
+    }
+
+    @ReactMethod
+    public void descriptorsForDevice(final String deviceIdentifier,
+                                     final String serviceUUID,
+                                     final String characteristicUUID,
+                                     final Promise promise) {
+        final UUID[] uuids = UUIDConverter.convert(serviceUUID, characteristicUUID);
+        if (uuids == null) {
+            BleErrorUtils.invalidIdentifiers(serviceUUID, characteristicUUID).reject(promise);
+            return;
+        }
+
+        final Device device = getDeviceOrReject(deviceIdentifier, promise);
+        if (device == null) {
+            return;
+        }
+
+        final Service service = device.getServiceByUUID(uuids[0]);
+        if (service == null) {
+            BleErrorUtils.serviceNotFound(serviceUUID).reject(promise);
+            return;
+        }
+
+        final Characteristic characteristic = service.getCharacteristicByUUID(uuids[1]);
+        if (characteristic == null) {
+            BleErrorUtils.characteristicNotFound(characteristicUUID);
+            return;
+        }
+
+        descriptorForCharacteristic(characteristic, promise);
+    }
+
+    @ReactMethod
+    public void descriptorsForService(final int serviceIdentifier,
+                                      final String characteristicUUID,
+                                      final Promise promise) {
+        final UUID uuid = UUIDConverter.convert(characteristicUUID);
+        if (uuid == null) {
+            BleErrorUtils.invalidIdentifiers(characteristicUUID).reject(promise);
+            return;
+        }
+
+        Service service = discoveredServices.get(serviceIdentifier);
+        if (service == null) {
+            BleErrorUtils.serviceNotFound(Integer.toString(serviceIdentifier)).reject(promise);
+            return;
+        }
+
+        final Characteristic characteristic = service.getCharacteristicByUUID(uuid);
+        if (characteristic == null) {
+            BleErrorUtils.characteristicNotFound(characteristicUUID);
+            return;
+        }
+
+        descriptorForCharacteristic(characteristic, promise);
+    }
+
+    @ReactMethod
+    public void descriptorsForCharacteristic(final int characteristicIdentifier,
+                                             final Promise promise) {
+        Characteristic characteristic = discoveredCharacteristics.get(characteristicIdentifier);
+        if (characteristic == null) {
+            BleErrorUtils.characteristicNotFound(Integer.toString(characteristicIdentifier));
+            return;
+        }
+
+        descriptorForCharacteristic(characteristic, promise);
+    }
+
+    private void descriptorForCharacteristic(final Characteristic characteristic, final Promise promise) {
+        WritableArray jsDescriptors = Arguments.createArray();
+        for (Descriptor descriptor : characteristic.getDescriptors()) {
+            jsDescriptors.pushMap(descriptor.toJSObject(null));
+        }
+        promise.resolve(jsDescriptors);
     }
 
     // Mark: Characteristics operations ------------------------------------------------------------
@@ -1070,13 +1155,6 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof BleCharacteristicNotFoundException) {
-                            BleErrorUtils.characteristicNotFound(
-                                    UUIDConverter.fromUUID(
-                                            characteristic.getNativeCharacteristic().getUuid()))
-                                    .reject(promise);
-                            return;
-                        }
                         errorConverter.toError(e).reject(promise);
                         transactions.removeSubscription(transactionId);
                     }
@@ -1161,13 +1239,6 @@ public class BleModule extends ReactContextBaseJavaModule {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e instanceof BleCharacteristicNotFoundException) {
-                            BleErrorUtils.characteristicNotFound(
-                                    UUIDConverter.fromUUID(
-                                            characteristic.getNativeCharacteristic().getUuid()))
-                                    .reject(promise);
-                            return;
-                        }
                         errorConverter.toError(e).reject(promise);
                         transactions.removeSubscription(transactionId);
                     }
@@ -1295,6 +1366,349 @@ public class BleModule extends ReactContextBaseJavaModule {
         transactions.replaceSubscription(transactionId, subscription);
     }
 
+    // Mark: Descriptor read -----------------------------------------------------------------------
+
+    @ReactMethod
+    public void readDescriptorForDevice(final String deviceId,
+                                        final String serviceUUID,
+                                        final String characteristicUUID,
+                                        final String descriptorUUID,
+                                        final String transactionId,
+                                        final Promise promise) {
+
+        final Descriptor descriptor = getDescriptorOrReject(
+                deviceId, serviceUUID, characteristicUUID, descriptorUUID, promise);
+        if (descriptor == null) {
+            return;
+        }
+
+        safeReadDescriptorForDevice(descriptor, transactionId, new SafePromise(promise));
+    }
+
+    @ReactMethod
+    public void readDescriptorForService(final int serviceIdentifier,
+                                         final String characteristicUUID,
+                                         final String descriptorUUID,
+                                         final String transactionId,
+                                         final Promise promise) {
+
+        final Descriptor descriptor = getDescriptorOrReject(
+                serviceIdentifier, characteristicUUID, descriptorUUID, promise);
+        if (descriptor == null) {
+            return;
+        }
+
+        safeReadDescriptorForDevice(descriptor, transactionId, new SafePromise(promise));
+    }
+
+    @ReactMethod
+    public void readDescriptorForCharacteristic(final int characteristicIdentifier,
+                                                final String descriptorUUID,
+                                                final String transactionId,
+                                                final Promise promise) {
+
+        final Descriptor descriptor = getDescriptorOrReject(
+                characteristicIdentifier, descriptorUUID, promise);
+        if (descriptor == null) {
+            return;
+        }
+
+        safeReadDescriptorForDevice(descriptor, transactionId, new SafePromise(promise));
+    }
+
+    @ReactMethod
+    public void readDescriptor(final int descriptorIdentifier,
+                               final String transactionId,
+                               final Promise promise) {
+
+        final Descriptor descriptor = getDescriptorOrReject(descriptorIdentifier, promise);
+        if (descriptor == null) {
+            return;
+        }
+
+        safeReadDescriptorForDevice(descriptor, transactionId, new SafePromise(promise));
+    }
+
+    private void safeReadDescriptorForDevice(final Descriptor descriptor,
+                                             final String transactionId,
+                                             final SafePromise promise) {
+        final RxBleConnection connection = getConnectionOrReject(descriptor.getCharacteristic().getService().getDevice(), promise);
+        if (connection == null) {
+            return;
+        }
+
+        final Subscription subscription = connection
+                .readDescriptor(descriptor.getNativeDescriptor())
+                .doOnUnsubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        BleErrorUtils.cancelled().reject(promise);
+                        transactions.removeSubscription(transactionId);
+                    }
+                })
+                .subscribe(new Observer<byte[]>() {
+                    @Override
+                    public void onCompleted() {
+                        transactions.removeSubscription(transactionId);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorConverter.toError(e).reject(promise);
+                        transactions.removeSubscription(transactionId);
+                    }
+
+                    @Override
+                    public void onNext(byte[] bytes) {
+                        descriptor.logValue("Read from", bytes);
+                        promise.resolve(descriptor.toJSObject(bytes));
+                    }
+                });
+
+        transactions.replaceSubscription(transactionId, subscription);
+    }
+
+    // Mark: Descriptor write ----------------------------------------------------------------------
+
+
+    @ReactMethod
+    public void writeDescriptorForDevice(final String deviceId,
+                                         final String serviceUUID,
+                                         final String characteristicUUID,
+                                         final String descriptorUUID,
+                                         final String valueBase64,
+                                         final String transactionId,
+                                         final Promise promise) {
+
+        final Descriptor descriptor = getDescriptorOrReject(
+                deviceId, serviceUUID, characteristicUUID, descriptorUUID, promise);
+        if (descriptor == null) {
+            return;
+        }
+
+        safeWriteDescriptorForDevice(
+                descriptor,
+                valueBase64,
+                transactionId,
+                new SafePromise(promise));
+    }
+
+    @ReactMethod
+    public void writeDescriptorForService(final int serviceIdentifier,
+                                          final String characteristicUUID,
+                                          final String descriptorUUID,
+                                          final String valueBase64,
+                                          final String transactionId,
+                                          final Promise promise) {
+        final Descriptor descriptor = getDescriptorOrReject(
+                serviceIdentifier, characteristicUUID, descriptorUUID, promise);
+        if (descriptor == null) {
+            return;
+        }
+
+        safeWriteDescriptorForDevice(
+                descriptor,
+                valueBase64,
+                transactionId,
+                new SafePromise(promise));
+    }
+
+    @ReactMethod
+    public void writeDescriptorForCharacteristic(final int characteristicIdentifier,
+                                                 final String descriptorUUID,
+                                                 final String valueBase64,
+                                                 final String transactionId,
+                                                 final Promise promise) {
+        final Descriptor descriptor = getDescriptorOrReject(
+                characteristicIdentifier, descriptorUUID, promise);
+        if (descriptor == null) {
+            return;
+        }
+
+        safeWriteDescriptorForDevice(
+                descriptor,
+                valueBase64,
+                transactionId,
+                new SafePromise(promise));
+    }
+
+    @ReactMethod
+    public void writeDescriptor(final int descriptorIdentifier,
+                                final String valueBase64,
+                                final String transactionId,
+                                final Promise promise) {
+        final Descriptor descriptor = getDescriptorOrReject(descriptorIdentifier, promise);
+        if (descriptor == null) {
+            return;
+        }
+
+        safeWriteDescriptorForDevice(
+                descriptor,
+                valueBase64,
+                transactionId,
+                new SafePromise(promise));
+    }
+
+    private void safeWriteDescriptorForDevice(final Descriptor descriptor,
+                                              final String valueBase64,
+                                              final String transactionId,
+                                              final SafePromise promise) {
+        final RxBleConnection connection = getConnectionOrReject(descriptor.getCharacteristic().getService().getDevice(), promise);
+        if (connection == null) {
+            return;
+        }
+
+        final byte[] value;
+        try {
+            value = Base64Converter.decode(valueBase64);
+        } catch (Throwable e) {
+            String uuid = UUIDConverter.fromUUID(descriptor.getNativeDescriptor().getUuid());
+            BleErrorUtils.invalidWriteDataForDescriptor(valueBase64, uuid).reject(promise);
+            return;
+        }
+
+        final Subscription subscription = connection
+                .writeDescriptor(descriptor.getNativeDescriptor(), value)
+                .doOnUnsubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        BleErrorUtils.cancelled().reject(promise);
+                        transactions.removeSubscription(transactionId);
+                    }
+                })
+                .subscribe(new Observer<byte[]>() {
+                    @Override
+                    public void onCompleted() {
+                        transactions.removeSubscription(transactionId);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        errorConverter.toError(e).reject(promise);
+                        transactions.removeSubscription(transactionId);
+                    }
+
+                    @Override
+                    public void onNext(byte[] bytes) {
+                        descriptor.logValue("Write to", bytes);
+                        promise.resolve(descriptor.toJSObject(bytes));
+                    }
+                });
+
+        transactions.replaceSubscription(transactionId, subscription);
+    }
+
+    // Mark: Descriptors getters -------------------------------------------------------------------
+
+    @Nullable
+    private Descriptor getDescriptorOrReject(@NonNull final String deviceId,
+                                             @NonNull final String serviceUUID,
+                                             @NonNull final String characteristicUUID,
+                                             @NonNull final String descriptorUUID,
+                                             @NonNull Promise promise) {
+        final UUID[] UUIDs = UUIDConverter.convert(serviceUUID, characteristicUUID, descriptorUUID);
+        if (UUIDs == null) {
+            BleErrorUtils.invalidIdentifiers(serviceUUID, characteristicUUID, descriptorUUID).reject(promise);
+            return null;
+        }
+
+        final Device device = connectedDevices.get(deviceId);
+        if (device == null) {
+            BleErrorUtils.deviceNotConnected(deviceId).reject(promise);
+            return null;
+        }
+
+        final Service service = device.getServiceByUUID(UUIDs[0]);
+        if (service == null) {
+            BleErrorUtils.serviceNotFound(serviceUUID).reject(promise);
+            return null;
+        }
+
+        final Characteristic characteristic = service.getCharacteristicByUUID(UUIDs[1]);
+        if (characteristic == null) {
+            BleErrorUtils.characteristicNotFound(characteristicUUID).reject(promise);
+            return null;
+        }
+
+        final Descriptor descriptor = characteristic.getDescriptorByUUID(UUIDs[2]);
+        if (descriptor == null) {
+            BleErrorUtils.descriptorNotFound(descriptorUUID).reject(promise);
+            return null;
+        }
+
+        return descriptor;
+    }
+
+    @Nullable
+    private Descriptor getDescriptorOrReject(final int serviceIdentifier,
+                                             @NonNull final String characteristicUUID,
+                                             @NonNull final String descriptorUUID,
+                                             @NonNull Promise promise) {
+        final UUID[] UUIDs = UUIDConverter.convert(characteristicUUID, descriptorUUID);
+        if (UUIDs == null) {
+            BleErrorUtils.invalidIdentifiers(characteristicUUID, descriptorUUID).reject(promise);
+            return null;
+        }
+
+        final Service service = discoveredServices.get(serviceIdentifier);
+        if (service == null) {
+            BleErrorUtils.serviceNotFound(Integer.toString(serviceIdentifier)).reject(promise);
+            return null;
+        }
+
+        final Characteristic characteristic = service.getCharacteristicByUUID(UUIDs[0]);
+        if (characteristic == null) {
+            BleErrorUtils.characteristicNotFound(characteristicUUID).reject(promise);
+            return null;
+        }
+
+        final Descriptor descriptor = characteristic.getDescriptorByUUID(UUIDs[1]);
+        if (descriptor == null) {
+            BleErrorUtils.descriptorNotFound(descriptorUUID).reject(promise);
+            return null;
+        }
+
+        return descriptor;
+    }
+
+    @Nullable
+    private Descriptor getDescriptorOrReject(final int characteristicIdentifier,
+                                             @NonNull final String descriptorUUID,
+                                             @NonNull Promise promise) {
+        final UUID uuid = UUIDConverter.convert(descriptorUUID);
+        if (uuid == null) {
+            BleErrorUtils.invalidIdentifiers(descriptorUUID).reject(promise);
+            return null;
+        }
+
+        final Characteristic characteristic = discoveredCharacteristics.get(characteristicIdentifier);
+        if (characteristic == null) {
+            BleErrorUtils.characteristicNotFound(Integer.toString(characteristicIdentifier)).reject(promise);
+            return null;
+        }
+
+        final Descriptor descriptor = characteristic.getDescriptorByUUID(uuid);
+        if (descriptor == null) {
+            BleErrorUtils.descriptorNotFound(descriptorUUID).reject(promise);
+            return null;
+        }
+
+        return descriptor;
+    }
+
+    @Nullable
+    private Descriptor getDescriptorOrReject(final int descriptorIdentifier,
+                                             @NonNull Promise promise) {
+
+        final Descriptor descriptor = discoveredDescriptors.get(descriptorIdentifier);
+        if (descriptor == null) {
+            BleErrorUtils.descriptorNotFound(Integer.toString(descriptorIdentifier)).reject(promise);
+            return null;
+        }
+
+        return descriptor;
+    }
+
 
     // Mark: Characteristics getters ---------------------------------------------------------------
 
@@ -1377,7 +1791,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                                                   @NonNull Promise promise) {
         final RxBleConnection connection = device.getConnection();
         if (connection == null) {
-            BleErrorUtils.deviceNotConnected(device.getNativeDevice().getMacAddress()).reject(promise);
+            BleErrorUtils.deviceNotConnected(device.getDeviceId()).reject(promise);
             return null;
         }
         return connection;
@@ -1388,7 +1802,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                                                   @NonNull SafePromise promise) {
         final RxBleConnection connection = device.getConnection();
         if (connection == null) {
-            BleErrorUtils.deviceNotConnected(device.getNativeDevice().getMacAddress()).reject(promise);
+            BleErrorUtils.deviceNotConnected(device.getDeviceId()).reject(promise);
             return null;
         }
         return connection;
@@ -1399,7 +1813,7 @@ public class BleModule extends ReactContextBaseJavaModule {
                                               @NonNull Promise promise) {
         final List<Service> services = device.getServices();
         if (services == null) {
-            BleErrorUtils.deviceServicesNotDiscovered(device.getNativeDevice().getMacAddress()).reject(promise);
+            BleErrorUtils.deviceServicesNotDiscovered(device.getDeviceId()).reject(promise);
             return null;
         }
         return services;
@@ -1429,7 +1843,7 @@ public class BleModule extends ReactContextBaseJavaModule {
             int key = discoveredServices.keyAt(i);
             Service service = discoveredServices.get(key);
 
-            if (service.getDevice().getNativeDevice().getMacAddress().equals(device.getNativeDevice().getMacAddress())) {
+            if (service.getDeviceId().equals(device.getDeviceId())) {
                 discoveredServices.remove(key);
             }
         }
@@ -1437,8 +1851,15 @@ public class BleModule extends ReactContextBaseJavaModule {
             int key = discoveredCharacteristics.keyAt(i);
             Characteristic characteristic = discoveredCharacteristics.get(key);
 
-            if (characteristic.getService().getDevice().getNativeDevice().getMacAddress().equals(device.getNativeDevice().getMacAddress())) {
+            if (characteristic.getDeviceId().equals(device.getDeviceId())) {
                 discoveredCharacteristics.remove(key);
+            }
+        }
+        for (int i = discoveredDescriptors.size() - 1; i >= 0; i--) {
+            int key = discoveredDescriptors.keyAt(i);
+            Descriptor descriptor = discoveredDescriptors.get(key);
+            if (descriptor.getDeviceId().equals(device.getDeviceId())) {
+                discoveredDescriptors.remove(key);
             }
         }
     }

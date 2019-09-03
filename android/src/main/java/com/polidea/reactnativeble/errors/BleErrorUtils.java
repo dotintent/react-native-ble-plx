@@ -50,6 +50,12 @@ public class BleErrorUtils {
         return bleError;
     }
 
+    static public BleError descriptorNotFound(String uuid) {
+        BleError bleError = new BleError(BleErrorCode.DescriptorNotFound, null, null);
+        bleError.descriptorUUID = uuid;
+        return bleError;
+    }
+
     static public BleError invalidWriteDataForCharacteristic(String data, String uuid) {
         BleError bleError = new BleError(BleErrorCode.CharacteristicInvalidDataFormat, null, null);
         bleError.characteristicUUID = uuid;
