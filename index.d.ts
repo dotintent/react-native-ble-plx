@@ -517,6 +517,10 @@ declare module 'react-native-ble-plx' {
      * Invalid Base64 format was passed to descriptor API function call.
      */
     DescriptorInvalidDataFormat = 505,
+    /**
+     * Issued a write to a descriptor, which is handled by OS.
+     */
+    DescriptorWriteNotAllowed = 506,
 
     // Scanning errors -------------------------------------------------------------------------------------------------
     /**
@@ -915,6 +919,53 @@ declare module 'react-native-ble-plx' {
   }
 
   /**
+   * Native descriptor object passed from BleModule.
+   * @private
+   */
+  export interface NativeDescriptor {
+    /**
+     * Descriptor unique identifier
+     * @private
+     */
+    id: Identifier
+    /**
+     * Descriptor UUID
+     * @private
+     */
+    uuid: UUID
+    /**
+     * Characteristic's ID to which descriptor belongs
+     * @private
+     */
+    characteristicID: Identifier
+    /**
+     * Characteristic's UUID to which descriptor belongs
+     * @private
+     */
+    characteristicUUID: UUID
+    /**
+     * Service's ID to which descriptor belongs
+     * @private
+     */
+    serviceID: Identifier
+    /**
+     * Service's UUID to which descriptor belongs
+     * @private
+     */
+    serviceUUID: UUID
+    /**
+     * Device's ID to which descriptor belongs
+     * @private
+     */
+    deviceID: DeviceId
+    /**
+     * Descriptor value if present
+     * @private
+     */
+    value: Base64 | null
+  }
+
+  /**
    * Object representing information about restored BLE state after application relaunch.
    * @private
    */
@@ -1163,7 +1214,7 @@ declare module 'react-native-ble-plx' {
     // Mark: Discovery -------------------------------------------------------------------------------------------------
 
     /**
-     * Discovers all {@link Service}s and {@link Characteristic}s for {@link Device}.
+     * Discovers all {@link Service}s,  {@link Characteristic}s and {@link Descriptor}s for {@link Device}.
      *
      * @param {DeviceId} deviceIdentifier {@link Device} identifier.
      * @param {?TransactionId} transactionId Transaction handle used to cancel operation
@@ -1195,6 +1246,21 @@ declare module 'react-native-ble-plx' {
      * discovered for a {@link Device} in specified {@link Service}.
      */
     characteristicsForDevice(deviceIdentifier: DeviceId, serviceUUID: UUID): Promise<Characteristic[]>
+
+    /**
+     * List of discovered {@link Descriptor}s for given {@link Device}, {@link Service} and {@link Characteristic}.
+     *
+     * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+     * @param {UUID} serviceUUID {@link Service} UUID.
+     * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+     * @returns {Promise<Array<Descriptor>>} Promise which emits array of {@link Descriptor} objects which are
+     * discovered for a {@link Device}, {@link Service} in specified {@link Characteristic}.
+     */
+    descriptorsForDevice(
+      deviceIdentifier: DeviceId,
+      serviceUUID: UUID,
+      characteristicUUID: UUID
+    ): Promise<Array<Descriptor>>
 
     // Mark: Characteristics operations --------------------------------------------------------------------------------
 
@@ -1276,6 +1342,48 @@ declare module 'react-native-ble-plx' {
       listener: (error: BleError | null, characteristic: Characteristic | null) => void,
       transactionId?: TransactionId
     ): Subscription
+
+    // Mark: Descriptors operations ----------------------------------------------------------------------------------
+
+    /**
+     * Read {@link Descriptor} value.
+     *
+     * @param {DeviceId} deviceIdentifier {@link Device} identifier.
+     * @param {UUID} serviceUUID {@link Service} UUID.
+     * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+     * @param {UUID} descriptorUUID {@link Descriptor} UUID.
+     * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+     * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+     * @returns {Promise<Descriptor>} Promise which emits first {@link Descriptor} object matching specified
+     * UUID paths. Latest value of {@link Descriptor} will be stored inside returned object.
+     */
+    readDescriptorForDevice(
+      deviceIdentifier: DeviceId,
+      serviceUUID: UUID,
+      characteristicUUID: UUID,
+      descriptorUUID: UUID,
+      transactionId?: string
+    ): Promise<Descriptor>
+
+    /**
+     * Write {@link Descriptor} value.
+     *
+     * @param {DeviceId} deviceIdentifier Connected device identifier
+     * @param {UUID} serviceUUID Service UUID
+     * @param {UUID} characteristicUUID Characteristic UUID
+     * @param {UUID} descriptorUUID Descriptor UUID
+     * @param {Base64} valueBase64 Value to be set coded in Base64
+     * @param {?TransactionId} transactionId Transaction handle used to cancel operation
+     * @returns {Promise<Descriptor>} Descriptor which saved passed value
+     */
+    writeDescriptorForDevice(
+      deviceIdentifier: DeviceId,
+      serviceUUID: UUID,
+      characteristicUUID: UUID,
+      descriptorUUID: UUID,
+      valueBase64: Base64,
+      transactionId?: string
+    ): Promise<Descriptor>
   }
 
   // Device.js *********************************************************************************************************
@@ -1441,6 +1549,16 @@ declare module 'react-native-ble-plx' {
     characteristicsForService(serviceUUID: string): Promise<Characteristic[]>
 
     /**
+     * {@link #blemanagerdescriptorsfordevice|bleManager.descriptorsForDevice()} with partially filled arguments.
+     *
+     * @param {UUID} serviceUUID {@link Service} UUID.
+     * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+     * @returns {Promise<Array<Descriptor>>} Promise which emits array of {@link Descriptor} objects which are
+     * discovered for this {@link Characteristic}.
+     */
+    descriptorsForService(serviceUUID: UUID, characteristicUUID: UUID): Promise<Array<Descriptor>>
+
+    /**
      * {@link #blemanagerreadcharacteristicfordevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
      *
      * @param {UUID} serviceUUID {@link Service} UUID.
@@ -1509,6 +1627,42 @@ declare module 'react-native-ble-plx' {
       listener: (error: BleError | null, characteristic: Characteristic | null) => void,
       transactionId?: TransactionId
     ): Subscription
+
+    /**
+     * {@link #blemanagerreaddescriptorfordevice|bleManager.readDescriptorForDevice()} with partially filled arguments.
+     *
+     * @param {UUID} serviceUUID {@link Service} UUID.
+     * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+     * @param {UUID} descriptorUUID {@link Descriptor} UUID.
+     * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+     * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+     * @returns {Promise<Descriptor>} Promise which emits first {@link Descriptor} object matching specified
+     * UUID paths. Latest value of {@link Descriptor} will be stored inside returned object.
+     */
+    readDescriptorForService(
+      serviceUUID: UUID,
+      characteristicUUID: UUID,
+      descriptorUUID: UUID,
+      transactionId?: string
+    ): Promise<Descriptor>
+
+    /**
+     * {@link #blemanagerwritedescriptorfordevice|bleManager.writeDescriptorForDevice()} with partially filled arguments.
+     *
+     * @param {UUID} serviceUUID {@link Service} UUID.
+     * @param {UUID} characteristicUUID Characteristic UUID
+     * @param {UUID} descriptorUUID Descriptor UUID
+     * @param {Base64} valueBase64 Value to be set coded in Base64
+     * @param {?TransactionId} transactionId Transaction handle used to cancel operation
+     * @returns {Promise<Descriptor>} Descriptor which saved passed value.
+     */
+    writeDescriptorForService(
+      serviceUUID: UUID,
+      characteristicUUID: UUID,
+      descriptorUUID: UUID,
+      valueBase64: Base64,
+      transactionId?: string
+    ): Promise<Descriptor>
   }
 
   // Service.js ********************************************************************************************************
@@ -1551,6 +1705,15 @@ declare module 'react-native-ble-plx' {
      * discovered for this service.
      */
     characteristics(): Promise<Characteristic[]>
+
+    /**
+     * {@link #blemanagerdescriptorsfordevice|bleManager.descriptorsForDevice()} with partially filled arguments.
+     *
+     * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+     * @returns {Promise<Array<Descriptor>>} Promise which emits array of {@link Descriptor} objects which are
+     * discovered for this {@link Service} in specified {@link Characteristic}.
+     */
+    descriptorsForCharacteristic(characteristicUUID: UUID): Promise<Array<Descriptor>>
 
     /**
      * {@link #blemanagerreadcharacteristicfordevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
@@ -1610,6 +1773,38 @@ declare module 'react-native-ble-plx' {
       listener: (error: BleError | null, characteristic: Characteristic | null) => void,
       transactionId?: string
     ): Subscription
+
+    /**
+     * {@link #blemanagerreaddescriptorfordevice|bleManager.readDescriptorForDevice()} with partially filled arguments.
+     *
+     * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+     * @param {UUID} descriptorUUID {@link Descriptor} UUID.
+     * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+     * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+     * @returns {Promise<Descriptor>} Promise which emits first {@link Descriptor} object matching specified
+     * UUID paths. Latest value of {@link Descriptor} will be stored inside returned object.
+     */
+    readDescriptorForCharacteristic(
+      characteristicUUID: UUID,
+      descriptorUUID: UUID,
+      transactionId?: string
+    ): Promise<Descriptor>
+
+    /**
+     * {@link #blemanagerwritedescriptorfordevice|bleManager.writeDescriptorForDevice()} with partially filled arguments.
+     *
+     * @param {UUID} characteristicUUID Characteristic UUID
+     * @param {UUID} descriptorUUID Descriptor UUID
+     * @param {Base64} valueBase64 Value to be set coded in Base64
+     * @param {?TransactionId} transactionId Transaction handle used to cancel operation
+     * @returns {Promise<Descriptor>} Descriptor which saved passed value.
+     */
+    writeDescriptorForCharacteristic(
+      characteristicUUID: UUID,
+      descriptorUUID: UUID,
+      valueBase64: Base64,
+      transactionId?: string
+    ): Promise<Descriptor>
   }
 
   // Characteristic.js *************************************************************************************************
@@ -1676,6 +1871,14 @@ declare module 'react-native-ble-plx' {
     constructor(nativeCharacteristic: NativeCharacteristic, manager: BleManager)
 
     /**
+     * {@link #blemanagerdescriptorsfordevice|bleManager.descriptorsForDevice()} with partially filled arguments.
+     *
+     * @returns {Promise<Array<Descriptor>>} Promise which emits array of {@link Descriptor} objects which are
+     * discovered for this {@link Characteristic}.
+     */
+    descriptors(): Promise<Array<Descriptor>>
+
+    /**
      * {@link #blemanagerreadcharacteristicfordevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
      *
      * @param {?TransactionId} transactionId optional `transactionId` which can be used in
@@ -1720,5 +1923,98 @@ declare module 'react-native-ble-plx' {
       listener: (error: BleError | null, characteristic: Characteristic | null) => void,
       transactionId?: string
     ): Subscription
+
+    /**
+     * {@link #blemanagerreaddescriptorfordevice|bleManager.readDescriptorForDevice()} with partially filled arguments.
+     *
+     * @param {UUID} descriptorUUID {@link Descriptor} UUID.
+     * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+     * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+     * @returns {Promise<Descriptor>} Promise which emits first {@link Descriptor} object matching specified
+     * UUID paths. Latest value of {@link Descriptor} will be stored inside returned object.
+     */
+    readDescriptor(descriptorUUID: UUID, transactionId?: string): Promise<Descriptor>
+
+    /**
+     * {@link #blemanagerwritedescriptorfordevice|bleManager.writeDescriptorForDevice()} with partially filled arguments.
+     *
+     * @param {UUID} descriptorUUID Descriptor UUID
+     * @param {Base64} valueBase64 Value to be set coded in Base64
+     * @param {?TransactionId} transactionId Transaction handle used to cancel operation
+     * @returns {Promise<Descriptor>} Descriptor which saved passed value.
+     */
+    writeDescriptor(descriptorUUID: UUID, valueBase64: Base64, transactionId?: string): Promise<Descriptor>
+  }
+
+  // Descriptor.js *************************************************************************************************
+
+  /**
+   * Descriptor object.
+   */
+  export class Descriptor implements NativeDescriptor {
+    /**
+     * Internal BLE Manager handle
+     * @private
+     */
+    _manager: BleManager
+    /**
+     * Descriptor unique identifier
+     */
+    id: Identifier
+    /**
+     * Descriptor UUID
+     */
+    uuid: UUID
+    /**
+     * Characteristic's ID to which descriptor belongs
+     */
+    characteristicID: Identifier
+    /**
+     * Characteristic's UUID to which descriptor belongs
+     */
+    characteristicUUID: UUID
+    /**
+     * Service's ID to which descriptor belongs
+     */
+    serviceID: Identifier
+    /**
+     * Service's UUID to which descriptor belongs
+     */
+    serviceUUID: UUID
+    /**
+     * Device's ID to which descriptor belongs
+     */
+    deviceID: DeviceId
+    /**
+     * Descriptor value if present
+     */
+    value: Base64 | null
+
+    /**
+     * Private constructor used to create instance of {@link Descriptor}.
+     * @param {NativeDescriptor} nativeDescriptor NativeDescriptor
+     * @param {BleManager} manager BleManager
+     * @private
+     */
+    constructor(nativeDescriptor: NativeDescriptor, manager: BleManager)
+
+    /**
+     * {@link #blemanagerreaddescriptorfordevice|bleManager.readDescriptorForDevice()} with partially filled arguments.
+     *
+     * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+     * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+     * @returns {Promise<Descriptor>} Promise which emits first {@link Descriptor} object matching specified
+     * UUID paths. Latest value of {@link Descriptor} will be stored inside returned object.
+     */
+    read(transactionId?: string): Promise<Descriptor>
+
+    /**
+     * {@link #blemanagerwritedescriptorfordevice|bleManager.writeDescriptorForDevice()} with partially filled arguments.
+     *
+     * @param {Base64} valueBase64 Value to be set coded in Base64
+     * @param {?TransactionId} transactionId Transaction handle used to cancel operation
+     * @returns {Promise<Descriptor>} Descriptor which saved passed value.
+     */
+    write(valueBase64: Base64, transactionId?: string): Promise<Descriptor>
   }
 }
