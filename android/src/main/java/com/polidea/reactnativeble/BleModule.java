@@ -1553,6 +1553,13 @@ public class BleModule extends ReactContextBaseJavaModule {
                                               final String valueBase64,
                                               final String transactionId,
                                               final SafePromise promise) {
+        BluetoothGattDescriptor nativeDescriptor = descriptor.getNativeDescriptor();
+
+        if (nativeDescriptor.getUuid().equals(Characteristic.CLIENT_CHARACTERISTIC_CONFIG_UUID)) {
+            BleErrorUtils.descriptorWriteNotAllowed(UUIDConverter.fromUUID(nativeDescriptor.getUuid())).reject(promise);
+            return;
+        }
+        
         final RxBleConnection connection = getConnectionOrReject(descriptor.getCharacteristic().getService().getDevice(), promise);
         if (connection == null) {
             return;
@@ -1562,13 +1569,13 @@ public class BleModule extends ReactContextBaseJavaModule {
         try {
             value = Base64Converter.decode(valueBase64);
         } catch (Throwable e) {
-            String uuid = UUIDConverter.fromUUID(descriptor.getNativeDescriptor().getUuid());
+            String uuid = UUIDConverter.fromUUID(nativeDescriptor.getUuid());
             BleErrorUtils.invalidWriteDataForDescriptor(valueBase64, uuid).reject(promise);
             return;
         }
 
         final Subscription subscription = connection
-                .writeDescriptor(descriptor.getNativeDescriptor(), value)
+                .writeDescriptor(nativeDescriptor, value)
                 .doOnUnsubscribe(new Action0() {
                     @Override
                     public void call() {

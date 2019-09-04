@@ -70,6 +70,12 @@ public class BleErrorUtils {
         return bleError;
     }
 
+    static public BleError descriptorWriteNotAllowed(String uuid) {
+        BleError bleError = new BleError(BleErrorCode.DescriptorWriteNotAllowed, null, null);
+        bleError.descriptorUUID = uuid;
+        return bleError;
+    }
+
     static public BleError serviceNotFound(String uuid) {
         BleError bleError = new BleError(BleErrorCode.ServiceNotFound, null, null);
         bleError.serviceUUID = uuid;

@@ -335,7 +335,8 @@ export const BleErrorCodeMessage: BleErrorCodeMessageMapping = {
     'Descriptors not discovered for device {deviceID}, service {serviceUUID} and characteristic {characteristicUUID}',
   [BleErrorCode.DescriptorInvalidDataFormat]:
     'Cannot write to descriptor {descriptorUUID} with invalid data format: {internalMessage}',
-  [BleErrorCode.DescriptorWriteNotAllowed]: "Cannot write to descriptor {descriptorUUID}. It's not allowed by iOS.",
+  [BleErrorCode.DescriptorWriteNotAllowed]:
+    "Cannot write to descriptor {descriptorUUID}. It's not allowed by iOS and therefore forbidden on Android as well.",
 
   // Scanning
   [BleErrorCode.ScanStartFailed]: 'Cannot start scanning operation',
