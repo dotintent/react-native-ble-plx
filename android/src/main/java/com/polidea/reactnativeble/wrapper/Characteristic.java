@@ -3,15 +3,19 @@ package com.polidea.reactnativeble.wrapper;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.reactnativeble.utils.Base64Converter;
+import com.polidea.reactnativeble.utils.ByteUtils;
 import com.polidea.reactnativeble.utils.IdGenerator;
 import com.polidea.reactnativeble.utils.IdGeneratorKey;
 import com.polidea.reactnativeble.utils.UUIDConverter;
 import com.polidea.rxandroidble.internal.RxBleLog;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class Characteristic {
@@ -40,11 +44,31 @@ public class Characteristic {
     public Characteristic(@NonNull Service service, @NonNull BluetoothGattCharacteristic characteristic) {
         this.service = service;
         this.characteristic = characteristic;
-        this.id = IdGenerator.getIdForKey(new IdGeneratorKey(service.getDevice().getNativeDevice(), characteristic.getUuid(), characteristic.getInstanceId()));
+        this.id = IdGenerator.getIdForKey(new IdGeneratorKey(service.getDeviceId(), characteristic.getUuid(), characteristic.getInstanceId()));
+    }
+
+    public String getDeviceId() {
+        return service.getDeviceId();
+    }
+
+    public int getServiceId() {
+        return service.getId();
+    }
+
+    public String getServiceUUID() {
+        return service.getUUID();
+    }
+
+    public int getInstanceId() {
+        return this.characteristic.getInstanceId();
     }
 
     public int getId() {
         return this.id;
+    }
+
+    public String getUUID() {
+        return UUIDConverter.fromUUID(characteristic.getUuid());
     }
 
     public Service getService() {
@@ -55,14 +79,22 @@ public class Characteristic {
         return characteristic;
     }
 
+    public List<Descriptor> getDescriptors() {
+        ArrayList<Descriptor> descriptors = new ArrayList<>(characteristic.getDescriptors().size());
+        for (BluetoothGattDescriptor gattDescriptor : characteristic.getDescriptors()) {
+            descriptors.add(new Descriptor(this, gattDescriptor));
+        }
+        return descriptors;
+    }
+
     public WritableMap toJSObject(byte[] value) {
         WritableMap js = Arguments.createMap();
 
         js.putInt(Metadata.ID, id);
-        js.putString(Metadata.UUID, UUIDConverter.fromUUID(characteristic.getUuid()));
-        js.putInt(Metadata.SERVICE_ID, service.getNativeService().getInstanceId());
-        js.putString(Metadata.SERVICE_UUID, UUIDConverter.fromUUID(service.getNativeService().getUuid()));
-        js.putString(Metadata.DEVICE_ID, service.getDevice().getNativeDevice().getMacAddress());
+        js.putString(Metadata.UUID, getUUID());
+        js.putInt(Metadata.SERVICE_ID, service.getId());
+        js.putString(Metadata.SERVICE_UUID, service.getUUID());
+        js.putString(Metadata.DEVICE_ID, service.getDeviceId());
 
         js.putBoolean(Metadata.IS_READABLE, (characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_READ) != 0);
         js.putBoolean(Metadata.IS_WRITABLE_WITH_RESPONSE, (characteristic.getProperties() & BluetoothGattCharacteristic.PROPERTY_WRITE) != 0);
@@ -87,26 +119,21 @@ public class Characteristic {
         return js;
     }
 
-    private final static char[] hexArray = "0123456789ABCDEF".toCharArray();
-
-    private static String bytesToHex(byte[] bytes) {
-        char[] hexChars = new char[bytes.length * 2];
-        for ( int j = 0; j < bytes.length; j++ ) {
-            int v = bytes[j] & 0xFF;
-            hexChars[j * 2] = hexArray[v >>> 4];
-            hexChars[j * 2 + 1] = hexArray[v & 0x0F];
-        }
-        return new String(hexChars);
-    }
-
     public void logValue(String message, byte[] value) {
         if (value == null) {
             value = characteristic.getValue();
         }
-        String hexValue = value != null ? bytesToHex(value) : "(null)";
+        String hexValue = value != null ? ByteUtils.bytesToHex(value) : "(null)";
         RxBleLog.v(message +
                 " Characteristic(uuid: " + characteristic.getUuid().toString() +
                 ", id: " + id +
                 ", value: " + hexValue + ")");
+    }
+
+    @Nullable
+    public Descriptor getDescriptorByUUID(@NonNull UUID uuid) {
+        BluetoothGattDescriptor descriptor = this.characteristic.getDescriptor(uuid);
+        if (descriptor == null) return null;
+        return new Descriptor(this, descriptor);
     }
 }
