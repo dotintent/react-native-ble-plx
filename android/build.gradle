@@ -48,5 +48,6 @@ repositories {
 dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation "com.polidea.rxandroidble:rxandroidble:1.7.0"
+    implementation project(":multiplatformbleadapter")
     testImplementation 'org.robospock:robospock:1.0.1'
 }

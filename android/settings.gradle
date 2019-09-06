@@ -1,2 +1,2 @@
 include ':multiplatformbleadapter'
-project(':multiplatformbleadapter').projectDir = new File('../MultiPlatformBleAdapter/android')
+project(':multiplatformbleadapter').projectDir = new File(settingsDir, '../MultiPlatformBleAdapter/android/library')
