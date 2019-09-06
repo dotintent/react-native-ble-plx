@@ -72,7 +72,7 @@ import static com.polidea.reactnativeble.utils.Constants.BluetoothState;
 import static com.polidea.rxandroidble.scan.ScanSettings.CALLBACK_TYPE_ALL_MATCHES;
 import static com.polidea.rxandroidble.scan.ScanSettings.SCAN_MODE_LOW_POWER;
 
-public class BleModule extends ReactContextBaseJavaModule {
+public class BleClientManager extends ReactContextBaseJavaModule {
 
     // Name of module
     private static final String NAME = "BleClientManager";
@@ -114,7 +114,7 @@ public class BleModule extends ReactContextBaseJavaModule {
     // Current native library log level.
     private int currentLogLevel = RxBleLog.NONE;
 
-    public BleModule(ReactApplicationContext reactContext) {
+    public BleClientManager(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
