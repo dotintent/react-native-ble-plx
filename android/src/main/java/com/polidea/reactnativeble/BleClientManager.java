@@ -35,11 +35,7 @@ import com.polidea.reactnativeble.utils.SafePromise;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-
-import static com.polidea.rxandroidble.scan.ScanSettings.CALLBACK_TYPE_ALL_MATCHES;
-import static com.polidea.rxandroidble.scan.ScanSettings.SCAN_MODE_LOW_POWER;
 
 public class BleClientManager extends ReactContextBaseJavaModule {
 
@@ -163,10 +159,11 @@ public class BleClientManager extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void startDeviceScan(@Nullable ReadableArray filteredUUIDs, @Nullable ReadableMap options) {
-        UUID[] uuids = null;
+        final int DEFAULT_SCAN_MODE_LOW_POWER = 0;
+        final int DEFAULT_CALLBACK_TYPE_ALL_MATCHES = 1;
 
-        int scanMode = SCAN_MODE_LOW_POWER;
-        int callbackType = CALLBACK_TYPE_ALL_MATCHES;
+        int scanMode = DEFAULT_SCAN_MODE_LOW_POWER;
+        int callbackType = DEFAULT_CALLBACK_TYPE_ALL_MATCHES;
 
         if (options != null) {
             if (options.hasKey("scanMode") && options.getType("scanMode") == ReadableType.Number) {
