@@ -5,6 +5,7 @@ import type { BleManager } from './BleManager'
 import type { BleError } from './BleError'
 import type { Characteristic } from './Characteristic'
 import type { Service } from './Service'
+import type { Descriptor } from './Descriptor'
 import { ConnectionPriority } from './TypeDefinition'
 import type { NativeDevice } from './BleModule'
 import type { DeviceId, Base64, UUID, Subscription, TransactionId, ConnectionOptions } from './TypeDefinition'
@@ -201,6 +202,18 @@ export class Device implements NativeDevice {
   }
 
   /**
+   * {@link #blemanagerdescriptorsfordevice|bleManager.descriptorsForDevice()} with partially filled arguments.
+   *
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @returns {Promise<Array<Descriptor>>} Promise which emits array of {@link Descriptor} objects which are
+   * discovered for this {@link Characteristic}.
+   */
+  descriptorsForService(serviceUUID: UUID, characteristicUUID: UUID): Promise<Array<Descriptor>> {
+    return this._manager.descriptorsForDevice(this.id, serviceUUID, characteristicUUID)
+  }
+
+  /**
    * {@link #blemanagerreadcharacteristicfordevice|bleManager.readCharacteristicForDevice()} with partially filled arguments.
    *
    * @param {UUID} serviceUUID {@link Service} UUID.
@@ -292,6 +305,59 @@ export class Device implements NativeDevice {
       serviceUUID,
       characteristicUUID,
       listener,
+      transactionId
+    )
+  }
+
+  /**
+   * {@link #blemanagerreaddescriptorfordevice|bleManager.readDescriptorForDevice()} with partially filled arguments.
+   *
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID {@link Characteristic} UUID.
+   * @param {UUID} descriptorUUID {@link Descriptor} UUID.
+   * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * {@link #blemanagercanceltransaction|cancelTransaction()} function.
+   * @returns {Promise<Descriptor>} Promise which emits first {@link Descriptor} object matching specified
+   * UUID paths. Latest value of {@link Descriptor} will be stored inside returned object.
+   */
+  async readDescriptorForService(
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    descriptorUUID: UUID,
+    transactionId: ?TransactionId
+  ): Promise<Descriptor> {
+    return this._manager.readDescriptorForDevice(
+      this.id,
+      serviceUUID,
+      characteristicUUID,
+      descriptorUUID,
+      transactionId
+    )
+  }
+
+  /**
+   * {@link #blemanagerwritedescriptorfordevice|bleManager.writeDescriptorForDevice()} with partially filled arguments.
+   *
+   * @param {UUID} serviceUUID {@link Service} UUID.
+   * @param {UUID} characteristicUUID Characteristic UUID
+   * @param {UUID} descriptorUUID Descriptor UUID
+   * @param {Base64} valueBase64 Value to be set coded in Base64
+   * @param {?TransactionId} transactionId Transaction handle used to cancel operation
+   * @returns {Promise<Descriptor>} Descriptor which saved passed value.
+   */
+  async writeDescriptorForService(
+    serviceUUID: UUID,
+    characteristicUUID: UUID,
+    descriptorUUID: UUID,
+    valueBase64: Base64,
+    transactionId: ?TransactionId
+  ): Promise<Descriptor> {
+    return this._manager.writeDescriptorForDevice(
+      this.id,
+      serviceUUID,
+      characteristicUUID,
+      descriptorUUID,
+      valueBase64,
       transactionId
     )
   }

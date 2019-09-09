@@ -184,6 +184,7 @@ public class ErrorConverter {
             bleError.serviceUUID = serviceUUID;
             bleError.characteristicUUID = characteristicUUID;
             bleError.descriptorUUID = descriptorUUID;
+            return bleError;
         } else if (BleGattOperationType.READ_RSSI == operationType) {
             BleError bleError = new BleError(BleErrorCode.DeviceRSSIReadFailed, message, code);
             bleError.deviceID = deviceID;

@@ -49,13 +49,13 @@ public class Device  {
         return services;
     }
 
-    public RxBleDevice getNativeDevice() {
-        return device;
-    }
-
     @Nullable
     public RxBleConnection getConnection() {
         return connection;
+    }
+
+    public String getDeviceId() {
+        return device.getMacAddress();
     }
 
     @Nullable

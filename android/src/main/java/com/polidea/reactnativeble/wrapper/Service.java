@@ -31,11 +31,19 @@ public class Service {
     public Service(@NonNull Device device, @NonNull BluetoothGattService service) {
         this.device = device;
         this.service = service;
-        this.id = IdGenerator.getIdForKey(new IdGeneratorKey(device.getNativeDevice(), service.getUuid(), service.getInstanceId()));
+        this.id = IdGenerator.getIdForKey(new IdGeneratorKey(device.getDeviceId(), service.getUuid(), service.getInstanceId()));
     }
 
     public int getId() {
         return this.id;
+    }
+
+    public String getUUID() {
+        return UUIDConverter.fromUUID(service.getUuid());
+    }
+
+    public String getDeviceId() {
+        return device.getDeviceId();
     }
 
     public Device getDevice() {
@@ -64,8 +72,8 @@ public class Service {
     public WritableMap toJSObject() {
         WritableMap result = Arguments.createMap();
         result.putInt(Metadata.ID, id);
-        result.putString(Metadata.UUID, UUIDConverter.fromUUID(service.getUuid()));
-        result.putString(Metadata.DEVICE_ID, device.getNativeDevice().getMacAddress());
+        result.putString(Metadata.UUID, getUUID());
+        result.putString(Metadata.DEVICE_ID, device.getDeviceId());
         result.putBoolean(Metadata.IS_PRIMARY, service.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY);
         return result;
     }

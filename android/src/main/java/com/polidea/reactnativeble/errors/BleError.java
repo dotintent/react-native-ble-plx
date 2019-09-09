@@ -1,11 +1,11 @@
 package com.polidea.reactnativeble.errors;
 
 import android.support.annotation.NonNull;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableMap;
 import com.polidea.reactnativeble.utils.SafePromise;
 
 public class BleError {
