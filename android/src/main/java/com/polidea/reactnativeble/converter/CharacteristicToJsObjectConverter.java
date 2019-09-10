@@ -23,7 +23,7 @@ public class CharacteristicToJsObjectConverter extends JSObjectConverter<Charact
         String IS_NOTIFIABLE = "isNotifiable";
         String IS_NOTIFYING = "isNotifying";
         String IS_INDICATABLE = "isIndicatable";
-        String CHARACTERISTIC = "characteristic";
+        String VALUE = "value";
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CharacteristicToJsObjectConverter extends JSObjectConverter<Charact
         js.putBoolean(Metadata.IS_NOTIFIABLE, characteristic.isNotifiable());
         js.putBoolean(Metadata.IS_INDICATABLE, characteristic.isIndicatable());
         js.putBoolean(Metadata.IS_NOTIFYING, characteristic.isNotifying());
-        js.putString(Metadata.CHARACTERISTIC,
+        js.putString(Metadata.VALUE,
                 characteristic.getValue() != null ?
                         Base64Converter.encode(characteristic.getValue()) : null);
         return js;
