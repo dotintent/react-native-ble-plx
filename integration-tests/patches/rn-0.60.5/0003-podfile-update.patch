@@ -1,0 +1,14 @@
+diff --git a/integration-tests/Setup/ios/Podfile b/integration-tests/Setup/ios/Podfile
+index 0971cc5..f754ec2 100644
+--- a/integration-tests/Setup/ios/Podfile
++++ b/integration-tests/Setup/ios/Podfile
+@@ -28,7 +28,8 @@ target 'Setup' do
+   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+ 
+   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
+-
++  pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
++  
+   target 'SetupTests' do
+     inherit! :search_paths
+     # Pods for testing

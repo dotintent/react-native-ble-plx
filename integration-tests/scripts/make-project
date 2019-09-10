@@ -19,7 +19,8 @@ function generate-project {
     # install react-native-ble-plx using the github commit
     CURRENT_COMMIT=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
     echo "Installing react-native-ble-plx revision $CURRENT_COMMIT"
-    yarn add https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
+    # Using npm here to be able to download submodules properly.
+    npm install --save https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
     react-native link react-native-ble-plx  # and link it
     rm -rf ../../node_modules
   popd
@@ -61,11 +62,22 @@ function add-earl-grey {
   popd
 }
 
+function update-pods {
+  PROJECT_PATH="$PROJECT_NAME/ios/"
+  if [ -f "$PROJECT_PATH/Podfile" ]; then
+    echo 'Updating Podfile dependencies...'
+    pushd $PROJECT_PATH
+      pod update
+    popd
+  fi
+}
+
 pushd $DESTINATION
   generate-project
   patch-project
   scripts/enable-swift $PROJECT_NAME
   add-test-suite
+  update-pods
 
   if [ "system-$TRAVIS_OS_NAME" == "system-osx" ]; then
     add-earl-grey

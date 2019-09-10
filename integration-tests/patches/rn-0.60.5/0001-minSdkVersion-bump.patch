@@ -1,0 +1,13 @@
+diff --git a/integration-tests/Setup/android/build.gradle b/integration-tests/Setup/android/build.gradle
+index c6e7c7c..24b752a 100644
+--- a/integration-tests/Setup/android/build.gradle
++++ b/integration-tests/Setup/android/build.gradle
+@@ -3,7 +3,7 @@
+ buildscript {
+     ext {
+         buildToolsVersion = "28.0.3"
+-        minSdkVersion = 16
++        minSdkVersion = 18
+         compileSdkVersion = 28
+         targetSdkVersion = 28
+         supportLibVersion = "28.0.0"

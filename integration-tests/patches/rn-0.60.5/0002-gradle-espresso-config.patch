@@ -1,0 +1,23 @@
+diff --git a/integration-tests/Setup/android/app/build.gradle b/integration-tests/Setup/android/app/build.gradle
+index a79b79d..ae47a12 100644
+--- a/integration-tests/Setup/android/app/build.gradle
++++ b/integration-tests/Setup/android/app/build.gradle
+@@ -133,6 +133,7 @@ android {
+         targetSdkVersion rootProject.ext.targetSdkVersion
+         versionCode 1
+         versionName "1.0"
++        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+     }
+     splits {
+         abi {
+@@ -191,6 +192,10 @@ dependencies {
+     implementation project(':react-native-ble-plx')
+     implementation fileTree(dir: "libs", include: ["*.jar"])
+     implementation "com.facebook.react:react-native:+"  // From node_modules
++    testImplementation 'junit:junit:4.12'
++    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
++    androidTestImplementation 'androidx.test:runner:1.1.0'
++    androidTestImplementation 'androidx.test:rules:1.1.0'
+ 
+     if (enableHermes) {
+       def hermesPath = "../../node_modules/hermesvm/android/";
