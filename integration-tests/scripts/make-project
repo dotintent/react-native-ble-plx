@@ -28,11 +28,13 @@ function generate-project {
 
 function patch-project {
   for filename in patches/common/*.patch; do
+    [ -e "$filename" ] || continue
     echo "Applying common patch - $filename"
     git apply "$filename" || echo Patch not applied.
   done
 
   for filename in patches/rn-$RN_VERSION/*.patch; do
+    [ -e "$filename" ] || continue
     echo "Applying patch specifically for $RN_VERSION - $filename"
     git apply "$filename" || echo Patch not applied.
   done
@@ -80,6 +82,7 @@ function apply-before-scripts {
   fi
 
   for filename in $BEFORE_SCRIPT_PATH; do
+    [ -e "$filename" ] || continue
     echo "Executing $filename..."
     $filename $PROJECT_NAME
   done
