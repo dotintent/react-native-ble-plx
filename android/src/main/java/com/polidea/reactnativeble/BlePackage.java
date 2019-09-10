@@ -24,7 +24,7 @@ public class BlePackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new BleModule(reactContext));
+        modules.add(new BleClientManager(reactContext));
         return modules;
     }
 }
