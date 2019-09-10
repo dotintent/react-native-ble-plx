@@ -6,7 +6,7 @@ stages:
 
 env:
   global:
-    - SYS=23
+    - SYS=24
     - ABI="default;armeabi-v7a"
     - ADB_INSTALL_TIMEOUT=10 # minutes
 
