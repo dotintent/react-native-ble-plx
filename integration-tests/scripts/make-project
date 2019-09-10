@@ -72,6 +72,19 @@ function update-pods {
   fi
 }
 
+function apply-before-scripts {
+  if [ "system-$TRAVIS_OS_NAME" == "system-osx" ]; then
+    BEFORE_SCRIPT_PATH=patches/rn-$RN_VERSION/*.ios.sh
+  else
+    BEFORE_SCRIPT_PATH=patches/rn-$RN_VERSION/*.android.sh
+  fi
+
+  for filename in $BEFORE_SCRIPT_PATH; do
+    echo "Executing $filename..."
+    $filename $PROJECT_NAME
+  done
+}
+
 pushd $DESTINATION
   generate-project
   patch-project
@@ -84,4 +97,6 @@ pushd $DESTINATION
   else
     add-espresso
   fi
+
+  apply-before-scripts
 popd
