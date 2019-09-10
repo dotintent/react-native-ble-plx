@@ -78,12 +78,7 @@ _ios_job_template: &ios_job_template
   xcode_destination: platform=iOS Simulator
   # before_script will make project
   script:
-    - cd integration-tests/Setup
-    - node_modules/.bin/flow check
-    - npm start &
-    - sleep 5
-    - curl -s http://localhost:8081/index.bundle\?platform\=ios\&dev\=true\&minify\=false > /dev/null
-    - xcodebuild test -scheme Setup -project ios/Setup.xcodeproj -quiet -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone XS Max,OS=12.1'
+    - integration-tests/scripts/build-ios-project integration-tests/Setup
 
 matrix:
   include:
