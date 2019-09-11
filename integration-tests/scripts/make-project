@@ -15,12 +15,11 @@ function generate-project {
 
   pushd $PROJECT_NAME
     FLOW_VERSION=$(get-flow-version)
-    yarn add flow-bin@$FLOW_VERSION --dev
+    npm install flow-bin@$FLOW_VERSION --save-dev
     # install react-native-ble-plx using the github commit
     CURRENT_COMMIT=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
     echo "Installing react-native-ble-plx revision $CURRENT_COMMIT"
-    yarn add https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
-    git submodule update --init --recursive
+    npm install https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
     react-native link react-native-ble-plx  # and link it
     rm -rf ../../node_modules
   popd
