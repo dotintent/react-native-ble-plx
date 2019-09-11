@@ -66,6 +66,7 @@ _android_job_template: &android_job_template
     - npm start &
     - sleep 5
     - curl -s http://localhost:8081/index.bundle\?platform\=android\&dev\=true\&minify\=false > /dev/null
+    - integration-tests/scripts/screenshot-android
     - ./gradlew connectedAndroidTest
 
 _ios_job_template: &ios_job_template
