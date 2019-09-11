@@ -5,16 +5,15 @@ import android.support.annotation.NonNull;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.polidea.reactnativeble.advertisement.AdvertisementData;
+import com.polidea.multiplatformbleadapter.AdvertisementData;
+import com.polidea.multiplatformbleadapter.ScanResult;
 import com.polidea.reactnativeble.utils.Base64Converter;
-import com.polidea.reactnativeble.utils.Constants;
 import com.polidea.reactnativeble.utils.UUIDConverter;
-import com.polidea.rxandroidble.scan.ScanResult;
 
 import java.util.Map;
 import java.util.UUID;
 
-public class RxBleScanResultConverter extends JSObjectConverter<ScanResult> {
+public class ScanResultToJsObjectConverter extends JSObjectConverter<ScanResult> {
 
     interface Metadata {
         String ID = "id";
@@ -33,14 +32,14 @@ public class RxBleScanResultConverter extends JSObjectConverter<ScanResult> {
     }
 
     @Override
-    public WritableMap toJSObject(@NonNull ScanResult value) {
+    public WritableMap toJSObject(@NonNull ScanResult scanResult) {
         WritableMap result = Arguments.createMap();
-        result.putString(Metadata.ID, value.getBleDevice().getMacAddress());
-        result.putString(Metadata.NAME, value.getBleDevice().getName());
-        result.putInt(Metadata.RSSI, value.getRssi());
-        result.putInt(Metadata.MTU, Constants.MINIMUM_MTU);
+        result.putString(Metadata.ID, scanResult.getDeviceId());
+        result.putString(Metadata.NAME, scanResult.getDeviceName());
+        result.putInt(Metadata.RSSI, scanResult.getRssi());
+        result.putInt(Metadata.MTU, scanResult.getMtu());
 
-        AdvertisementData advData = AdvertisementData.parseScanResponseData(value.getScanRecord().getBytes());
+        AdvertisementData advData = scanResult.getAdvertisementData();
         result.putString(Metadata.MANUFACTURER_DATA,
                 advData.getManufacturerData() != null ?
                         Base64Converter.encode(advData.getManufacturerData()) : null);
@@ -91,7 +90,6 @@ public class RxBleScanResultConverter extends JSObjectConverter<ScanResult> {
         // Attributes which are not accessible on Android
         result.putNull(Metadata.IS_CONNECTABLE);
         result.putNull(Metadata.OVERFLOW_SERVICE_UUIDS);
-
         return result;
     }
 }
