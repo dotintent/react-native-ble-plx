@@ -52,7 +52,7 @@ _android_job_template: &android_job_template
     - sdkmanager "system-images;android-$SYS;$ABI" > /dev/null
     - sdkmanager --list | head -15
     - echo no | avdmanager create avd --force -n test -k "system-images;android-$SYS;$ABI"
-    - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window $EMU_ADDITIONAL_OPTIONS ${EMU_DEBUG} &
+    - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -no-boot-anim -no-accel -gpu swiftshader_indirect &
   # before_script will make project
   script:
     - integration-tests/scripts/wait-for-emulator
