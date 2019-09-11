@@ -60,13 +60,14 @@ _android_job_template: &android_job_template
     - adb shell settings put global transition_animation_scale 0 &
     - adb shell settings put global animator_duration_scale 0 &
     - adb shell input keyevent 82 &
+    - sleep 2
+    - integration-tests/scripts/screenshot-android
     - cd integration-tests/Setup
     - node_modules/.bin/flow check
     - cd android
     - npm start &
     - sleep 5
     - curl -s http://localhost:8081/index.bundle\?platform\=android\&dev\=true\&minify\=false > /dev/null
-    - integration-tests/scripts/screenshot-android
     - ./gradlew connectedAndroidTest
 
 _ios_job_template: &ios_job_template
