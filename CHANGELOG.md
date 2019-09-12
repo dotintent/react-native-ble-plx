@@ -1,3 +1,8 @@
+**1.1.0**
+
+- Add support for descriptors.
+- Fix XCode 11 compilation error.
+
 **1.0.3**
 
 - Integrated Travis CI to test library and check its integration with multiple RN versions.
