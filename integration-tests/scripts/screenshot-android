@@ -1,8 +1,0 @@
-#!/bin/bash
-
-set -eo pipefail
-
-wget https://raw.githubusercontent.com/tremby/imgur.sh/08f9a17141fdfea1e4139de90146bd20c6bf2a2b/imgur.sh
-chmod a+x imgur.sh
-adb exec-out screencap -p > screen.png
-./imgur.sh screen.png
