@@ -6,8 +6,8 @@ stages:
 
 env:
   global:
-    - SYS=24
-    - ABI="default;x86_64"
+    - SYS=22
+    - ABI="default;armeabi-v7a"
     - ADB_INSTALL_TIMEOUT=10 # minutes
 
 _integration_job_template: &integration_job_template
@@ -44,15 +44,19 @@ _android_job_template: &android_job_template
     # Accept licenses before installing components, no need to echo y for each component
     - yes | sdkmanager --licenses
     # Platform tools
-    - sdkmanager "emulator" "tools" "platform-tools" > /dev/null
+    - sdkmanager "tools" "platform-tools" > /dev/null
     - sdkmanager --list | head -15
+    # Android emulator
+    - wget -q "https://dl.google.com/android/repository/emulator-linux-$EMULATOR_VERSION.zip" -O emulator.zip
+    - unzip -q emulator.zip -d ${ANDROID_HOME}
+    - rm emulator.zip
     # install older build tools (for emulator)
     - sdkmanager "build-tools;28.0.3" "build-tools;25.0.2" "platforms;android-28" "platforms;android-25" > /dev/null
     # Create and start emulator.
     - sdkmanager "system-images;android-$SYS;$ABI" > /dev/null
     - sdkmanager --list | head -15
     - echo no | avdmanager create avd --force -n test -k "system-images;android-$SYS;$ABI"
-    - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -no-boot-anim -accel off &
+    - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window -no-boot-anim &
   # before_script will make project
   script:
     - integration-tests/scripts/wait-for-emulator
@@ -95,18 +99,26 @@ matrix:
     # Integration tests for different React Native versions
 
     - <<: *android_job_template
-      name: 'Integrate with RN 0.60.5 Android'
-      env: RN_VERSION=0.60.5
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.60.5 iOS'
-      env: RN_VERSION=0.60.5
+      name: 'Integrate with RN 0.60.5 Android 4969155'
+      env: 
+        - RN_VERSION=0.60.5
+        - EMULATOR_VERSION=4969155
 
     - <<: *android_job_template
-      name: 'Integrate with RN 0.59.3 Android'
-      env: RN_VERSION=0.59.3
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.59.3 iOS'
-      env: RN_VERSION=0.59.3
+      name: 'Integrate with RN 0.60.5 Android 3776547'
+      env: 
+        - RN_VERSION=0.60.5
+        - EMULATOR_VERSION=3776547
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.60.5 iOS'
+    #   env: RN_VERSION=0.60.5
+
+    # - <<: *android_job_template
+    #   name: 'Integrate with RN 0.59.3 Android'
+    #   env: RN_VERSION=0.59.3
+    # - <<: *ios_job_template
+    #   name: 'Integrate with RN 0.59.3 iOS'
+    #   env: RN_VERSION=0.59.3
 
 # TODO: Uncomment once WIP branch is ready to merge.
     # - <<: *android_job_template
