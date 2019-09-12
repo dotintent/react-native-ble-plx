@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -eo pipefail
+
+PROJECT_PATH=$1
+
+pushd $PROJECT_PATH
+  npx flow check
+  npm start &
+  sleep 5
+  curl -s http://localhost:8081/index.bundle\?platform\=ios\&dev\=true\&minify\=false > /dev/null
+  if [ -d ios/Setup.xcworkspace ]; then
+    echo "Building XCode workspace..."
+    xcodebuild test -scheme Setup -workspace ios/Setup.xcworkspace -quiet -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone XS Max,OS=12.1'
+  else
+    echo "Building XCode project..."
+    xcodebuild test -scheme Setup -project ios/Setup.xcodeproj -quiet -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone XS Max,OS=12.1'
+  fi
+popd

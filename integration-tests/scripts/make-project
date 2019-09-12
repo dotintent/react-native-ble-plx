@@ -15,11 +15,14 @@ function generate-project {
 
   pushd $PROJECT_NAME
     FLOW_VERSION=$(get-flow-version)
-    npm install flow-bin@$FLOW_VERSION --save-dev
+    yarn add flow-bin@$FLOW_VERSION --dev
     # install react-native-ble-plx using the github commit
     CURRENT_COMMIT=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
     echo "Installing react-native-ble-plx revision $CURRENT_COMMIT"
-    npm install https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
+    # Using npm here to be able to download submodules properly.
+    npm install --save https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
+    # Sometimes yarn doesn't install packets locally. Be sure that everything is in place.
+    npm install
     react-native link react-native-ble-plx  # and link it
     rm -rf ../../node_modules
   popd
@@ -27,11 +30,13 @@ function generate-project {
 
 function patch-project {
   for filename in patches/common/*.patch; do
+    [ -e "$filename" ] || continue
     echo "Applying common patch - $filename"
     git apply "$filename" || echo Patch not applied.
   done
 
   for filename in patches/rn-$RN_VERSION/*.patch; do
+    [ -e "$filename" ] || continue
     echo "Applying patch specifically for $RN_VERSION - $filename"
     git apply "$filename" || echo Patch not applied.
   done
@@ -61,6 +66,30 @@ function add-earl-grey {
   popd
 }
 
+function update-pods {
+  PROJECT_PATH="$PROJECT_NAME/ios/"
+  if [ -f "$PROJECT_PATH/Podfile" ]; then
+    echo 'Updating Podfile dependencies...'
+    pushd $PROJECT_PATH
+      pod update
+    popd
+  fi
+}
+
+function apply-before-scripts {
+  if [ "system-$TRAVIS_OS_NAME" == "system-osx" ]; then
+    BEFORE_SCRIPT_PATH=patches/rn-$RN_VERSION/*.ios.sh
+  else
+    BEFORE_SCRIPT_PATH=patches/rn-$RN_VERSION/*.android.sh
+  fi
+
+  for filename in $BEFORE_SCRIPT_PATH; do
+    [ -e "$filename" ] || continue
+    echo "Executing $filename..."
+    $filename $PROJECT_NAME
+  done
+}
+
 pushd $DESTINATION
   generate-project
   patch-project
@@ -69,7 +98,10 @@ pushd $DESTINATION
 
   if [ "system-$TRAVIS_OS_NAME" == "system-osx" ]; then
     add-earl-grey
+    update-pods
   else
     add-espresso
   fi
+
+  apply-before-scripts
 popd
