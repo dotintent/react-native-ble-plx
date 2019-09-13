@@ -30,16 +30,18 @@ What this library does NOT support:
 
 ## Compatibility
 
-| React Native  | 1.0.3              |  1.1.0             |
-| ------------- | ------------------ | ------------------ |
-| 0.60.5        | :white_check_mark: | :white_check_mark: |
-| 0.59.10       | :white_check_mark: | :white_check_mark: |
-| 0.58.6        | :white_check_mark: | :white_check_mark: |
-| 0.57.8        | :white_check_mark: | :white_check_mark: |
-| 0.56.1        | :boom:<sup>1</sup> | :boom:<sup>1</sup> |
-| 0.55.4        | :boom:<sup>1</sup> | :boom:<sup>1</sup> |
+| React Native  | 1.0.3                          |  1.1.0                         |
+| ------------- | ------------------------------ | ------------------------------ |
+| 0.60.5        | :white_check_mark:<sup>2</sup> | :white_check_mark:<sup>2</sup> |
+| 0.59.10       | :white_check_mark:             | :white_check_mark:             |
+| 0.58.6        | :white_check_mark:             | :white_check_mark:             |
+| 0.57.8        | :white_check_mark:             | :white_check_mark:             |
+| 0.56.1        | :boom:<sup>1</sup>             | :boom:<sup>1</sup>             |
+| 0.55.4        | :boom:<sup>1</sup>             | :boom:<sup>1</sup>             |
 
 <sup>1</sup> fails on Android, although might work after updating gradle
+
+<sup>2</sup> may require usage of `jetifier` on Android and migration to `CocoaPods` on iOS.
 
 ## Recent Changes
 
@@ -67,7 +69,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.io/versions/v32.0.0/expokit/eject/) and [here](https://docs.expo.io/versions/latest/expokit/expokit). (only for expo)
 2. `npm install --save react-native-ble-plx`
 3. `react-native link react-native-ble-plx`
-4. Add empty Swift file if you don't have at least one:
+4. Open Xcode workspace located inside `ios` folder and add empty Swift file if you don't have at least one:
    - Select File/New/File...
    - Choose Swift file and click Next.
    - Name it however you want, select your application target and create it.
@@ -83,12 +85,13 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
+9. Starting from iOS 13 add `NSBluetoothAlwaysUsageDescription` in `info.plist` file.
 
 ### iOS (react-native < 0.60, [example setup](https://github.com/Cierpliwy/SensorTag/tree/rn59))
 
 1. `npm install --save react-native-ble-plx`
 2. `react-native link react-native-ble-plx`
-3. Add empty Swift file if you don't have at least one:
+3. Open Xcode project located inside `ios` folder and add empty Swift file if you don't have at least one:
    - Select File/New/File...
    - Choose Swift file and click Next.
    - Name it however you want, select your targets and create it.
@@ -99,6 +102,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
+6. Starting from iOS 13 add `NSBluetoothAlwaysUsageDescription` in `info.plist` file.
 
 ### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 
