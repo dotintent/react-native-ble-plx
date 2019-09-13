@@ -20,7 +20,7 @@ function generate-project {
     CURRENT_COMMIT=${TRAVIS_PULL_REQUEST_SHA:-$TRAVIS_COMMIT}
     echo "Installing react-native-ble-plx revision $CURRENT_COMMIT"
     # Using npm here to be able to download submodules properly.
-    npm install --save https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
+    npm install --save https://github.com/Polidea/react-native-ble-plx#1.0.3
     # Sometimes yarn doesn't install packets locally. Be sure that everything is in place.
     npm install
     react-native link react-native-ble-plx  # and link it
