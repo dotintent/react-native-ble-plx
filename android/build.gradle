@@ -43,10 +43,11 @@ repositories {
         url 'https://maven.google.com/'
         name 'Google'
     }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
     implementation "com.facebook.react:react-native:+"
-    implementation project(":multiplatformbleadapter")
+    implementation 'com.github.Polidea:MultiPlatformBleAdapter:92a2bd30580a65f2fea241a57414846283738576'
     testImplementation 'org.robospock:robospock:1.0.1'
 }
