@@ -17,6 +17,7 @@ import com.polidea.multiplatformbleadapter.BleAdapter;
 import com.polidea.multiplatformbleadapter.BleModule;
 import com.polidea.multiplatformbleadapter.Characteristic;
 import com.polidea.multiplatformbleadapter.ConnectionOptions;
+import com.polidea.multiplatformbleadapter.ConnectionState;
 import com.polidea.multiplatformbleadapter.Device;
 import com.polidea.multiplatformbleadapter.OnErrorCallback;
 import com.polidea.multiplatformbleadapter.OnEventCallback;
@@ -34,6 +35,7 @@ import com.polidea.reactnativeble.utils.ReadableArrayConverter;
 import com.polidea.reactnativeble.utils.SafePromise;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -329,7 +331,14 @@ public class BleClientManager extends ReactContextBaseJavaModule {
                     public void onSuccess(Device data) {
                         safePromise.resolve(deviceConverter.toJSObject(data));
                     }
-                }, new OnErrorCallback() {
+                },
+                new OnEventCallback<ConnectionState>() {
+                    @Override
+                    public void onEvent(ConnectionState connectionState) {
+
+                    }
+                },
+                new OnErrorCallback() {
                     @Override
                     public void onError(BleError error) {
                         safePromise.reject(null, errorConverter.toJs(error));
@@ -393,64 +402,48 @@ public class BleClientManager extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void servicesForDevice(final String deviceId, final Promise promise) {
-        bleAdapter.getServicesForDevice(deviceId,
-                new OnSuccessCallback<Service[]>() {
-                    @Override
-                    public void onSuccess(Service[] data) {
-                        WritableArray jsArray = Arguments.createArray();
-                        for (Service service : data) {
-                            jsArray.pushMap(serviceConverter.toJSObject(service));
-                        }
-                        promise.resolve(jsArray);
-                    }
-                }, new OnErrorCallback() {
-                    @Override
-                    public void onError(BleError error) {
-                        promise.reject(null, errorConverter.toJs(error));
-                    }
-                });
+        try {
+            List<Service> services = bleAdapter.getServicesForDevice(deviceId);
+            WritableArray jsArray = Arguments.createArray();
+            for (Service service : services) {
+                jsArray.pushMap(serviceConverter.toJSObject(service));
+            }
+            promise.resolve(jsArray);
+        } catch (BleError error) {
+            promise.reject(null, errorConverter.toJs(error));
+        }
+
     }
 
     @ReactMethod
     public void characteristicsForDevice(final String deviceId,
                                          final String serviceUUID,
                                          final Promise promise) {
-        bleAdapter.getCharacteristicsForDevice(deviceId, serviceUUID,
-                new OnSuccessCallback<Characteristic[]>() {
-                    @Override
-                    public void onSuccess(Characteristic[] data) {
-                        WritableArray jsCharacteristics = Arguments.createArray();
-                        for (Characteristic characteristic : data) {
-                            jsCharacteristics.pushMap(characteristicConverter.toJSObject(characteristic));
-                        }
-                        promise.resolve(jsCharacteristics);
-                    }
-                }, new OnErrorCallback() {
-                    @Override
-                    public void onError(BleError error) {
-                        promise.reject(null, errorConverter.toJs(error));
-                    }
-                });
+        try {
+            List<Characteristic> characteristics = bleAdapter.getCharacteristicsForDevice(deviceId, serviceUUID);
+
+            WritableArray jsCharacteristics = Arguments.createArray();
+            for (Characteristic characteristic : characteristics) {
+                jsCharacteristics.pushMap(characteristicConverter.toJSObject(characteristic));
+            }
+            promise.resolve(jsCharacteristics);
+        } catch (BleError error) {
+            promise.reject(null, errorConverter.toJs(error));
+        }
     }
 
     @ReactMethod
     public void characteristicsForService(final int serviceIdentifier, final Promise promise) {
-        bleAdapter.getCharacteristicsForService(serviceIdentifier,
-                new OnSuccessCallback<Characteristic[]>() {
-                    @Override
-                    public void onSuccess(Characteristic[] data) {
-                        WritableArray jsCharacteristics = Arguments.createArray();
-                        for (Characteristic characteristic : data) {
-                            jsCharacteristics.pushMap(characteristicConverter.toJSObject(characteristic));
-                        }
-                        promise.resolve(jsCharacteristics);
-                    }
-                }, new OnErrorCallback() {
-                    @Override
-                    public void onError(BleError error) {
-                        promise.reject(null, errorConverter.toJs(error));
-                    }
-                });
+        try {
+            List<Characteristic> characteristics = bleAdapter.getCharacteristicsForService(serviceIdentifier);
+            WritableArray jsCharacteristics = Arguments.createArray();
+            for (Characteristic characteristic : characteristics) {
+                jsCharacteristics.pushMap(characteristicConverter.toJSObject(characteristic));
+            }
+            promise.resolve(jsCharacteristics);
+        } catch (BleError error) {
+            promise.reject(null, errorConverter.toJs(error));
+        }
     }
 
     // Mark: Characteristics operations ------------------------------------------------------------
