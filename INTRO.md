@@ -93,8 +93,11 @@ device.connect()
     });
 ```
 
-Discovery of services and characteristics is required to be executed only once. Additionally
-it can be a long process depending on number of characteristics and services available.
+Discovery of services and characteristics is required to be executed once per connection\*. 
+It can be a long process depending on number of characteristics and services available.
+
+\* Extremely rarely, when peripheral's service/characteristic set can change during a connection 
+an additional service discovery may be needed.
 
 ## Read, write and monitor values
 
