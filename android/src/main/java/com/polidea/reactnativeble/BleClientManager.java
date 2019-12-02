@@ -18,6 +18,7 @@ import com.polidea.multiplatformbleadapter.BleModule;
 import com.polidea.multiplatformbleadapter.Characteristic;
 import com.polidea.multiplatformbleadapter.ConnectionOptions;
 import com.polidea.multiplatformbleadapter.ConnectionState;
+import com.polidea.multiplatformbleadapter.Descriptor;
 import com.polidea.multiplatformbleadapter.Device;
 import com.polidea.multiplatformbleadapter.OnErrorCallback;
 import com.polidea.multiplatformbleadapter.OnEventCallback;
@@ -444,6 +445,37 @@ public class BleClientManager extends ReactContextBaseJavaModule {
         } catch (BleError error) {
             promise.reject(null, errorConverter.toJs(error));
         }
+    }
+
+    @ReactMethod
+    public void descriptorsForDevice(final String deviceIdentifier,
+                                     final String serviceUUID,
+                                     final String characteristicUUID,
+                                     final Promise promise) {
+        try {
+            List<Descriptor> descriptors = bleAdapter.descriptorsForDevice(deviceIdentifier, serviceUUID, characteristicUUID);
+            WritableArray jsDescriptors = Arguments.createArray();
+            for (Descriptor descriptor : descriptors) {
+                jsDescriptors.pushMap();
+            }
+            promise.resolve(jsDescriptors);
+        } catch (BleError error) {
+            promise.reject(null, errorConverter.toJs(error));
+        }
+
+    }
+
+    @ReactMethod
+    public void descriptorsForService(final int serviceIdentifier,
+                                      final String characteristicUUID,
+                                      final Promise promise) {
+        //TODO
+    }
+
+    @ReactMethod
+    public void descriptorsForCharacteristic(final int characteristicIdentifier,
+                                             final Promise promise) {
+        //TODO
     }
 
     // Mark: Characteristics operations ------------------------------------------------------------

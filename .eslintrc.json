@@ -1,20 +1,28 @@
 {
+  "root": true,
   "parser": "babel-eslint",
-  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:flowtype/recommended"],
-  "plugins": ["react", "import", "flowtype", "jest"],
+  "extends": [
+    "@react-native-community",
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:flowtype/recommended",
+    "plugin:jest/recommended",
+    "plugin:prettier/recommended",
+    "prettier/flowtype",
+    "prettier/react"
+  ],
+  "plugins": [
+    "react",
+    "react-native",
+    "flowtype",
+    "jest",
+    "prettier"
+  ],
   "rules": {
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
-    "semi": ["error", "never"]
+    "no-console": "error",
+    "react/display-name": 0
   },
   "env": {
-    "node": true,
-    "es6": true,
-    "jest": true
+    "react-native/react-native": true
   }
 }
