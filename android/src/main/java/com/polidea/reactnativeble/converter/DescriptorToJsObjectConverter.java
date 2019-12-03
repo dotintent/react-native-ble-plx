@@ -23,16 +23,17 @@ public class DescriptorToJsObjectConverter extends JSObjectConverter<Descriptor>
     public WritableMap toJSObject(Descriptor descriptor) {
         WritableMap js = Arguments.createMap();
         js.putInt(Metadata.ID, descriptor.getId());
-        js.putString(Metadata.UUID, descriptor.get());
+        js.putString(Metadata.UUID, UUIDConverter.fromUUID(descriptor.getUuid()));
         js.putInt(Metadata.CHARACTERISTIC_ID, descriptor.getCharacteristicId());
         js.putString(Metadata.CHARACTERISTIC_UUID, UUIDConverter.fromUUID(descriptor.getCharacteristicUuid()));
         js.putInt(Metadata.SERVICE_ID, descriptor.getServiceId());
         js.putString(Metadata.SERVICE_UUID, UUIDConverter.fromUUID(descriptor.getServiceUuid()));
         js.putString(Metadata.DEVICE_ID, descriptor.getDeviceId());
 
-        if (value == null) {
-            value = descriptor.getValue();
+        if (descriptor.getValue() == null) {
+            descriptor.setValueFromCache();
         }
-        js.putString(Metadata.VALUE, value != null ? Base64Converter.encode(value) : null);
+        js.putString(Metadata.VALUE, descriptor.getValue() != null ? Base64Converter.encode(descriptor.getValue()) : null);
         return js;
     }
+}

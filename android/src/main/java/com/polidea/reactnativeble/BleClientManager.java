@@ -29,6 +29,7 @@ import com.polidea.multiplatformbleadapter.Service;
 import com.polidea.multiplatformbleadapter.errors.BleError;
 import com.polidea.reactnativeble.converter.BleErrorToJsObjectConverter;
 import com.polidea.reactnativeble.converter.CharacteristicToJsObjectConverter;
+import com.polidea.reactnativeble.converter.DescriptorToJsObjectConverter;
 import com.polidea.reactnativeble.converter.DeviceToJsObjectConverter;
 import com.polidea.reactnativeble.converter.ScanResultToJsObjectConverter;
 import com.polidea.reactnativeble.converter.ServiceToJsObjectConverter;
@@ -50,6 +51,7 @@ public class BleClientManager extends ReactContextBaseJavaModule {
     private final ScanResultToJsObjectConverter scanResultConverter = new ScanResultToJsObjectConverter();
     private final DeviceToJsObjectConverter deviceConverter = new DeviceToJsObjectConverter();
     private final CharacteristicToJsObjectConverter characteristicConverter = new CharacteristicToJsObjectConverter();
+    private final DescriptorToJsObjectConverter descriptorConverter = new DescriptorToJsObjectConverter();
     private final ServiceToJsObjectConverter serviceConverter = new ServiceToJsObjectConverter();
 
     private BleAdapter bleAdapter;
@@ -456,26 +458,43 @@ public class BleClientManager extends ReactContextBaseJavaModule {
             List<Descriptor> descriptors = bleAdapter.descriptorsForDevice(deviceIdentifier, serviceUUID, characteristicUUID);
             WritableArray jsDescriptors = Arguments.createArray();
             for (Descriptor descriptor : descriptors) {
-                jsDescriptors.pushMap();
+                jsDescriptors.pushMap(descriptorConverter.toJSObject(descriptor));
             }
             promise.resolve(jsDescriptors);
         } catch (BleError error) {
             promise.reject(null, errorConverter.toJs(error));
         }
-
     }
 
     @ReactMethod
     public void descriptorsForService(final int serviceIdentifier,
                                       final String characteristicUUID,
                                       final Promise promise) {
-        //TODO
+        try {
+            List<Descriptor> descriptors = bleAdapter.descriptorsForService(serviceIdentifier, characteristicUUID);
+            WritableArray jsDescriptors = Arguments.createArray();
+            for (Descriptor descriptor : descriptors) {
+                jsDescriptors.pushMap(descriptorConverter.toJSObject(descriptor));
+            }
+            promise.resolve(jsDescriptors);
+        } catch (BleError error) {
+            promise.reject(null, errorConverter.toJs(error));
+        }
     }
 
     @ReactMethod
     public void descriptorsForCharacteristic(final int characteristicIdentifier,
                                              final Promise promise) {
-        //TODO
+        try {
+            List<Descriptor> descriptors = bleAdapter.descriptorsForCharacteristic(characteristicIdentifier);
+            WritableArray jsDescriptors = Arguments.createArray();
+            for (Descriptor descriptor : descriptors) {
+                jsDescriptors.pushMap(descriptorConverter.toJSObject(descriptor));
+            }
+            promise.resolve(jsDescriptors);
+        } catch (BleError error) {
+            promise.reject(null, errorConverter.toJs(error));
+        }
     }
 
     // Mark: Characteristics operations ------------------------------------------------------------
@@ -695,6 +714,209 @@ public class BleClientManager extends ReactContextBaseJavaModule {
                     @Override
                     public void onError(BleError error) {
                         safePromise.reject(null, errorConverter.toJs(error));
+                    }
+                }
+        );
+    }
+
+    @ReactMethod
+    public void readDescriptorForDevice(final String deviceId,
+                                        final String serviceUUID,
+                                        final String characteristicUUID,
+                                        final String descriptorUUID,
+                                        final String transactionId,
+                                        final Promise promise) {
+        bleAdapter.readDescriptorForDevice(
+                deviceId,
+                serviceUUID,
+                characteristicUUID,
+                descriptorUUID,
+                transactionId,
+                new OnSuccessCallback<Descriptor>() {
+                    @Override
+                    public void onSuccess(Descriptor descriptor) {
+                        promise.resolve(descriptorConverter.toJSObject(descriptor));
+                    }
+                }, new OnErrorCallback() {
+                    @Override
+                    public void onError(BleError bleError) {
+                        promise.reject(null, errorConverter.toJs(bleError));
+                    }
+                });
+    }
+
+    @ReactMethod
+    public void readDescriptorForService(final int serviceIdentifier,
+                                         final String characteristicUUID,
+                                         final String descriptorUUID,
+                                         final String transactionId,
+                                         final Promise promise) {
+        bleAdapter.readDescriptorForService(
+                serviceIdentifier,
+                characteristicUUID,
+                descriptorUUID,
+                transactionId,
+                new OnSuccessCallback<Descriptor>() {
+                    @Override
+                    public void onSuccess(Descriptor descriptor) {
+                        promise.resolve(descriptorConverter.toJSObject(descriptor));
+                    }
+                },
+                new OnErrorCallback() {
+                    @Override
+                    public void onError(BleError bleError) {
+                        promise.reject(null, errorConverter.toJs(bleError));
+                    }
+                });
+    }
+
+    @ReactMethod
+    public void readDescriptorForCharacteristic(final int characteristicIdentifier,
+                                                final String descriptorUUID,
+                                                final String transactionId,
+                                                final Promise promise) {
+        bleAdapter.readDescriptorForCharacteristic(
+                characteristicIdentifier,
+                descriptorUUID,
+                transactionId,
+                new OnSuccessCallback<Descriptor>() {
+                    @Override
+                    public void onSuccess(Descriptor descriptor) {
+                        promise.resolve(descriptorConverter.toJSObject(descriptor));
+                    }
+                },
+                new OnErrorCallback() {
+                    @Override
+                    public void onError(BleError bleError) {
+                        promise.reject(null, errorConverter.toJs(bleError));
+                    }
+                });
+    }
+
+    @ReactMethod
+    public void readDescriptor(final int descriptorIdentifier,
+                               final String transactionId,
+                               final Promise promise) {
+        bleAdapter.readDescriptor(
+                descriptorIdentifier,
+                transactionId,
+                new OnSuccessCallback<Descriptor>() {
+                    @Override
+                    public void onSuccess(Descriptor descriptor) {
+                        promise.resolve(descriptorConverter.toJSObject(descriptor));
+                    }
+                },
+                new OnErrorCallback() {
+                    @Override
+                    public void onError(BleError bleError) {
+                        promise.reject(null, errorConverter.toJs(bleError));
+                    }
+                });
+    }
+
+    @ReactMethod
+    public void writeDescriptorForDevice(final String deviceId,
+                                         final String serviceUUID,
+                                         final String characteristicUUID,
+                                         final String descriptorUUID,
+                                         final String valueBase64,
+                                         final String transactionId,
+                                         final Promise promise) {
+        bleAdapter.writeDescriptorForDevice(
+                deviceId,
+                serviceUUID,
+                characteristicUUID,
+                descriptorUUID,
+                valueBase64,
+                transactionId,
+                new OnSuccessCallback<Descriptor>() {
+                    @Override
+                    public void onSuccess(Descriptor descriptor) {
+                        promise.resolve(descriptorConverter.toJSObject(descriptor));
+                    }
+                },
+                new OnErrorCallback() {
+                    @Override
+                    public void onError(BleError bleError) {
+                        promise.reject(null, errorConverter.toJs(bleError));
+                    }
+                }
+        );
+    }
+
+    @ReactMethod
+    public void writeDescriptorForService(final int serviceIdentifier,
+                                          final String characteristicUUID,
+                                          final String descriptorUUID,
+                                          final String valueBase64,
+                                          final String transactionId,
+                                          final Promise promise) {
+        bleAdapter.writeDescriptorForService(
+                serviceIdentifier,
+                characteristicUUID,
+                descriptorUUID,
+                valueBase64,
+                transactionId,
+                new OnSuccessCallback<Descriptor>() {
+                    @Override
+                    public void onSuccess(Descriptor descriptor) {
+                        promise.resolve(descriptorConverter.toJSObject(descriptor));
+                    }
+                },
+                new OnErrorCallback() {
+                    @Override
+                    public void onError(BleError bleError) {
+                        promise.reject(null, errorConverter.toJs(bleError));
+                    }
+                }
+        );
+    }
+
+    @ReactMethod
+    public void writeDescriptorForCharacteristic(final int characteristicIdentifier,
+                                                 final String descriptorUUID,
+                                                 final String valueBase64,
+                                                 final String transactionId,
+                                                 final Promise promise) {
+        bleAdapter.writeDescriptorForCharacteristic(
+                characteristicIdentifier,
+                descriptorUUID,
+                valueBase64,
+                transactionId,
+                new OnSuccessCallback<Descriptor>() {
+                    @Override
+                    public void onSuccess(Descriptor descriptor) {
+                        promise.resolve(descriptorConverter.toJSObject(descriptor));
+                    }
+                },
+                new OnErrorCallback() {
+                    @Override
+                    public void onError(BleError bleError) {
+                        promise.reject(null, errorConverter.toJs(bleError));
+                    }
+                }
+        );
+    }
+
+    @ReactMethod
+    public void writeDescriptor(final int descriptorIdentifier,
+                                final String valueBase64,
+                                final String transactionId,
+                                final Promise promise) {
+        bleAdapter.writeDescriptor(
+                descriptorIdentifier,
+                valueBase64,
+                transactionId,
+                new OnSuccessCallback<Descriptor>() {
+                    @Override
+                    public void onSuccess(Descriptor descriptor) {
+                        promise.resolve(descriptorConverter.toJSObject(descriptor));
+                    }
+                },
+                new OnErrorCallback() {
+                    @Override
+                    public void onError(BleError bleError) {
+                        promise.reject(null, errorConverter.toJs(bleError));
                     }
                 }
         );

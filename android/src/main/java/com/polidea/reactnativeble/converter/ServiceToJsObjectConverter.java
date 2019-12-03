@@ -1,11 +1,9 @@
 package com.polidea.reactnativeble.converter;
 
-import android.bluetooth.BluetoothGattService;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.multiplatformbleadapter.Service;
-import com.polidea.reactnativeble.utils.UUIDConverter;
+import com.polidea.multiplatformbleadapter.utils.UUIDConverter;
 
 public class ServiceToJsObjectConverter extends JSObjectConverter<Service> {
 
