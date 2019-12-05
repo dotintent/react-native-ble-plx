@@ -48,6 +48,6 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-native:+"
-    implementation 'com.github.Polidea:MultiPlatformBleAdapter:1dc6c36e0ed676bd5c55595716809ba9858fad74'
+    implementation 'com.github.Polidea:MultiPlatformBleAdapter:cb82c6a5c4776595f5b05eafb1bbb06034644807'
     testImplementation 'org.robospock:robospock:1.0.1'
 }
