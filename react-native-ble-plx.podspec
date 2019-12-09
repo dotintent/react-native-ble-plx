@@ -17,6 +17,5 @@ Pod::Spec.new do |s|
   s.compiler_flags = '-DREACT_NATIVE_BLE_PLX_SWIFT'
 
   s.dependency 'React'
-  s.dependency 'react-native-ble-plx-swift'
-  s.dependency 'MultiplatformBleAdapter', '0.0.4'
+  s.dependency 'MultiplatformBleAdapter', '0.1.1'
 end
