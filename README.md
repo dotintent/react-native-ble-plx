@@ -77,7 +77,6 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 5. Update your `ios/Podfile` to contain:
    ```
    pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
-   pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
    ```
 6. Enter `ios` folder and run `pod update`
 7. Minimal supported version of iOS is 8.0
