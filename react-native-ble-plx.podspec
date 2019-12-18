@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
 
   s.source       = { :git => "https://github.com/Polidea/react-native-ble-plx.git" }
   s.source_files  = "ios/**/*.{h,m}"
-  s.compiler_flags = '-DREACT_NATIVE_BLE_PLX_SWIFT'
+  s.compiler_flags = '-DMULTIPLATFORM_BLE_ADAPTER'
 
   s.dependency 'React'
   s.dependency 'MultiplatformBleAdapter', '0.1.2'
