@@ -1,13 +1,10 @@
 package com.polidea.reactnativeble.converter;
 
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.multiplatformbleadapter.Characteristic;
-import com.polidea.reactnativeble.utils.Base64Converter;
-import com.polidea.reactnativeble.utils.UUIDConverter;
+import com.polidea.multiplatformbleadapter.utils.Base64Converter;
+import com.polidea.multiplatformbleadapter.utils.UUIDConverter;
 
 public class CharacteristicToJsObjectConverter extends JSObjectConverter<Characteristic> {
 
@@ -34,7 +31,7 @@ public class CharacteristicToJsObjectConverter extends JSObjectConverter<Charact
         js.putString(Metadata.UUID, UUIDConverter.fromUUID(characteristic.getUuid()));
         js.putInt(Metadata.SERVICE_ID, characteristic.getServiceID());
         js.putString(Metadata.SERVICE_UUID, UUIDConverter.fromUUID(characteristic.getServiceUUID()));
-        js.putString(Metadata.DEVICE_ID, characteristic.getDeviceID());
+        js.putString(Metadata.DEVICE_ID, characteristic.getDeviceId());
         js.putBoolean(Metadata.IS_READABLE, characteristic.isReadable());
         js.putBoolean(Metadata.IS_WRITABLE_WITH_RESPONSE, characteristic.isWritableWithResponse());
         js.putBoolean(Metadata.IS_WRITABLE_WITHOUT_RESPONSE, characteristic.isWritableWithoutResponse());

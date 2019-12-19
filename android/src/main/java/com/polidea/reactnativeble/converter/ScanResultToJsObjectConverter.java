@@ -7,8 +7,8 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.multiplatformbleadapter.AdvertisementData;
 import com.polidea.multiplatformbleadapter.ScanResult;
-import com.polidea.reactnativeble.utils.Base64Converter;
-import com.polidea.reactnativeble.utils.UUIDConverter;
+import com.polidea.multiplatformbleadapter.utils.Base64Converter;
+import com.polidea.multiplatformbleadapter.utils.UUIDConverter;
 
 import java.util.Map;
 import java.util.UUID;

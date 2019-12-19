@@ -3,19 +3,12 @@
   "editor.tabSize": 2,
   "editor.detectIndentation": false,
   "editor.formatOnSave": true,
-  "editor.rulers": [120],
+  "editor.rulers": [
+    120
+  ],
   "javascript.validate.enable": false,
   // Prettier
-  "prettier.eslintIntegration": true,
-  "prettier.useTabs": false,
-  "prettier.printWidth": 120,
-  "prettier.tabWidth": 2,
-  "prettier.singleQuote": true,
-  "prettier.trailingComma": "none",
-  "prettier.bracketSpacing": true,
-  "prettier.jsxBracketSameLine": false,
-  "prettier.parser": "flow",
-  "prettier.semi": false,
+  "prettier.eslintIntegration": false,
   // Flow
   "flow.useNPMPackagedFlow": true
 }

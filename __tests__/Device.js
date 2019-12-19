@@ -49,6 +49,11 @@ describe("Test if Device is properly calling BleManager's utility function: ", (
     expect(bleManager.characteristicsForDevice).toBeCalledWith('id', 'aaaa')
   })
 
+  test('descriptorsForService', async () => {
+    await device.descriptorsForService('serviceUUID', 'characteristicUUID')
+    expect(bleManager.descriptorsForDevice).toBeCalledWith('id', 'serviceUUID', 'characteristicUUID')
+  })
+
   test('readCharacteristicForService', async () => {
     await device.readCharacteristicForService('aaaa', 'bbbb', 'id')
     expect(bleManager.readCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', 'id')
@@ -68,6 +73,35 @@ describe("Test if Device is properly calling BleManager's utility function: ", (
     const listener = jest.fn()
     await device.monitorCharacteristicForService('aaaa', 'bbbb', listener, 'id')
     expect(bleManager.monitorCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', listener, 'id')
+  })
+
+  test('readDescriptorForService', async () => {
+    await device.readDescriptorForService('serviceUUID', 'characteristicUUID', 'descriptorUUID', 'transactionId')
+    expect(bleManager.readDescriptorForDevice).toBeCalledWith(
+      'id',
+      'serviceUUID',
+      'characteristicUUID',
+      'descriptorUUID',
+      'transactionId'
+    )
+  })
+
+  test('writeDescriptorForService', async () => {
+    await device.writeDescriptorForService(
+      'serviceUUID',
+      'characteristicUUID',
+      'descriptorUUID',
+      'value',
+      'transactionId'
+    )
+    expect(bleManager.writeDescriptorForDevice).toBeCalledWith(
+      'id',
+      'serviceUUID',
+      'characteristicUUID',
+      'descriptorUUID',
+      'value',
+      'transactionId'
+    )
   })
 
   test('BleManager properly requests the MTU', async () => {
