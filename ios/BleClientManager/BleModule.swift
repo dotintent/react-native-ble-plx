@@ -77,6 +77,8 @@ public class BleClientManager : NSObject {
         } else {
             manager = BluetoothManager(queue: queue)
         }
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setNordicCentralManagerGetter:) name:@"ble_manager" object:nil];
 
         super.init()
         stateDisposable = manager.rx_state.subscribe(onNext: { [weak self] newState in
