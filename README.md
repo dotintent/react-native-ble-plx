@@ -56,9 +56,13 @@ What this library does NOT support:
 
 Interested in React Native project involving Bluetooth Low Energy? [We can help you!](https://www.polidea.com/react-native)
 
-Learn more about Polidea's BLE services [here](https://www.polidea.com/services/ble).
+[Learn more about Polidea's React Native services](https://www.polidea.com/services/react-native/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_RN&utm_term=Code&utm_content=GH_NOP_RN_COD_RNB001).
+
+[Learn more about Polidea's BLE services](https://www.polidea.com/services/ble/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_BLE&utm_term=Code&utm_content=GH_NOP_BLE_COD_RNB001).
 
 Documentation can be found [here](https://polidea.github.io/react-native-ble-plx/).
+
+Contact us at [Polidea](https://www.polidea.com/project/?utm_source=Github&utm_medium=Npaid&utm_campaign=Kontakt&utm_term=Code&utm_content=GH_NOP_KKT_COD_RNB001).
 
 Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you have any questions, feedback or want to help!
 
