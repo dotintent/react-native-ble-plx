@@ -1,3 +1,10 @@
+**1.1.1**
+
+- Update development dependencies
+- Add more information to the README and INTRO file.
+- Remove `const` from enum types in the typescript definition file.
+- Add backpressure buffer for notifications.
+
 **1.1.0**
 
 - Add support for descriptors.
