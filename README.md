@@ -45,10 +45,12 @@ What this library does NOT support:
 
 ## Recent Changes
 
-**1.1.0**
+**1.1.1**
 
-- Add support for descriptors.
-- Fix XCode 11 compilation error.
+- Update development dependencies
+- Add more information to the README and INTRO file.
+- Remove `const` from enum types in the typescript definition file.
+- Add backpressure buffer for notifications.
 
 [All previous changes](CHANGELOG.md)
 
