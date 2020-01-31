@@ -95,7 +95,7 @@ declare module 'react-native-ble-plx' {
   /**
    * Scan mode for Bluetooth LE scan.
    */
-  export const enum ScanMode {
+  export enum ScanMode {
     /**
      * A special Bluetooth LE scan mode. Applications using this scan mode will passively listen for
      * other scan results without starting BLE scans themselves.
@@ -125,7 +125,7 @@ declare module 'react-native-ble-plx' {
    * Scan callback type for Bluetooth LE scan.
    * @name ScanCallbackType
    */
-  export const enum ScanCallbackType {
+  export enum ScanCallbackType {
     /**
      * Trigger a callback for every Bluetooth advertisement found that matches the filter criteria.
      * If no filter is active, all advertisement packets are reported. [default value]
@@ -208,7 +208,7 @@ declare module 'react-native-ble-plx' {
    * Device Bluetooth Low Energy state. It's keys are used to check {@link #blemanagerstate} values
    * received by {@link BleManager}
    */
-  export const enum State {
+  export enum State {
     /**
      * The current state of the manager is unknown; an update is imminent.
      */
@@ -239,7 +239,7 @@ declare module 'react-native-ble-plx' {
    * Native module logging log level. By default it is set to None.
    * @name LogLevel
    */
-  export const enum LogLevel {
+  export enum LogLevel {
     /**
      * Logging in native module is disabled
      */
@@ -270,7 +270,7 @@ declare module 'react-native-ble-plx' {
    * Connection priority of BLE link determining the balance between power consumption and data throughput.
    * @name ConnectionPriority
    */
-  export const enum ConnectionPriority {
+  export enum ConnectionPriority {
     /**
      * Default, recommended option balanced between power consumption and data throughput.
      */
@@ -344,7 +344,7 @@ declare module 'react-native-ble-plx' {
   /**
    * Platform independent error code map adjusted to this library's use cases.
    */
-  export const enum BleErrorCode {
+  export enum BleErrorCode {
     // Implementation specific errors ----------------------------------------------------------------------------------
     /**
      * This error can be thrown when unexpected error occurred and in most cases it is related to implementation bug.
@@ -537,7 +537,7 @@ declare module 'react-native-ble-plx' {
    * Error codes for ATT errors.
    * @name BleATTErrorCode
    */
-  export const enum BleATTErrorCode {
+  export enum BleATTErrorCode {
     /**
      * The ATT command or request successfully completed.
      */
@@ -618,7 +618,7 @@ declare module 'react-native-ble-plx' {
    * iOS specific error codes.
    * @name BleIOSErrorCode
    */
-  export const enum BleIOSErrorCode {
+  export enum BleIOSErrorCode {
     /**
      * An unknown error occurred.
      */
@@ -677,7 +677,7 @@ declare module 'react-native-ble-plx' {
    * Android specific error codes.
    * @name BleAndroidErrorCode
    */
-  export const enum BleAndroidErrorCode {
+  export enum BleAndroidErrorCode {
     /**
      * The device has insufficient resources to complete the intended operation.
      */

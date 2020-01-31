@@ -5,7 +5,7 @@
 1. Commit your changes.
 2. Reinstall all dependencies `git clean -xfd && npm install`.
     * If there are any vulnerabilities fix them with `npm audit fix`.
-    * Make sure `package-lock.json` and `yarn.lock` files are updated.
+    * Make sure `package-lock.json` is updated.
 3. Check for all type and documentation errors by running `npm run lint`.
 4. Run local tests via `npm test`.
 5. Bump version in `package.json` file.

@@ -7,8 +7,6 @@
     120
   ],
   "javascript.validate.enable": false,
-  // Prettier
-  "prettier.eslintIntegration": false,
   // Flow
   "flow.useNPMPackagedFlow": true
 }
