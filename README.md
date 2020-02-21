@@ -21,6 +21,7 @@ It supports:
 - [observing characteristic notifications/indications](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Notifying)
 - [reading RSSI](https://github.com/Polidea/react-native-ble-plx/wiki/RSSI-Reading)
 - [negotiating MTU](https://github.com/Polidea/react-native-ble-plx/wiki/MTU-Negotiation)
+- [background mode on iOS](https://github.com/Polidea/react-native-ble-plx/wiki/Background-mode-(iOS))
 - turning the device's Bluetooth adapter on
 
 What this library does NOT support:
