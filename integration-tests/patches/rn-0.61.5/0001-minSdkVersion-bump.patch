@@ -10,4 +10,4 @@ index c6e7c7c..24b752a 100644
 +        minSdkVersion = 18
          compileSdkVersion = 28
          targetSdkVersion = 28
-         supportLibVersion = "28.0.0"
+     }

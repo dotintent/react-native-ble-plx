@@ -10,14 +10,15 @@ index a79b79d..ae47a12 100644
      }
      splits {
          abi {
-@@ -191,6 +192,10 @@ dependencies {
-     implementation project(':react-native-ble-plx')
+@@ -183,6 +184,11 @@ dependencies {
      implementation fileTree(dir: "libs", include: ["*.jar"])
      implementation "com.facebook.react:react-native:+"  // From node_modules
+ 
 +    testImplementation 'junit:junit:4.12'
 +    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 +    androidTestImplementation 'androidx.test:runner:1.1.0'
 +    androidTestImplementation 'androidx.test:rules:1.1.0'
- 
++
      if (enableHermes) {
-       def hermesPath = "../../node_modules/hermesvm/android/";
+         def hermesPath = "../../node_modules/hermes-engine/android/";
+         debugImplementation files(hermesPath + "hermes-debug.aar")
