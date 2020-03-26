@@ -1,3 +1,7 @@
+**2.0.0**
+
+- Update direct dependency to Multiplatform Ble Adapter
+
 **1.1.1**
 
 - Update development dependencies

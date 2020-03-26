@@ -9,7 +9,7 @@
 
 ## About this library
 
-This is React Native Bluetooth Low Energy library wrapping [Multiplatform Ble Adapter](https://github.com/Polidea/MultiPlatformBleAdapter/).
+This is React Native Bluetooth Low Energy library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) under the hood.
 
 It supports:
 
@@ -24,27 +24,34 @@ It supports:
 - [background mode on iOS](https://github.com/Polidea/react-native-ble-plx/wiki/Background-mode-(iOS))
 - turning the device's Bluetooth adapter on
 
-It does NOT support:
+What this library does NOT support:
 
-- bluetooth classic devices.
 - communicating between phones using BLE (Peripheral support)
 - [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Bonding)
 
 ## Compatibility
 
-This version (2.x) breaks compatibility with old RN versions. Please check [old README](./README_V1.md) (1.x) for the old instructions.
+| React Native  | 1.0.3                          |  1.1.0                         |
+| ------------- | ------------------------------ | ------------------------------ |
+| 0.60.5        | :white_check_mark:<sup>2</sup> | :white_check_mark:<sup>2</sup> |
+| 0.59.10       | :white_check_mark:             | :white_check_mark:             |
+| 0.58.6        | :white_check_mark:             | :white_check_mark:             |
+| 0.57.8        | :white_check_mark:             | :white_check_mark:             |
+| 0.56.1        | :boom:<sup>1</sup>             | :boom:<sup>1</sup>             |
+| 0.55.4        | :boom:<sup>1</sup>             | :boom:<sup>1</sup>             |
 
-| React Native  | 2.0.0                          |
-| ------------- | ------------------------------ |
-| 0.61.5        | :white_check_mark:             |
-| 0.60.6        | :white_check_mark:             |
+<sup>1</sup> fails on Android, although might work after updating gradle
 
+<sup>2</sup> may require usage of `jetifier` on Android and migration to `CocoaPods` on iOS.
 
 ## Recent Changes
 
-**2.0.0**
+**1.1.1**
 
-- Update direct dependency to Multiplatform Ble Adapter
+- Update development dependencies
+- Add more information to the README and INTRO file.
+- Remove `const` from enum types in the typescript definition file.
+- Add backpressure buffer for notifications.
 
 [All previous changes](CHANGELOG.md)
 
