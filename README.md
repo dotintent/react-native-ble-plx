@@ -84,7 +84,6 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 5. Update your `ios/Podfile` to contain:
    ```
    pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
-   pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
    ```
 6. Enter `ios` folder and run `pod update`
 7. Minimal supported version of iOS is 8.0
@@ -124,8 +123,17 @@ android {
         minSdkVersion 18
         ...
 ```
+4. In `build.gradle` of `app` module make sure to add jitpack repository to known repositories:
 
-4. In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
+```groovy
+allprojects {
+    repositories {
+      ...
+      maven { url 'https://jitpack.io' }
+    }
+}
+```
+5. In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -144,7 +152,7 @@ android {
         ...
 ```
 
-5. If you are using AndroidX, then for the time being you need to convert import statements in the Android library with [jetifier](https://www.npmjs.com/package/jetifier). These steps apply for all react-native packages, which are during the transition period:
+6. If you are using AndroidX, then for the time being you need to convert import statements in the Android library with [jetifier](https://www.npmjs.com/package/jetifier). These steps apply for all react-native packages, which are during the transition period:
 
 - `npm install --save-dev jetifier`
 - Run `jetify` script after `npm install`. You can do it by adding "postinstall" script to the `package.json` file:
