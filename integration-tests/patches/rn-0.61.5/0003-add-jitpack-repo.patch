@@ -1,0 +1,13 @@
+diff --git a/integration-tests/Setup/android/build.gradle b/integration-tests/Setup/android/build.gradle
+index 656073a..32a36da 100644
+--- a/integration-tests/Setup/android/build.gradle
++++ b/integration-tests/Setup/android/build.gradle
+@@ -31,7 +31,7 @@ allprojects {
+             // Android JSC is installed from npm
+             url("$rootDir/../node_modules/jsc-android/dist")
+         }
+-
++        maven { url 'https://jitpack.io' }
+         google()
+         jcenter()
+     }
