@@ -46,6 +46,7 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 **2.0.0**
 
 - Update direct dependency to Multiplatform Ble Adapter
+- Remove support for RN version < 0.60
 
 [All previous changes](CHANGELOG.md)
 

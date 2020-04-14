@@ -1,6 +1,7 @@
 **2.0.0**
 
 - Update direct dependency to Multiplatform Ble Adapter
+- Remove support for RN version < 0.60
 
 **1.1.1**
 
