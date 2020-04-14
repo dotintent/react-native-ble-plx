@@ -32,7 +32,8 @@ It does NOT support:
 
 ## Compatibility
 
-This version (2.x) breaks compatibility with old RN versions. Please check [old README](./README_V1.md) (1.x) for the old instructions.
+This version (2.x) breaks compatibility with old RN versions. Please check [old README](./docs/README_V1.md) (1.x) 
+for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 | React Native  | 2.0.0                          |
 | ------------- | ------------------------------ |
@@ -56,7 +57,7 @@ Interested in React Native project involving Bluetooth Low Energy? [We can help 
 
 [Learn more about Polidea's BLE services](https://www.polidea.com/services/ble/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_BLE&utm_term=Code&utm_content=GH_NOP_BLE_COD_RNB001).
 
-Documentation can be found [here](https://polidea.github.io/react-native-ble-plx/).
+[Documentation can be found here](https://polidea.github.io/react-native-ble-plx/).
 
 Contact us at [Polidea](https://www.polidea.com/project/?utm_source=Github&utm_medium=Npaid&utm_campaign=Kontakt&utm_term=Code&utm_content=GH_NOP_KKT_COD_RNB001).
 
@@ -64,49 +65,36 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 ## Configuration & Installation
 
-### iOS (expo/Podfile and RN 0.60+, [example setup](https://github.com/Cierpliwy/SensorTagExpo))
+### Expo
 
-1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.io/versions/v32.0.0/expokit/eject/) and [here](https://docs.expo.io/versions/latest/expokit/expokit). (only for expo)
-2. `npm install --save react-native-ble-plx`
-3. `react-native link react-native-ble-plx`
-4. Open Xcode workspace located inside `ios` folder and add empty Swift file if you don't have at least one:
+1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.io/versions/latest/expokit/eject/) and [here](https://docs.expo.io/versions/latest/expokit/expokit). (only for expo)
+2. Follow steps for iOS/Android.
+
+### iOS ([example setup](https://github.com/Cierpliwy/SensorTag))
+
+1. `npm install --save react-native-ble-plx`
+2. `npx react-native link react-native-ble-plx`
+3. Open Xcode workspace located inside `ios` folder and add empty Swift file if you don't have at least one:
    - Select File/New/File...
    - Choose Swift file and click Next.
    - Name it however you want, select your application target and create it.
    - Accept to create Objective-C bridging header.
-5. Update your `ios/Podfile` to contain:
+4. Update your `ios/Podfile` to contain (it may be already there):
    ```
    pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
    ```
-6. Enter `ios` folder and run `pod update`
-7. Minimal supported version of iOS is 8.0
-8. If you want to support background mode:
+5. Enter `ios` folder and run `pod update`
+6. Minimal supported version of iOS is 8.0
+7. If you want to support background mode:
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
-9. Starting from iOS 13 add `NSBluetoothAlwaysUsageDescription` in `info.plist` file.
-
-### iOS (react-native < 0.60, [example setup](https://github.com/Cierpliwy/SensorTag/tree/rn59))
-
-1. `npm install --save react-native-ble-plx`
-2. `react-native link react-native-ble-plx`
-3. Open Xcode project located inside `ios` folder and add empty Swift file if you don't have at least one:
-   - Select File/New/File...
-   - Choose Swift file and click Next.
-   - Name it however you want, select your targets and create it.
-   - Accept to create Objective-C bridging header.
-4. Minimal supported version of iOS is 8.0
-5. If you want to support background mode:
-
-   - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
-     `Background Modes` section.
-   - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
-6. Starting from iOS 13 add `NSBluetoothAlwaysUsageDescription` in `info.plist` file.
+8. Starting from iOS 13 add `NSBluetoothAlwaysUsageDescription` in `info.plist` file.
 
 ### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 
 1. `npm install --save react-native-ble-plx`
-2. `react-native link react-native-ble-plx`
+2. `npx react-native link react-native-ble-plx`
 3. In `build.gradle` of `app` module make sure that min SDK version is at least 18:
 
 ```groovy
