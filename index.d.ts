@@ -161,7 +161,7 @@ declare module 'react-native-ble-plx' {
     /**
      * Scan callback type for Bluetooth LE scan [Android only]
      */
-    callbackType?: boolean
+    callbackType?: ScanCallbackType
   }
 
   /**

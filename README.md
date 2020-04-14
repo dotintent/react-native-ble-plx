@@ -47,6 +47,7 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 - Update direct dependency to Multiplatform Ble Adapter
 - Remove support for RN version < 0.60
+- Fixed Typescript `callbackType` type definition.
 
 [All previous changes](CHANGELOG.md)
 
