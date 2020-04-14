@@ -1,8 +1,8 @@
 diff --git a/integration-tests/Setup/android/app/build.gradle b/integration-tests/Setup/android/app/build.gradle
-index a79b79d..ae47a12 100644
+index 29d8caa..767bab8 100644
 --- a/integration-tests/Setup/android/app/build.gradle
 +++ b/integration-tests/Setup/android/app/build.gradle
-@@ -133,6 +133,7 @@ android {
+@@ -134,6 +134,7 @@ android {
          targetSdkVersion rootProject.ext.targetSdkVersion
          versionCode 1
          versionName "1.0"
@@ -10,8 +10,8 @@ index a79b79d..ae47a12 100644
      }
      splits {
          abi {
-@@ -183,6 +184,11 @@ dependencies {
-     implementation fileTree(dir: "libs", include: ["*.jar"])
+@@ -192,6 +193,11 @@ dependencies {
+     //noinspection GradleDynamicVersion
      implementation "com.facebook.react:react-native:+"  // From node_modules
  
 +    testImplementation 'junit:junit:4.12'
@@ -19,6 +19,6 @@ index a79b79d..ae47a12 100644
 +    androidTestImplementation 'androidx.test:runner:1.1.0'
 +    androidTestImplementation 'androidx.test:rules:1.1.0'
 +
-     if (enableHermes) {
-         def hermesPath = "../../node_modules/hermes-engine/android/";
-         debugImplementation files(hermesPath + "hermes-debug.aar")
+     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+ 
+     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

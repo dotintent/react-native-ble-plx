@@ -1,10 +1,10 @@
 diff --git a/integration-tests/Setup/ios/Podfile b/integration-tests/Setup/ios/Podfile
-index 48b7ba5..e30dcb9 100644
+index 85e2ba1..3958714 100644
 --- a/integration-tests/Setup/ios/Podfile
 +++ b/integration-tests/Setup/ios/Podfile
-@@ -39,6 +39,7 @@ target 'Setup' do
+@@ -82,6 +82,7 @@ target 'Setup' do
    target 'SetupTests' do
-     inherit! :search_paths
+     inherit! :complete
      # Pods for testing
 +    pod 'EarlGrey'
    end
