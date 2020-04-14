@@ -37,9 +37,9 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 | React Native  | 2.0.0                          |
 | ------------- | ------------------------------ |
+| 0.62.2        | :white_check_mark:             |
 | 0.61.5        | :white_check_mark:             |
 | 0.60.6        | :white_check_mark:             |
-
 
 ## Recent Changes
 

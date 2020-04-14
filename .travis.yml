@@ -98,6 +98,13 @@ matrix:
     # Integration tests for different React Native versions
 
     - <<: *android_job_template
+      name: 'Integrate with RN 0.62.2 Android'
+      env: RN_VERSION=0.62.2
+    - <<: *ios_job_template
+      name: 'Integrate with RN 0.62.2 iOS'
+      env: RN_VERSION=0.62.2
+
+    - <<: *android_job_template
       name: 'Integrate with RN 0.61.5 Android'
       env: RN_VERSION=0.61.5
     - <<: *ios_job_template
