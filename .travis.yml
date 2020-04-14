@@ -83,7 +83,7 @@ _ios_job_template: &ios_job_template
   xcode_destination: platform=iOS Simulator
   # before_script will make project
   script:
-    - integration-tests/scripts/build-ios-project integration-tests/Setup
+    - travis_wait 30 integration-tests/scripts/build-ios-project integration-tests/Setup
 
 matrix:
   include:
