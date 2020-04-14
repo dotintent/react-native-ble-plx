@@ -95,22 +95,21 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 1. `npm install --save react-native-ble-plx`
 2. `npx react-native link react-native-ble-plx`
-3. In `build.gradle` of `app` module make sure that min SDK version is at least 18:
-
+3. In top level `build.gradle` make sure that min SDK version is at least 18:
 ```groovy
-android {
-    ...
-    defaultConfig {
-        minSdkVersion 18
+buildscript {
+    ext {
+        ...
+        minSdkVersion = 18
         ...
 ```
-4. In `build.gradle` of `app` module make sure to add jitpack repository to known repositories:
+4. In `build.gradle` make sure to add jitpack repository to known repositories:
 
 ```groovy
 allprojects {
     repositories {
       ...
-      maven { url 'https://jitpack.io' }
+      maven { url 'https://www.jitpack.io' }
     }
 }
 ```
@@ -121,16 +120,14 @@ allprojects {
     ...
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission-sdk-23 android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <!-- Add this line if your application always requires BLE. More info can be found on:
          https://developer.android.com/guide/topics/connectivity/bluetooth-le.html#permissions
       -->
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 
-    <uses-sdk
-        android:minSdkVersion="18"
-        ...
+    ...
 ```
 
 6. If you are using AndroidX, then for the time being you need to convert import statements in the Android library with [jetifier](https://www.npmjs.com/package/jetifier). These steps apply for all react-native packages, which are during the transition period:
