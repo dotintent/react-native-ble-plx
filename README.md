@@ -130,16 +130,6 @@ allprojects {
     ...
 ```
 
-6. If you are using AndroidX, then for the time being you need to convert import statements in the Android library with [jetifier](https://www.npmjs.com/package/jetifier). These steps apply for all react-native packages, which are during the transition period:
-
-- `npm install --save-dev jetifier`
-- Run `jetify` script after `npm install`. You can do it by adding "postinstall" script to the `package.json` file:
-  ```json
-   ...
-   "postinstall": "npx jetify",
-   ...
-  ```
-
 ## Troubleshooting
 
 ### Problems with Proguard
