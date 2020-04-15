@@ -77,13 +77,13 @@ _ios_job_template: &ios_job_template
   <<: *integration_job_template
   language: objective-c
   os: osx
-  osx_image: xcode11.3
+  osx_image: xcode11.4
   xcode_project: integration-tests/Setup/ios/Setup.xcodeproj
   xcode_scheme: Setup
   xcode_destination: platform=iOS Simulator
   # before_script will make project
   script:
-    - travis_wait 30 integration-tests/scripts/build-ios-project integration-tests/Setup
+    - integration-tests/scripts/build-ios-project integration-tests/Setup
 
 matrix:
   include:

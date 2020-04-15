@@ -11,9 +11,9 @@ pushd $PROJECT_PATH
   curl -s http://localhost:8081/index.bundle\?platform\=ios\&dev\=true\&minify\=false > /dev/null
   if [ -d ios/Setup.xcworkspace ]; then
     echo "Building XCode workspace..."
-    xcodebuild test -scheme Setup -workspace ios/Setup.xcworkspace -quiet -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.3' > /dev/null
+    xcodebuild test -scheme Setup -workspace ios/Setup.xcworkspace -quiet -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.3'
   else
     echo "Building XCode project..."
-    xcodebuild test -scheme Setup -project ios/Setup.xcodeproj -quiet -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.3' > /dev/null
+    xcodebuild test -scheme Setup -project ios/Setup.xcodeproj -quiet -UseModernBuildSystem=NO -destination 'platform=iOS Simulator,name=iPhone 11,OS=13.3'
   fi
 popd
