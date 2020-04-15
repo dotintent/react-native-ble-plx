@@ -86,7 +86,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
    pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
    ```
 5. Enter `ios` folder and run `pod update`
-6. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file.
+6. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
 7. If you want to support background mode:
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
