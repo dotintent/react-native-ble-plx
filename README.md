@@ -86,12 +86,11 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
    pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
    ```
 5. Enter `ios` folder and run `pod update`
-6. Minimal supported version of iOS is 8.0
+6. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file.
 7. If you want to support background mode:
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
-8. Starting from iOS 13 add `NSBluetoothAlwaysUsageDescription` in `info.plist` file.
 
 ### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 
