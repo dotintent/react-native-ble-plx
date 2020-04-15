@@ -52,18 +52,7 @@ function add-espresso {
 
 function add-earl-grey {
   PROJECT_PATH="$PROJECT_NAME/ios/"
-
-  brew update || true
-  brew install carthage || true
-  gem install earlgrey
   cp scripts/test-utils/SetupTests.m $PROJECT_PATH/SetupTests/SetupTests.m
-
-  pushd $PROJECT_PATH
-    echo 'github "google/EarlGrey" "1.15.0"' > Cartfile.private
-    carthage update EarlGrey --platform ios || true
-    carthage bootstrap --platform ios || true
-    earlgrey install -t SetupTests
-  popd
 }
 
 function update-pods {

@@ -77,13 +77,13 @@ _ios_job_template: &ios_job_template
   <<: *integration_job_template
   language: objective-c
   os: osx
-  osx_image: xcode10.1
+  osx_image: xcode11.4
   xcode_project: integration-tests/Setup/ios/Setup.xcodeproj
   xcode_scheme: Setup
   xcode_destination: platform=iOS Simulator
   # before_script will make project
   script:
-    - integration-tests/scripts/build-ios-project integration-tests/Setup
+    - travis_wait 30 integration-tests/scripts/build-ios-project integration-tests/Setup
 
 matrix:
   include:
@@ -98,29 +98,22 @@ matrix:
     # Integration tests for different React Native versions
 
     - <<: *android_job_template
-      name: 'Integrate with RN 0.60.5 Android'
-      env: RN_VERSION=0.60.5
+      name: 'Integrate with RN 0.62.2 Android'
+      env: RN_VERSION=0.62.2
     - <<: *ios_job_template
-      name: 'Integrate with RN 0.60.5 iOS'
-      env: RN_VERSION=0.60.5
+      name: 'Integrate with RN 0.62.2 iOS'
+      env: RN_VERSION=0.62.2
 
     - <<: *android_job_template
-      name: 'Integrate with RN 0.59.10 Android'
-      env: RN_VERSION=0.59.10
+      name: 'Integrate with RN 0.61.5 Android'
+      env: RN_VERSION=0.61.5
     - <<: *ios_job_template
-      name: 'Integrate with RN 0.59.10 iOS'
-      env: RN_VERSION=0.59.10
+      name: 'Integrate with RN 0.61.5 iOS'
+      env: RN_VERSION=0.61.5
 
     - <<: *android_job_template
-      name: 'Integrate with RN 0.58.6 Android'
-      env: RN_VERSION=0.58.6
+      name: 'Integrate with RN 0.60.6 Android'
+      env: RN_VERSION=0.60.6
     - <<: *ios_job_template
-      name: 'Integrate with RN 0.58.6 iOS'
-      env: RN_VERSION=0.58.6
-
-    - <<: *android_job_template
-      name: 'Integrate with RN 0.57.8 Android'
-      env: RN_VERSION=0.57.8
-    - <<: *ios_job_template
-      name: 'Integrate with RN 0.57.8 iOS'
-      env: RN_VERSION=0.57.8
+      name: 'Integrate with RN 0.60.6 iOS'
+      env: RN_VERSION=0.60.6

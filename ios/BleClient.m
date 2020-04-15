@@ -7,13 +7,7 @@
 //
 
 #import "BleClient.h"
-
 @import MultiplatformBleAdapter;
-// #ifdef REACT_NATIVE_BLE_PLX_SWIFT
-// @import react_native_ble_plx_swift;
-// #else
-// #import "BleClient-Swift.h"
-// #endif
 
 @interface BleModule () <BleClientManagerDelegate>
 @property(nonatomic) BleClientManager* manager;

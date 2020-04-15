@@ -1,3 +1,9 @@
+**2.0.0**
+
+- Update direct dependency to Multiplatform Ble Adapter
+- Remove support for RN version < 0.60
+- Fixed Typescript `callbackType` type definition.
+
 **1.1.1**
 
 - Update development dependencies

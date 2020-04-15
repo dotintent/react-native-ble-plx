@@ -12,12 +12,10 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.4'
-        classpath 'org.codehaus.groovy:groovy-android-gradle-plugin:1.1.0'
     }
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'groovyx.android'
 
 android {
     compileSdkVersion safeExtGet('compileSdkVersion', 27)
@@ -49,5 +47,4 @@ repositories {
 dependencies {
     implementation "com.facebook.react:react-native:+"
     implementation 'com.github.Polidea:MultiPlatformBleAdapter:58c87b49f12f4a5ab6f7af31f8085249e206400a'
-    testImplementation 'org.robospock:robospock:1.0.1'
 }
