@@ -83,7 +83,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
    - Accept to create Objective-C bridging header.
 4. Update your `ios/Podfile` to contain (it may be already there):
    ```
-   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
+   pod 'react-native-ble-plx-swift', :path => '../node_modules/react-native-ble-plx'
    ```
 5. Enter `ios` folder and run `pod update`
 6. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
