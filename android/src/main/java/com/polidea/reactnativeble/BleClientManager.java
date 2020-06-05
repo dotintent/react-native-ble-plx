@@ -12,6 +12,7 @@ import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableType;
 import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.multiplatformbleadapter.BleAdapter;
 import com.polidea.multiplatformbleadapter.BleModule;
@@ -338,7 +339,14 @@ public class BleClientManager extends ReactContextBaseJavaModule {
                 new OnEventCallback<ConnectionState>() {
                     @Override
                     public void onEvent(ConnectionState connectionState) {
-
+                        if (connectionState == ConnectionState.DISCONNECTED) {
+                            WritableArray event = Arguments.createArray();
+                            event.pushNull();
+                            WritableMap device = Arguments.createMap();
+                            device.putString("id", deviceId);
+                            event.pushMap(device);
+                            sendEvent(Event.DisconnectionEvent, event);
+                        }
                     }
                 },
                 new OnErrorCallback() {
