@@ -1,3 +1,8 @@
+**2.0.1**
+
+- Fixed `onDisconnected()` callback on Android
+- Fixed possibility of wrong characteristics being used on Android if they shared the same UUID
+
 **2.0.0**
 
 - Update direct dependency to Multiplatform Ble Adapter

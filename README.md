@@ -43,11 +43,10 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 ## Recent Changes
 
-**2.0.0**
+**2.0.1**
 
-- Update direct dependency to Multiplatform Ble Adapter
-- Remove support for RN version < 0.60
-- Fixed Typescript `callbackType` type definition.
+- Fixed `onDisconnected()` callback on Android
+- Fixed possibility of wrong characteristics being used on Android if they shared the same UUID
 
 [All previous changes](CHANGELOG.md)
 
