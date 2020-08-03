@@ -1,57 +1,58 @@
 {
-  "name": "react-native-ble-plx",
-  "version": "2.0.1",
-  "description": "React Native Bluetooth Low Energy library",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest",
-    "lint": "flow && documentation lint index.js",
-    "docs": "documentation build index.js -o docs --config documentation.yml -f html"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Polidea/react-native-ble-plx.git"
-  },
-  "devDependencies": {
-    "@babel/core": "7.9.0",
-    "@babel/runtime": "7.9.2",
-    "@react-native-community/eslint-config": "1.0.0",
-    "babel-eslint": "10.1.0",
-    "babel-jest": "25.3.0",
-    "documentation": "12.3.0",
-    "eslint": "6.8.0",
-    "eslint-config-prettier": "6.10.1",
-    "eslint-plugin-flowtype": "4.7.0",
-    "eslint-plugin-jest": "23.8.2",
-    "eslint-plugin-prettier": "3.1.3",
-    "eslint-plugin-react": "7.19.0",
-    "eslint-plugin-react-native": "3.8.1",
-    "flow-bin": "0.113.0",
-    "jest": "25.3.0",
-    "metro-react-native-babel-preset": "0.59.0",
-    "prettier": "2.0.4",
-    "react": "16.11.0",
-    "react-native": "0.62.2"
-  },
-  "keywords": [
-    "React",
-    "Native",
-    "Bluetooth",
-    "Low",
-    "Energy",
-    "BLE",
-    "Polidea"
-  ],
-  "jest": {
-    "preset": "react-native",
-    "modulePathIgnorePatterns": [
-      "<rootDir>/integration-tests"
-    ]
-  },
-  "author": "Polidea",
-  "license": "Apache-2.0",
-  "bugs": {
-    "url": "https://github.com/Polidea/react-native-ble-plx/issues"
-  },
-  "homepage": "https://github.com/Polidea/react-native-ble-plx#readme"
+    "name": "react-native-ble-plx",
+    "version": "2.0.1",
+    "description": "React Native Bluetooth Low Energy library",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest",
+        "lint": "flow && documentation lint index.js",
+        "docs": "documentation build index.js -o docs --config documentation.yml -f html"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Polidea/react-native-ble-plx.git"
+    },
+    "devDependencies": {
+        "@babel/core": "7.9.0",
+        "@babel/runtime": "7.9.2",
+        "@react-native-community/eslint-config": "1.0.0",
+        "babel-eslint": "10.1.0",
+        "babel-jest": "25.3.0",
+        "documentation": "12.3.0",
+        "eslint": "6.8.0",
+        "eslint-config-prettier": "6.10.1",
+        "eslint-plugin-flowtype": "4.7.0",
+        "eslint-plugin-jest": "23.8.2",
+        "eslint-plugin-prettier": "3.1.3",
+        "eslint-plugin-react": "7.19.0",
+        "eslint-plugin-react-native": "3.8.1",
+        "flow-bin": "0.113.0",
+        "jest": "25.3.0",
+        "metro-react-native-babel-preset": "0.59.0",
+        "prettier": "2.0.4",
+        "react": "16.11.0",
+        "react-native": "0.62.2",
+        "js-base64": "3.4.3"
+    },
+    "keywords": [
+        "React",
+        "Native",
+        "Bluetooth",
+        "Low",
+        "Energy",
+        "BLE",
+        "Polidea"
+    ],
+    "jest": {
+        "preset": "react-native",
+        "modulePathIgnorePatterns": [
+            "<rootDir>/integration-tests"
+        ]
+    },
+    "author": "Polidea",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/Polidea/react-native-ble-plx/issues"
+    },
+    "homepage": "https://github.com/Polidea/react-native-ble-plx#readme"
 }
