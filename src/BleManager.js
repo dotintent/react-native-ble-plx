@@ -850,6 +850,152 @@ export class BleManager {
         return new Characteristic(nativeCharacteristic, this)
     }
 
+    async setUserProfileToAlternativeScale(
+        deviceIdentifier: DeviceId,
+        user: string,
+        age: number,
+        height: number,
+        gender: string,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const heightUnit = height < 100 ? 100 : height > 218 ? 218 : height;
+        const ageUnit = age = age < 10 ? 10 : age > 98 ? 98 : age;
+
+        var uint16 = new Uint8Array(13)
+        uint16[0] = 0x81;
+        uint16[1] = 0x00;
+        uint16[2] = 0x81;
+        uint16[3] = parseInt(user.slice(0, 2), 16);
+        uint16[4] = parseInt(user.slice(2, 4), 16);
+        uint16[5] = parseInt(user.slice(4, 6), 16);
+        uint16[6] = parseInt(user.slice(6, 8), 16);
+        uint16[7] = 0x00;
+        uint16[8] = parseInt(heightUnit);
+        uint16[9] = parseInt(ageUnit);
+        uint16[10] = parseInt(gender);
+        uint16[11] = 0x00;
+        uint16[12] = 0x00;
+
+        const value = this.base64ArrayBuffer(uint16)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                scaleServiceUUID,
+                alternativeScaleWriteCharacteristic,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async synchronizeAlternativeScale(
+        deviceIdentifier: DeviceId,
+        user: string,
+        measurement: number,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const measurementUnit = measurementUnit === "metric" ? 0 : 1;
+
+        var uint16 = new Uint8Array(13)
+        uint16[0] = 0x41;
+        uint16[1] = 0x00;
+        uint16[2] = 0x84;
+        uint16[3] = parseInt(user.slice(0, 2), 16);
+        uint16[4] = parseInt(user.slice(2, 4), 16);
+        uint16[5] = parseInt(user.slice(4, 6), 16);
+        uint16[6] = parseInt(user.slice(6, 8), 16);
+        uint16[7] = parseInt(measurementUnit, 16);
+
+        const value = this.base64ArrayBuffer(uint16)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                scaleServiceUUID,
+                alternativeScaleWriteCharacteristic,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async selectProfileAlternativeScale(
+        deviceIdentifier: DeviceId,
+        user: string,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const measurementUnit = measurementUnit === "metric" ? 0 : 1;
+
+        var uint16 = new Uint8Array(13)
+        uint16[0] = 0x41;
+        uint16[1] = 0x00;
+        uint16[2] = 0x82;
+        uint16[3] = parseInt(user.slice(0, 2), 16);
+        uint16[4] = parseInt(user.slice(2, 4), 16);
+        uint16[5] = parseInt(user.slice(4, 6), 16);
+        uint16[6] = parseInt(user.slice(6, 8), 16);
+
+        const value = this.base64ArrayBuffer(uint16)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                scaleServiceUUID,
+                alternativeScaleWriteCharacteristic,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async resetAlternativeScale(
+        deviceIdentifier: DeviceId,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const measurementUnit = measurementUnit === "metric" ? 0 : 1;
+
+        var uint16 = new Uint8Array([
+            0x01
+        ])
+
+        const value = this.base64ArrayBuffer(uint16)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                scaleServiceUUID,
+                alternativeScaleReadFinalCharacteristic,
+                value,
+                false,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
 
     async activateVibration(
         deviceIdentifier: DeviceId,
@@ -1181,6 +1327,32 @@ export class BleManager {
         const filledTransactionId = transactionId || this._nextUniqueID()
         return this._handleMonitorCharacteristic(
             BleModule.monitorCharacteristicForDevice(deviceIdentifier, scaleServiceUUID, scaleReadCharacteristic, filledTransactionId),
+            filledTransactionId,
+            listener
+        )
+    }
+
+    monitorAlternativeScaleFinalResponse(
+        deviceIdentifier: DeviceId,
+        listener: (error: ? BleError, characteristic : ? Characteristic) => void,
+        transactionId: ? TransactionId
+    ): Subscription {
+        const filledTransactionId = transactionId || this._nextUniqueID()
+        return this._handleMonitorCharacteristic(
+            BleModule.monitorCharacteristicForDevice(deviceIdentifier, scaleServiceUUID, alternativeScaleReadFinalCharacteristic, filledTransactionId),
+            filledTransactionId,
+            listener
+        )
+    }
+
+    listenForAlternativeScaleResponse(
+        deviceIdentifier: DeviceId,
+        listener: (error: ? BleError, characteristic : ? Characteristic) => void,
+        transactionId: ? TransactionId
+    ): Subscription {
+        const filledTransactionId = transactionId || this._nextUniqueID()
+        return this._handleMonitorCharacteristic(
+            BleModule.monitorCharacteristicForDevice(deviceIdentifier, scaleServiceUUID, alternativeScaleReadCharacteristic, filledTransactionId),
             filledTransactionId,
             listener
         )
