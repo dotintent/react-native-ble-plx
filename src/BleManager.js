@@ -888,7 +888,7 @@ export class BleManager {
                 scaleServiceUUID,
                 alternativeScaleWriteCharacteristic,
                 value,
-                true,
+                false,
                 transactionId
             )
         )
@@ -925,7 +925,7 @@ export class BleManager {
                 scaleServiceUUID,
                 alternativeScaleWriteCharacteristic,
                 value,
-                true,
+                false,
                 transactionId
             )
         )
@@ -960,7 +960,7 @@ export class BleManager {
                 scaleServiceUUID,
                 alternativeScaleWriteCharacteristic,
                 value,
-                true,
+                false,
                 transactionId
             )
         )
@@ -989,7 +989,7 @@ export class BleManager {
                 scaleServiceUUID,
                 alternativeScaleReadFinalCharacteristic,
                 value,
-                false,
+                true,
                 transactionId
             )
         )
