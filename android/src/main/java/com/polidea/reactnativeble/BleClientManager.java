@@ -1,8 +1,5 @@
 package com.polidea.reactnativeble;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -15,7 +12,7 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.multiplatformbleadapter.BleAdapter;
-import com.polidea.multiplatformbleadapter.BleModule;
+import com.polidea.multiplatformbleadapter.BleAdapterFactory;
 import com.polidea.multiplatformbleadapter.Characteristic;
 import com.polidea.multiplatformbleadapter.ConnectionOptions;
 import com.polidea.multiplatformbleadapter.ConnectionState;
@@ -41,6 +38,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 
 public class BleClientManager extends ReactContextBaseJavaModule {
 
@@ -59,7 +59,6 @@ public class BleClientManager extends ReactContextBaseJavaModule {
 
     public BleClientManager(ReactApplicationContext reactContext) {
         super(reactContext);
-        bleAdapter = new BleModule(reactContext);
     }
 
     @Override
@@ -80,6 +79,7 @@ public class BleClientManager extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void createClient(String restoreStateIdentifier) {
+        bleAdapter = BleAdapterFactory.getNewAdapter(getReactApplicationContext());
         bleAdapter.createClient(restoreStateIdentifier,
                 new OnEventCallback<String>() {
                     @Override
@@ -97,6 +97,7 @@ public class BleClientManager extends ReactContextBaseJavaModule {
     @ReactMethod
     public void destroyClient() {
         bleAdapter.destroyClient();
+        bleAdapter = null;
     }
 
     @Override
