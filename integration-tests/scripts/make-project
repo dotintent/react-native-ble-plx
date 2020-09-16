@@ -23,6 +23,7 @@ function generate-project {
     npm install --save https://github.com/Polidea/react-native-ble-plx#$CURRENT_COMMIT
     # Sometimes yarn doesn't install packets locally. Be sure that everything is in place.
     npm install
+    react-native link react-native-ble-plx  # and link it
     rm -rf ../../node_modules
   popd
 }
