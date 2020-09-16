@@ -1,0 +1,24 @@
+diff --git a/integration-tests/Setup/android/app/build.gradle b/integration-tests/Setup/android/app/build.gradle
+index 29d8caa..767bab8 100644
+--- a/integration-tests/Setup/android/app/build.gradle
++++ b/integration-tests/Setup/android/app/build.gradle
+@@ -134,6 +134,7 @@ android {
+         targetSdkVersion rootProject.ext.targetSdkVersion
+         versionCode 1
+         versionName "1.0"
++        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+     }
+     splits {
+         abi {
+@@ -192,6 +193,11 @@ dependencies {
+     //noinspection GradleDynamicVersion
+     implementation "com.facebook.react:react-native:+"  // From node_modules
+ 
++    testImplementation 'junit:junit:4.12'
++    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
++    androidTestImplementation 'androidx.test:runner:1.1.0'
++    androidTestImplementation 'androidx.test:rules:1.1.0'
++
+     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+ 
+     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
