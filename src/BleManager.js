@@ -59,6 +59,10 @@ const trackerServiceUUID = "0000fff0-0000-1000-8000-00805f9b34fb";
 // Scale Service UUID
 const scaleServiceUUID = "0000fff0-0000-1000-8000-00805f9b34fb";
 
+const bloodPressureServiceUUID = '000018f0-0000-1000-8000-00805f9b34fb'
+const bloodPressureCharacteristicUUID = '00002af0-0000-1000-8000-00805f9b34fb'
+const bloodPressureCharacteristicWriteUUID = '00002af1-0000-1000-8000-00805f9b34fb'
+
 /**
  *
  * BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
@@ -1739,5 +1743,131 @@ export class BleManager {
             BleModule.writeDescriptor(descriptorIdentifier, valueBase64, transactionId)
         )
         return new Descriptor(nativeDescriptor, this)
+    }
+
+
+    // Blood pressure
+    async fetchBloodPressureMode(
+        deviceIdentifier: DeviceId,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const payload = new Uint8Array([
+            0x02,
+            0x40,
+            0xdc,
+            0x01,
+            0xB2,
+            0X2F
+        ])
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicWriteUUID,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async fetchHistoricBloodPressureMeasurement(
+        deviceIdentifier: DeviceId,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const payload = new Uint8Array([
+            0x02,
+            0x40,
+            0xdc,
+            0x01,
+            0xb1,
+            0x2c
+        ])
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicWriteUUID,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async turnBloodPressureVoiceOff(
+        deviceIdentifier: DeviceId,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const payload = new Uint8Array([
+            0x02,
+            0x40,
+            0xdc,
+            0x01,
+            0xa3,
+            0x3e
+        ])
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicWriteUUID,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async startBloodPressureTesting(
+        deviceIdentifier: DeviceId,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const payload = new Uint8Array([
+            0x02,
+            0x40,
+            0xdc,
+            0x01,
+            0xa1,
+            0x3c
+        ])
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicWriteUUID,
+                value,
+                false,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
     }
 }
