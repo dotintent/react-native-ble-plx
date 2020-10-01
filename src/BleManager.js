@@ -1880,9 +1880,8 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
-
-        const month = moment(date).month()
-        const day = moment(date).day()
+        const month = moment(date).month() + 1
+        const day = moment(date).date()
         const hour = moment(date).hour()
         const minute = moment(date).minute()
         const second = moment(date).second()
