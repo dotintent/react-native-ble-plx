@@ -31,6 +31,7 @@ import { Descriptor } from './Descriptor'
 import { Device } from './Device'
 import { Service } from './Service'
 import base64 from "react-native-base64"
+import moment from 'moment';
 
 // Scale Write Characteristic
 const scaleWriteCharacteristic = "0000fff3-0000-1000-8000-00805f9b34fb";
@@ -58,6 +59,10 @@ const trackerServiceUUID = "0000fff0-0000-1000-8000-00805f9b34fb";
 
 // Scale Service UUID
 const scaleServiceUUID = "0000fff0-0000-1000-8000-00805f9b34fb";
+
+const bloodPressureServiceUUID = '000018f0-0000-1000-8000-00805f9b34fb'
+const bloodPressureCharacteristicUUID = '00002af0-0000-1000-8000-00805f9b34fb'
+const bloodPressureCharacteristicWriteUUID = '00002af1-0000-1000-8000-00805f9b34fb'
 
 /**
  *
@@ -1102,7 +1107,6 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
-        console.tron.log("DATtesTs", date)
         var uint16 = new Uint8Array(16)
         uint16[0] = 0x43;
         uint16[1] = date;
@@ -1740,4 +1744,208 @@ export class BleManager {
         )
         return new Descriptor(nativeDescriptor, this)
     }
+
+
+    // Blood pressure
+    async fetchBloodPressureMode(
+        deviceIdentifier: DeviceId,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const payload = new Uint8Array([
+            0x02,
+            0x40,
+            0xdc,
+            0x01,
+            0xB2,
+            0X2F
+        ])
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicWriteUUID,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async fetchHistoricBloodPressureMeasurement(
+        deviceIdentifier: DeviceId,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const payload = new Uint8Array([
+            0x02,
+            0x40,
+            0xdc,
+            0x01,
+            0xb1,
+            0x2c
+        ])
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicWriteUUID,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async turnBloodPressureVoiceOff(
+        deviceIdentifier: DeviceId,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const payload = new Uint8Array([
+            0x02,
+            0x40,
+            0xdc,
+            0x01,
+            0xa3,
+            0x3e
+        ])
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicWriteUUID,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async startBloodPressureTesting(
+        deviceIdentifier: DeviceId,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const payload = new Uint8Array([
+            0x02,
+            0x40,
+            0xdc,
+            0x01,
+            0xa1,
+            0x3c
+        ])
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicWriteUUID,
+                value,
+                false,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    async setBloodPressureTime(
+        deviceIdentifier: DeviceId,
+        date: Date,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const month = moment(date).month() + 1
+        const day = moment(date).date()
+        const hour = moment(date).hour()
+        const minute = moment(date).minute()
+        const second = moment(date).second()
+
+        const payload = [
+            0x02,
+            0x40,
+            0xdc,
+            0x07,
+            0xB0,
+            0x14,
+            month,
+            day,
+            hour,
+            minute,
+            second
+        ]
+
+        let xorValue = this.XOR(payload)
+        payload.push(xorValue)
+
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicWriteUUID,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
+    monitorBloodPressureResponse(
+        deviceIdentifier: DeviceId,
+        listener: (error: ? BleError, characteristic : ? Characteristic) => void,
+        transactionId: ? TransactionId
+    ): Subscription {
+        const filledTransactionId = transactionId || this._nextUniqueID()
+        return this._handleMonitorCharacteristic(
+            BleModule.monitorCharacteristicForDevice(deviceIdentifier, bloodPressureServiceUUID, bloodPressureCharacteristicUUID, filledTransactionId),
+            filledTransactionId,
+            listener
+        )
+    }
+
+    XOR(input) {
+        if (toString.call(input) !== "[object Array]")
+            return false;
+
+        var total = Number(input[0]);
+        for (var i = 0; i < input.length; i++) {
+            if (isNaN(input[i])) {
+                continue;
+            }
+
+            total ^= Number(input[i]);
+        }
+
+        return total;
+    }
+
+
 }

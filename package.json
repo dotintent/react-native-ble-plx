@@ -53,5 +53,8 @@
   "bugs": {
     "url": "https://github.com/Polidea/react-native-ble-plx/issues"
   },
-  "homepage": "https://github.com/Polidea/react-native-ble-plx#readme"
+  "homepage": "https://github.com/Polidea/react-native-ble-plx#readme",
+  "dependencies": {
+    "moment": "^2.29.0"
+  }
 }
