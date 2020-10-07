@@ -1864,7 +1864,7 @@ export class BleManager {
                 bloodPressureServiceUUID,
                 bloodPressureCharacteristicWriteUUID,
                 value,
-                false,
+                true,
                 transactionId
             )
         )
