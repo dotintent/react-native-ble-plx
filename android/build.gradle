@@ -17,7 +17,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.library'
-apply plugin: "org.codehaus.groovy.android"
+apply plugin: 'org.codehaus.groovy.android'
 
 android {
     compileSdkVersion safeExtGet('compileSdkVersion', 27)
