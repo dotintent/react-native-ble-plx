@@ -1977,29 +1977,6 @@ export class BleManager {
             '0X' + ((parseInt('5a', 16) + parseInt('0a', 16) + parseInt('00', 16) + parseInt(year, 16) + parseInt(month, 16) + parseInt(dayNumber, 16) + parseInt(hour, 16) + parseInt(minutes, 16) + 2) % 256).toString(16)
         ])
 
-        // const month = moment(date).month() + 1
-        // const day = moment(date).date()
-        // const hour = moment(date).hour()
-        // const minute = moment(date).minute()
-        // const second = moment(date).second()
-
-        // const payload = [
-        //     0x02,
-        //     0x40,
-        //     0xdc,
-        //     0x07,
-        //     0xB0,
-        //     0x14,
-        //     month,
-        //     day,
-        //     hour,
-        //     minute,
-        //     second
-        // ]
-
-        // let xorValue = this.XOR(payload)
-        // payload.push(xorValue)
-
         const value = this.base64ArrayBuffer(payload)
 
         const nativeCharacteristic = await this._callPromise(
@@ -2008,7 +1985,7 @@ export class BleManager {
                 glucometerServiceUUID,
                 glucometerCharacteristicWriteUUID,
                 value,
-                true,
+                false,
                 transactionId
             )
         )
