@@ -64,6 +64,10 @@ const bloodPressureServiceUUID = '000018f0-0000-1000-8000-00805f9b34fb'
 const bloodPressureCharacteristicUUID = '00002af0-0000-1000-8000-00805f9b34fb'
 const bloodPressureCharacteristicWriteUUID = '00002af1-0000-1000-8000-00805f9b34fb'
 
+const glucometerServiceUUID = '00001000-0000-1000-8000-00805f9b34fb'
+const glucometerCharacteristicReadUUID = '00001002-0000-1000-8000-00805f9b34fb'
+const glucometerCharacteristicWriteUUID = '00001001-0000-1000-8000-00805f9b34fb'
+
 /**
  *
  * BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
@@ -1929,6 +1933,86 @@ export class BleManager {
             filledTransactionId,
             listener
         )
+    }
+
+    monitorGlucometerResponse(
+        deviceIdentifier: DeviceId,
+        listener: (error: ? BleError, characteristic : ? Characteristic) => void,
+        transactionId: ? TransactionId
+    ): Subscription {
+        const filledTransactionId = transactionId || this._nextUniqueID()
+        return this._handleMonitorCharacteristic(
+            BleModule.monitorCharacteristicForDevice(deviceIdentifier, glucometerServiceUUID, glucometerCharacteristicReadUUID, filledTransactionId),
+            filledTransactionId,
+            listener
+        )
+    }
+
+    async setGlucometerTime(
+        deviceIdentifier: DeviceId,
+        date: Date,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const currentTime = new Date();
+        const year = '0X' + (parseInt(currentTime.getFullYear().toString().substr(-2))).toString(16);
+        const month = '0X' + (currentTime.getMonth() + 1).toString(16);
+        const dayNumber = '0X' + (currentTime.getDate()).toString(16);
+        const hour = '0X' + (currentTime.getHours()).toString(16);
+        const minutes = '0X' + (currentTime.getMinutes()).toString(16);
+
+        const payload = new Uint8Array([
+            0x5A,
+            0x0A,
+            0x00,
+            year,
+            month,
+            dayNumber,
+            hour,
+            minutes,
+            0x00,
+            '0X' + ((parseInt('5a', 16) + parseInt('0a', 16) + parseInt('00', 16) + parseInt(year, 16) + parseInt(month, 16) + parseInt(dayNumber, 16) + parseInt(hour, 16) + parseInt(minutes, 16) + 2) % 256).toString(16)
+        ])
+
+        // const month = moment(date).month() + 1
+        // const day = moment(date).date()
+        // const hour = moment(date).hour()
+        // const minute = moment(date).minute()
+        // const second = moment(date).second()
+
+        // const payload = [
+        //     0x02,
+        //     0x40,
+        //     0xdc,
+        //     0x07,
+        //     0xB0,
+        //     0x14,
+        //     month,
+        //     day,
+        //     hour,
+        //     minute,
+        //     second
+        // ]
+
+        // let xorValue = this.XOR(payload)
+        // payload.push(xorValue)
+
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                glucometerServiceUUID,
+                glucometerCharacteristicWriteUUID,
+                value,
+                true,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
     }
 
     XOR(input) {
