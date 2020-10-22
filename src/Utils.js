@@ -2,6 +2,7 @@
 'use strict'
 
 import type { UUID } from './TypeDefinition'
+import moment from 'moment';
 
 /**
  * Converts UUID to full 128bit, lowercase format which should be used to compare UUID values.
@@ -97,14 +98,17 @@ export const glucometerFinalMeasurement = (res) => {
         const glucoseReadingmgdl = Math.pow(glucoseLowByte, glucoseHighByte);
         const glucoseReadingmmol = Math.round(glucoseReadingmgdl / 18);
 
+        const yearFormatted = "20" + String(readingTime.year)
+        const monthFormatted = readingTime.month < 10 ? "0" + String(readingTime.month) : String(readingTime.month)
+        const dayFormatted = readingTime.day < 10 ? "0" + String(readingTime.day) : String(readingTime.day)
+        const hourFormatted = readingTime.hour < 10 ? "0" + String(readingTime.hour) : String(readingTime.hour)
+        const minuteFormatted = readingTime.minutes < 10 ? "0" + String(readingTime.minutes) : String(readingTime.minutes)
+
+        const date = moment(`${yearFormatted}-${monthFormatted}-${dayFormatted} ${hourFormatted}:${minuteFormatted}`).toDate()
+
         return {
-            retain,
-            year: eadingTime.year,
-            month: readingTime.month,
-            day: readingTime.day,
-            hour: readingTime.hour,
-            minutes: readingTime.minutes,
-            glucose: glucoseReadingmgdl
+            date,
+            fastingGlucose: glucoseReadingmgdl
         }
 
     } catch {
