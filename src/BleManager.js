@@ -1884,6 +1884,7 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
+        const year = parseInt(moment().format("YY"))
         const month = moment(date).month() + 1
         const day = moment(date).date()
         const hour = moment(date).hour()
@@ -1896,7 +1897,7 @@ export class BleManager {
             0xdc,
             0x07,
             0xB0,
-            0x14,
+            year,
             month,
             day,
             hour,
