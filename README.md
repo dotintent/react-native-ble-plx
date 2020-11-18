@@ -87,6 +87,10 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
    ```
 5. Enter `ios` folder and run `pod update`
 6. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
+   ```
+   <key>NSBluetoothAlwaysUsageDescription</key>
+   <string>This app uses BLE to communicate with Sensor Tag</string>
+   ```
 7. If you want to support background mode:
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
