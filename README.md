@@ -37,17 +37,18 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 | React Native  | 2.0.0                          |
 | ------------- | ------------------------------ |
-| 0.63.2        | :white_check_mark:             |
+| 0.63.3        | :white_check_mark:             |
 | 0.62.2        | :white_check_mark:             |
 | 0.61.5        | :white_check_mark:             |
 | 0.60.6        | :white_check_mark:             |
 
 ## Recent Changes
 
-**2.0.1**
-
-- Fixed `onDisconnected()` callback on Android
-- Fixed possibility of wrong characteristics being used on Android if they shared the same UUID
+**2.0.2**
+- Updated MultiplatformBleAdapter to version 0.1.7.
+- Added support for BleMulator
+- Remove destroying of client upon catalystInstanceDestroy. 
+- Updated CI to RN 0.63.3
 
 [All previous changes](CHANGELOG.md)
 

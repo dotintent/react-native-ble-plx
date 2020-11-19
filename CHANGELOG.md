@@ -1,3 +1,9 @@
+**2.0.2**
+- Updated MultiplatformBleAdapter to version 0.1.7.
+- Added support for BleMulator
+- Remove destroying of client upon catalystInstanceDestroy. 
+- Updated CI to RN 0.63.3
+
 **2.0.1**
 
 - Fixed `onDisconnected()` callback on Android
