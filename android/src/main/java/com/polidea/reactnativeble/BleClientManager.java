@@ -100,12 +100,6 @@ public class BleClientManager extends ReactContextBaseJavaModule {
         bleAdapter = null;
     }
 
-    @Override
-    public void onCatalystInstanceDestroy() {
-        super.onCatalystInstanceDestroy();
-        destroyClient();
-    }
-
     // Mark: Common --------------------------------------------------------------------------------
 
     @ReactMethod
