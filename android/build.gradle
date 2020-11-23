@@ -46,5 +46,5 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-native:+"
-    implementation 'com.github.Polidea:MultiPlatformBleAdapter:d2279e0621b285f2d16382af668ae3981abf0639'
+    implementation 'com.github.Polidea:MultiPlatformBleAdapter:0.1.7'
 }
