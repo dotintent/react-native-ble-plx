@@ -1949,6 +1949,50 @@ export class BleManager {
         )
     }
 
+    async fetchAdditionalGlucometerRecord(
+        deviceIdentifier: DeviceId,
+        date: Date,
+        transactionId: ? TransactionId
+    ): Promise < Characteristic > {
+        if (!transactionId) {
+            transactionId = this._nextUniqueID()
+        }
+
+        const currentTime = new Date();
+        const year = '0X' + (parseInt(currentTime.getFullYear().toString().substr(-2))).toString(16);
+        const month = '0X' + (currentTime.getMonth() + 1).toString(16);
+        const dayNumber = '0X' + (currentTime.getDate()).toString(16);
+        const hour = '0X' + (currentTime.getHours()).toString(16);
+        const minutes = '0X' + (currentTime.getMinutes()).toString(16);
+
+        const payload = new Uint8Array([
+            0x5A,
+            0x0A,
+            0x03,
+            year,
+            month,
+            dayNumber,
+            hour,
+            minutes,
+            0x00,
+            '0X' + ((parseInt('5a', 16) + parseInt('0a', 16) + parseInt('00', 16) + parseInt(year, 16) + parseInt(month, 16) + parseInt(dayNumber, 16) + parseInt(hour, 16) + parseInt(minutes, 16) + 2) % 256).toString(16)
+        ])
+
+        const value = this.base64ArrayBuffer(payload)
+
+        const nativeCharacteristic = await this._callPromise(
+            BleModule.writeCharacteristicForDevice(
+                deviceIdentifier,
+                glucometerServiceUUID,
+                glucometerCharacteristicWriteUUID,
+                value,
+                false,
+                transactionId
+            )
+        )
+        return new Characteristic(nativeCharacteristic, this)
+    }
+
     async setGlucometerTime(
         deviceIdentifier: DeviceId,
         date: Date,
