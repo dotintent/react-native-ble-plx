@@ -94,8 +94,8 @@ export const glucometerFinalMeasurement = (res) => {
 
         const retain = new Uint8Array(res.slice(8, 9))[0];
         const glucoseLowByte = new Uint8Array(res.slice(9, 10))[0];
-        const glucoseHighByte = new Uint8Array(res.slice(10, 11))[0] + 1;
-        const glucoseReadingmgdl = Math.pow(glucoseLowByte, glucoseHighByte);
+        const glucoseHighByte = new Uint8Array(res.slice(10, 11))[0]
+        const glucoseReadingmgdl = Math.round(glucoseLowByte + (256 * glucoseHighByte))
         const glucoseReadingmmol = Math.round(glucoseReadingmgdl / 18);
 
         const yearFormatted = "20" + String(readingTime.year)
