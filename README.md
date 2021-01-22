@@ -76,19 +76,9 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 ### iOS ([example setup](https://github.com/Cierpliwy/SensorTag))
 
 1. `npm install --save react-native-ble-plx`
-2. `npx react-native link react-native-ble-plx`
-3. Open Xcode workspace located inside `ios` folder and add empty Swift file if you don't have at least one:
-   - Select File/New/File...
-   - Choose Swift file and click Next.
-   - Name it however you want, select your application target and create it.
-   - Accept to create Objective-C bridging header.
-4. Update your `ios/Podfile` to contain (it may be already there):
-   ```
-   pod 'react-native-ble-plx', :path => '../node_modules/react-native-ble-plx'
-   ```
-5. Enter `ios` folder and run `pod update`
-6. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
-7. If you want to support background mode:
+2. Enter `ios` folder and run `pod update`
+3. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
+4. If you want to support background mode:
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
@@ -96,8 +86,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 ### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 
 1. `npm install --save react-native-ble-plx`
-2. `npx react-native link react-native-ble-plx`
-3. In top level `build.gradle` make sure that min SDK version is at least 18:
+2. In top level `build.gradle` make sure that min SDK version is at least 18:
 ```groovy
 buildscript {
     ext {
@@ -105,7 +94,7 @@ buildscript {
         minSdkVersion = 18
         ...
 ```
-4. In `build.gradle` make sure to add jitpack repository to known repositories:
+3. In `build.gradle` make sure to add jitpack repository to known repositories:
 
 ```groovy
 allprojects {
@@ -115,7 +104,7 @@ allprojects {
     }
 }
 ```
-5. In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
+4. (Optional) In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
