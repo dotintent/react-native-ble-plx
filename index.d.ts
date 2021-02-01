@@ -1404,12 +1404,24 @@ declare module 'react-native-ble-plx' {
 
     setTrackerDistanceUnit(
       deviceIdentifier: DeviceId,
-      unit: "us" | "uk" | "metric",
-      date: string
+      unit: string
     ): Promise<Characteristic>
 
+    startBloodPressureTesting(
+      deviceIdentifier: DeviceId
+    ): Promise<Characteristic>
 
+    glucometerCountdown(
+      response: string
+    ): number
 
+    glucometerFinalMeasurement(
+      response: string
+    ): any
+
+    glucometerInfoReading(
+      response: string
+    ): any
 
 
 
