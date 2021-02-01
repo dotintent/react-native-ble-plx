@@ -16,6 +16,6 @@ Pod::Spec.new do |s|
   s.source_files  = "ios/**/*.{h,m}"
   s.compiler_flags = '-DMULTIPLATFORM_BLE_ADAPTER'
 
-  s.dependency 'React'
-  s.dependency 'MultiplatformBleAdapter', '0.1.6'
+  s.dependency 'React-Core'
+  s.dependency 'MultiplatformBleAdapter', '0.1.7'
 end

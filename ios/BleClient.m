@@ -53,8 +53,8 @@ RCT_EXPORT_MODULE(BleClientManager);
 }
 
 RCT_EXPORT_METHOD(createClient:(NSString*)restoreIdentifierKey) {
-    _manager = [[BleClientManager alloc] initWithQueue:self.methodQueue
-                                  restoreIdentifierKey:restoreIdentifierKey];
+    _manager = [BleAdapterFactory getNewAdapterWithQueue:self.methodQueue
+                                    restoreIdentifierKey:restoreIdentifierKey];
     _manager.delegate = self;
 }
 
