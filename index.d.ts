@@ -1377,15 +1377,37 @@ declare module 'react-native-ble-plx' {
     setBloodPressureTime(
       deviceIdentifier: DeviceId,
       date: string | number
-    ): Subscription
+    ): Promise<Characteristic>
 
     turnBloodPressureVoiceOff(
       deviceIdentifier: DeviceId
-    ): Subscription
+    ): Promise<Characteristic>
 
     setGlucometerTime(
       deviceIdentifier: DeviceId
-    ): Subscription
+    ): Promise<Characteristic>
+
+    getSummaryDayActivity(
+      deviceIdentifier: DeviceId,
+      count: number
+    ): Promise<Characteristic>
+
+    activateVibration(
+      deviceIdentifier: DeviceId,
+      count: number
+    ): Promise<Characteristic>
+
+    setDeviceTime(
+      deviceIdentifier: DeviceId,
+      date: string
+    ): Promise<Characteristic>
+
+    setTrackerDistanceUnit(
+      deviceIdentifier: DeviceId,
+      unit: "us" | "uk" | "metric",
+      date: string
+    ): Promise<Characteristic>
+
 
 
 
