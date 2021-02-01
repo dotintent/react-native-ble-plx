@@ -1343,6 +1343,58 @@ declare module 'react-native-ble-plx' {
       transactionId?: TransactionId
     ): Subscription
 
+    monitorTrackerResponse(
+      deviceIdentifier: DeviceId,
+      serviceUUID: UUID,
+      characteristicUUID: UUID,
+      listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+      transactionId?: TransactionId
+    ): Subscription
+
+    monitorGlucometerResponse(
+      deviceIdentifier: DeviceId,
+      serviceUUID: UUID,
+      characteristicUUID: UUID,
+      listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+      transactionId?: TransactionId
+    ): Subscription
+
+
+    monitorScaleResponse(
+      deviceIdentifier: DeviceId,
+      serviceUUID: UUID,
+      characteristicUUID: UUID,
+      listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+      transactionId?: TransactionId
+    ): Subscription
+
+    monitorAlternativeScaleFinalResponse(
+      deviceIdentifier: DeviceId,
+      serviceUUID: UUID,
+      characteristicUUID: UUID,
+      listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+      transactionId?: TransactionId
+    ): Subscription
+
+    monitorBloodPressureResponse(
+      deviceIdentifier: DeviceId,
+      serviceUUID: UUID,
+      characteristicUUID: UUID,
+      listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+      transactionId?: TransactionId
+    ): Subscription
+
+    setBloodPressureTime(
+      deviceIdentifier: DeviceId,
+      date: string
+    ): Subscription
+
+    turnBloodPressureVoiceOff(
+      deviceIdentifier: DeviceId
+    ): Subscription
+
+
+
     // Mark: Descriptors operations ----------------------------------------------------------------------------------
 
     /**
