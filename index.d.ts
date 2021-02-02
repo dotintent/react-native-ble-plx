@@ -1444,7 +1444,7 @@ declare module 'react-native-ble-plx' {
     synchronizeAlternativeScale(
       deviceIdentifier: DeviceId,
       user: string,
-      measurement: number,
+      measurement: string,
     ): Promise<Characteristic>
 
     setUserProfileToAlternativeScale(
@@ -1452,7 +1452,7 @@ declare module 'react-native-ble-plx' {
       user: string,
       age: number,
       height: number,
-      gender: string
+      gender: number
     ): Promise<Characteristic>
 
     resetAlternativeScale(
