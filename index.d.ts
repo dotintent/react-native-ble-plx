@@ -1349,6 +1349,12 @@ declare module 'react-native-ble-plx' {
       transactionId?: TransactionId
     ): Subscription
 
+    listenForAlternativeScaleResponse(
+      deviceIdentifier: DeviceId,
+      listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+      transactionId?: TransactionId
+    ): Subscription
+
     monitorGlucometerResponse(
       deviceIdentifier: DeviceId,
       listener: (error: BleError | null, characteristic: Characteristic | null) => void,
@@ -1422,6 +1428,46 @@ declare module 'react-native-ble-plx' {
     glucometerInfoReading(
       response: string
     ): any
+
+    glucometerInfoReading(
+      response: string
+    ): any
+
+    setUserProfileToScales(
+      deviceIdentifier: DeviceId,
+      age: number,
+      height: number,
+      gender: number,
+      age: number,
+    ): Promise<Characteristic>
+
+    synchronizeAlternativeScale(
+      deviceIdentifier: DeviceId,
+      user: string,
+      measurement: number,
+    ): Promise<Characteristic>
+
+    setUserProfileToAlternativeScale(
+      deviceIdentifier: DeviceId,
+      user: string,
+      age: number,
+      height: number,
+      gender: string
+    ): Promise<Characteristic>
+
+    resetAlternativeScale(
+      deviceIdentifier: DeviceId
+    ): Promise<Characteristic>
+
+    resetAlternativeScale(
+      deviceIdentifier: DeviceId
+    ): Promise<Characteristic>
+
+    selectProfileAlternativeScale(
+      deviceIdentifier: DeviceId,
+      user: string
+    ): Promise<Characteristic>
+
 
 
 
