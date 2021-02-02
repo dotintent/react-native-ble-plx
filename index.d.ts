@@ -1437,8 +1437,7 @@ declare module 'react-native-ble-plx' {
       deviceIdentifier: DeviceId,
       age: number,
       height: number,
-      gender: number,
-      age: number,
+      gender: string,
     ): Promise<Characteristic>
 
     synchronizeAlternativeScale(
