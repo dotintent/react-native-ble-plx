@@ -864,7 +864,7 @@ export class BleManager {
         user: string,
         age: number,
         height: number,
-        gender: string,
+        gender: number,
         transactionId: ? TransactionId
     ): Promise < Characteristic > {
         if (!transactionId) {
@@ -907,14 +907,14 @@ export class BleManager {
     async synchronizeAlternativeScale(
         deviceIdentifier: DeviceId,
         user: string,
-        measurement: number,
+        measurement: string,
         transactionId: ? TransactionId
     ): Promise < Characteristic > {
         if (!transactionId) {
             transactionId = this._nextUniqueID()
         }
 
-        const measurementUnit = measurementUnit === "metric" ? 0 : 1;
+        const measurementUnit = measurement === "metric" ? 0 : 1;
 
         var uint16 = new Uint8Array(13)
         uint16[0] = 0x41;
