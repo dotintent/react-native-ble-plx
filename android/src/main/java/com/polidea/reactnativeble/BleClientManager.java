@@ -96,7 +96,9 @@ public class BleClientManager extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void destroyClient() {
-        bleAdapter.destroyClient();
+       if(bleAdapter != null){
+            bleAdapter.destroyClient();
+        }
         bleAdapter = null;
     }
 
