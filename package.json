@@ -55,7 +55,7 @@
   },
   "homepage": "https://github.com/Polidea/react-native-ble-plx#readme",
   "dependencies": {
-    "js-base64": "^3.5.2",
-    "moment": "^2.29.0"
+    "js-base64": "^3.6.0",
+    "moment": "^2.29.1"
   }
 }

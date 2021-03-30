@@ -1393,6 +1393,10 @@ declare module 'react-native-ble-plx' {
       deviceIdentifier: DeviceId
     ): Promise<Characteristic>
 
+    fetchAdditionalGlucometerRecord(
+      deviceIdentifier: DeviceId
+    ): Promise<Characteristic>
+
     getSummaryDayActivity(
       deviceIdentifier: DeviceId,
       count: number
@@ -1422,10 +1426,6 @@ declare module 'react-native-ble-plx' {
     ): number
 
     glucometerFinalMeasurement(
-      response: string
-    ): any
-
-    glucometerInfoReading(
       response: string
     ): any
 
