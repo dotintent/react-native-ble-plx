@@ -1951,7 +1951,6 @@ export class BleManager {
 
     async fetchAdditionalGlucometerRecord(
         deviceIdentifier: DeviceId,
-        date: Date,
         transactionId: ? TransactionId
     ): Promise < Characteristic > {
         if (!transactionId) {

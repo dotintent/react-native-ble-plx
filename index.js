@@ -27,3 +27,5 @@ export type {
     BleRestoredState
 }
 from './src/TypeDefinition'
+export { glucometerInfoReading, glucometerCountdown, glucometerFinalMeasurement }
+from './src/Utils'
