@@ -104,7 +104,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 buildscript {
     ext {
         ...
-        minSdkVersion = 18
+        minSdkVersion = 21
         ...
 ```
 4. In `build.gradle` make sure to add jitpack repository to known repositories:
