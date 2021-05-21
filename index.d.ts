@@ -1390,7 +1390,8 @@ declare module 'react-native-ble-plx' {
     ): Promise<Characteristic>
 
     setGlucometerTime(
-      deviceIdentifier: DeviceId
+      deviceIdentifier: DeviceId,
+      withResponse: boolean
     ): Promise<Characteristic>
 
     fetchAdditionalGlucometerRecord(
