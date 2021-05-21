@@ -24,41 +24,41 @@ import {
 import { type BleErrorCodeMessageMapping, ConnectionPriority, LogLevel, State } from './TypeDefinition'
 import { BleModule, EventEmitter } from './BleModule'
 import type { NativeBleRestoredState, NativeCharacteristic, NativeDescriptor, NativeDevice } from './BleModule'
-import { decode, encode } from 'js-base64';
+import { decode, encode } from 'js-base64'
 
 import { Characteristic } from './Characteristic'
 import { Descriptor } from './Descriptor'
 import { Device } from './Device'
 import { Service } from './Service'
-import base64 from "react-native-base64"
-import moment from 'moment';
+import base64 from 'react-native-base64'
+import moment from 'moment'
 
 // Scale Write Characteristic
-const scaleWriteCharacteristic = "0000fff3-0000-1000-8000-00805f9b34fb";
+const scaleWriteCharacteristic = '0000fff3-0000-1000-8000-00805f9b34fb'
 
 // Scale Read Characteristic
-const scaleReadCharacteristic = "0000fff4-0000-1000-8000-00805f9b34fb";
+const scaleReadCharacteristic = '0000fff4-0000-1000-8000-00805f9b34fb'
 
 // Alternative Scale Read Characteristic
-const alternativeScaleReadCharacteristic = "0000fff3-0000-1000-8000-00805f9b34fb";
+const alternativeScaleReadCharacteristic = '0000fff3-0000-1000-8000-00805f9b34fb'
 
 // Alternative Scale Final Read Characteristic
-const alternativeScaleReadFinalCharacteristic = "0000fff1-0000-1000-8000-00805f9b34fb";
+const alternativeScaleReadFinalCharacteristic = '0000fff1-0000-1000-8000-00805f9b34fb'
 
 // Alternative Scale Write Characteristic
-const alternativeScaleWriteCharacteristic = "0000fff2-0000-1000-8000-00805f9b34fb";
+const alternativeScaleWriteCharacteristic = '0000fff2-0000-1000-8000-00805f9b34fb'
 
 // Tracker Write Characteristic
-const trackerWriteCharacteristic = "0000fff6-0000-1000-8000-00805f9b34fb";
+const trackerWriteCharacteristic = '0000fff6-0000-1000-8000-00805f9b34fb'
 
 // Tracker Read Characteristic
-const trackerReadCharacteristic = "0000fff7-0000-1000-8000-00805f9b34fb";
+const trackerReadCharacteristic = '0000fff7-0000-1000-8000-00805f9b34fb'
 
 // Tracker Service UUID
-const trackerServiceUUID = "0000fff0-0000-1000-8000-00805f9b34fb";
+const trackerServiceUUID = '0000fff0-0000-1000-8000-00805f9b34fb'
 
 // Scale Service UUID
-const scaleServiceUUID = "0000fff0-0000-1000-8000-00805f9b34fb";
+const scaleServiceUUID = '0000fff0-0000-1000-8000-00805f9b34fb'
 
 const bloodPressureServiceUUID = '000018f0-0000-1000-8000-00805f9b34fb'
 const bloodPressureCharacteristicUUID = '00002af0-0000-1000-8000-00805f9b34fb'
@@ -165,14 +165,14 @@ export class BleManager {
     }
 
     calculateChecksum(array) {
-        let i = 0;
-        let sum = 0;
+        let i = 0
+        let sum = 0
 
         for (; i < array.length; i++) {
-            sum += array[i];
+            sum += array[i]
         }
 
-        return sum & 0xFF;
+        return sum & 0xff
     }
 
     base64ArrayBuffer(arrayBuffer) {
@@ -449,7 +449,6 @@ export class BleManager {
         this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
         BleModule.startDeviceScan(UUIDs, options)
     }
-
 
     /**
      * Stops {@link Device} scan if in progress.
@@ -871,23 +870,23 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
-        const heightUnit = height < 100 ? 100 : height > 218 ? 218 : height;
-        const ageUnit = age = age < 10 ? 10 : age > 98 ? 98 : age;
+        const heightUnit = height < 100 ? 100 : height > 218 ? 218 : height
+        const ageUnit = (age = age < 10 ? 10 : age > 98 ? 98 : age)
 
         var uint16 = new Uint8Array(13)
-        uint16[0] = 0x81;
-        uint16[1] = 0x00;
-        uint16[2] = 0x81;
-        uint16[3] = parseInt(user.slice(0, 2), 16);
-        uint16[4] = parseInt(user.slice(2, 4), 16);
-        uint16[5] = parseInt(user.slice(4, 6), 16);
-        uint16[6] = parseInt(user.slice(6, 8), 16);
-        uint16[7] = 0x00;
-        uint16[8] = parseInt(heightUnit);
-        uint16[9] = parseInt(ageUnit);
-        uint16[10] = parseInt(gender);
-        uint16[11] = 0x00;
-        uint16[12] = 0x00;
+        uint16[0] = 0x81
+        uint16[1] = 0x00
+        uint16[2] = 0x81
+        uint16[3] = parseInt(user.slice(0, 2), 16)
+        uint16[4] = parseInt(user.slice(2, 4), 16)
+        uint16[5] = parseInt(user.slice(4, 6), 16)
+        uint16[6] = parseInt(user.slice(6, 8), 16)
+        uint16[7] = 0x00
+        uint16[8] = parseInt(heightUnit)
+        uint16[9] = parseInt(ageUnit)
+        uint16[10] = parseInt(gender)
+        uint16[11] = 0x00
+        uint16[12] = 0x00
 
         const value = this.base64ArrayBuffer(uint16)
 
@@ -914,17 +913,17 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
-        const measurementUnit = measurement === "metric" ? 0 : 1;
+        const measurementUnit = measurement === 'metric' ? 0 : 1
 
         var uint16 = new Uint8Array(13)
-        uint16[0] = 0x41;
-        uint16[1] = 0x00;
-        uint16[2] = 0x84;
-        uint16[3] = parseInt(user.slice(0, 2), 16);
-        uint16[4] = parseInt(user.slice(2, 4), 16);
-        uint16[5] = parseInt(user.slice(4, 6), 16);
-        uint16[6] = parseInt(user.slice(6, 8), 16);
-        uint16[7] = parseInt(measurementUnit, 16);
+        uint16[0] = 0x41
+        uint16[1] = 0x00
+        uint16[2] = 0x84
+        uint16[3] = parseInt(user.slice(0, 2), 16)
+        uint16[4] = parseInt(user.slice(2, 4), 16)
+        uint16[5] = parseInt(user.slice(4, 6), 16)
+        uint16[6] = parseInt(user.slice(6, 8), 16)
+        uint16[7] = parseInt(measurementUnit, 16)
 
         const value = this.base64ArrayBuffer(uint16)
 
@@ -950,16 +949,16 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
-        const measurementUnit = measurementUnit === "metric" ? 0 : 1;
+        const measurementUnit = measurementUnit === 'metric' ? 0 : 1
 
         var uint16 = new Uint8Array(13)
-        uint16[0] = 0x41;
-        uint16[1] = 0x00;
-        uint16[2] = 0x82;
-        uint16[3] = parseInt(user.slice(0, 2), 16);
-        uint16[4] = parseInt(user.slice(2, 4), 16);
-        uint16[5] = parseInt(user.slice(4, 6), 16);
-        uint16[6] = parseInt(user.slice(6, 8), 16);
+        uint16[0] = 0x41
+        uint16[1] = 0x00
+        uint16[2] = 0x82
+        uint16[3] = parseInt(user.slice(0, 2), 16)
+        uint16[4] = parseInt(user.slice(2, 4), 16)
+        uint16[5] = parseInt(user.slice(4, 6), 16)
+        uint16[6] = parseInt(user.slice(6, 8), 16)
 
         const value = this.base64ArrayBuffer(uint16)
 
@@ -976,19 +975,14 @@ export class BleManager {
         return new Characteristic(nativeCharacteristic, this)
     }
 
-    async resetAlternativeScale(
-        deviceIdentifier: DeviceId,
-        transactionId: ? TransactionId
-    ): Promise < Characteristic > {
+    async resetAlternativeScale(deviceIdentifier: DeviceId, transactionId: ? TransactionId): Promise < Characteristic > {
         if (!transactionId) {
             transactionId = this._nextUniqueID()
         }
 
-        const measurementUnit = measurementUnit === "metric" ? 0 : 1;
+        const measurementUnit = measurementUnit === 'metric' ? 0 : 1
 
-        var uint16 = new Uint8Array([
-            0x01
-        ])
+        var uint16 = new Uint8Array([0x01])
 
         const value = this.base64ArrayBuffer(uint16)
 
@@ -1005,7 +999,6 @@ export class BleManager {
         return new Characteristic(nativeCharacteristic, this)
     }
 
-
     async activateVibration(
         deviceIdentifier: DeviceId,
         duration: number,
@@ -1018,8 +1011,8 @@ export class BleManager {
         const durationUnit = duration > 10 ? 10 : duration
 
         var uint16 = new Uint8Array(16)
-        uint16[0] = 0x36;
-        uint16[1] = durationUnit;
+        uint16[0] = 0x36
+        uint16[1] = durationUnit
 
         uint16[15] = this.calculateChecksum(uint16)
         const value = this.base64ArrayBuffer(uint16)
@@ -1047,14 +1040,14 @@ export class BleManager {
         }
 
         var uint16 = new Uint8Array(16)
-        uint16[0] = 0x01;
-        uint16[1] = parseInt(date.slice(2, 4), 16);
-        uint16[2] = parseInt(date.slice(5, 7), 16);
-        uint16[3] = parseInt(date.slice(8, 10), 16);
-        uint16[4] = parseInt(date.slice(11, 13), 16);
-        uint16[5] = parseInt(date.slice(14, 16), 16);
-        uint16[6] = parseInt(date.slice(17, 19), 16);
-        uint16[15] = this.calculateChecksum(uint16);
+        uint16[0] = 0x01
+        uint16[1] = parseInt(date.slice(2, 4), 16)
+        uint16[2] = parseInt(date.slice(5, 7), 16)
+        uint16[3] = parseInt(date.slice(8, 10), 16)
+        uint16[4] = parseInt(date.slice(11, 13), 16)
+        uint16[5] = parseInt(date.slice(14, 16), 16)
+        uint16[6] = parseInt(date.slice(17, 19), 16)
+        uint16[15] = this.calculateChecksum(uint16)
 
         const value = this.base64ArrayBuffer(uint16)
 
@@ -1080,12 +1073,12 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
-        const measurementType = (unit === "us") ? 0x01 : 0x00
+        const measurementType = unit === 'us' ? 0x01 : 0x00
 
         var uint16 = new Uint8Array(16)
-        uint16[0] = 0x0F;
-        uint16[1] = measurementType;
-        uint16[15] = this.calculateChecksum(uint16);
+        uint16[0] = 0x0f
+        uint16[1] = measurementType
+        uint16[15] = this.calculateChecksum(uint16)
 
         const value = this.base64ArrayBuffer(uint16)
 
@@ -1112,9 +1105,9 @@ export class BleManager {
         }
 
         var uint16 = new Uint8Array(16)
-        uint16[0] = 0x43;
-        uint16[1] = date;
-        uint16[15] = this.calculateChecksum(uint16);
+        uint16[0] = 0x43
+        uint16[1] = date
+        uint16[15] = this.calculateChecksum(uint16)
 
         const value = this.base64ArrayBuffer(uint16)
 
@@ -1141,9 +1134,9 @@ export class BleManager {
         }
 
         var uint16 = new Uint8Array(16)
-        uint16[0] = 0x07;
-        uint16[1] = date;
-        uint16[15] = this.calculateChecksum(uint16);
+        uint16[0] = 0x07
+        uint16[1] = date
+        uint16[15] = this.calculateChecksum(uint16)
 
         const value = this.base64ArrayBuffer(uint16)
 
@@ -1334,7 +1327,12 @@ export class BleManager {
     ): Subscription {
         const filledTransactionId = transactionId || this._nextUniqueID()
         return this._handleMonitorCharacteristic(
-            BleModule.monitorCharacteristicForDevice(deviceIdentifier, scaleServiceUUID, scaleReadCharacteristic, filledTransactionId),
+            BleModule.monitorCharacteristicForDevice(
+                deviceIdentifier,
+                scaleServiceUUID,
+                scaleReadCharacteristic,
+                filledTransactionId
+            ),
             filledTransactionId,
             listener
         )
@@ -1347,7 +1345,12 @@ export class BleManager {
     ): Subscription {
         const filledTransactionId = transactionId || this._nextUniqueID()
         return this._handleMonitorCharacteristic(
-            BleModule.monitorCharacteristicForDevice(deviceIdentifier, scaleServiceUUID, alternativeScaleReadFinalCharacteristic, filledTransactionId),
+            BleModule.monitorCharacteristicForDevice(
+                deviceIdentifier,
+                scaleServiceUUID,
+                alternativeScaleReadFinalCharacteristic,
+                filledTransactionId
+            ),
             filledTransactionId,
             listener
         )
@@ -1360,7 +1363,12 @@ export class BleManager {
     ): Subscription {
         const filledTransactionId = transactionId || this._nextUniqueID()
         return this._handleMonitorCharacteristic(
-            BleModule.monitorCharacteristicForDevice(deviceIdentifier, scaleServiceUUID, alternativeScaleReadCharacteristic, filledTransactionId),
+            BleModule.monitorCharacteristicForDevice(
+                deviceIdentifier,
+                scaleServiceUUID,
+                alternativeScaleReadCharacteristic,
+                filledTransactionId
+            ),
             filledTransactionId,
             listener
         )
@@ -1373,7 +1381,12 @@ export class BleManager {
     ): Subscription {
         const filledTransactionId = transactionId || this._nextUniqueID()
         return this._handleMonitorCharacteristic(
-            BleModule.monitorCharacteristicForDevice(deviceIdentifier, trackerServiceUUID, trackerReadCharacteristic, filledTransactionId),
+            BleModule.monitorCharacteristicForDevice(
+                deviceIdentifier,
+                trackerServiceUUID,
+                trackerReadCharacteristic,
+                filledTransactionId
+            ),
             filledTransactionId,
             listener
         )
@@ -1698,30 +1711,15 @@ export class BleManager {
         if (!transactionId) {
             transactionId = this._nextUniqueID()
         }
-        const ageUnit = age < 10 ? 10 : age > 98 ? 98 : age;
-        const genderUnit = gender === "male" ? age + 128 : age
-        const heightUnit = height < 100 ? 100 : height > 218 ? 218 : height;
-        var array = new Uint16Array([
-            0xFD,
-            0x53,
-            0x00,
-            0x00,
-            0xFF,
-            genderUnit,
-            heightUnit
-        ])
+        const ageUnit = age < 10 ? 10 : age > 98 ? 98 : age
+        const genderUnit = gender === 'male' ? age + 128 : age
+        const heightUnit = height < 100 ? 100 : height > 218 ? 218 : height
+        var array = new Uint16Array([0xfd, 0x53, 0x00, 0x00, 0xff, genderUnit, heightUnit])
 
         const value = this.base64ArrayBuffer(array)
 
         const nativeCharacteristic = await this._callPromise(
-            BleModule.writeCharacteristicForDevice(
-                deviceIdentifier,
-                "fff0",
-                "fff3",
-                value,
-                false,
-                transactionId
-            )
+            BleModule.writeCharacteristicForDevice(deviceIdentifier, 'fff0', 'fff3', value, false, transactionId)
         )
         return new Characteristic(nativeCharacteristic, this)
     }
@@ -1749,24 +1747,13 @@ export class BleManager {
         return new Descriptor(nativeDescriptor, this)
     }
 
-
     // Blood pressure
-    async fetchBloodPressureMode(
-        deviceIdentifier: DeviceId,
-        transactionId: ? TransactionId
-    ): Promise < Characteristic > {
+    async fetchBloodPressureMode(deviceIdentifier: DeviceId, transactionId: ? TransactionId): Promise < Characteristic > {
         if (!transactionId) {
             transactionId = this._nextUniqueID()
         }
 
-        const payload = new Uint8Array([
-            0x02,
-            0x40,
-            0xdc,
-            0x01,
-            0xB2,
-            0X2F
-        ])
+        const payload = new Uint8Array([0x02, 0x40, 0xdc, 0x01, 0xb2, 0x2f])
         const value = this.base64ArrayBuffer(payload)
 
         const nativeCharacteristic = await this._callPromise(
@@ -1790,14 +1777,7 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
-        const payload = new Uint8Array([
-            0x02,
-            0x40,
-            0xdc,
-            0x01,
-            0xb1,
-            0x2c
-        ])
+        const payload = new Uint8Array([0x02, 0x40, 0xdc, 0x01, 0xb1, 0x2c])
         const value = this.base64ArrayBuffer(payload)
 
         const nativeCharacteristic = await this._callPromise(
@@ -1813,22 +1793,12 @@ export class BleManager {
         return new Characteristic(nativeCharacteristic, this)
     }
 
-    async turnBloodPressureVoiceOff(
-        deviceIdentifier: DeviceId,
-        transactionId: ? TransactionId
-    ): Promise < Characteristic > {
+    async turnBloodPressureVoiceOff(deviceIdentifier: DeviceId, transactionId: ? TransactionId): Promise < Characteristic > {
         if (!transactionId) {
             transactionId = this._nextUniqueID()
         }
 
-        const payload = new Uint8Array([
-            0x02,
-            0x40,
-            0xdc,
-            0x01,
-            0xa3,
-            0x3e
-        ])
+        const payload = new Uint8Array([0x02, 0x40, 0xdc, 0x01, 0xa3, 0x3e])
         const value = this.base64ArrayBuffer(payload)
 
         const nativeCharacteristic = await this._callPromise(
@@ -1844,22 +1814,12 @@ export class BleManager {
         return new Characteristic(nativeCharacteristic, this)
     }
 
-    async startBloodPressureTesting(
-        deviceIdentifier: DeviceId,
-        transactionId: ? TransactionId
-    ): Promise < Characteristic > {
+    async startBloodPressureTesting(deviceIdentifier: DeviceId, transactionId: ? TransactionId): Promise < Characteristic > {
         if (!transactionId) {
             transactionId = this._nextUniqueID()
         }
 
-        const payload = new Uint8Array([
-            0x02,
-            0x40,
-            0xdc,
-            0x01,
-            0xa1,
-            0x3c
-        ])
+        const payload = new Uint8Array([0x02, 0x40, 0xdc, 0x01, 0xa1, 0x3c])
         const value = this.base64ArrayBuffer(payload)
 
         const nativeCharacteristic = await this._callPromise(
@@ -1884,26 +1844,14 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
-        const year = parseInt(moment().format("YY"))
+        const year = parseInt(moment().format('YY'))
         const month = moment(date).month() + 1
         const day = moment(date).date()
         const hour = moment(date).hour()
         const minute = moment(date).minute()
         const second = moment(date).second()
 
-        const payload = [
-            0x02,
-            0x40,
-            0xdc,
-            0x07,
-            0xB0,
-            year,
-            month,
-            day,
-            hour,
-            minute,
-            second
-        ]
+        const payload = [0x02, 0x40, 0xdc, 0x07, 0xb0, year, month, day, hour, minute, second]
 
         let xorValue = this.XOR(payload)
         payload.push(xorValue)
@@ -1930,7 +1878,12 @@ export class BleManager {
     ): Subscription {
         const filledTransactionId = transactionId || this._nextUniqueID()
         return this._handleMonitorCharacteristic(
-            BleModule.monitorCharacteristicForDevice(deviceIdentifier, bloodPressureServiceUUID, bloodPressureCharacteristicUUID, filledTransactionId),
+            BleModule.monitorCharacteristicForDevice(
+                deviceIdentifier,
+                bloodPressureServiceUUID,
+                bloodPressureCharacteristicUUID,
+                filledTransactionId
+            ),
             filledTransactionId,
             listener
         )
@@ -1943,7 +1896,12 @@ export class BleManager {
     ): Subscription {
         const filledTransactionId = transactionId || this._nextUniqueID()
         return this._handleMonitorCharacteristic(
-            BleModule.monitorCharacteristicForDevice(deviceIdentifier, glucometerServiceUUID, glucometerCharacteristicReadUUID, filledTransactionId),
+            BleModule.monitorCharacteristicForDevice(
+                deviceIdentifier,
+                glucometerServiceUUID,
+                glucometerCharacteristicReadUUID,
+                filledTransactionId
+            ),
             filledTransactionId,
             listener
         )
@@ -1957,16 +1915,16 @@ export class BleManager {
             transactionId = this._nextUniqueID()
         }
 
-        const currentTime = new Date();
-        const year = '0X' + (parseInt(currentTime.getFullYear().toString().substr(-2))).toString(16);
-        const month = '0X' + (currentTime.getMonth() + 1).toString(16);
-        const dayNumber = '0X' + (currentTime.getDate()).toString(16);
-        const hour = '0X' + (currentTime.getHours()).toString(16);
-        const minutes = '0X' + (currentTime.getMinutes()).toString(16);
+        const currentTime = new Date()
+        const year = '0X' + parseInt(currentTime.getFullYear().toString().substr(-2)).toString(16)
+        const month = '0X' + (currentTime.getMonth() + 1).toString(16)
+        const dayNumber = '0X' + currentTime.getDate().toString(16)
+        const hour = '0X' + currentTime.getHours().toString(16)
+        const minutes = '0X' + currentTime.getMinutes().toString(16)
 
         const payload = new Uint8Array([
-            0x5A,
-            0x0A,
+            0x5a,
+            0x0a,
             0x03,
             year,
             month,
@@ -1974,7 +1932,19 @@ export class BleManager {
             hour,
             minutes,
             0x00,
-            '0X' + ((parseInt('5a', 16) + parseInt('0a', 16) + parseInt('00', 16) + parseInt(year, 16) + parseInt(month, 16) + parseInt(dayNumber, 16) + parseInt(hour, 16) + parseInt(minutes, 16) + 2) % 256).toString(16)
+            '0X' +
+            (
+                (parseInt('5a', 16) +
+                    parseInt('0a', 16) +
+                    parseInt('00', 16) +
+                    parseInt(year, 16) +
+                    parseInt(month, 16) +
+                    parseInt(dayNumber, 16) +
+                    parseInt(hour, 16) +
+                    parseInt(minutes, 16) +
+                    2) %
+                256
+            ).toString(16)
         ])
 
         const value = this.base64ArrayBuffer(payload)
@@ -1994,23 +1964,23 @@ export class BleManager {
 
     async setGlucometerTime(
         deviceIdentifier: DeviceId,
-        date: Date,
+        withResponse: boolean,
         transactionId: ? TransactionId
     ): Promise < Characteristic > {
         if (!transactionId) {
             transactionId = this._nextUniqueID()
         }
 
-        const currentTime = new Date();
-        const year = '0X' + (parseInt(currentTime.getFullYear().toString().substr(-2))).toString(16);
-        const month = '0X' + (currentTime.getMonth() + 1).toString(16);
-        const dayNumber = '0X' + (currentTime.getDate()).toString(16);
-        const hour = '0X' + (currentTime.getHours()).toString(16);
-        const minutes = '0X' + (currentTime.getMinutes()).toString(16);
+        const currentTime = new Date()
+        const year = '0X' + parseInt(currentTime.getFullYear().toString().substr(-2)).toString(16)
+        const month = '0X' + (currentTime.getMonth() + 1).toString(16)
+        const dayNumber = '0X' + currentTime.getDate().toString(16)
+        const hour = '0X' + currentTime.getHours().toString(16)
+        const minutes = '0X' + currentTime.getMinutes().toString(16)
 
         const payload = new Uint8Array([
-            0x5A,
-            0x0A,
+            0x5a,
+            0x0a,
             0x00,
             year,
             month,
@@ -2018,7 +1988,19 @@ export class BleManager {
             hour,
             minutes,
             0x00,
-            '0X' + ((parseInt('5a', 16) + parseInt('0a', 16) + parseInt('00', 16) + parseInt(year, 16) + parseInt(month, 16) + parseInt(dayNumber, 16) + parseInt(hour, 16) + parseInt(minutes, 16) + 2) % 256).toString(16)
+            '0X' +
+            (
+                (parseInt('5a', 16) +
+                    parseInt('0a', 16) +
+                    parseInt('00', 16) +
+                    parseInt(year, 16) +
+                    parseInt(month, 16) +
+                    parseInt(dayNumber, 16) +
+                    parseInt(hour, 16) +
+                    parseInt(minutes, 16) +
+                    2) %
+                256
+            ).toString(16)
         ])
 
         const value = this.base64ArrayBuffer(payload)
@@ -2028,8 +2010,7 @@ export class BleManager {
                 deviceIdentifier,
                 glucometerServiceUUID,
                 glucometerCharacteristicWriteUUID,
-                value,
-                false,
+                value, !!withResponse,
                 transactionId
             )
         )
@@ -2037,20 +2018,17 @@ export class BleManager {
     }
 
     XOR(input) {
-        if (toString.call(input) !== "[object Array]")
-            return false;
+        if (toString.call(input) !== '[object Array]') return false
 
-        var total = Number(input[0]);
+        var total = Number(input[0])
         for (var i = 0; i < input.length; i++) {
             if (isNaN(input[i])) {
-                continue;
+                continue
             }
 
-            total ^= Number(input[i]);
+            total ^= Number(input[i])
         }
 
-        return total;
+        return total
     }
-
-
 }
