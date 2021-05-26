@@ -72,8 +72,51 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 ### Expo
 
-1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.io/versions/latest/expokit/eject/) and [here](https://docs.expo.io/versions/latest/expokit/expokit). (only for expo)
-2. Follow steps for iOS/Android.
+This package cannot be used in the [Expo Go](https://expo.io/tools#client) app, but it can be used with custom managed apps.
+Just add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
+
+```json
+{
+  "expo": {
+    "plugins": ["react-native-ble-plx"]
+  }
+}
+```
+
+Then rebuild the native app:
+
+- Run `expo prebuild`
+  - This will apply the config plugin using [prebuilding](https://expo.fyi/prebuilding).
+- Rebuild the app
+  - `yarn android` -- Build on Android.
+  - `yarn ios` -- Build on iOS, this requires a MacOS computer (see [EAS build](https://docs.expo.io/build/introduction/) for more options).
+
+#### Props
+
+The plugin provides props for extra customization. Every time you change the props or plugins, you'll need to rebuild (and `prebuild`) the native app. If no extra properties are added, defaults will be used.
+
+- `isBackgroundEnabled` (_boolean_): Enable background BLE support on Android. Adds `<uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>` to the `AndroidManifest.xml`. Default `false`.
+- `modes` (_string[]_): Adds iOS `UIBackgroundModes` to the `Info.plist`. Options are: `peripheral`, and `central`. Defaults to undefined.
+- `bluetoothAlwaysPermission` (_string | false_): Sets the iOS `NSBluetoothAlwaysUsageDescription` permission message to the `Info.plist`. Setting `false` will skip adding the permission. Defaults to `Allow $(PRODUCT_NAME) to connect to bluetooth devices`.
+
+#### Example
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": ["peripheral", "central"],
+          "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
+        }
+      ]
+    ]
+  }
+}
+```
 
 ### iOS ([example setup](https://github.com/Cierpliwy/SensorTag))
 

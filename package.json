@@ -4,6 +4,10 @@
   "description": "React Native Bluetooth Low Energy library",
   "main": "index.js",
   "scripts": {
+    "build:plugin": "tsc --build plugin",
+    "clean:plugin": "expo-module clean plugin",
+    "lint:plugin": "eslint plugin/src/*",
+    "prepare": "yarn clean:plugin && yarn build:plugin",
     "test": "jest",
     "lint": "flow && documentation lint index.js",
     "docs": "documentation build index.js -o docs --config documentation.yml -f html"
@@ -26,12 +30,16 @@
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.21.5",
     "eslint-plugin-react-native": "^3.10.0",
+    "expo-module-scripts": "^2.0.0",
     "flow-bin": "^0.122.0",
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.64.0",
     "prettier": "^2.1.1",
     "react": "16.13.1",
     "react-native": "0.63.3"
+  },
+  "dependencies": {
+    "@expo/config-plugins": "^2.0.0"
   },
   "keywords": [
     "React",
