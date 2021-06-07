@@ -71,14 +71,14 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 ### Expo
 
 1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.io/versions/latest/expokit/eject/) and [here](https://docs.expo.io/versions/latest/expokit/expokit). (only for expo)
-2. Follow steps for iOS/Android.
+1. Follow steps for iOS/Android.
 
 ### iOS ([example setup](https://github.com/Cierpliwy/SensorTag))
 
 1. `npm install --save react-native-ble-plx`
-2. Enter `ios` folder and run `pod update`
-3. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
-4. If you want to support background mode:
+1. Enter `ios` folder and run `pod update`
+1. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
+1. If you want to support background mode:
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
@@ -86,7 +86,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 ### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 
 1. `npm install --save react-native-ble-plx`
-2. In top level `build.gradle` make sure that min SDK version is at least 18:
+1. In top level `build.gradle` make sure that min SDK version is at least 18:
 ```groovy
 buildscript {
     ext {
@@ -94,7 +94,7 @@ buildscript {
         minSdkVersion = 18
         ...
 ```
-3. In `build.gradle` make sure to add jitpack repository to known repositories:
+1. In `build.gradle` make sure to add jitpack repository to known repositories:
 
 ```groovy
 allprojects {
@@ -104,7 +104,7 @@ allprojects {
     }
 }
 ```
-4. (Optional) In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
+1. (Optional) In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
 
 ```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
