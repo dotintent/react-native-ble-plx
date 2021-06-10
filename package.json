@@ -7,7 +7,7 @@
     "build:plugin": "tsc --build plugin",
     "clean:plugin": "expo-module clean plugin",
     "lint:plugin": "eslint plugin/src/*",
-    "prepare": "yarn clean:plugin && yarn build:plugin",
+    "prepare": "npm run clean:plugin && npm run build:plugin",
     "test": "jest",
     "lint": "flow && documentation lint index.js",
     "docs": "documentation build index.js -o docs --config documentation.yml -f html"
