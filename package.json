@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Polidea/react-native-ble-plx.git"
+    "url": "git+https://github.com/dotintent/react-native-ble-plx.git"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
@@ -39,8 +39,7 @@
     "Bluetooth",
     "Low",
     "Energy",
-    "BLE",
-    "Polidea"
+    "BLE"
   ],
   "jest": {
     "preset": "react-native",
@@ -48,10 +47,10 @@
       "<rootDir>/integration-tests"
     ]
   },
-  "author": "Polidea",
+  "author": "Polidea, intent sp. z o.o.",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Polidea/react-native-ble-plx/issues"
+    "url": "https://github.com/dotintent/react-native-ble-plx/issues"
   },
-  "homepage": "https://github.com/Polidea/react-native-ble-plx#readme"
+  "homepage": "https://github.com/dotintent/react-native-ble-plx#readme"
 }

@@ -9,26 +9,26 @@
 
 ## About this library
 
-This is React Native Bluetooth Low Energy library wrapping [Multiplatform Ble Adapter](https://github.com/Polidea/MultiPlatformBleAdapter/).
+This is React Native Bluetooth Low Energy library wrapping [Multiplatform Ble Adapter](https://github.com/dotintent/MultiPlatformBleAdapter/).
 
 It supports:
 
-- [observing device's Bluetooth adapter state](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
-- [scanning BLE devices](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Scanning)
-- [making connections to peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Connecting)
-- [discovering services/characteristics](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Service-Discovery)
-- [reading](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
-- [observing characteristic notifications/indications](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Notifying)
-- [reading RSSI](https://github.com/Polidea/react-native-ble-plx/wiki/RSSI-Reading)
-- [negotiating MTU](https://github.com/Polidea/react-native-ble-plx/wiki/MTU-Negotiation)
-- [background mode on iOS](https://github.com/Polidea/react-native-ble-plx/wiki/Background-mode-(iOS))
+- [observing device's Bluetooth adapter state](https://github.com/dotintent/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
+- [scanning BLE devices](https://github.com/dotintent/react-native-ble-plx/wiki/Bluetooth-Scanning)
+- [making connections to peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Connecting)
+- [discovering services/characteristics](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Service-Discovery)
+- [reading](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
+- [observing characteristic notifications/indications](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Notifying)
+- [reading RSSI](https://github.com/dotintent/react-native-ble-plx/wiki/RSSI-Reading)
+- [negotiating MTU](https://github.com/dotintent/react-native-ble-plx/wiki/MTU-Negotiation)
+- [background mode on iOS](https://github.com/dotintent/react-native-ble-plx/wiki/Background-mode-(iOS))
 - turning the device's Bluetooth adapter on
 
 It does NOT support:
 
 - bluetooth classic devices.
 - communicating between phones using BLE (Peripheral support)
-- [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Bonding)
+- [bonding peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Bonding)
 
 ## Compatibility
 
@@ -54,15 +54,12 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 ## Documentation & Support
 
-Interested in React Native project involving Bluetooth Low Energy? [We can help you!](https://www.polidea.com/react-native)
+Interested in React Native project involving Bluetooth Low Energy? [We can help you!](https://www.withintent.com/)
 
-[Learn more about Polidea's React Native services](https://www.polidea.com/services/react-native/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_RN&utm_term=Code&utm_content=GH_NOP_RN_COD_RNB001).
-
-[Learn more about Polidea's BLE services](https://www.polidea.com/services/ble/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_BLE&utm_term=Code&utm_content=GH_NOP_BLE_COD_RNB001).
 
 [Documentation can be found here](https://polidea.github.io/react-native-ble-plx/).
 
-[Quick introduction can be found here](https://github.com/Polidea/react-native-ble-plx/blob/master/INTRO.md)
+[Quick introduction can be found here](https://github.com/dotintent/react-native-ble-plx/blob/master/INTRO.md)
 
 Contact us at [Polidea](https://www.polidea.com/project/?utm_source=Github&utm_medium=Npaid&utm_campaign=Kontakt&utm_term=Code&utm_content=GH_NOP_KKT_COD_RNB001).
 
