@@ -1,7 +1,10 @@
+# Changelog
+
 **2.0.2**
+
 - Updated MultiplatformBleAdapter to version 0.1.7.
 - Added support for BleMulator
-- Removed destroying of client upon catalystInstanceDestroy. 
+- Removed destroying of client upon catalystInstanceDestroy.
 - Updated CI to RN 0.63.3
 
 **2.0.1**
@@ -157,6 +160,7 @@ Other:
 - Remove `--no-build` option to be able to reuse prepackages frameworks.
 - Added option to disable building dynamic frameworks with carthage
   by setting option in your app's package.json:
+  
   ```json
   ...
   "react-native-ble-plx": {

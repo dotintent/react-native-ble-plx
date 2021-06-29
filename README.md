@@ -1,11 +1,11 @@
-<p align="center">
+<h1 align="center">
   <img
     alt="react-native-ble-plx library logo"
     src="docs/logo.png"
     height="300"
     style="margin-top: 20px; margin-bottom: 20px;"
   />
-</p>
+</h1>
 
 ## About this library
 
@@ -32,8 +32,7 @@ It does NOT support:
 
 ## Compatibility
 
-This version (2.x) breaks compatibility with old RN versions. Please check [old README](./docs/README_V1.md) (1.x) 
-for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
+This version (2.x) breaks compatibility with old RN versions. Please check [old README](./docs/README_V1.md) (1.x) for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 | React Native  | 2.0.0                          |
 | ------------- | ------------------------------ |
@@ -44,10 +43,11 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 ## Recent Changes
 
-**2.0.2**
+### 2.0.2
+
 - Updated MultiplatformBleAdapter to version 0.1.7.
 - Added support for BleMulator
-- Removed destroying of client upon catalystInstanceDestroy. 
+- Removed destroying of client upon catalystInstanceDestroy.
 - Updated CI to RN 0.63.3
 
 [All previous changes](CHANGELOG.md)
@@ -97,6 +97,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
             minSdkVersion = 18
             ...
     ```
+
 1. In `build.gradle` make sure to add jitpack repository to known repositories:
 
     ```groovy
@@ -107,6 +108,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
         }
     }
     ```
+
 1. (Optional) In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
 
     ```xml
@@ -130,6 +132,6 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 Add this to your `app/proguard-rules.pro`
 
-```
+```lang-text
 -dontwarn com.polidea.reactnativeble.**
 ```

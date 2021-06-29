@@ -1,6 +1,6 @@
-<p align="center">
+<h1 align="center">
   <a href="https://github.com/Polidea/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
-</p>
+</h1>
 
 This guide is an introduction to BLE stack and APIs exported by this library. All examples
 will be based on CC2541 SensorTag.
@@ -71,14 +71,11 @@ scanAndConnect() {
 }
 ```
 
-It is worth to note that scanning function may emit one device multiple times. However 
-when device is connected it won't broadcast and needs to be disconnected from central 
-to be scanned again. Only one scanning listener can be registered.
+It is worth to note that scanning function may emit one device multiple times. However when device is connected it won't broadcast and needs to be disconnected from central to be scanned again. Only one scanning listener can be registered.
 
 ## Connecting and discovering services and characteristics
 
-Once device is scanned it is in disconnected state. We need to connect to it and discover 
-all services and characteristics it contains. Services may be understood
+Once device is scanned it is in disconnected state. We need to connect to it and discover all services and characteristics it contains. Services may be understood
 as containers grouping characteristics based on their meaning. Characteristic is a
 container for a value which can be read, written and monitored based on available
 capabilities. For example connection may look like this:
@@ -96,18 +93,17 @@ device.connect()
     });
 ```
 
-Discovery of services and characteristics is required to be executed once per connection\*. 
+Discovery of services and characteristics is required to be executed once per connection\*.
 It can be a long process depending on number of characteristics and services available.
 
-\* Extremely rarely, when peripheral's service/characteristic set can change during a connection 
-an additional service discovery may be needed.
+\* Extremely rarely, when peripheral's service/characteristic set can change during a connection an additional service discovery may be needed.
 
 ## Read, write and monitor values
 
-After successful discovery of services you can call 
+After successful discovery of services you can call
+
 * {@link #blemanagerreadcharacteristicfordevice|BleManager.readCharacteristicForDevice()},
-* {@link #blemanagerwritecharacteristicwithresponsefordevice|BleManager.writeCharacteristicWithResponseForDevice()}, 
+* {@link #blemanagerwritecharacteristicwithresponsefordevice|BleManager.writeCharacteristicWithResponseForDevice()},
 * {@link #blemanagermonitorcharacteristicfordevice|BleManager.monitorCharacteristicForDevice()}
 
 and other functions which are described in detail in documentation.
-
