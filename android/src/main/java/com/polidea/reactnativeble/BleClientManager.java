@@ -1,4 +1,4 @@
-package com.polidea.reactnativeble;
+package com.withintent.reactnativeble;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -25,14 +25,14 @@ import com.polidea.multiplatformbleadapter.RefreshGattMoment;
 import com.polidea.multiplatformbleadapter.ScanResult;
 import com.polidea.multiplatformbleadapter.Service;
 import com.polidea.multiplatformbleadapter.errors.BleError;
-import com.polidea.reactnativeble.converter.BleErrorToJsObjectConverter;
-import com.polidea.reactnativeble.converter.CharacteristicToJsObjectConverter;
-import com.polidea.reactnativeble.converter.DescriptorToJsObjectConverter;
-import com.polidea.reactnativeble.converter.DeviceToJsObjectConverter;
-import com.polidea.reactnativeble.converter.ScanResultToJsObjectConverter;
-import com.polidea.reactnativeble.converter.ServiceToJsObjectConverter;
-import com.polidea.reactnativeble.utils.ReadableArrayConverter;
-import com.polidea.reactnativeble.utils.SafePromise;
+import com.withintent.reactnativeble.converter.BleErrorToJsObjectConverter;
+import com.withintent.reactnativeble.converter.CharacteristicToJsObjectConverter;
+import com.withintent.reactnativeble.converter.DescriptorToJsObjectConverter;
+import com.withintent.reactnativeble.converter.DeviceToJsObjectConverter;
+import com.withintent.reactnativeble.converter.ScanResultToJsObjectConverter;
+import com.withintent.reactnativeble.converter.ServiceToJsObjectConverter;
+import com.withintent.reactnativeble.utils.ReadableArrayConverter;
+import com.withintent.reactnativeble.utils.SafePromise;
 
 import java.util.HashMap;
 import java.util.List;

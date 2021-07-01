@@ -3,7 +3,7 @@
 //  BleClient
 //
 //  Created by Przemysław Lenart on 27/07/16.
-//  Copyright © 2016 Polidea. All rights reserved.
+//  Copyright © 2016 Intent. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

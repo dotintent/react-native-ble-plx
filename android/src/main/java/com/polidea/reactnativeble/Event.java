@@ -1,4 +1,4 @@
-package com.polidea.reactnativeble;
+package com.withintent.reactnativeble;
 
 public enum Event {
 

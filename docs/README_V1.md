@@ -9,25 +9,25 @@
 
 ## About this library
 
-This is React Native Bluetooth Low Energy library using [RxBluetoothKit](https://github.com/Polidea/RxBluetoothKit) and [RxAndroidBle](https://github.com/Polidea/RxAndroidBle) under the hood.
+This is React Native Bluetooth Low Energy library using [RxBluetoothKit](https://github.com/dotintent/RxBluetoothKit) and [RxAndroidBle](https://github.com/dotintent/RxAndroidBle) under the hood.
 
 It supports:
 
 - [observing device's Bluetooth adapter state](https://github.com/dotintent/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
-- [scanning BLE devices](https://github.com/Polidea/react-native-ble-plx/wiki/Bluetooth-Scanning)
-- [making connections to peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Connecting)
-- [discovering services/characteristics](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Service-Discovery)
-- [reading](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
-- [observing characteristic notifications/indications](https://github.com/Polidea/react-native-ble-plx/wiki/Characteristic-Notifying)
-- [reading RSSI](https://github.com/Polidea/react-native-ble-plx/wiki/RSSI-Reading)
-- [negotiating MTU](https://github.com/Polidea/react-native-ble-plx/wiki/MTU-Negotiation)
-- [background mode on iOS](https://github.com/Polidea/react-native-ble-plx/wiki/Background-mode-(iOS))
+- [scanning BLE devices](https://github.com/dotintent/react-native-ble-plx/wiki/Bluetooth-Scanning)
+- [making connections to peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Connecting)
+- [discovering services/characteristics](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Service-Discovery)
+- [reading](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
+- [observing characteristic notifications/indications](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Notifying)
+- [reading RSSI](https://github.com/dotintent/react-native-ble-plx/wiki/RSSI-Reading)
+- [negotiating MTU](https://github.com/dotintent/react-native-ble-plx/wiki/MTU-Negotiation)
+- [background mode on iOS](https://github.com/dotintent/react-native-ble-plx/wiki/Background-mode-(iOS))
 - turning the device's Bluetooth adapter on
 
 What this library does NOT support:
 
 - communicating between phones using BLE (Peripheral support)
-- [bonding peripherals](https://github.com/Polidea/react-native-ble-plx/wiki/Device-Bonding)
+- [bonding peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Bonding)
 
 ## Compatibility
 
@@ -59,13 +59,13 @@ What this library does NOT support:
 
 Interested in React Native project involving Bluetooth Low Energy? [We can help you!](https://www.polidea.com/react-native)
 
-[Learn more about Polidea's React Native services](https://www.polidea.com/services/react-native/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_RN&utm_term=Code&utm_content=GH_NOP_RN_COD_RNB001).
+[Learn more about Intent's React Native services](https://www.polidea.com/services/react-native/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_RN&utm_term=Code&utm_content=GH_NOP_RN_COD_RNB001).
 
-[Learn more about Polidea's BLE services](https://www.polidea.com/services/ble/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_BLE&utm_term=Code&utm_content=GH_NOP_BLE_COD_RNB001).
+[Learn more about Intent's BLE services](https://www.polidea.com/services/ble/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_BLE&utm_term=Code&utm_content=GH_NOP_BLE_COD_RNB001).
 
 Documentation can be found [here](https://polidea.github.io/react-native-ble-plx/).
 
-Contact us at [Polidea](https://www.polidea.com/project/?utm_source=Github&utm_medium=Npaid&utm_campaign=Kontakt&utm_term=Code&utm_content=GH_NOP_KKT_COD_RNB001).
+Contact us at [Intent](https://www.polidea.com/project/?utm_source=Github&utm_medium=Npaid&utm_campaign=Kontakt&utm_term=Code&utm_content=GH_NOP_KKT_COD_RNB001).
 
 Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you have any questions, feedback or want to help!
 
@@ -169,5 +169,5 @@ allprojects {
 Add this to your `app/proguard-rules.pro`
 
 ```
--dontwarn com.polidea.reactnativeble.**
+-dontwarn com.withintent.reactnativeble.**
 ```

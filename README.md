@@ -57,11 +57,11 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 Interested in React Native project involving Bluetooth Low Energy? [We can help you!](https://www.withintent.com/)
 
 
-[Documentation can be found here](https://polidea.github.io/react-native-ble-plx/).
+[Documentation can be found here](https://dotintent.github.io/react-native-ble-plx/).
 
 [Quick introduction can be found here](https://github.com/dotintent/react-native-ble-plx/blob/master/INTRO.md)
 
-Contact us at [Polidea](https://www.polidea.com/project/?utm_source=Github&utm_medium=Npaid&utm_campaign=Kontakt&utm_term=Code&utm_content=GH_NOP_KKT_COD_RNB001).
+Contact us at [Intent](https://withintent.com/project/?utm_source=Github&utm_medium=Npaid&utm_campaign=Kontakt&utm_term=Code&utm_content=GH_NOP_KKT_COD_RNB001).
 
 Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you have any questions, feedback or want to help!
 
@@ -128,5 +128,5 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 Add this to your `app/proguard-rules.pro`
 
 ```
--dontwarn com.polidea.reactnativeble.**
+-dontwarn com.withintent.reactnativeble.**
 ```

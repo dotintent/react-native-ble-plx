@@ -1,4 +1,4 @@
-package com.polidea.reactnativeble.utils;
+package com.withintent.reactnativeble.utils;
 
 import com.facebook.react.bridge.ReadableArray;
 

@@ -1,4 +1,4 @@
-package com.polidea.reactnativeble.converter;
+package com.withintent.reactnativeble.converter;
 
 import androidx.annotation.NonNull;
 

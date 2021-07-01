@@ -110,7 +110,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1000;
-				ORGANIZATIONNAME = Polidea;
+				ORGANIZATIONNAME = Intent;
 				TargetAttributes = {
 					D73F06E71D48E17B00AD5963 = {
 						CreatedOnToolsVersion = 7.3;
