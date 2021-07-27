@@ -32,7 +32,6 @@ To detect current state and following state changes we can use `onStateChange()`
 
 ```js
 React.useEffect(() => {
-  manager.onStateChange((state) => {
     const subscription = manager.onStateChange((state) => {
         if (state === 'PoweredOn') {
             this.scanAndConnect();
@@ -40,7 +39,6 @@ React.useEffect(() => {
         }
     }, true);
     return () => subscription.remove();
-  });
 }, [manager]);
 ```
 
