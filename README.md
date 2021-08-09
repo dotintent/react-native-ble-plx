@@ -60,7 +60,7 @@ Interested in React Native project involving Bluetooth Low Energy? [We can help 
 
 [Learn more about Polidea's BLE services](https://www.polidea.com/services/ble/?utm_source=Github&utm_medium=Npaid&utm_campaign=Tech_BLE&utm_term=Code&utm_content=GH_NOP_BLE_COD_RNB001).
 
-[Documentation can be found here](https://polidea.github.io/react-native-ble-plx/).
+[Documentation can be found here](https://dotintent.github.io/react-native-ble-plx/).
 
 [Quick introduction can be found here](https://github.com/Polidea/react-native-ble-plx/blob/master/INTRO.md)
 
