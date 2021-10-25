@@ -64,6 +64,10 @@ const bloodPressureServiceUUID = '000018f0-0000-1000-8000-00805f9b34fb'
 const bloodPressureCharacteristicUUID = '00002af0-0000-1000-8000-00805f9b34fb'
 const bloodPressureCharacteristicWriteUUID = '00002af1-0000-1000-8000-00805f9b34fb'
 
+const oximeterServiceUUID = 'cdeacb80-5235-4c07-8846-93a37ee6b86d'
+const oximeterCharacteristicNotifyUUID = 'cdeacb81-5235-4c07-8846-93a37ee6b86d'
+const oximeterCharacteristicWriteUUID = 'cdeacb82-5235-4c07-8846-93a37ee6b86d'
+
 const glucometerServiceUUID = '00001000-0000-1000-8000-00805f9b34fb'
 const glucometerCharacteristicReadUUID = '00001002-0000-1000-8000-00805f9b34fb'
 const glucometerCharacteristicWriteUUID = '00001001-0000-1000-8000-00805f9b34fb'
@@ -1906,6 +1910,24 @@ export class BleManager {
             listener
         )
     }
+
+    monitorOximeterResponse(
+      deviceIdentifier: DeviceId,
+      listener: (error: ? BleError, characteristic : ? Characteristic) => void,
+      transactionId: ? TransactionId
+  ): Subscription {
+      const filledTransactionId = transactionId || this._nextUniqueID()
+      return this._handleMonitorCharacteristic(
+          BleModule.monitorCharacteristicForDevice(
+              deviceIdentifier,
+              oximeterServiceUUID,
+              oximeterCharacteristicNotifyUUID,
+              filledTransactionId
+          ),
+          filledTransactionId,
+          listener
+      )
+  }
 
     async fetchAdditionalGlucometerRecord(
         deviceIdentifier: DeviceId,
