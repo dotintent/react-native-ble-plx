@@ -54,7 +54,7 @@ class RxCBPeripheral: RxPeripheralType {
     }
 
     var services: [RxServiceType]? {
-        return peripheral.services?.map(RxCBService.init)
+        return peripheral.services?.compactMap(RxCBService.init)
     }
 
     var canSendWriteWithoutResponse: Bool {
@@ -247,7 +247,7 @@ class RxCBPeripheral: RxPeripheralType {
                                 \(peripheral.logDescription) didModifyServices(services:
                                 [\(invalidatedServices.logDescription))]
                                 """)
-            peripheralDidModifyServicesSubject.onNext(invalidatedServices.map(RxCBService.init))
+            peripheralDidModifyServicesSubject.onNext(invalidatedServices.compactMap(RxCBService.init))
         }
 
         @objc func peripheral(_ peripheral: CBPeripheral, didReadRSSI rssi: NSNumber, error: Error?) {
@@ -264,7 +264,7 @@ class RxCBPeripheral: RxPeripheralType {
                                 : \(String(describing: peripheral.services?.logDescription)),
                                 error: \(String(describing: error)))
                                 """)
-            peripheralDidDiscoverServicesSubject.onNext((peripheral.services?.map(RxCBService.init), error))
+            peripheralDidDiscoverServicesSubject.onNext((peripheral.services?.compactMap(RxCBService.init), error))
         }
 
         @objc func peripheral(_ peripheral: CBPeripheral,

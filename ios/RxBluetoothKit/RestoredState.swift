@@ -64,9 +64,18 @@ import CoreBluetooth
             guard let arrayOfAnyObjects = objects else { return [] }
             return arrayOfAnyObjects.compactMap { $0 as? CBService }
                 .map(RxCBService.init)
-                .map { Service(peripheral: Peripheral(manager: bluetoothManager,
-                                                      peripheral: RxCBPeripheral(peripheral: $0.service.peripheral)),
-                               service: $0) }
+                .compactMap {
+
+                                     // Necessary to accomodate the changes between
+                                     // iOS 14 and iOS 15
+                                     let optPeripheral: CBPeripheral? = $0.service.peripheral
+                                     guard let peripheral = optPeripheral else {
+                                         return nil
+                                     }
+
+                                     return Service(peripheral: Peripheral(manager: bluetoothManager,
+                                                                           peripheral: RxCBPeripheral(peripheral: peripheral)),
+                                                    service: $0) }
         }
     }
 #endif

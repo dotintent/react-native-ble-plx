@@ -39,7 +39,7 @@ class RxCBDescriptor: RxDescriptorType {
         return descriptor.uuid
     }
 
-    var characteristic: RxCharacteristicType {
+    var characteristic: RxCharacteristicType? {
         return RxCBCharacteristic(characteristic: descriptor.characteristic)
     }
 

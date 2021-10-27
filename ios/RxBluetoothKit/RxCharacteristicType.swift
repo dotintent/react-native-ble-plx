@@ -30,7 +30,7 @@ protocol RxCharacteristicType {
     var isNotifying: Bool { get }
     var properties: CBCharacteristicProperties { get }
     var descriptors: [RxDescriptorType]? { get }
-    var service: RxServiceType { get }
+    var service: RxServiceType? { get }
 
     func isEqualTo(characteristic: RxCharacteristicType) -> Bool
 }

@@ -29,7 +29,7 @@ protocol RxDescriptorType {
 
     var uuid: CBUUID { get }
 
-    var characteristic: RxCharacteristicType { get }
+    var characteristic: RxCharacteristicType? { get }
 
     var value: Any? { get }
 

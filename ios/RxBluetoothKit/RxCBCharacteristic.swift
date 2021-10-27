@@ -31,6 +31,13 @@ class RxCBCharacteristic: RxCharacteristicType {
         self.characteristic = characteristic
     }
 
+    init?(characteristic: CBCharacteristic?) {
+        guard let characteristic = characteristic else {
+            return nil
+        }
+        self.characteristic = characteristic
+    }
+
     var objectId: UInt {
         return UInt(bitPattern: ObjectIdentifier(characteristic))
     }
@@ -55,7 +62,7 @@ class RxCBCharacteristic: RxCharacteristicType {
         return characteristic.descriptors?.map(RxCBDescriptor.init)
     }
 
-    var service: RxServiceType {
+    var service: RxServiceType? {
         return RxCBService(service: characteristic.service)
     }
 
