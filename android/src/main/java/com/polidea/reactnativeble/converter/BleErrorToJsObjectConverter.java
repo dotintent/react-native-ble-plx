@@ -3,7 +3,6 @@ package com.polidea.reactnativeble.converter;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
-import com.facebook.react.bridge.WritableMap;
 import com.polidea.multiplatformbleadapter.errors.BleError;
 
 public class BleErrorToJsObjectConverter {
@@ -16,7 +15,6 @@ public class BleErrorToJsObjectConverter {
     }
 
     public String toJs(BleError error) {
-        WritableArray array = Arguments.createArray();
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("{");
 
