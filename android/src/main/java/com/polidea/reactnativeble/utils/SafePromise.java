@@ -7,8 +7,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nullable;
 
 public class SafePromise {
-    private Promise promise;
-    private AtomicBoolean isFinished = new AtomicBoolean();
+    private final Promise promise;
+    private final AtomicBoolean isFinished = new AtomicBoolean();
 
     public SafePromise(Promise promise) {
         this.promise = promise;
