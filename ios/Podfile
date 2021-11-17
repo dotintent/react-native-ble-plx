@@ -1,5 +1,5 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '8.0'
+platform :ios, '11.0'
 
 target 'BleClient' do
   # Comment the next line if you don't want to use dynamic frameworks
@@ -7,4 +7,9 @@ target 'BleClient' do
 
   # Pods for BleClient
   pod 'MultiplatformBleAdapter', '~> 0.1.9'
+
+  post_install do |installer|
+    react_native_post_install(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  end
 end
