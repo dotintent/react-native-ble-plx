@@ -4,7 +4,7 @@ def safeExtGet(prop, fallback) {
 
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         maven {
             url 'https://maven.google.com/'
             name 'Google'
@@ -18,12 +18,12 @@ buildscript {
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 27)
-    buildToolsVersion safeExtGet('buildToolsVersion', '27.0.3')
+    compileSdkVersion safeExtGet('compileSdkVersion', 30)
+    buildToolsVersion safeExtGet('buildToolsVersion', '30.0.2')
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion safeExtGet('targetSdkVersion', 27)
+        minSdkVersion 21
+        targetSdkVersion safeExtGet('targetSdkVersion', 30)
     }
     lintOptions {
         abortOnError false
@@ -32,7 +32,7 @@ android {
 
 repositories {
     mavenLocal()
-    jcenter()
+    mavenCentral()
     maven {
         // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
         url "$projectDir/../../../node_modules/react-native/android"
