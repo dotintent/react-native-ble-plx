@@ -3,7 +3,6 @@ package com.polidea.reactnativeble.converter;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.polidea.multiplatformbleadapter.Device;
-import com.polidea.multiplatformbleadapter.utils.Constants;
 
 public class DeviceToJsObjectConverter extends JSObjectConverter<Device> {
 
