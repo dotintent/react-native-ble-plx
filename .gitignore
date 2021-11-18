@@ -30,6 +30,7 @@ build/
 .idea
 .gradle
 *.iml
+*.hprof
 *.swp
 *.bat
 local.properties
