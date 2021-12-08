@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/dotintent/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
+  <a href="https://github.com/Polidea/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
 </p>
 
 This guide is an introduction to BLE stack and APIs exported by this library. All examples

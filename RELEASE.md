@@ -17,8 +17,8 @@
 ## 2. Publishing
 
 1. You can test pre-release changes in your chosen application by installing the library as
-  ```"react-native-ble-plx": "dotintent/react-native-ble-plx"```.
+  ```"react-native-ble-plx": "Polidea/react-native-ble-plx"```.
 2. Clean repository and publish new version: `git clean -xfd && npm publish`.
 3. Add tag to the repository in form of `x.x.x`.
-4. Add release notes to the [Github](https://github.com/dotintent/react-native-ble-plx/releases) by copying a list of changes from `CHANGELOG.md`.
+4. Add release notes to the [Github](https://github.com/Polidea/react-native-ble-plx/releases) by copying a list of changes from `CHANGELOG.md`.
 3. Check any issues which are fixed by a new version, close them and point to a new release in the comment section.
