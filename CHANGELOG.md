@@ -1,3 +1,6 @@
+**2.0.3**
+- Updated MultiplatformBleAdapter to version 0.1.9
+
 **2.0.2**
 - Updated MultiplatformBleAdapter to version 0.1.7.
 - Added support for BleMulator
