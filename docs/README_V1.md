@@ -120,7 +120,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 android {
     ...
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 21
         ...
 ```
 4. In `build.gradle` of `app` module make sure to add jitpack repository to known repositories:
@@ -148,7 +148,7 @@ allprojects {
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 
     <uses-sdk
-        android:minSdkVersion="18"
+        android:minSdkVersion="21"
         ...
 ```
 
