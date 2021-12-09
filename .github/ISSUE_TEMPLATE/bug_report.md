@@ -31,7 +31,7 @@ Please provide detailed steps for reproducing the issue.
 
 ### Context
 
-Please provide any relevant information about your setup. This is important in case the issue is not reproducible except for under certain conditions. Both JS and platform logs can be enabled via [setLogLevel](https://polidea.github.io/react-native-ble-plx/#blemanagersetloglevel) function call. 
+Please provide any relevant information about your setup. This is important in case the issue is not reproducible except for under certain conditions. Both JS and platform logs can be enabled via [setLogLevel](https://dotintent.github.io/react-native-ble-plx/#blemanagersetloglevel) function call. 
 
 * Library version: X.Y.Z
 * Platform: Android/iOS.
