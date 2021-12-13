@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/Polidea/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
+  <a href="https://github.com/dotintent/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
 </p>
 
 This guide is an introduction to BLE stack and APIs exported by this library. All examples
@@ -8,22 +8,22 @@ will be based on CC2541 SensorTag.
 ## Creating BLE Manager
 
 First step is to create BleManager instance which is an entry point to all available APIs.
-Make sure to create it after application started its execution. For example we can do it in
-Component's constructor:
+Make sure to create it after application started its execution. For example we can keep it
+as a static reference:
 
 ```js
 import { BleManager } from 'react-native-ble-plx';
 
-constructor() {
-    super();
-    this.manager = new BleManager();
-    ...
-}
+export const manager = new BleManager();
 ```
 
-Only one instance of BleManager is allowed. When you don't need any BLE functionality you
-can destroy created instance by calling `this.manager.destroy()` function. You can then
-recreate `BleManager` later on as we did above.
+Only _one_ instance of BleManager is allowed. When you don't need any BLE functionality you
+can destroy created instance by calling `manager.destroy()` function. You can then recreate
+`BleManager` later on.
+
+Note that you may experience undefined behaviour when calling a function on one `BleManager`
+and continuing with another instance. A frequently made error is to create a new instance
+of the manager for every re-render of a React Native Component.
 
 ## Waiting for Powered On state
 
@@ -31,14 +31,15 @@ When iOS application launches BLE stack is not immediately available and we need
 To detect current state and following state changes we can use `onStateChange()` function:
 
 ```js
-componentWillMount() {
-    const subscription = this.manager.onStateChange((state) => {
-        if (state === 'PoweredOn') {
-            this.scanAndConnect();
-            subscription.remove();
-        }
-    }, true);
-}
+React.useEffect(() => {
+  const subscription = manager.onStateChange((state) => {
+      if (state === 'PoweredOn') {
+          this.scanAndConnect();
+          subscription.remove();
+      }
+  }, true);
+  return () => subscription.remove();
+}, [manager]);
 ```
 
 ## Scanning devices
@@ -48,7 +49,7 @@ which allows only one callback to be registered to handle detected devices:
 
 ```js
 scanAndConnect() {
-    this.manager.startDeviceScan(null, null, (error, device) => {
+    manager.startDeviceScan(null, null, (error, device) => {
         if (error) {
             // Handle error (scanning will be stopped automatically)
             return
@@ -60,7 +61,7 @@ scanAndConnect() {
             device.name === 'SensorTag') {
             
             // Stop scanning as it's not necessary if you are scanning for one device.
-            this.manager.stopDeviceScan();
+            manager.stopDeviceScan();
 
             // Proceed with connection.
         }

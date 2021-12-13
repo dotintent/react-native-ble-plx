@@ -6,5 +6,5 @@ target 'BleClient' do
   use_frameworks!
 
   # Pods for BleClient
-  pod 'MultiplatformBleAdapter', '~> 0.1.7'
+  pod 'MultiplatformBleAdapter', '~> 0.1.9'
 end

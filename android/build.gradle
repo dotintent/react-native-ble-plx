@@ -22,7 +22,7 @@ android {
     buildToolsVersion safeExtGet('buildToolsVersion', '27.0.3')
 
     defaultConfig {
-        minSdkVersion 18
+        minSdkVersion 21
         targetSdkVersion safeExtGet('targetSdkVersion', 27)
     }
     lintOptions {
@@ -46,5 +46,5 @@ repositories {
 
 dependencies {
     implementation "com.facebook.react:react-native:+"
-    implementation 'com.github.Polidea:MultiPlatformBleAdapter:0.1.7'
+    implementation 'com.github.Polidea:MultiPlatformBleAdapter:b0272c0fae040cc90f790481c54e8f2d45304339'
 }
