@@ -1,0 +1,35 @@
+{
+  "name": "react-native-ble-sample-app",
+  "version": "0.0.1",
+  "description": "Sample React Native project for testing react-native-ble-plx library",
+  "private": true,
+  "author": "Intent (Michal Ciechanowicz) <michal.ciechanowicz@withintent.com>",
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios --simulator='IPhone 12'",
+    "start": "react-native start",
+    "pod:install": "cd ios && pod install && cd ..",
+    "clean:pods": "rm -rf ios/Pods",
+    "clean:android": "cd android && ./gradlew cleanBuildCache && ./gradlew clean",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "react": "17.0.2",
+    "react-native": "0.66.2",
+    "react-native-ble-plx": "^2.0.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "7.14.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "react-test-renderer": "17.0.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
