@@ -6,8 +6,10 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Text,
-  View
+  View,
 } from 'react-native'
+
+import Toast from 'react-native-toast-message';
 
 import { BLEmanager } from './index'
 import PrimaryButton from './src/components/PrimaryButton'
@@ -31,6 +33,7 @@ const App = () => {
 
     BLEmanager.startDeviceScan(null, null, (error, device) => {
       if (error) {
+        showToast('error', error.message, error.name)
         console.log('Error! Scanning devices: ', error)
         return
       }
@@ -69,6 +72,7 @@ const App = () => {
       const characteristics = await connectedDevice.discoverAllServicesAndCharacteristics()
       console.log('Device services and characteristics: ', characteristics) 
     } catch (error) {
+      showToast('error', error.message, error.name)
       console.log('Error! Connecting to device: ', error)
     } finally {
       handleStopLoading()
@@ -86,6 +90,7 @@ const App = () => {
       devicesArr[connectedDeviceIndex] = { ...devicesArr[connectedDeviceIndex], isConnected: false }
       setDevices(devicesArr)
     } catch (error) {
+      showToast('error', error.message, error.name)
       console.log('Error! Connection cancellation: ', error)
     } finally {
       handleStopLoading()
@@ -111,6 +116,14 @@ const App = () => {
     </TouchableOpacity>
   )
 
+  const showToast = (type, message, title) => {
+    Toast.show({
+      type,
+      text1: title || null,
+      text2: message
+    });
+  }
+
   const handleStartLoading = () => setIsLoading(true)
   const handleStopLoading = () => setIsLoading(false)
 
@@ -130,6 +143,7 @@ const App = () => {
           isScanning={isScanning}
         />
       </View>
+      <Toast />
     </SafeAreaView>
   )
 }
