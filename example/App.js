@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   View,
+  StatusBar,
 } from 'react-native'
 
 import Toast from 'react-native-toast-message';
@@ -129,6 +130,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
       <FlatList
         data={devices}
         renderItem={renderItem}
