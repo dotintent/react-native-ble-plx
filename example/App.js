@@ -121,7 +121,7 @@ const App = () => {
 
   const handleConnectionStatus = (handledDevice, isConnected) => {
     const deviceIndex = devices.findIndex(device => device.id === handledDevice.id)
-    const devicesArr = devices
+    const devicesArr = JSON.parse(JSON.stringify(devices))
     devicesArr[deviceIndex] = { ...devicesArr[deviceIndex], isConnected }
     setDevices(devicesArr)
   }
