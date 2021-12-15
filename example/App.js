@@ -79,7 +79,7 @@ const App = () => {
     handleStartLoading()
     try {
       const response = await BLEmanager.cancelDeviceConnection(deviceId)
-      console.log('Connection canceled succesfully: ', response)
+      console.log('Connection cancelled succesfully: ', response)
 
       const connectedDeviceIndex = devices.findIndex(device => device.id === response.id)
       const devicesArr = devices
