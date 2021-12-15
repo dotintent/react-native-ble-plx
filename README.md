@@ -121,6 +121,13 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
         ...
     ```
 
+## Example
+
+If you want to test the library you can use the example project we have prepared for you.
+
+You just need to clone the repository and navigate to the example folder.
+Then follow the instructions on how to run the project locally: [How to run example app](https://github.com/dotintent/react-native-ble-plx/blob/master/example/README.md)
+
 ## Troubleshooting
 
 ### Problems with Proguard
