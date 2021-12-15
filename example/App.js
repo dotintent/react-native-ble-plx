@@ -120,7 +120,7 @@ const App = () => {
         data={devices}
         renderItem={renderItem}
         keyExtractor={item => item.id}
-        style={{padding: 10}}
+        style={styles.flatList}
       />
       {isLoading && <ActivityIndicator size="large" />}
       <View style={styles.buttonContainer}>
@@ -154,6 +154,9 @@ const styles = StyleSheet.create({
   buttonContainer: {
     marginVertical: 15,
   },
+  flatList: {
+    padding: 10,
+  }
 })
 
 export default App
