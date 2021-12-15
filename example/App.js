@@ -65,10 +65,7 @@ const App = () => {
       const connectedDevice = await BLEmanager.connectToDevice(deviceId)
       console.log('Connected to device: ', connectedDevice)
 
-      const connectedDeviceIndex = devices.findIndex(device => device.id === connectedDevice.id)
-      const devicesArr = devices
-      devicesArr[connectedDeviceIndex] = { ...devicesArr[connectedDeviceIndex], isConnected: true }
-      setDevices(devicesArr)
+      handleConnectionStatus(connectedDevice, isConnected = true)
 
       const characteristics = await connectedDevice.discoverAllServicesAndCharacteristics()
       console.log('Device services and characteristics: ', characteristics) 
@@ -83,13 +80,10 @@ const App = () => {
   const handleCancelConnection = async (deviceId) => {
     handleStartLoading()
     try {
-      const response = await BLEmanager.cancelDeviceConnection(deviceId)
-      console.log('Connection cancelled succesfully: ', response)
+      const disconnectedDevice = await BLEmanager.cancelDeviceConnection(deviceId)
+      console.log('Connection cancelled succesfully: ', disconnectedDevice)
 
-      const connectedDeviceIndex = devices.findIndex(device => device.id === response.id)
-      const devicesArr = devices
-      devicesArr[connectedDeviceIndex] = { ...devicesArr[connectedDeviceIndex], isConnected: false }
-      setDevices(devicesArr)
+      handleConnectionStatus(disconnectedDevice, isConnected = false)
     } catch (error) {
       showToast('error', error.message, error.name)
       console.log('Error! Connection cancellation: ', error)
@@ -122,7 +116,14 @@ const App = () => {
       type,
       text1: title || null,
       text2: message
-    });
+    })
+  }
+
+  const handleConnectionStatus = (handledDevice, isConnected) => {
+    const deviceIndex = devices.findIndex(device => device.id === handledDevice.id)
+    const devicesArr = devices
+    devicesArr[deviceIndex] = { ...devicesArr[deviceIndex], isConnected }
+    setDevices(devicesArr)
   }
 
   const handleStartLoading = () => setIsLoading(true)
