@@ -13,6 +13,7 @@
     "yarn:install": "yarn && cd ios && bundle exec pod install && cd ..",
     "clean:pods": "rm -rf ios/Pods",
     "clean:android": "cd android && ./gradlew cleanBuildCache && ./gradlew clean",
+    "clean:xcode:derived:data": "rm -rf ~/Library/Developer/Xcode/DerivedData && rm -rf ~/Library/Caches/com.apple.dt.Xcode",
     "test": "jest",
     "lint": "eslint ."
   },

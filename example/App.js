@@ -38,6 +38,7 @@ const App = () => {
         console.log('Error! Scanning devices: ', error)
         return
       }
+      console.log('Scanned device: ', device)
 
       setDevices(prevState => {
         const duplicat = prevState.find(item => item.id === device.id)
