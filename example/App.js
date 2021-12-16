@@ -64,6 +64,7 @@ const App = () => {
     try {
       const connectedDevice = await BLEmanager.connectToDevice(deviceId)
       console.log('Connected to device: ', connectedDevice)
+      showToast('success', 'Connected to device')
 
       handleConnectionStatus(connectedDevice, true)
 
@@ -82,6 +83,7 @@ const App = () => {
     try {
       const disconnectedDevice = await BLEmanager.cancelDeviceConnection(deviceId)
       console.log('Connection cancelled succesfully: ', disconnectedDevice)
+      showToast('success', 'Disconnected from device')
 
       handleConnectionStatus(disconnectedDevice, false)
     } catch (error) {
