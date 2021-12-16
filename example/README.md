@@ -14,4 +14,4 @@ Using npm
 
 ## Troubleshooting
 
-If you are having problem installing app using `yarn ios` you can try deleting xCode Derived Data and clearing the cache using: `yarn clean:xcode:derived:data`
+If you are having problem installing app using `yarn ios` you can try deleting xCode Derived Data and clearing the cache using: `yarn clean:xcode:derived:data` or `npm run clean:xcode:derived:data`
