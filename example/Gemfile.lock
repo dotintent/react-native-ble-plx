@@ -91,6 +91,7 @@ PLATFORMS
 
 DEPENDENCIES
   cocoapods (~> 1.11.2)
+  ffi (~> 1.15.4)
 
 BUNDLED WITH
    2.2.19
