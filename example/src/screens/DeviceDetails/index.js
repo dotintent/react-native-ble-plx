@@ -9,9 +9,13 @@ import PrimaryButton from '../../components/PrimaryButton'
 import { showToast } from '../../utils/showToast'
 import { DevicesContext } from '../../contexts/DevicesContext'
 import { LoadingIndicator } from '../../components/LoadingIndicator'
+import { CharacteristicsCard } from '../../components/CharacteristicsCard'
+import { ServicesCard } from '../../components/ServicesCard'
 
 export const DeviceDetailsScreen = () => {
   const [isLoading, setIsLoading] = React.useState(false)
+  const [characteristics, setCharacteristics] = React.useState({})
+  const [services, setServices] = React.useState([])
 
   const navigation = useNavigation()
   const route = useRoute()
@@ -22,7 +26,9 @@ export const DeviceDetailsScreen = () => {
 
   React.useEffect(() => {
     navigation.setOptions({ headerTitle: device.name || device.localName || 'No name' })
-  }, [])
+    handleDeviceCharacteristics(device.id)
+    handleDeviceServices(device.id)
+  }, [device])
 
   const handleCancelConnection = async (deviceId) => {
     handleStartLoading()
@@ -41,6 +47,34 @@ export const DeviceDetailsScreen = () => {
     }
   }
 
+  const handleDeviceCharacteristics = async (deviceId) => {
+    handleStartLoading()
+    try {
+      const deviceCharacteristics = await BLEmanager.discoverAllServicesAndCharacteristicsForDevice(deviceId)
+      setCharacteristics(deviceCharacteristics)
+      console.log('Device characteristics: ', deviceCharacteristics) 
+    } catch (error) {
+      showToast('error', error.message, error.name)
+      console.log('Error while getting device characteristics ', error)
+    } finally {
+      handleStopLoading()
+    }
+  }
+
+  const handleDeviceServices = async (deviceId) => {
+    handleStartLoading()
+    try {
+      const deviceServices = await BLEmanager.servicesForDevice(deviceId)
+      setServices(deviceServices)
+      console.log('Device services: ', deviceServices) 
+    } catch (error) {
+      showToast('error', error.message, error.name)
+      console.log('Error while getting device services! ', error)
+    } finally {
+      handleStopLoading()
+    }
+  }
+
   const handleConnectionStatus = (handledDevice, isConnected) => {
     const deviceIndex = devices.findIndex(device => device.id === handledDevice.id)
     const devicesArr = JSON.parse(JSON.stringify(devices))
@@ -53,7 +87,8 @@ export const DeviceDetailsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flex: 1}} />
+      <CharacteristicsCard characteristics={characteristics} />
+      <ServicesCard services={services} />
       <LoadingIndicator isLoading={isLoading} />
       <PrimaryButton
         onPress={() => handleCancelConnection(device.id)}
@@ -68,5 +103,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  card: {
+    backgroundColor: '#fff',
+    marginBottom: 10,
+    padding: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 })

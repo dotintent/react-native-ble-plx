@@ -89,9 +89,6 @@ export const HomeScreen = () => {
       showToast('success', 'Connected to device')
 
       handleConnectionStatus(connectedDevice, true)
-
-      const characteristics = await connectedDevice.discoverAllServicesAndCharacteristics()
-      console.log('Device services and characteristics: ', characteristics) 
     } catch (error) {
       showToast('error', error.message, error.name)
       console.log('Error! Connecting to device: ', error)
@@ -105,7 +102,7 @@ export const HomeScreen = () => {
       onPress={() => {
         item.isConnected ? handleNavigateToDeviceDetails(item) : handleConnectToDevice(item.id)
       }}
-      style={[styles.device, item.isConnected && { backgroundColor: '#e2fce1' }]}
+      style={[styles.deviceCard, item.isConnected && { backgroundColor: '#e2fce1' }]}
     >
       <Text style={styles.deviceName}>{item.name || item.localName || 'No name'}</Text>
       <Text style={styles.deviceParam}>
@@ -174,7 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  device: {
+  deviceCard: {
     backgroundColor: '#fff',
     marginBottom: 10,
     padding: 10,
