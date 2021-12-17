@@ -2,40 +2,41 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 export const ServicesCard = ({ services }) => {
-
   return (
-    <View style={styles.card}>
-      <Text style={styles.title}>Device services</Text>
-      {services.map((service, index) => (
-        <View key={service.id} style={styles.serviceContainer}>
-          <Text style={styles.subtitle}>Service {index}</Text>
-          <Text style={styles.deviceParam}>
-            {`deviceID: ${'\n'}`}
-            <Text style={styles.deviceParamValue}>
-              {service.deviceID}
+    services.length ? (
+      <View style={styles.card}>
+        <Text style={styles.title}>Device services</Text>
+        {services.map((service, index) => (
+          <View key={service.id} style={styles.serviceContainer}>
+            <Text style={styles.subtitle}>Service {index}</Text>
+            <Text style={styles.deviceParam}>
+              {`deviceID: ${'\n'}`}
+              <Text style={styles.deviceParamValue}>
+                {service.deviceID}
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.deviceParam}>
-            {`id: `}
-            <Text style={styles.deviceParamValue}>
-              {service.id}
+            <Text style={styles.deviceParam}>
+              {`id: `}
+              <Text style={styles.deviceParamValue}>
+                {service.id}
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.deviceParam}>
-            {`isPrimary: `}
-            <Text style={styles.deviceParamValue}>
-              {service.isPrimary.toString()}
+            <Text style={styles.deviceParam}>
+              {`isPrimary: `}
+              <Text style={styles.deviceParamValue}>
+                {service.isPrimary.toString()}
+              </Text>
             </Text>
-          </Text>
-          <Text style={styles.deviceParam}>
-            {`UUID: `}
-            <Text style={styles.deviceParamValue}>
-              {service.uuid}
+            <Text style={styles.deviceParam}>
+              {`UUID: `}
+              <Text style={styles.deviceParamValue}>
+                {service.uuid}
+              </Text>
             </Text>
-          </Text>
-        </View>
-      ))}
-    </View>
+          </View>
+        ))}
+      </View>
+    ) : null
   )
 }
 
