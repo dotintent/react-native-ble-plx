@@ -86,7 +86,10 @@ export const DeviceDetailsScreen = () => {
   const handleStopLoading = () => setIsLoading(false)
 
   return (
-    <ScrollView contentContainerStyle={styles.contentContainer}>
+    <ScrollView
+      indicatorStyle="black"
+      contentContainerStyle={styles.contentContainer}
+    >
       <CharacteristicsCard characteristics={characteristics} />
       <ServicesCard services={services} />
       <LoadingIndicator isLoading={isLoading} />

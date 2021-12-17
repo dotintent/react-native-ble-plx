@@ -66,6 +66,8 @@ export const HomeScreen = () => {
         if (!duplicat) {
           return [...prevState, {...device, isConnected: false}]
         } else {
+          const duplicatIndex = prevState.findIndex(item => item.id === duplicat.id)
+          prevState[duplicatIndex].rssi = device.rssi
           return [...prevState]
         }
       })
