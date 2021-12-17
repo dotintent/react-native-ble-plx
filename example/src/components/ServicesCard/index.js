@@ -24,13 +24,13 @@ export const ServicesCard = ({ services }) => {
           <Text style={styles.deviceParam}>
             {`isPrimary: `}
             <Text style={styles.deviceParamValue}>
-              {service.isPrimary}
+              {service.isPrimary.toString()}
             </Text>
           </Text>
           <Text style={styles.deviceParam}>
             {`UUID: `}
             <Text style={styles.deviceParamValue}>
-              {service.UUID}
+              {service.uuid}
             </Text>
           </Text>
         </View>
