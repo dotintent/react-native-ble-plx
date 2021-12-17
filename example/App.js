@@ -8,18 +8,21 @@ import Toast from 'react-native-toast-message';
 
 import { HomeScreen } from './src/screens/Home'
 import { DeviceDetailsScreen } from './src/screens/DeviceDetails'
+import { DevicesContext, DevicesContextProvider } from './src/contexts/DevicesContext'
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
-          <Stack.Screen name="DeviceDetails" component={DeviceDetailsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <DevicesContextProvider>
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName="Home">
+              <Stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
+              <Stack.Screen name="DeviceDetails" component={DeviceDetailsScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
+      </DevicesContextProvider>
       <StatusBar barStyle="dark-content" />
       <Toast />
     </SafeAreaProvider>
