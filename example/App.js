@@ -140,6 +140,7 @@ const App = () => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
         style={styles.flatList}
+        indicatorStyle="black"
       />
       {isLoading && <ActivityIndicator size="large" />}
       <View style={styles.buttonContainer}>
