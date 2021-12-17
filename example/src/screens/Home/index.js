@@ -2,20 +2,19 @@ import React, { useContext } from 'react'
 import {
   StyleSheet,
   FlatList,
-  ActivityIndicator,
   TouchableOpacity,
   Text,
   View,
 } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 
 import { BLEmanager } from '../../../index'
 import PrimaryButton from '../../components/PrimaryButton'
 import { showToast } from '../../utils/showToast'
 import { DevicesContext } from '../../contexts/DevicesContext'
+import { LoadingIndicator } from '../../components/LoadingIndicator'
 
 export const HomeScreen = () => {
   const [isLoading, setIsLoading] = React.useState(false)
@@ -126,7 +125,7 @@ export const HomeScreen = () => {
         style={styles.flatList}
         indicatorStyle="black"
       />
-      {isLoading && <ActivityIndicator size="large" />}
+      <LoadingIndicator isLoading={isLoading} />
       <View style={styles.buttonContainer}>
         <PrimaryButton
           onPress={isScanning ? handleStopDeviceScan : handleStartDeviceScan}
@@ -134,7 +133,6 @@ export const HomeScreen = () => {
           isScanning={isScanning}
         />
       </View>
-      <Toast />
     </SafeAreaView>
   )
 }
@@ -167,8 +165,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginVertical: 15,
-    width: '100%',
     paddingHorizontal: 20,
+    width: '100%',
   },
   flatList: {
     padding: 10,
