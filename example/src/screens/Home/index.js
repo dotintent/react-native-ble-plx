@@ -94,12 +94,22 @@ export const HomeScreen = () => {
       }}
       style={[styles.device, item.isConnected && { backgroundColor: '#e2fce1' }]}
     >
-      <Text>name: {item.name || item.localName || 'No name'}</Text>
-      <Text>id: {item.id}</Text>
-      <Text>rssi: {item.rssi}</Text>
-      <Text>
-        connected: 
-        <Text style={item.isConnected && styles.deviceConnectedText}>
+      <Text style={styles.deviceName}>{item.name || item.localName || 'No name'}</Text>
+      <Text style={styles.deviceParam}>
+        {`ID: `}
+        <Text style={styles.deviceParamValue}>
+          {item.id}
+        </Text>
+      </Text>
+      <Text style={styles.deviceParam}>
+        {`RSSI: `}
+        <Text style={styles.deviceParamValue}>
+          {item.rssi}
+        </Text>
+      </Text>
+      <Text style={styles.deviceParam}>
+        {`Connected: `} 
+        <Text style={item.isConnected ? styles.deviceConnectedText : styles.deviceParamValue}>
           {item.isConnected.toString()}
         </Text>
       </Text>
@@ -147,8 +157,8 @@ const styles = StyleSheet.create({
   device: {
     backgroundColor: '#fff',
     marginBottom: 10,
-    padding: 5,
-    alignItems: 'center',
+    padding: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
     shadowColor: "#000",
     shadowOffset: {
@@ -170,5 +180,18 @@ const styles = StyleSheet.create({
   },
   flatList: {
     padding: 10,
+  },
+  deviceName: {
+    fontWeight: 'bold',
+    fontSize: 17,
+    textAlign: 'center',
+    marginBottom: 5,
+  },
+  deviceParam: {
+    fontWeight: '500',
+  },
+  deviceParamValue: {
+    fontWeight: 'normal',
+    fontSize: 13,
   }
 })
