@@ -10,14 +10,18 @@ import {
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
 
 import { BLEmanager } from '../../../index'
 import PrimaryButton from '../../components/PrimaryButton'
+import { showToast } from '../../utils/showToast'
 
 export const HomeScreen = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const [isScanning, setIsScanning] = React.useState(false)
   const [devices, setDevices] = React.useState([])
+
+  const navigation = useNavigation();
 
   React.useEffect(() => {
     const subscription = BLEmanager.onStateChange((state) => {
@@ -25,6 +29,10 @@ export const HomeScreen = () => {
     }, true);
     return () => subscription.remove();
   }, [BLEmanager]);
+
+  const handleNavigateToDeviceDetails = (device) => {
+    navigation.navigate('DeviceDetails', { device })
+  }
 
   const handleStartDeviceScan = () => {
     setIsScanning(true)
@@ -78,26 +86,10 @@ export const HomeScreen = () => {
     }
   }
 
-  const handleCancelConnection = async (deviceId) => {
-    handleStartLoading()
-    try {
-      const disconnectedDevice = await BLEmanager.cancelDeviceConnection(deviceId)
-      console.log('Connection cancelled succesfully: ', disconnectedDevice)
-      showToast('success', 'Disconnected from device')
-
-      handleConnectionStatus(disconnectedDevice, false)
-    } catch (error) {
-      showToast('error', error.message, error.name)
-      console.log('Error! Connection cancellation: ', error)
-    } finally {
-      handleStopLoading()
-    }
-  }
-
   const renderItem = ({ item }) => (
     <TouchableOpacity 
       onPress={() => {
-        item.isConnected ? handleCancelConnection(item.id) : handleConnectToDevice(item.id)
+        item.isConnected ? handleNavigateToDeviceDetails(item) : handleConnectToDevice(item.id)
       }}
       style={[styles.device, item.isConnected && { backgroundColor: '#e2fce1' }]}
     >
@@ -112,14 +104,6 @@ export const HomeScreen = () => {
       </Text>
     </TouchableOpacity>
   )
-
-  const showToast = (type, message, title) => {
-    Toast.show({
-      type,
-      text1: title || null,
-      text2: message
-    })
-  }
 
   const handleConnectionStatus = (handledDevice, isConnected) => {
     const deviceIndex = devices.findIndex(device => device.id === handledDevice.id)
@@ -181,6 +165,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginVertical: 15,
+    width: '100%',
+    paddingHorizontal: 20,
   },
   flatList: {
     padding: 10,

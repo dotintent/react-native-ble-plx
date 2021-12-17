@@ -6,7 +6,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
 
-import { HomeScreen } from './src/screens/HomeScreen'
+import { HomeScreen } from './src/screens/Home'
+import { DeviceDetailsScreen } from './src/screens/DeviceDetails'
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen options={{ headerShown: false }} name="Home" component={HomeScreen} />
+          <Stack.Screen name="DeviceDetails" component={DeviceDetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       <StatusBar barStyle="dark-content" />
