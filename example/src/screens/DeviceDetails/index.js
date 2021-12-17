@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -86,24 +86,24 @@ export const DeviceDetailsScreen = () => {
   const handleStopLoading = () => setIsLoading(false)
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView contentContainerStyle={styles.contentContainer}>
       <CharacteristicsCard characteristics={characteristics} />
       <ServicesCard services={services} />
       <LoadingIndicator isLoading={isLoading} />
-      <PrimaryButton
-        onPress={() => handleCancelConnection(device.id)}
-        title="Disconnect device"
-      />
-    </SafeAreaView>
+      <View style={styles.buttonContainer}>
+        <PrimaryButton
+          onPress={() => handleCancelConnection(device.id)}
+          title="Disconnect device"
+        />
+      </View>
+    </ScrollView>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+  contentContainer: {
     paddingHorizontal: 20,
+    marginTop: 10,
   },
   card: {
     backgroundColor: '#fff',
@@ -119,5 +119,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  buttonContainer: {
+    marginTop: 15,
   },
 })

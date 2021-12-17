@@ -166,7 +166,6 @@ export const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#EAEBF8',
     flex: 1,
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -191,7 +190,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonContainer: {
-    marginVertical: 15,
     paddingHorizontal: 20,
     width: '100%',
   },
