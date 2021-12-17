@@ -14,9 +14,9 @@ export const DeviceDetailsScreen = () => {
   const navigation = useNavigation()
   const route = useRoute()
 
+  const [devices, setDevices] = useContext(DevicesContext)
   const device  = route?.params?.device || {}
 
-  const devices = useContext(DevicesContext)
 
   React.useEffect(() => {
     navigation.setOptions({ headerTitle: device.name || device.localName || 'No name' })
@@ -29,7 +29,7 @@ export const DeviceDetailsScreen = () => {
       console.log('Connection cancelled succesfully: ', disconnectedDevice)
       showToast('success', 'Disconnected from device')
 
-      // handleConnectionStatus(disconnectedDevice, false)
+      handleConnectionStatus(disconnectedDevice, false)
     } catch (error) {
       showToast('error', error.message, error.name)
       console.log('Error! Connection cancellation: ', error)
@@ -37,6 +37,13 @@ export const DeviceDetailsScreen = () => {
       handleStopLoading()
       navigation.goBack()
     }
+  }
+
+  const handleConnectionStatus = (handledDevice, isConnected) => {
+    const deviceIndex = devices.findIndex(device => device.id === handledDevice.id)
+    const devicesArr = JSON.parse(JSON.stringify(devices))
+    devicesArr[deviceIndex] = { ...devicesArr[deviceIndex], isConnected }
+    setDevices(devicesArr)
   }
 
   const handleStartLoading = () => setIsLoading(true)

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   StyleSheet,
   FlatList,
@@ -15,11 +15,13 @@ import { useNavigation } from '@react-navigation/native';
 import { BLEmanager } from '../../../index'
 import PrimaryButton from '../../components/PrimaryButton'
 import { showToast } from '../../utils/showToast'
+import { DevicesContext } from '../../contexts/DevicesContext'
 
 export const HomeScreen = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const [isScanning, setIsScanning] = React.useState(false)
-  const [devices, setDevices] = React.useState([])
+
+  const [devices, setDevices] = useContext(DevicesContext)
 
   const navigation = useNavigation();
 
