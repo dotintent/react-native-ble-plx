@@ -9,6 +9,7 @@ import {
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import Permissions, { PERMISSIONS, RESULTS } from 'react-native-permissions'
 
 import { BLEmanager } from '../../../index'
 import PrimaryButton from '../../components/PrimaryButton'
@@ -19,10 +20,22 @@ import { LoadingIndicator } from '../../components/LoadingIndicator'
 export const HomeScreen = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const [isScanning, setIsScanning] = React.useState(false)
+  const [bluetoothPermission, setBluetoothPermission] = React.useState(null)
 
   const [devices, setDevices] = useContext(DevicesContext)
 
   const navigation = useNavigation();
+
+  React.useEffect(() => {
+    handleBluetoothPermissions()
+  }, [])
+
+  const handleBluetoothPermissions = async () => {
+    const permissionStatus = await Permissions.check(PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL)
+    permissionStatus === RESULTS.GRANTED ? setBluetoothPermission(true) : setBluetoothPermission(false)
+  }
+
+
 
   React.useEffect(() => {
     const subscription = BLEmanager.onStateChange((state) => {
@@ -136,11 +149,18 @@ export const HomeScreen = () => {
         indicatorStyle="black"
       />
       <LoadingIndicator isLoading={isLoading} />
+      {!bluetoothPermission ? (
+        <Text style={styles.permissionText}>
+          No bluetooth permissions granted!
+        </Text>
+      ) : null
+      }
       <View style={styles.buttonContainer}>
         <PrimaryButton
           onPress={isScanning ? handleStopDeviceScan : handleStartDeviceScan}
           title={`Scan devices: ${!isScanning ? 'Off' : 'On'}`}
           isScanning={isScanning}
+          isDisabled={!bluetoothPermission}
         />
       </View>
     </SafeAreaView>
@@ -193,5 +213,9 @@ const styles = StyleSheet.create({
   deviceParamValue: {
     fontWeight: 'normal',
     fontSize: 13,
-  }
+  },
+  permissionText: {
+    color: 'red',
+    fontWeight: '600',
+  },
 })

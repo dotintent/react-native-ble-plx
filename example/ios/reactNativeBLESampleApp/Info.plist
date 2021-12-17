@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Used for ble-plx library</string>
+	<string>Required to search for devices</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Required to check the Bluetooth permissions granted in the application</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
