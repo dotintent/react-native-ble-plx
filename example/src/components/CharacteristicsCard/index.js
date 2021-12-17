@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
 export const CharacteristicsCard = ({ characteristics }) => {
-
   return (
     <View style={styles.card}>
       <Text style={styles.title}>Device characteristics</Text>

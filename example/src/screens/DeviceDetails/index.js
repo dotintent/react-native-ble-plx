@@ -51,6 +51,9 @@ export const DeviceDetailsScreen = () => {
     handleStartLoading()
     try {
       const deviceCharacteristics = await BLEmanager.discoverAllServicesAndCharacteristicsForDevice(deviceId)
+      for (const characteristic in deviceCharacteristics) {
+        if (deviceCharacteristics[characteristic] === null) deviceCharacteristics[characteristic] = 'null'
+      }
       setCharacteristics(deviceCharacteristics)
       console.log('Device characteristics: ', deviceCharacteristics) 
     } catch (error) {
