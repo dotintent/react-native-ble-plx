@@ -26,7 +26,6 @@ const App = () => {
                   headerTitleStyle: { fontSize: 20 },
                   headerStyle: { backgroundColor: '#e8e6e6' },
                 }}
-                
               />
               <Stack.Screen name="DeviceDetails" component={DeviceDetailsScreen} />
             </Stack.Navigator>
