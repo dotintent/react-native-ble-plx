@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Text,
   View,
+  Pressable,
 } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -33,13 +34,14 @@ export const HomeScreen = () => {
   React.useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity
+        <Pressable
+          hitSlop={40}
           onPress={isScanning ? handleStopDeviceScan : handleStartDeviceScan}
         >
           <Text style={{ color: isScanning ? 'green' : 'black' }}>
             {`Scan: ${!isScanning ? 'Off' : 'On'}`}
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       ),
     })
   }, [isScanning, bluetoothPermission])

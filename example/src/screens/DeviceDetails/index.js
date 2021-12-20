@@ -24,7 +24,10 @@ export const DeviceDetailsScreen = () => {
 
 
   React.useEffect(() => {
-    navigation.setOptions({ headerTitle: device.name || device.localName || 'No name' })
+    navigation.setOptions({
+      headerTitle: device.name || device.localName || 'No name',
+      headerStyle: { backgroundColor: '#e8e6e6' },
+    })
     handleDeviceCharacteristics(device.id)
     handleDeviceServices(device.id)
   }, [device])
