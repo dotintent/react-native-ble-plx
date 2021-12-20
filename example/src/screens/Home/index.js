@@ -10,6 +10,7 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import Permissions, { PERMISSIONS, RESULTS } from 'react-native-permissions'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BLEmanager } from '../../../index'
 import PrimaryButton from '../../components/PrimaryButton'
@@ -106,7 +107,10 @@ export const HomeScreen = () => {
       }}
       style={[styles.deviceCard, item.isConnected && { backgroundColor: '#e2fce1' }]}
     >
-      <Text style={styles.deviceName}>{item.name || item.localName || 'No name'}</Text>
+      <View style={styles.iconWrapper}>
+        <Icon style={styles.icon} name="devices" size={25} />
+        <Text style={[styles.deviceName, { marginLeft: 10 }]}>{item.name || item.localName || 'No name'}</Text>
+      </View>
       <Text style={styles.deviceParam}>
         {`ID: `}
         <Text style={styles.deviceParamValue}>
@@ -214,5 +218,12 @@ const styles = StyleSheet.create({
   permissionText: {
     color: 'red',
     fontWeight: '600',
+  },
+  iconWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  icon: {
+    marginLeft: -10,
   },
 })
