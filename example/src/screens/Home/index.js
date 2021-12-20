@@ -13,7 +13,6 @@ import Permissions, { PERMISSIONS, RESULTS } from 'react-native-permissions'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { BLEmanager } from '../../../index'
-import PrimaryButton from '../../components/PrimaryButton'
 import { showToast } from '../../utils/showToast'
 import { DevicesContext } from '../../contexts/DevicesContext'
 import { LoadingIndicator } from '../../components/LoadingIndicator'
@@ -31,12 +30,24 @@ export const HomeScreen = () => {
     handleBluetoothPermissions()
   }, [])
 
+  React.useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={isScanning ? handleStopDeviceScan : handleStartDeviceScan}
+        >
+          <Text style={{ color: isScanning ? 'green' : 'black' }}>
+            {`Scan: ${!isScanning ? 'Off' : 'On'}`}
+          </Text>
+        </TouchableOpacity>
+      ),
+    })
+  }, [isScanning, bluetoothPermission])
+
   const handleBluetoothPermissions = async () => {
     const permissionStatus = await Permissions.check(PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL)
     permissionStatus === RESULTS.GRANTED ? setBluetoothPermission(true) : setBluetoothPermission(false)
   }
-
-
 
   React.useEffect(() => {
     const subscription = BLEmanager.onStateChange((state) => {
@@ -143,38 +154,28 @@ export const HomeScreen = () => {
   const handleStopLoading = () => setIsLoading(false)
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView edges={['left', 'right']} style={styles.container}>
       <FlatList
         data={devices}
         renderItem={renderItem}
         keyExtractor={item => item.id}
         style={styles.flatList}
         indicatorStyle="black"
+        contentContainerStyle={{ paddingBottom: 30 }}
       />
       <LoadingIndicator isLoading={isLoading} />
       {!bluetoothPermission ? (
         <Text style={styles.permissionText}>
           No bluetooth permissions granted!
         </Text>
-      ) : null
-      }
-      <View style={styles.buttonContainer}>
-        <PrimaryButton
-          onPress={isScanning ? handleStopDeviceScan : handleStartDeviceScan}
-          title={`Scan devices: ${!isScanning ? 'Off' : 'On'}`}
-          isScanning={isScanning}
-          isDisabled={!bluetoothPermission}
-        />
-      </View>
+      ) : null}
     </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flex: 1, 
   },
   deviceCard: {
     backgroundColor: '#fff',
@@ -194,10 +195,6 @@ const styles = StyleSheet.create({
   deviceConnectedText: {
     color: 'green',
     fontWeight: 'bold',
-  },
-  buttonContainer: {
-    paddingHorizontal: 20,
-    width: '100%',
   },
   flatList: {
     padding: 10,
