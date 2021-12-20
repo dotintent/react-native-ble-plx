@@ -175,7 +175,7 @@ export const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1, 
+    flex: 1,
   },
   deviceCard: {
     backgroundColor: '#fff',

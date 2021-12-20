@@ -24,7 +24,6 @@ const App = () => {
                 options={{
                   headerTitle: 'BLE PLX',
                   headerTitleStyle: { fontSize: 20 },
-                  headerStyle: { borderBottomWidth: '0' }
                 }}
                 
               />
