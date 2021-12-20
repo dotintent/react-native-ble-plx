@@ -1,9 +1,18 @@
 import React from 'react'
-import { ActivityIndicator} from 'react-native'
+import { ActivityIndicator, StyleSheet } from 'react-native'
 
 export const LoadingIndicator = ({ isLoading }) => {
   return (
-    isLoading && <ActivityIndicator size="large" />
+    isLoading && <ActivityIndicator style={styles.indicator} size="large" />
   )
 }
 
+const styles = StyleSheet.create({
+  indicator: {
+    position: 'absolute',
+    bottom: '50%',
+    right: '50%', 
+    left: '50%',
+    top: '50%',
+  },
+})
