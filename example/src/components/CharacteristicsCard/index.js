@@ -14,7 +14,7 @@ export const CharacteristicsCard = ({ characteristics }) => {
       <Text style={styles.deviceParam}>
         {`isConnectable: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.isConnectable}
+          {characteristics.isConnectable.toString()}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>

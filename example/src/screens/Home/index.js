@@ -59,6 +59,9 @@ export const HomeScreen = () => {
   }, [BLEmanager]);
 
   const handleNavigateToDeviceDetails = (device) => {
+    for (const key in device) {
+      if (device[key] === null) device[key] = 'null'
+    }
     navigation.navigate('DeviceDetails', { device })
   }
 

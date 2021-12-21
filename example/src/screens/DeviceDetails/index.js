@@ -28,7 +28,7 @@ export const DeviceDetailsScreen = () => {
       headerTitle: device.name || device.localName || 'No name',
       headerStyle: { backgroundColor: '#e8e6e6' },
     })
-    handleDeviceCharacteristics(device.id)
+    // handleDeviceCharacteristics(device.id)
     handleDeviceServices(device.id)
   }, [device])
 
@@ -95,7 +95,7 @@ export const DeviceDetailsScreen = () => {
       indicatorStyle="black"
       contentContainerStyle={styles.contentContainer}
     >
-      <CharacteristicsCard characteristics={characteristics} />
+      <CharacteristicsCard characteristics={device} />
       <ServicesCard services={services} />
       <LoadingIndicator isLoading={isLoading} />
       <View style={styles.buttonContainer}>
