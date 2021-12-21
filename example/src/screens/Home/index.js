@@ -167,6 +167,7 @@ export const HomeScreen = () => {
         style={styles.flatList}
         indicatorStyle="black"
         contentContainerStyle={{ paddingBottom: 30 }}
+        scrollIndicatorInsets={{ right: -1 }}
       />
       <LoadingIndicator isLoading={isLoading} />
       {!bluetoothPermission ? (
