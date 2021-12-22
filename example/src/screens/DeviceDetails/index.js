@@ -13,7 +13,6 @@ import { ServicesCard } from '../../components/ServicesCard'
 
 export const DeviceDetailsScreen = () => {
   const [isLoading, setIsLoading] = React.useState(false)
-  const [characteristics, setCharacteristics] = React.useState({})
   const [services, setServices] = React.useState([])
 
   const navigation = useNavigation()
@@ -28,7 +27,7 @@ export const DeviceDetailsScreen = () => {
       headerTitle: device.name || device.localName || 'No name',
       headerStyle: { backgroundColor: '#e8e6e6' },
     })
-    handleDeviceCharacteristics(device.id)
+    discoverServicesAndCharacteristics(device.id)
     handleDeviceServices(device.id)
   }, [device])
 
@@ -49,18 +48,14 @@ export const DeviceDetailsScreen = () => {
     }
   }
 
-  const handleDeviceCharacteristics = async (deviceId) => {
+  const discoverServicesAndCharacteristics = async (deviceId) => {
     handleStartLoading()
     try {
-      const deviceCharacteristics = await BLEmanager.discoverAllServicesAndCharacteristicsForDevice(deviceId)
-      for (const characteristic in deviceCharacteristics) {
-        if (deviceCharacteristics[characteristic] === null) deviceCharacteristics[characteristic] = 'null'
-      }
-      setCharacteristics(deviceCharacteristics)
-      console.log('Device characteristics: ', deviceCharacteristics) 
+      const deviceDetails = await BLEmanager.discoverAllServicesAndCharacteristicsForDevice(deviceId)
+      console.log('Device details: ', deviceDetails)
     } catch (error) {
       showToast('error', error.message, error.name)
-      console.log('Error while getting device characteristics ', error)
+      console.log('Error while discovering all services and characteristics ', error)
     } finally {
       handleStopLoading()
     }
