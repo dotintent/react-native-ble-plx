@@ -14,6 +14,7 @@ import { ServicesCard } from '../../components/ServicesCard'
 export const DeviceDetailsScreen = () => {
   const [isLoading, setIsLoading] = React.useState(false)
   const [services, setServices] = React.useState([])
+  const [servicesAndcharacteristics, setServicesAndcharacteristics] = React.useState([])
 
   const navigation = useNavigation()
   const route = useRoute()
@@ -66,6 +67,7 @@ export const DeviceDetailsScreen = () => {
     try {
       const deviceServices = await BLEmanager.servicesForDevice(deviceId)
       setServices(deviceServices)
+      handleDeviceCharacteristics(deviceServices)
       console.log('Device services: ', deviceServices) 
     } catch (error) {
       showToast('error', error.message, error.name)
@@ -73,6 +75,22 @@ export const DeviceDetailsScreen = () => {
     } finally {
       handleStopLoading()
     }
+  }
+
+  const handleDeviceCharacteristics = async (deviceServices) => {
+    const deviceServicesAndCharacteristics = []
+    handleStartLoading()
+    for (const service of deviceServices) {
+      try {
+        const serviceCharacteristics = await BLEmanager.characteristicsForDevice(device.id, service.uuid)
+        deviceServicesAndCharacteristics.push({ ...service, characteristics: serviceCharacteristics })
+      } catch (error) {
+        showToast('error', error.message, error.name)
+        console.log('Error while getting device characteristics! ', error)
+      }
+    }
+    setServicesAndcharacteristics(deviceServicesAndCharacteristics)
+    handleStopLoading()
   }
 
   const handleConnectionStatus = (handledDevice, isConnected) => {
@@ -91,7 +109,7 @@ export const DeviceDetailsScreen = () => {
       contentContainerStyle={styles.contentContainer}
     >
       <DeviceDetailsCard deviceDetails={device} />
-      {/* <ServicesCard services={services} /> */}
+      <ServicesCard servicesAndcharacteristics={servicesAndcharacteristics} />
       <LoadingIndicator isLoading={isLoading} />
       <View style={styles.buttonContainer}>
         <PrimaryButton

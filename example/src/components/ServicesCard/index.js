@@ -1,43 +1,55 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-export const ServicesCard = ({ services }) => {
+export const ServicesCard = ({ servicesAndcharacteristics }) => {
   return (
-    services.length ? (
-      <View style={styles.card}>
-        <Text style={styles.title}>Device services</Text>
-        {services.map((service, index) => (
-          <View key={service.id} style={styles.serviceContainer}>
-            <Text style={styles.subtitle}>Service {index}</Text>
-            <Text style={styles.deviceParam}>
-              {`deviceID: ${'\n'}`}
-              <Text style={styles.deviceParamValue}>
-                {service.deviceID}
-              </Text>
-            </Text>
-            <Text style={styles.deviceParam}>
-              {`id: `}
-              <Text style={styles.deviceParamValue}>
-                {service.id}
-              </Text>
-            </Text>
-            <Text style={styles.deviceParam}>
-              {`isPrimary: `}
-              <Text style={styles.deviceParamValue}>
-                {service.isPrimary.toString()}
-              </Text>
-            </Text>
-            <Text style={styles.deviceParam}>
-              {`UUID: `}
-              <Text style={styles.deviceParamValue}>
-                {service.uuid}
-              </Text>
-            </Text>
-          </View>
-        ))}
-      </View>
-    ) : null
+    <View style={styles.card}>
+      {servicesAndcharacteristics.map(item => {
+        delete item._manager
+        const data = []
+        for (const i in item) {
+          data.push(<Text>{`${i}: ${item[i]}`}</Text>) 
+        }
+        return data
+      })}
+    </View>
   )
+  // return (
+  //   services.length ? (
+  //     <View style={styles.card}>
+  //       <Text style={styles.title}>Device services</Text>
+  //       {services.map((service, index) => (
+  //         <View key={service.id} style={styles.serviceContainer}>
+  //           <Text style={styles.subtitle}>Service {index}</Text>
+  //           <Text style={styles.deviceParam}>
+  //             {`deviceID: ${'\n'}`}
+  //             <Text style={styles.deviceParamValue}>
+  //               {service.deviceID}
+  //             </Text>
+  //           </Text>
+  //           <Text style={styles.deviceParam}>
+  //             {`id: `}
+  //             <Text style={styles.deviceParamValue}>
+  //               {service.id}
+  //             </Text>
+  //           </Text>
+  //           <Text style={styles.deviceParam}>
+  //             {`isPrimary: `}
+  //             <Text style={styles.deviceParamValue}>
+  //               {service.isPrimary.toString()}
+  //             </Text>
+  //           </Text>
+  //           <Text style={styles.deviceParam}>
+  //             {`UUID: `}
+  //             <Text style={styles.deviceParamValue}>
+  //               {service.uuid}
+  //             </Text>
+  //           </Text>
+  //         </View>
+  //       ))}
+  //     </View>
+  //   ) : null
+  // )
 }
 
 
