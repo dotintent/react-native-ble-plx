@@ -1,74 +1,74 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-export const CharacteristicsCard = ({ characteristics }) => {
+export const DeviceDetailsCard = ({ deviceDetails }) => {
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>Device characteristics</Text>
+      <Text style={styles.title}>Device details</Text>
       <Text style={styles.deviceParam}>
         {`ID: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.id}
+          {deviceDetails.id}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`isConnectable: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.isConnectable.toString()}
+          {deviceDetails.isConnectable.toString()}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`localName: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.localName}
+          {deviceDetails.localName}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`manufacturerData: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.manufacturerData}
+          {deviceDetails.manufacturerData}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`mtu: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.mtu}
+          {deviceDetails.mtu}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`overflowServiceUUIDs: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.overflowServiceUUIDs}
+          {deviceDetails.overflowServiceUUIDs}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`rssi: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.rssi}
+          {deviceDetails.rssi}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`serviceData: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.serviceData}
+          {deviceDetails.serviceData}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`serviceUUIDs: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.serviceUUIDs}
+          {deviceDetails.serviceUUIDs}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`solicitedServiceUUIDs: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.solicitedServiceUUIDs}
+          {deviceDetails.solicitedServiceUUIDs}
         </Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`txPowerLevel: `}
         <Text style={styles.deviceParamValue}>
-          {characteristics.txPowerLevel}
+          {deviceDetails.txPowerLevel}
         </Text>
       </Text>
     </View>
