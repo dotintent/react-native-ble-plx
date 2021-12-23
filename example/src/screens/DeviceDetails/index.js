@@ -129,6 +129,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingHorizontal: 20,
     marginTop: 10,
+    paddingBottom: 40,
   },
   card: {
     backgroundColor: '#fff',

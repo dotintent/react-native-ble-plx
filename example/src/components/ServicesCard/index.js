@@ -21,18 +21,22 @@ export const ServicesCard = ({ servicesAndcharacteristics }) => {
               {`isPrimary: `}
               <Text style={styles.deviceParamValue}>{item.isPrimary.toString()}</Text>
             </Text>
-            <Text style={[styles.deviceParam, { marginBottom: 20 }]}>
+            <Text style={styles.deviceParam}>
               {`UUID: `}
               <Text style={styles.deviceParamValue}>{item.uuid}</Text>
             </Text>
-            {item.characteristics.map((characteristic, index) => {
+            {item.characteristics.map((characteristic, _index) => {
               delete characteristic._manager
               const data = []
-              data.push(<Text style={styles.subtitle}>Characteristic {index}</Text>)
+              data.push(
+                <Text key={characteristic.id} style={[styles.subtitle, { marginTop: 20 }]}>
+                  Characteristic {_index}
+                </Text>,
+              )
               for (const i in characteristic) {
                 data.push(
                   <Text style={styles.deviceParam}>
-                    {`${i}:`}
+                    {`${i}: `}
                     <Text style={styles.deviceParamValue}>{`${characteristic[i]}`}</Text>
                   </Text>,
                 )
@@ -44,60 +48,6 @@ export const ServicesCard = ({ servicesAndcharacteristics }) => {
       })}
     </View>
   )
-  // return (
-  //   <View style={styles.card}>
-  //     {servicesAndcharacteristics.map(item => {
-  //       delete item._manager
-  //       const data = []
-  //       for (const i in item) {
-  //         data.push(
-  //           <Text style={styles.deviceParam}>
-  //             {`${i}:`}
-  //             <Text style={styles.deviceParamValue}>
-  //               {`${item[i]}`}
-  //             </Text>
-  //           </Text>)
-  //       }
-  //       return data
-  //     })}
-  //   </View>
-  // )
-  // return (
-  //   services.length ? (
-  //     <View style={styles.card}>
-  //       <Text style={styles.title}>Device services</Text>
-  //       {services.map((service, index) => (
-  //         <View key={service.id} style={styles.serviceContainer}>
-  //           <Text style={styles.subtitle}>Service {index}</Text>
-  //           <Text style={styles.deviceParam}>
-  //             {`deviceID: ${'\n'}`}
-  //             <Text style={styles.deviceParamValue}>
-  //               {service.deviceID}
-  //             </Text>
-  //           </Text>
-  //           <Text style={styles.deviceParam}>
-  //             {`id: `}
-  //             <Text style={styles.deviceParamValue}>
-  //               {service.id}
-  //             </Text>
-  //           </Text>
-  //           <Text style={styles.deviceParam}>
-  //             {`isPrimary: `}
-  //             <Text style={styles.deviceParamValue}>
-  //               {service.isPrimary.toString()}
-  //             </Text>
-  //           </Text>
-  //           <Text style={styles.deviceParam}>
-  //             {`UUID: `}
-  //             <Text style={styles.deviceParamValue}>
-  //               {service.uuid}
-  //             </Text>
-  //           </Text>
-  //         </View>
-  //       ))}
-  //     </View>
-  //   ) : null
-  // )
 }
 
 const styles = StyleSheet.create({
@@ -127,7 +77,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 15,
+    marginBottom: 5,
     textAlign: 'center',
   },
   subtitle: {
