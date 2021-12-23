@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
+import base64 from 'react-native-base64'
+
 export const ServicesCard = ({ servicesAndcharacteristics }) => {
   return (
     <View>
@@ -37,7 +39,13 @@ export const ServicesCard = ({ servicesAndcharacteristics }) => {
                 data.push(
                   <Text style={styles.deviceParam}>
                     {`${i}: `}
-                    <Text style={styles.deviceParamValue}>{`${characteristic[i]}`}</Text>
+                    <Text style={styles.deviceParamValue}>
+                      {i === 'value'
+                        ? characteristic[i] === null
+                          ? 'null'
+                          : base64.decode(characteristic[i])
+                        : `${characteristic[i]}`}
+                    </Text>
                   </Text>,
                 )
               }
