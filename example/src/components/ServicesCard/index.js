@@ -1,9 +1,21 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Button } from 'react-native'
 
 import base64 from 'react-native-base64'
 
-export const ServicesCard = ({ servicesAndcharacteristics }) => {
+export const ServicesCard = ({
+  onSetCharacteristicData,
+  servicesAndcharacteristics,
+  onHandleOpenModal,
+}) => {
+  const handleWriteCharacteristic = (deviceId, serviceUUID, characteristicUUID) => {
+    onSetCharacteristicData({
+      deviceId,
+      serviceUUID,
+      characteristicUUID,
+    })
+    onHandleOpenModal()
+  }
   return (
     <View>
       {servicesAndcharacteristics.map((item, index) => {
@@ -37,7 +49,7 @@ export const ServicesCard = ({ servicesAndcharacteristics }) => {
               )
               for (const i in characteristic) {
                 data.push(
-                  <Text style={styles.deviceParam}>
+                  <Text key={i} style={styles.deviceParam}>
                     {`${i}: `}
                     <Text style={styles.deviceParamValue}>
                       {i === 'value'
@@ -49,6 +61,19 @@ export const ServicesCard = ({ servicesAndcharacteristics }) => {
                   </Text>,
                 )
               }
+              data.push(
+                <Button
+                  disabled={!characteristic.isWritableWithResponse}
+                  title="Write characteristic"
+                  onPress={() =>
+                    handleWriteCharacteristic(
+                      characteristic.deviceID,
+                      characteristic.serviceUUID,
+                      characteristic.uuid,
+                    )
+                  }
+                />,
+              )
               return data
             })}
           </View>

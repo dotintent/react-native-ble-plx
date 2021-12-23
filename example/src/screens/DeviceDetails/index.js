@@ -1,7 +1,8 @@
-import React, { useContext } from 'react'
-import { ScrollView, StyleSheet, View } from 'react-native'
+import React, { useContext, useState } from 'react'
+import { Modal, Pressable, ScrollView, StyleSheet, TextInput, View, Text } from 'react-native'
 
 import { useNavigation, useRoute } from '@react-navigation/native'
+import base64 from 'react-native-base64'
 
 import { BLEmanager } from '../../../index'
 import PrimaryButton from '../../components/PrimaryButton'
@@ -12,9 +13,11 @@ import { DeviceDetailsCard } from '../../components/DeviceDetailsCard'
 import { ServicesCard } from '../../components/ServicesCard'
 
 export const DeviceDetailsScreen = () => {
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [services, setServices] = React.useState([])
-  const [servicesAndcharacteristics, setServicesAndcharacteristics] = React.useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [servicesAndcharacteristics, setServicesAndcharacteristics] = useState([])
+  const [modalVisible, setModalVisible] = useState(false)
+  const [characteristicValue, setCharacteristicValue] = useState('')
+  const [characteristicData, setCharacteristicData] = useState({})
 
   const navigation = useNavigation()
   const route = useRoute()
@@ -67,7 +70,6 @@ export const DeviceDetailsScreen = () => {
     handleStartLoading()
     try {
       const deviceServices = await BLEmanager.servicesForDevice(deviceId)
-      setServices(deviceServices)
       handleDeviceCharacteristics(deviceServices)
       console.log('Device services: ', deviceServices)
     } catch (error) {
@@ -97,6 +99,7 @@ export const DeviceDetailsScreen = () => {
       }
     }
     setServicesAndcharacteristics(deviceServicesAndCharacteristics)
+    console.log('Device Services & Characteristics: ', deviceServicesAndCharacteristics)
     handleStopLoading()
   }
 
@@ -107,13 +110,45 @@ export const DeviceDetailsScreen = () => {
     setDevices(devicesArr)
   }
 
+  const handleWriteCharacteristic = async () => {
+    handleStartLoading()
+    const base64Value = base64.encode(characteristicValue)
+
+    try {
+      const response = await BLEmanager.writeCharacteristicWithResponseForDevice(
+        characteristicData.deviceId,
+        characteristicData.serviceUUID,
+        characteristicData.characteristicUUID,
+        base64Value,
+      )
+      console.log('Write characteristic: ', response)
+    } catch (error) {
+      showToast('error', 'Error writing characteristic!', error.name)
+      console.log('Error while writing characteristic! ', error)
+    } finally {
+      handleStopLoading()
+      setModalVisible(false)
+      setCharacteristicValue('')
+    }
+  }
+
+  const handleCloseModal = () => {
+    setCharacteristicValue('')
+    setModalVisible(false)
+  }
+
   const handleStartLoading = () => setIsLoading(true)
   const handleStopLoading = () => setIsLoading(false)
+  const handleOpenModal = () => setModalVisible(true)
 
   return (
     <ScrollView indicatorStyle="black" contentContainerStyle={styles.contentContainer}>
       <DeviceDetailsCard deviceDetails={device} />
-      <ServicesCard servicesAndcharacteristics={servicesAndcharacteristics} />
+      <ServicesCard
+        onHandleOpenModal={handleOpenModal}
+        onSetCharacteristicData={setCharacteristicData}
+        servicesAndcharacteristics={servicesAndcharacteristics}
+      />
       <LoadingIndicator isLoading={isLoading} />
       <View style={styles.buttonContainer}>
         <PrimaryButton
@@ -121,6 +156,25 @@ export const DeviceDetailsScreen = () => {
           title="Disconnect device"
         />
       </View>
+      <Modal transparent={true} visible={modalVisible}>
+        <Pressable onPress={handleCloseModal} style={styles.modalBackdrop}>
+          <View style={styles.modalWrapper}>
+            <Text style={styles.modalTitle}>Write characteristic: </Text>
+            <TextInput
+              value={characteristicValue}
+              placeholder="Value..."
+              style={styles.input}
+              placeholderTextColor="gray"
+              textAlignVertical="top"
+              maxLength={150}
+              onChangeText={value => setCharacteristicValue(value)}
+            />
+            <Pressable style={styles.modalButton} onPress={handleWriteCharacteristic}>
+              <Text style={styles.modalButtonText}>Write</Text>
+            </Pressable>
+          </View>
+        </Pressable>
+      </Modal>
     </ScrollView>
   )
 }
@@ -148,5 +202,49 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 15,
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  },
+  input: {
+    height: 40,
+    borderWidth: 1,
+    borderRadius: 5,
+    padding: 10,
+    width: '100%',
+  },
+  modalTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  modalButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 30,
+    elevation: 3,
+    backgroundColor: '#007AFF',
+  },
+  modalButtonText: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+  modalWrapper: {
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    height: '30%',
+    width: '80%',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    backgroundColor: '#f2f2f2',
+    borderRadius: 10,
+    padding: 20,
   },
 })
