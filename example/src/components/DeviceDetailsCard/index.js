@@ -7,69 +7,47 @@ export const DeviceDetailsCard = ({ deviceDetails }) => {
       <Text style={styles.title}>Device details</Text>
       <Text style={styles.deviceParam}>
         {`ID: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.id}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.id}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`isConnectable: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.isConnectable.toString()}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.isConnectable.toString()}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`localName: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.localName}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.localName}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`manufacturerData: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.manufacturerData}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.manufacturerData}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`mtu: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.mtu}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.mtu}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`overflowServiceUUIDs: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.overflowServiceUUIDs}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.overflowServiceUUIDs}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`rssi: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.rssi}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.rssi}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`serviceData: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.serviceData}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.serviceData}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`serviceUUIDs: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.serviceUUIDs}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.serviceUUIDs}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`solicitedServiceUUIDs: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.solicitedServiceUUIDs}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.solicitedServiceUUIDs}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`txPowerLevel: `}
-        <Text style={styles.deviceParamValue}>
-          {deviceDetails.txPowerLevel}
-        </Text>
+        <Text style={styles.deviceParamValue}>{deviceDetails.txPowerLevel}</Text>
       </Text>
     </View>
   )
@@ -89,7 +67,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,

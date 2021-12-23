@@ -3,17 +3,65 @@ import { View, Text, StyleSheet } from 'react-native'
 
 export const ServicesCard = ({ servicesAndcharacteristics }) => {
   return (
-    <View style={styles.card}>
-      {servicesAndcharacteristics.map(item => {
+    <View>
+      {servicesAndcharacteristics.map((item, index) => {
         delete item._manager
-        const data = []
-        for (const i in item) {
-          data.push(<Text>{`${i}: ${item[i]}`}</Text>) 
-        }
-        return data
+        return (
+          <View key={item.id} style={styles.card}>
+            <Text style={styles.title}>Service {index}</Text>
+            <Text style={styles.deviceParam}>
+              {`deviceID: ${'\n'}`}
+              <Text style={styles.deviceParamValue}>{item.deviceID}</Text>
+            </Text>
+            <Text style={styles.deviceParam}>
+              {`id: `}
+              <Text style={styles.deviceParamValue}>{item.id}</Text>
+            </Text>
+            <Text style={styles.deviceParam}>
+              {`isPrimary: `}
+              <Text style={styles.deviceParamValue}>{item.isPrimary.toString()}</Text>
+            </Text>
+            <Text style={[styles.deviceParam, { marginBottom: 20 }]}>
+              {`UUID: `}
+              <Text style={styles.deviceParamValue}>{item.uuid}</Text>
+            </Text>
+            {item.characteristics.map((characteristic, index) => {
+              delete characteristic._manager
+              const data = []
+              data.push(<Text style={styles.subtitle}>Characteristic {index}</Text>)
+              for (const i in characteristic) {
+                data.push(
+                  <Text style={styles.deviceParam}>
+                    {`${i}:`}
+                    <Text style={styles.deviceParamValue}>{`${characteristic[i]}`}</Text>
+                  </Text>,
+                )
+              }
+              return data
+            })}
+          </View>
+        )
       })}
     </View>
   )
+  // return (
+  //   <View style={styles.card}>
+  //     {servicesAndcharacteristics.map(item => {
+  //       delete item._manager
+  //       const data = []
+  //       for (const i in item) {
+  //         data.push(
+  //           <Text style={styles.deviceParam}>
+  //             {`${i}:`}
+  //             <Text style={styles.deviceParamValue}>
+  //               {`${item[i]}`}
+  //             </Text>
+  //           </Text>)
+  //       }
+  //       return data
+  //     })}
+  //   </View>
+  // )
   // return (
   //   services.length ? (
   //     <View style={styles.card}>
@@ -52,7 +100,6 @@ export const ServicesCard = ({ servicesAndcharacteristics }) => {
   // )
 }
 
-
 const styles = StyleSheet.create({
   deviceParam: {
     fontWeight: '500',
@@ -67,7 +114,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -75,16 +122,17 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    width: '100%'
+    width: '100%',
   },
   title: {
-    fontSize: 17,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 15
+    marginBottom: 15,
+    textAlign: 'center',
   },
   subtitle: {
     fontWeight: '700',
-    fontSize: 15,
+    fontSize: 16,
   },
   serviceContainer: {
     marginBottom: 10,

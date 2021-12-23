@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native'
 
 import { BLEmanager } from '../../../index'
 import PrimaryButton from '../../components/PrimaryButton'
@@ -20,8 +20,7 @@ export const DeviceDetailsScreen = () => {
   const route = useRoute()
 
   const [devices, setDevices] = useContext(DevicesContext)
-  const device  = route?.params?.device || {}
-
+  const device = route?.params?.device || {}
 
   React.useEffect(() => {
     navigation.setOptions({
@@ -32,7 +31,7 @@ export const DeviceDetailsScreen = () => {
     handleDeviceServices(device.id)
   }, [device])
 
-  const handleCancelConnection = async (deviceId) => {
+  const handleCancelConnection = async deviceId => {
     handleStartLoading()
     try {
       const disconnectedDevice = await BLEmanager.cancelDeviceConnection(deviceId)
@@ -49,10 +48,12 @@ export const DeviceDetailsScreen = () => {
     }
   }
 
-  const discoverServicesAndCharacteristics = async (deviceId) => {
+  const discoverServicesAndCharacteristics = async deviceId => {
     handleStartLoading()
     try {
-      const deviceDetails = await BLEmanager.discoverAllServicesAndCharacteristicsForDevice(deviceId)
+      const deviceDetails = await BLEmanager.discoverAllServicesAndCharacteristicsForDevice(
+        deviceId,
+      )
       console.log('Device details: ', deviceDetails)
     } catch (error) {
       showToast('error', error.message, error.name)
@@ -62,13 +63,13 @@ export const DeviceDetailsScreen = () => {
     }
   }
 
-  const handleDeviceServices = async (deviceId) => {
+  const handleDeviceServices = async deviceId => {
     handleStartLoading()
     try {
       const deviceServices = await BLEmanager.servicesForDevice(deviceId)
       setServices(deviceServices)
       handleDeviceCharacteristics(deviceServices)
-      console.log('Device services: ', deviceServices) 
+      console.log('Device services: ', deviceServices)
     } catch (error) {
       showToast('error', error.message, error.name)
       console.log('Error while getting device services! ', error)
@@ -77,13 +78,19 @@ export const DeviceDetailsScreen = () => {
     }
   }
 
-  const handleDeviceCharacteristics = async (deviceServices) => {
+  const handleDeviceCharacteristics = async deviceServices => {
     const deviceServicesAndCharacteristics = []
     handleStartLoading()
     for (const service of deviceServices) {
       try {
-        const serviceCharacteristics = await BLEmanager.characteristicsForDevice(device.id, service.uuid)
-        deviceServicesAndCharacteristics.push({ ...service, characteristics: serviceCharacteristics })
+        const serviceCharacteristics = await BLEmanager.characteristicsForDevice(
+          device.id,
+          service.uuid,
+        )
+        deviceServicesAndCharacteristics.push({
+          ...service,
+          characteristics: serviceCharacteristics,
+        })
       } catch (error) {
         showToast('error', error.message, error.name)
         console.log('Error while getting device characteristics! ', error)
@@ -104,10 +111,7 @@ export const DeviceDetailsScreen = () => {
   const handleStopLoading = () => setIsLoading(false)
 
   return (
-    <ScrollView
-      indicatorStyle="black"
-      contentContainerStyle={styles.contentContainer}
-    >
+    <ScrollView indicatorStyle="black" contentContainerStyle={styles.contentContainer}>
       <DeviceDetailsCard deviceDetails={device} />
       <ServicesCard servicesAndcharacteristics={servicesAndcharacteristics} />
       <LoadingIndicator isLoading={isLoading} />
@@ -132,7 +136,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,

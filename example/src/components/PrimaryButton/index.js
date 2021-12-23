@@ -1,17 +1,13 @@
 import React from 'react'
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity
-} from 'react-native'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 
-const PrimaryButton = (props) => {
+const PrimaryButton = props => {
   const { onPress, title, isDisabled, isScanning } = props
   const titleColor = isScanning ? 'green' : 'black'
 
   return (
     <TouchableOpacity disabled={isDisabled} onPress={onPress} style={styles.scanButton}>
-        <Text style={[styles.buttonText, { color: titleColor }]}>{title}</Text>
+      <Text style={[styles.buttonText, { color: titleColor }]}>{title}</Text>
     </TouchableOpacity>
   )
 }
@@ -27,8 +23,8 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'black',
-    fontWeight: '600'
-  }
+    fontWeight: '600',
+  },
 })
 
 export default PrimaryButton

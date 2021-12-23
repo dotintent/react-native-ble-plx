@@ -3,7 +3,7 @@ import { createContext } from 'react'
 
 export const DevicesContext = createContext([])
 
-export const DevicesContextProvider = (props) => {
+export const DevicesContextProvider = props => {
   const [devices, setDevices] = useState([])
 
   return (

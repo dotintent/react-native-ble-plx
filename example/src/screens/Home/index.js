@@ -1,17 +1,10 @@
 import React, { useContext } from 'react'
-import {
-  StyleSheet,
-  FlatList,
-  TouchableOpacity,
-  Text,
-  View,
-  Pressable,
-} from 'react-native'
+import { StyleSheet, FlatList, TouchableOpacity, Text, View, Pressable } from 'react-native'
 
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useNavigation } from '@react-navigation/native'
 import Permissions, { PERMISSIONS, RESULTS } from 'react-native-permissions'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import { BLEmanager } from '../../../index'
 import { showToast } from '../../utils/showToast'
@@ -25,7 +18,7 @@ export const HomeScreen = () => {
 
   const [devices, setDevices] = useContext(DevicesContext)
 
-  const navigation = useNavigation();
+  const navigation = useNavigation()
 
   React.useEffect(() => {
     handleBluetoothPermissions()
@@ -34,10 +27,7 @@ export const HomeScreen = () => {
   React.useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Pressable
-          hitSlop={40}
-          onPress={isScanning ? handleStopDeviceScan : handleStartDeviceScan}
-        >
+        <Pressable hitSlop={40} onPress={isScanning ? handleStopDeviceScan : handleStartDeviceScan}>
           <Text style={{ color: isScanning ? 'green' : 'black' }}>
             {`Scan: ${!isScanning ? 'Off' : 'On'}`}
           </Text>
@@ -48,17 +38,19 @@ export const HomeScreen = () => {
 
   const handleBluetoothPermissions = async () => {
     const permissionStatus = await Permissions.check(PERMISSIONS.IOS.BLUETOOTH_PERIPHERAL)
-    permissionStatus === RESULTS.GRANTED ? setBluetoothPermission(true) : setBluetoothPermission(false)
+    permissionStatus === RESULTS.GRANTED
+      ? setBluetoothPermission(true)
+      : setBluetoothPermission(false)
   }
 
   React.useEffect(() => {
-    const subscription = BLEmanager.onStateChange((state) => {
+    const subscription = BLEmanager.onStateChange(state => {
       console.log('BLE stack status: ', state)
-    }, true);
-    return () => subscription.remove();
-  }, [BLEmanager]);
+    }, true)
+    return () => subscription.remove()
+  }, [BLEmanager])
 
-  const handleNavigateToDeviceDetails = (device) => {
+  const handleNavigateToDeviceDetails = device => {
     for (const key in device) {
       if (device[key] === null) device[key] = 'null'
     }
@@ -81,7 +73,7 @@ export const HomeScreen = () => {
       setDevices(prevState => {
         const duplicat = prevState.find(item => item.id === device.id)
         if (!duplicat) {
-          return [...prevState, {...device, isConnected: false}]
+          return [...prevState, { ...device, isConnected: false }]
         } else {
           const duplicatIndex = prevState.findIndex(item => item.id === duplicat.id)
           prevState[duplicatIndex].rssi = device.rssi
@@ -95,12 +87,12 @@ export const HomeScreen = () => {
   const handleStopDeviceScan = () => {
     setIsScanning(false)
     handleStartLoading()
-    BLEmanager.stopDeviceScan();
+    BLEmanager.stopDeviceScan()
     handleStopLoading()
     console.log('Scanning stopped!')
   }
 
-  const handleConnectToDevice = async (deviceId) => {
+  const handleConnectToDevice = async deviceId => {
     handleStartLoading()
     try {
       const connectedDevice = await BLEmanager.connectToDevice(deviceId)
@@ -117,7 +109,7 @@ export const HomeScreen = () => {
   }
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={() => {
         item.isConnected ? handleNavigateToDeviceDetails(item) : handleConnectToDevice(item.id)
       }}
@@ -125,22 +117,20 @@ export const HomeScreen = () => {
     >
       <View style={styles.iconWrapper}>
         <Icon style={styles.icon} name="devices" size={25} />
-        <Text style={[styles.deviceName, { marginLeft: 10 }]}>{item.name || item.localName || 'No name'}</Text>
+        <Text style={[styles.deviceName, { marginLeft: 10 }]}>
+          {item.name || item.localName || 'No name'}
+        </Text>
       </View>
       <Text style={styles.deviceParam}>
         {`ID: `}
-        <Text style={styles.deviceParamValue}>
-          {item.id}
-        </Text>
+        <Text style={styles.deviceParamValue}>{item.id}</Text>
       </Text>
       <Text style={styles.deviceParam}>
         {`RSSI: `}
-        <Text style={styles.deviceParamValue}>
-          {item.rssi}
-        </Text>
+        <Text style={styles.deviceParamValue}>{item.rssi}</Text>
       </Text>
       <Text style={styles.deviceParam}>
-        {`Connected: `} 
+        {`Connected: `}
         <Text style={item.isConnected ? styles.deviceConnectedText : styles.deviceParamValue}>
           {item.isConnected.toString()}
         </Text>
@@ -171,9 +161,7 @@ export const HomeScreen = () => {
       />
       <LoadingIndicator isLoading={isLoading} />
       {!bluetoothPermission ? (
-        <Text style={styles.permissionText}>
-          No bluetooth permissions granted!
-        </Text>
+        <Text style={styles.permissionText}>No bluetooth permissions granted!</Text>
       ) : null}
     </SafeAreaView>
   )
@@ -189,7 +177,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
