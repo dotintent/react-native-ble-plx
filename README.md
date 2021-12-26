@@ -111,6 +111,9 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
         ...
         <uses-permission android:name="android.permission.BLUETOOTH"/>
         <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+        <!-- Please use FINE location instead of COARSE:
+         https://github.com/dotintent/react-native-ble-plx/issues/730#issuecomment-681946908 -->
         <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
         <!-- Add this line if your application always requires BLE. More info can be found on:
