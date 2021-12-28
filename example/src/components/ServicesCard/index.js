@@ -19,7 +19,6 @@ export const ServicesCard = ({
   return (
     <View>
       {servicesAndcharacteristics.map((item, index) => {
-        delete item._manager
         return (
           <View key={item.id} style={styles.card}>
             <Text style={styles.title}>Service {index}</Text>
