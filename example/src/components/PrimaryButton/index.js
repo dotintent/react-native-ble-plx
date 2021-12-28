@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 
-const PrimaryButton = props => {
+export const PrimaryButton = props => {
   const { onPress, title, isDisabled, isScanning } = props
   const titleColor = isScanning ? 'green' : 'black'
 
@@ -26,5 +26,3 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
 })
-
-export default PrimaryButton

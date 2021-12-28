@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { StyleSheet, FlatList, TouchableOpacity, Text, View, Pressable } from 'react-native'
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -9,22 +9,22 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { BLEmanager } from '../../../index'
 import { showToast } from '../../utils/showToast'
 import { DevicesContext } from '../../contexts/DevicesContext'
-import { LoadingIndicator } from '../../components/LoadingIndicator'
+import { LoadingIndicator } from '../../components'
 
 export const HomeScreen = () => {
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [isScanning, setIsScanning] = React.useState(false)
-  const [bluetoothPermission, setBluetoothPermission] = React.useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isScanning, setIsScanning] = useState(false)
+  const [bluetoothPermission, setBluetoothPermission] = useState(null)
 
   const [devices, setDevices] = useContext(DevicesContext)
 
   const navigation = useNavigation()
 
-  React.useEffect(() => {
+  useEffect(() => {
     handleBluetoothPermissions()
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <Pressable hitSlop={40} onPress={isScanning ? handleStopDeviceScan : handleStartDeviceScan}>
@@ -43,7 +43,7 @@ export const HomeScreen = () => {
       : setBluetoothPermission(false)
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const subscription = BLEmanager.onStateChange(state => {
       console.log('BLE stack status: ', state)
     }, true)

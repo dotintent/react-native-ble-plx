@@ -1,16 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { Modal, Pressable, ScrollView, StyleSheet, TextInput, View, Text } from 'react-native'
 
 import { useNavigation, useRoute } from '@react-navigation/native'
 import base64 from 'react-native-base64'
 
 import { BLEmanager } from '../../../index'
-import PrimaryButton from '../../components/PrimaryButton'
 import { showToast } from '../../utils/showToast'
 import { DevicesContext } from '../../contexts/DevicesContext'
-import { LoadingIndicator } from '../../components/LoadingIndicator'
-import { DeviceDetailsCard } from '../../components/DeviceDetailsCard'
-import { ServicesCard } from '../../components/ServicesCard'
+import { LoadingIndicator, DeviceDetailsCard, ServicesCard, PrimaryButton } from '../../components'
 
 export const DeviceDetailsScreen = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -25,7 +22,7 @@ export const DeviceDetailsScreen = () => {
   const [devices, setDevices] = useContext(DevicesContext)
   const device = route?.params?.device || {}
 
-  React.useEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerTitle: device.name || device.localName || 'No name',
       headerStyle: { backgroundColor: '#e8e6e6' },
