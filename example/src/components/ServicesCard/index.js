@@ -62,6 +62,7 @@ export const ServicesCard = ({
               }
               data.push(
                 <Button
+                  key={'button' + characteristic.id}
                   disabled={!characteristic.isWritableWithResponse}
                   title="Write characteristic"
                   onPress={() =>
