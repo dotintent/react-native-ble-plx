@@ -67,9 +67,14 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 ## Configuration & Installation
 
-### Expo
+### Expo SDK 43+
 
-1. A custom expo-dev-client can now be built along with config plugins to avoid the need to eject from Expo. Learn how to integrate react-native-ble-plx with Expo [here](https://expo.canny.io/feature-requests/p/bluetooth-1). (only for expo)
+1. A custom expo-dev-client can now be built along with config plugins to avoid the need to eject from Expo. Learn how to integrate react-native-ble-plx with Expo [here](https://expo.canny.io/feature-requests/p/bluetooth-1). (only for expo SDK 43+)
+
+### Legacy Expo (SDK < 43)
+
+1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here] (https://docs.expo.dev/expokit/eject/). (only for Expo SDK < 43)
+1. Follow steps for iOS/Android.
 
 ### iOS ([example setup](https://github.com/Cierpliwy/SensorTag))
 
