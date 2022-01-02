@@ -69,8 +69,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 
 ### Expo
 
-1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.io/versions/latest/expokit/eject/) and [here](https://docs.expo.io/versions/latest/expokit/expokit). (only for expo)
-1. Follow steps for iOS/Android.
+1. A custom expo-dev-client can now be built along with config plugins to avoid the need to eject from Expo. Learn how to integrate react-native-ble-plx with Expo [here](https://expo.canny.io/feature-requests/p/bluetooth-1). (only for expo)
 
 ### iOS ([example setup](https://github.com/Cierpliwy/SensorTag))
 
