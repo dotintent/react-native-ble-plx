@@ -99,10 +99,23 @@ export const HomeScreen = () => {
       console.log('Connected to device: ', connectedDevice)
       showToast('success', 'Connected to device')
 
+      discoverServicesAndCharacteristics(deviceId)
       handleConnectionStatus(connectedDevice, true)
     } catch (error) {
       showToast('error', error.message, error.name)
       console.log('Error! Connecting to device: ', error)
+    } finally {
+      handleStopLoading()
+    }
+  }
+
+  const discoverServicesAndCharacteristics = async deviceId => {
+    handleStartLoading()
+    try {
+      await BLEmanager.discoverAllServicesAndCharacteristicsForDevice(deviceId)
+    } catch (error) {
+      showToast('error', error.message, error.name)
+      console.log('Error while discovering all services and characteristics ', error)
     } finally {
       handleStopLoading()
     }

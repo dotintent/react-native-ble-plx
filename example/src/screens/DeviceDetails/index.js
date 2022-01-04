@@ -27,7 +27,6 @@ export const DeviceDetailsScreen = () => {
       headerTitle: device.name || device.localName || 'No name',
       headerStyle: { backgroundColor: '#e8e6e6' },
     })
-    discoverServicesAndCharacteristics(device.id)
     handleDeviceServices(device.id)
   }, [device])
 
@@ -45,21 +44,6 @@ export const DeviceDetailsScreen = () => {
     } finally {
       handleStopLoading()
       navigation.goBack()
-    }
-  }
-
-  const discoverServicesAndCharacteristics = async deviceId => {
-    handleStartLoading()
-    try {
-      const deviceDetails = await BLEmanager.discoverAllServicesAndCharacteristicsForDevice(
-        deviceId,
-      )
-      console.log('Device details: ', deviceDetails)
-    } catch (error) {
-      showToast('error', error.message, error.name)
-      console.log('Error while discovering all services and characteristics ', error)
-    } finally {
-      handleStopLoading()
     }
   }
 
