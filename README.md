@@ -44,11 +44,8 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 ## Recent Changes
 
-**2.0.2**
-- Updated MultiplatformBleAdapter to version 0.1.7.
-- Added support for BleMulator
-- Removed destroying of client upon catalystInstanceDestroy.
-- Updated CI to RN 0.63.3
+**2.0.3**
+- Updated MultiplatformBleAdapter to version 0.1.9
 
 [All previous changes](CHANGELOG.md)
 
