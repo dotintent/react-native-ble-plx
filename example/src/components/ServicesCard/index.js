@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import base64 from 'react-native-base64'
 
@@ -61,10 +61,11 @@ export const ServicesCard = ({
                 )
               }
               data.push(
-                <Button
+                <TouchableOpacity
                   key={'button' + characteristic.id}
                   disabled={!characteristic.isWritableWithResponse}
                   title="Write characteristic"
+                  style={styles.button}
                   onPress={() =>
                     handleWriteCharacteristic(
                       characteristic.deviceID,
@@ -72,7 +73,16 @@ export const ServicesCard = ({
                       characteristic.uuid,
                     )
                   }
-                />,
+                >
+                  <Text
+                    style={{
+                      color: !characteristic.isWritableWithResponse && '#c7c3c3',
+                      fontWeight: '600',
+                    }}
+                  >
+                    Write characteristic
+                  </Text>
+                </TouchableOpacity>,
               )
               return data
             })}
@@ -119,5 +129,15 @@ const styles = StyleSheet.create({
   },
   serviceContainer: {
     marginBottom: 10,
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    width: '70%',
+    borderRadius: 30,
+    alignSelf: 'center',
+    marginTop: 10,
+    backgroundColor: '#e3e3e3',
   },
 })
