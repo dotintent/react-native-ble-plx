@@ -10,6 +10,7 @@ import { BLEmanager } from '../../../index'
 import { showToast } from '../../utils/showToast'
 import { DevicesContext } from '../../contexts/DevicesContext'
 import { LoadingIndicator } from '../../components'
+import { COLORS } from '../../contants/colors'
 
 export const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -28,7 +29,7 @@ export const HomeScreen = () => {
     navigation.setOptions({
       headerRight: () => (
         <Pressable hitSlop={40} onPress={isScanning ? handleStopDeviceScan : handleStartDeviceScan}>
-          <Text style={{ color: isScanning ? 'green' : 'black' }}>
+          <Text style={{ color: isScanning ? COLORS.GREEN : COLORS.BLACK }}>
             {`Scan: ${!isScanning ? 'Off' : 'On'}`}
           </Text>
         </Pressable>
@@ -126,7 +127,7 @@ export const HomeScreen = () => {
       onPress={() => {
         item.isConnected ? handleNavigateToDeviceDetails(item) : handleConnectToDevice(item.id)
       }}
-      style={[styles.deviceCard, item.isConnected && { backgroundColor: '#e2fce1' }]}
+      style={[styles.deviceCard, item.isConnected && { backgroundColor: COLORS.PRIMARY_GREEN }]}
     >
       <View style={styles.iconWrapper}>
         <Icon style={styles.icon} name="devices" size={25} />
@@ -185,12 +186,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   deviceCard: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
     marginBottom: 10,
     padding: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    shadowColor: '#000',
+    shadowColor: COLORS.BLACK,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   deviceConnectedText: {
-    color: 'green',
+    color: COLORS.GREEN,
     fontWeight: 'bold',
   },
   flatList: {
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   permissionText: {
-    color: 'red',
+    color: COLORS.RED,
     fontWeight: '600',
   },
   iconWrapper: {

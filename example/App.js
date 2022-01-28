@@ -9,6 +9,7 @@ import Toast from 'react-native-toast-message'
 import { HomeScreen } from './src/screens/Home'
 import { DeviceDetailsScreen } from './src/screens/DeviceDetails'
 import { DevicesContextProvider } from './src/contexts/DevicesContext'
+import { COLORS } from './src/contants/colors'
 
 const Stack = createNativeStackNavigator()
 
@@ -24,7 +25,7 @@ const App = () => {
               options={{
                 headerTitle: 'BLE PLX',
                 headerTitleStyle: { fontSize: 20 },
-                headerStyle: { backgroundColor: '#e8e6e6' },
+                headerStyle: { backgroundColor: COLORS.BACKGROUND_GRAY },
               }}
             />
             <Stack.Screen name="DeviceDetails" component={DeviceDetailsScreen} />

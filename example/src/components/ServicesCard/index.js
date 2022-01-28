@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import base64 from 'react-native-base64'
 
+import { COLORS } from '../../contants/colors'
+
 export const ServicesCard = ({
   onSetCharacteristicData,
   servicesAndcharacteristics,
@@ -76,7 +78,7 @@ export const ServicesCard = ({
                 >
                   <Text
                     style={{
-                      color: !characteristic.isWritableWithResponse && '#c7c3c3',
+                      color: !characteristic.isWritableWithResponse && COLORS.TEXT_GRAY,
                       fontWeight: '600',
                     }}
                   >
@@ -102,12 +104,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
     marginBottom: 10,
     padding: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    shadowColor: '#000',
+    shadowColor: COLORS.BLACK,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -138,6 +140,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     alignSelf: 'center',
     marginTop: 10,
-    backgroundColor: '#e3e3e3',
+    backgroundColor: COLORS.PRIMARY_GRAY,
   },
 })

@@ -1,6 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity } from 'react-native'
 
+import { COLORS } from '../../contants/colors'
+
 export const PrimaryButton = props => {
   const { onPress, title, isDisabled, isScanning } = props
   const titleColor = isScanning ? 'green' : 'black'
@@ -15,14 +17,14 @@ export const PrimaryButton = props => {
 const styles = StyleSheet.create({
   scanButton: {
     padding: 15,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
     borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
   },
   buttonText: {
-    color: 'black',
+    color: COLORS.BLACK,
     fontWeight: '600',
   },
 })

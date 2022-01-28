@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
+import { COLORS } from '../../contants/colors'
+
 export const DeviceDetailsCard = ({ deviceDetails }) => {
   const renderDeviceDetails = () => {
     const data = []
@@ -35,12 +37,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
     marginBottom: 10,
     padding: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    shadowColor: '#000',
+    shadowColor: COLORS.BLACK,
     shadowOffset: {
       width: 0,
       height: 2,

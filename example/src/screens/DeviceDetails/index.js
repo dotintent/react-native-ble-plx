@@ -8,6 +8,7 @@ import { BLEmanager } from '../../../index'
 import { showToast } from '../../utils/showToast'
 import { DevicesContext } from '../../contexts/DevicesContext'
 import { LoadingIndicator, DeviceDetailsCard, ServicesCard, PrimaryButton } from '../../components'
+import { COLORS } from '../../contants/colors'
 
 export const DeviceDetailsScreen = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -25,7 +26,7 @@ export const DeviceDetailsScreen = () => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: device.name || device.localName || 'No name',
-      headerStyle: { backgroundColor: '#e8e6e6' },
+      headerStyle: { backgroundColor: COLORS.BACKGROUND_GRAY },
     })
     handleDeviceServices(device.id)
   }, [device])
@@ -145,7 +146,7 @@ export const DeviceDetailsScreen = () => {
               value={characteristicValue}
               placeholder="Value..."
               style={styles.input}
-              placeholderTextColor="gray"
+              placeholderTextColor={COLORS.GRAY}
               textAlignVertical="top"
               maxLength={150}
               onChangeText={value => setCharacteristicValue(value)}
@@ -167,12 +168,12 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.WHITE,
     marginBottom: 10,
     padding: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
-    shadowColor: '#000',
+    shadowColor: COLORS.BLACK,
     shadowOffset: {
       width: 0,
       height: 2,
@@ -206,14 +207,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 30,
     elevation: 3,
-    backgroundColor: '#007AFF',
+    backgroundColor: COLORS.BLUE,
   },
   modalButtonText: {
     fontSize: 16,
     lineHeight: 21,
     fontWeight: 'bold',
     letterSpacing: 0.25,
-    color: 'white',
+    color: COLORS.WHITE,
   },
   modalWrapper: {
     justifyContent: 'space-around',
@@ -224,7 +225,7 @@ const styles = StyleSheet.create({
     marginBottom: 'auto',
     marginLeft: 'auto',
     marginRight: 'auto',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: COLORS.SECONDARY_GRAY,
     borderRadius: 10,
     padding: 20,
   },
