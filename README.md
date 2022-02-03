@@ -126,7 +126,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 1. (Required in SDK >= 23) Request location permission during runtime:
 
     ```js
-    import { React, AndroidPermissions } from 'react-native'
+    import { React, PermissionsAndroid } from 'react-native'
     ...
 
     class FooBar extends React.Component {
