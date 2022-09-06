@@ -7,6 +7,16 @@
   />
 </p>
 
+## Table of Contents
+1. [ About this library. ](#about)
+2. [ Compatibility. ](#compat)
+3. [ Recent Changes. ](#changes)
+4. [ Documentation & Support. ](#doc)
+5. [ Configuration & Installation. ](#config)
+6. [ Troubleshooting. ](#trouble)
+7. [ Credits. ](#credits)
+
+<a name="about"></a>
 ## About this library
 
 This is React Native Bluetooth Low Energy library wrapping [Multiplatform Ble Adapter](https://github.com/dotintent/MultiPlatformBleAdapter/).
@@ -30,6 +40,7 @@ It does NOT support:
 - communicating between phones using BLE (Peripheral support)
 - [bonding peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Bonding)
 
+<a name="compat"></a>
 ## Compatibility
 
 This version (2.x) breaks compatibility with old RN versions. Please check [old README](./docs/README_V1.md) (1.x)
@@ -42,6 +53,7 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 | 0.61.5        | :white_check_mark:             |
 | 0.60.6        | :white_check_mark:             |
 
+<a name="changes"></a>
 ## Recent Changes
 
 **2.0.3**
@@ -49,6 +61,7 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 [All previous changes](CHANGELOG.md)
 
+<a name="doc"></a>
 ## Documentation & Support
 
 Interested in React Native project involving Bluetooth Low Energy? [We can help you!](https://withintent.com/?utm_source=github&utm_medium=github&utm_campaign=external_traffic)
@@ -65,6 +78,7 @@ Contact us at [intent](https://withintent.com/contact-us/?utm_source=github&utm_
 
 Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you have any questions, feedback or want to help!
 
+<a name="config"></a>
 ## Configuration & Installation
 
 ### Expo
@@ -121,6 +135,7 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
         ...
     ```
 
+<a name="trouble"></a>
 ## Troubleshooting
 
 ### Problems with Proguard
@@ -130,3 +145,8 @@ Add this to your `app/proguard-rules.pro`
 ```
 -dontwarn com.polidea.reactnativeble.**
 ```
+
+<a name="credits"></a>
+## Credits
+
+[View Contributers](https://github.com/dotintent/react-native-ble-plx/graphs/contributors) 
