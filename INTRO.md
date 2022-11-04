@@ -34,7 +34,7 @@ To detect current state and following state changes we can use `onStateChange()`
 React.useEffect(() => {
   const subscription = manager.onStateChange((state) => {
       if (state === 'PoweredOn') {
-          this.scanAndConnect();
+          scanAndConnect();
           subscription.remove();
       }
   }, true);
@@ -48,7 +48,7 @@ Devices needs to be scanned first to be able to connect to them. There is a simp
 which allows only one callback to be registered to handle detected devices:
 
 ```js
-scanAndConnect() {
+function scanAndConnect() {
     manager.startDeviceScan(null, null, (error, device) => {
         if (error) {
             // Handle error (scanning will be stopped automatically)
