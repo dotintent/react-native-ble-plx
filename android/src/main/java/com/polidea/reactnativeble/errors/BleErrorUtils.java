@@ -1,6 +1,6 @@
 package com.polidea.reactnativeble.errors;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.facebook.react.bridge.ReadableArray;
 

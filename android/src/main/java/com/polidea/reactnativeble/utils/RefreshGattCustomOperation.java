@@ -1,7 +1,7 @@
 package com.polidea.reactnativeble.utils;
 
 import android.bluetooth.BluetoothGatt;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import com.polidea.rxandroidble.RxBleCustomOperation;
 import com.polidea.rxandroidble.internal.RxBleLog;
 import com.polidea.rxandroidble.internal.connection.RxBleGattCallback;

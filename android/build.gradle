@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
+        classpath 'com.android.tools.build:gradle:7.1.1'
         classpath 'gradle.plugin.org.codehaus.groovy:groovy-android-gradle-plugin:3.0.0'
     }
 }
@@ -20,12 +20,12 @@ apply plugin: 'com.android.library'
 apply plugin: 'org.codehaus.groovy.android'
 
 android {
-    compileSdkVersion safeExtGet('compileSdkVersion', 27)
-    buildToolsVersion safeExtGet('buildToolsVersion', '27.0.3')
+    compileSdkVersion safeExtGet('compileSdkVersion', 31)
+    buildToolsVersion safeExtGet('buildToolsVersion', '31.0.0')
 
     defaultConfig {
-        minSdkVersion 18
-        targetSdkVersion safeExtGet('targetSdkVersion', 27)
+        minSdkVersion 26
+        targetSdkVersion safeExtGet('targetSdkVersion', 31)
     }
     lintOptions {
         abortOnError false
@@ -46,6 +46,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation "com.facebook.react:react-native:+"
     implementation "com.polidea.rxandroidble:rxandroidble:1.7.0"
     testImplementation 'org.robospock:robospock:1.0.1'
