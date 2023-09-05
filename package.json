@@ -3,10 +3,17 @@
   "version": "2.0.3",
   "description": "React Native Bluetooth Low Energy library",
   "main": "index.js",
+  "react-native": "index.js",
+  "source": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "jest",
     "lint": "flow && documentation lint index.js",
-    "docs": "documentation build index.js -o docs --config documentation.yml -f html"
+    "docs": "documentation build index.js -o docs --config documentation.yml -f html",
+    "example": "yarn --cwd example",
+    "build:android": "cd example/android && ./gradlew assembleDebug --no-daemon --console=plain -PreactNativeArchitectures=arm64-v8a",
+    "build:ios": "cd example/ios && xcodebuild -workspace BlePlxExample.xcworkspace -scheme BlePlxExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
   },
   "repository": {
     "type": "git",
@@ -30,8 +37,8 @@
     "jest": "^26.6.3",
     "metro-react-native-babel-preset": "^0.64.0",
     "prettier": "^2.1.1",
-    "react": "16.13.1",
-    "react-native": "0.63.3"
+    "react": "17.0.2",
+    "react-native": "0.65.1"
   },
   "keywords": [
     "React",

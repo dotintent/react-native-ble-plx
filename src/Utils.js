@@ -16,7 +16,7 @@ export function fullUUID(uuid: UUID): UUID {
 }
 
 export function fillStringWithArguments(value: string, object: Object) {
-  return value.replace(/\{([^}]+)\}/g, function(_, arg: string) {
+  return value.replace(/\{([^}]+)\}/g, function (_, arg: string) {
     return object[arg] || '?'
   })
 }
