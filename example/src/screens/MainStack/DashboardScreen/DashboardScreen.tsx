@@ -16,7 +16,8 @@ export const DashboardScreen = (_props: DashboardScreenProps) => {
     setBLEReady(true)
   }
 
-  const addFoundDevice = (device: Device) =>
+  const addFoundDevice = (device: Device) => {
+    console.log('found device', device.id)
     setFoundDevices(prevState => {
       const indexToReplace = prevState.findIndex(currentDevice => currentDevice.id === device.id)
       if (indexToReplace === -1) {
@@ -25,6 +26,7 @@ export const DashboardScreen = (_props: DashboardScreenProps) => {
       prevState[indexToReplace] = device
       return prevState
     })
+  }
 
   useEffect(() => {
     BLEService.initializeBLE(onBLEReady)
@@ -41,6 +43,7 @@ export const DashboardScreen = (_props: DashboardScreenProps) => {
   return (
     <ScreenDefaultContainer>
       <AppButton label="Look for devices" onPress={() => BLEService.scanDevices(addFoundDevice)} />
+      <AppButton label="Request bluetooth permission" onPress={() => BLEService.requestBluetoothPermission()} />
       <FlatList
         style={{ flex: 1 }}
         data={foundDevices}

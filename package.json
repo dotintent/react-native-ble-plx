@@ -6,6 +6,25 @@
   "react-native": "index.js",
   "source": "index.js",
   "types": "index.d.ts",
+  "files": [
+    "src",
+    "lib",
+    "android",
+    "ios",
+    "cpp",
+    "*.podspec",
+    "!lib/typescript/example",
+    "!ios/build",
+    "!android/build",
+    "!android/gradle",
+    "!android/gradlew",
+    "!android/gradlew.bat",
+    "!android/local.properties",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "!**/.*"
+  ],
   "scripts": {
     "test": "jest",
     "lint": "flow && documentation lint index.js",
@@ -38,7 +57,7 @@
     "metro-react-native-babel-preset": "^0.64.0",
     "prettier": "^2.1.1",
     "react": "17.0.2",
-    "react-native": "0.65.1"
+    "react-native": "0.70.0"
   },
   "keywords": [
     "React",
@@ -49,6 +68,10 @@
     "BLE",
     "Polidea"
   ],
+  "engines": {
+    "node": ">= 16.0.0"
+  },
+  "packageManager": "^yarn@1.22.15",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [

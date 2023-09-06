@@ -127,7 +127,7 @@ class BLEServiceInstance {
       }
    };
 
-   private requestBluetoothPermission = async () => {
+   public requestBluetoothPermission = async () => {
       try {
          const grantedLocation = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
