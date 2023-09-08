@@ -1,26 +1,26 @@
-import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as screenComponents from '../../screens';
-import { useCommonScreenOptions } from '../components';
+import React from 'react'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import * as screenComponents from '../../screens'
+import { useCommonScreenOptions } from '../components'
 
 export type MainStackParamList = {
-   DASHBOARD_SCREEN: undefined;
-};
+  DASHBOARD_SCREEN: undefined
+}
 
-const MainStack = createNativeStackNavigator<MainStackParamList>();
+const MainStack = createNativeStackNavigator<MainStackParamList>()
 
 export const MainStackComponent = () => {
-   const commonScreenOptions = useCommonScreenOptions();
+  const commonScreenOptions = useCommonScreenOptions()
 
-   return (
-      <MainStack.Navigator screenOptions={commonScreenOptions}>
-         <MainStack.Screen
-            name={'DASHBOARD_SCREEN'}
-            component={screenComponents.DashboardScreen}
-            options={{
-               headerTitle: 'Dashboard',
-            }}
-         />
-      </MainStack.Navigator>
-   );
-};
+  return (
+    <MainStack.Navigator screenOptions={commonScreenOptions}>
+      <MainStack.Screen
+        name={'DASHBOARD_SCREEN'}
+        component={screenComponents.DashboardScreen}
+        options={{
+          headerTitle: 'Dashboard'
+        }}
+      />
+    </MainStack.Navigator>
+  )
+}

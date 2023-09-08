@@ -3,7 +3,7 @@ import {
    BleErrorCode,
    BleManager,
    Device,
-   NativeDevice,
+   type NativeDevice,
    State as BluetoothState,
    LogLevel,
 } from 'react-native-ble-plx';

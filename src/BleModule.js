@@ -1,7 +1,7 @@
 // @flow
 'use strict'
 
-import { NativeModules, NativeEventEmitter } from 'react-native'
+import { NativeModules, NativeEventEmitter, Platform } from 'react-native'
 import { State, LogLevel, ConnectionPriority } from './TypeDefinition'
 import type {
   DeviceId,
@@ -823,5 +823,21 @@ export interface BleModuleInterface {
   DisconnectionEvent: string;
 }
 
-export const BleModule: BleModuleInterface = NativeModules.BleClientManager
+const LINKING_ERROR =
+  `The package 'react-native-ble-plx' doesn't seem to be linked. Make sure: \n\n` +
+  Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
+  '- You rebuilt the app after installing the package\n' +
+  '- You are not using Expo Go\n'
+
+export const BleModule = NativeModules.BlePlx
+  ? NativeModules.BlePlx
+  : new Proxy(
+      {},
+      {
+        get() {
+          throw new Error(LINKING_ERROR)
+        }
+      }
+    )
+
 export const EventEmitter = NativeEventEmitter

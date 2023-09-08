@@ -1,1 +1,1 @@
-export * from './DashboardScreen/DashboardScreen';
+export * from './DashboardScreen/DashboardScreen'

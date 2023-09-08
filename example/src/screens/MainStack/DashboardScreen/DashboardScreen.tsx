@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { AppButton, AppText, ScreenDefaultContainer } from '../../../components/atoms'
-import { MainStackParamList } from '../../../navigation'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import type { MainStackParamList } from '../../../navigation'
+import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { BLEService } from '../../../services'
-import { FlatList, View } from 'react-native'
+import { FlatList } from 'react-native'
 import { Device } from 'react-native-ble-plx'
 import { BleDevice } from '../../../components/molecules'
 
 type DashboardScreenProps = NativeStackScreenProps<MainStackParamList, 'DASHBOARD_SCREEN'>
 
 export const DashboardScreen = (_props: DashboardScreenProps) => {
-  const [BLEReady, setBLEReady] = useState(false)
   const [foundDevices, setFoundDevices] = useState<Device[]>([])
-  const onBLEReady = () => {
-    setBLEReady(true)
-  }
 
   const addFoundDevice = (device: Device) => {
     console.log('found device', device.id)
@@ -28,20 +24,13 @@ export const DashboardScreen = (_props: DashboardScreenProps) => {
     })
   }
 
-  useEffect(() => {
-    BLEService.initializeBLE(onBLEReady)
-  }, [])
-
-  if (!BLEReady) {
-    return <AppText style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>Loading...</AppText>
-  }
-
   const deviceRender = (device: Device) => (
     <BleDevice onPress={pickedDevice => BLEService.connectToDevice(pickedDevice.id)} key={device.id} device={device} />
   )
 
   return (
     <ScreenDefaultContainer>
+      <AppButton label="Prepare BLE" onPress={() => BLEService.initializeBLE(console.log)} />
       <AppButton label="Look for devices" onPress={() => BLEService.scanDevices(addFoundDevice)} />
       <AppButton label="Request bluetooth permission" onPress={() => BLEService.requestBluetoothPermission()} />
       <FlatList

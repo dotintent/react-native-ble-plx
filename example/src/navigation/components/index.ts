@@ -1,1 +1,1 @@
-export * from './commonScreenOptions';
+export * from './commonScreenOptions'

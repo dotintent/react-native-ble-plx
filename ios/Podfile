@@ -1,10 +1,10 @@
 # Uncomment the next line to define a global platform for your project
-platform :ios, '8.0'
+# platform :ios, '9.0'
 
-target 'BleClient' do
+target 'BlePlx' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  # Pods for BleClient
-  pod 'MultiplatformBleAdapter', '~> 0.1.9'
+  # Pods for BlePlx
+
 end
