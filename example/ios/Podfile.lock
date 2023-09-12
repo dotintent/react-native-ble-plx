@@ -376,7 +376,7 @@ PODS:
   - React-jsinspector (0.72.4)
   - React-logger (0.72.4):
     - glog
-  - react-native-ble-plx (0.1.0):
+  - react-native-ble-plx (3.0.0):
     - MultiplatformBleAdapter (= 0.1.9)
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
@@ -708,7 +708,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: c7f826e40fa9cab5d37cab6130b1af237332b594
   React-jsinspector: aaed4cf551c4a1c98092436518c2d267b13a673f
   React-logger: da1ebe05ae06eb6db4b162202faeafac4b435e77
-  react-native-ble-plx: d21415a17156237126c058ff151de525ba5b1dea
+  react-native-ble-plx: eeff9831f46020b249b3023e14f6126ff0caa6d1
   react-native-safe-area-context: 7aa8e6d9d0f3100a820efb1a98af68aa747f9284
   React-NativeModulesApple: edb5ace14f73f4969df6e7b1f3e41bef0012740f
   React-perflogger: 496a1a3dc6737f964107cb3ddae7f9e265ddda58

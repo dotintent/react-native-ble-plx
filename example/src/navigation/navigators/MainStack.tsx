@@ -5,6 +5,8 @@ import { useCommonScreenOptions } from '../components'
 
 export type MainStackParamList = {
   DASHBOARD_SCREEN: undefined
+  DEVICE_DETAILS_SCREEN: undefined
+  DEVICE_NRF_TEST_SCREEN: undefined
 }
 
 const MainStack = createNativeStackNavigator<MainStackParamList>()
@@ -19,6 +21,20 @@ export const MainStackComponent = () => {
         component={screenComponents.DashboardScreen}
         options={{
           headerTitle: 'Dashboard'
+        }}
+      />
+      <MainStack.Screen
+        name={'DEVICE_DETAILS_SCREEN'}
+        component={screenComponents.DeviceScreen}
+        options={{
+          headerTitle: 'Dashboard'
+        }}
+      />
+      <MainStack.Screen
+        name={'DEVICE_NRF_TEST_SCREEN'}
+        component={screenComponents.DevicenRFTestScreen}
+        options={{
+          headerTitle: 'nRF device test'
         }}
       />
     </MainStack.Navigator>

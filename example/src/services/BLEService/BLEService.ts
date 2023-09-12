@@ -3,16 +3,17 @@ import {
    BleErrorCode,
    BleManager,
    Device,
-   type NativeDevice,
    State as BluetoothState,
    LogLevel,
+   type UUID,
+   Characteristic
 } from 'react-native-ble-plx';
 import { PermissionsAndroid, Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 class BLEServiceInstance {
    private readonly manager: BleManager;
-   private device: NativeDevice | null;
+   private device: Device | null;
 
    constructor() {
       this.device = null;
@@ -20,26 +21,33 @@ class BLEServiceInstance {
       this.manager.setLogLevel(LogLevel.Verbose);
    }
 
-   public initializeBLE = (onBLEReady: () => void) => {
+   public getDevice = ()=>{
+    return this.device
+   }
+
+   
+
+   public initializeBLE = () => new Promise<void>((resolve, reject) =>  {
       const subscription = this.manager.onStateChange(state => {
-         console.log('manager state', state);
          switch (state) {
             case BluetoothState.Unsupported:
                this.showErrorToast('');
+               reject('Bluetooth state: ' + BluetoothState.Unsupported)
                break;
             case BluetoothState.PoweredOff:
                this.onBluetoothPowerOff();
+               reject('Bluetooth state: ' + BluetoothState.PoweredOff)
                break;
             case BluetoothState.Unauthorized:
                this.requestBluetoothPermission();
                break;
             case BluetoothState.PoweredOn:
-               onBLEReady();
+               resolve();
                subscription.remove();
                break;
          }
       }, true);
-   };
+   });
 
    public disconnectDevice = () => {
       if (!this.device) {
@@ -60,8 +68,8 @@ class BLEServiceInstance {
       this.showErrorToast('Bluetooth is turned off');
    };
 
-   public scanDevices = async (onDeviceFound: (device: Device) => void) => {
-      this.manager.startDeviceScan(null, null, (error, device) => {
+   public scanDevices = async (onDeviceFound: (device: Device) => void, UUIDs: UUID[] | null = null) => {
+      this.manager.startDeviceScan(UUIDs, null, (error, device) => {
          if (error) {
             this.onError(error);
             console.error(error.message);
@@ -74,45 +82,70 @@ class BLEServiceInstance {
       });
    };
 
-   public connectToDevice = async (deviceId: string) => {
+   public connectToDevice = (deviceId: string) => new Promise<Device>((resolve, reject) =>  {
       this.manager.stopDeviceScan();
-      console.log('connecting to ', deviceId);
       this.manager
          .connectToDevice(deviceId)
          .then(device => {
-            console.log('connected to ', deviceId);
             this.device = device;
-            return this.discoverServicesAndCharacteristics();
+            resolve(device)
          })
          .catch(error => {
-            if (error.errorCode === BleErrorCode.DeviceAlreadyConnected) {
-               return this.discoverServicesAndCharacteristics();
+            if (error.errorCode === BleErrorCode.DeviceAlreadyConnected && this.device) {
+              resolve(this.device)
             } else {
                this.onError(error);
+               reject(error)
             }
          });
-   };
+   });
 
-   private discoverServicesAndCharacteristics = () => {
+   public discoverAllServicesAndCharacteristicsForDevice = async () => new Promise<Device>((resolve, reject) =>   {
       if (!this.device) {
          this.showErrorToast('Device is not connected');
          return;
       }
-      console.log(
-         'discovering all services and characteristics for device ',
-         this.device.id,
-      );
       this.manager
          .discoverAllServicesAndCharacteristicsForDevice(this.device.id)
          .then(device => {
+            resolve(device);
             this.device = device;
-            console.log(
-               'discovered all services and characteristics for device ',
-               this.device.id,
-            );
          })
-         .catch(error => this.onError(error));
-   };
+         .catch(error => {
+            this.onError(error);
+            reject(error)
+          });
+   });
+
+   public readCharacteristicForDevice = async (serviceUUID: UUID,characteristicUUID: UUID) => new Promise<Characteristic>((resolve, reject) =>   {
+      if (!this.device) {
+         this.showErrorToast('Device is not connected');
+         return;
+      }
+      this.manager.readCharacteristicForDevice(this.device.id, serviceUUID,characteristicUUID)
+         .then(characteristic => {
+            resolve(characteristic);
+         })
+         .catch(error => {
+            this.onError(error);
+            reject(error)
+          });
+   });
+
+   public writeCharacteristicWithResponseForDevice = async (serviceUUID: UUID,characteristicUUID: UUID) => new Promise<Characteristic>((resolve, reject) =>   {
+      if (!this.device) {
+         this.showErrorToast('Device is not connected');
+         return;
+      }
+      this.manager.writeCharacteristicWithResponseForDevice(this.device.id, serviceUUID,characteristicUUID)
+         .then(characteristic => {
+            resolve(characteristic);
+         })
+         .catch(error => {
+            this.onError(error);
+            reject(error)
+          });
+   });
 
    private onError = (error: BleError) => {
       switch (error.errorCode) {
