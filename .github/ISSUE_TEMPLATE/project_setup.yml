@@ -1,0 +1,80 @@
+name: 'Project Setup'
+description: 'Describe your problem related to the project setup.'
+title: 'Project Setup'
+labels: [setup]
+
+body:
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I checked the documentation and FAQ without finding a solution
+          required: true
+        - label: I checked to make sure that this issue has not already been filed
+          required: true
+
+  - type: input
+    id: library-version
+    attributes:
+      label: Library version
+      description: What version of the library are you using?
+      placeholder: "x.x.x"
+    validations:
+      required: true
+
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+      placeholder: "Android/iOS"
+    validations:
+      required: true
+
+  - type: textarea
+    id: setup_description
+    attributes:
+      label: Setup Description
+      description: |
+        Please describe the problem you are experiencing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: |
+        Please provide detailed steps for reproducing the issue.
+      value: |
+        1. step 1
+        2. step 2
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please provide any relevant log output. This is important in case the issue is not reproducible except for under certain conditions. Both JS and platform logs can be enabled via [setLogLevel](https://dotintent.github.io/react-native-ble-plx/#blemanagersetloglevel) function call. 
+      render: shell
+    validations:
+      required: true
+
+  - type: textarea
+    id: package_json
+    attributes:
+      label: Contents of the `package.json` file
+      description: |
+        Please provide the contents of the `package.json` file.
+    validations:
+      required: true
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: |
+        Provide any additional information you think might be relevant ex. related issues, links to projects using the feature, etc.
+  

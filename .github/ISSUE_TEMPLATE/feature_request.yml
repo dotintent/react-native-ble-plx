@@ -1,0 +1,48 @@
+---
+name: Feature Request
+title: 'Feature Request: '
+description: 'Suggest an idea for this project'
+labels:
+  - enhancement
+
+body:
+  - type: textarea
+    id: feature_description
+    attributes:
+      label: Feature Description
+      description: |
+        What problem or need does this feature address?
+        How do you envision the feature working?
+        Are there any potential alternatives or workarounds you've considered?
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_workaround
+    attributes:
+      label: Current Workaround
+      description: |
+        How are you currently handling this task or feature without the requested improvement?
+        What challenges or limitations do you face with the current approach?
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Information
+      description: Provide any additional information you think might be relevant ex. related issues, links to projects using the feature, etc.
+
+  - type: textarea
+    id: suggested_implementation
+    attributes:
+      label: Suggested Implementation
+      description: |
+        If you have any suggestions for how this feature could be implemented, please provide them here. This can include technical details or design considerations.
+
+  - type: checkboxes
+    id: additionalInformation
+    attributes:
+      label: Additional Information
+      options:
+        - label: I have searched for existing feature requests.
+          required: true
+        - label: I would like to work on this feature myself.
