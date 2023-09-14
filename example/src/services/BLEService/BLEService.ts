@@ -40,11 +40,9 @@ class BLEServiceInstance {
             case BluetoothState.Unsupported:
                this.showErrorToast('');
                reject('Bluetooth state: ' + BluetoothState.Unsupported)
-               reject('Bluetooth state: ' + BluetoothState.Unsupported)
                break;
             case BluetoothState.PoweredOff:
                this.onBluetoothPowerOff();
-               reject('Bluetooth state: ' + BluetoothState.PoweredOff)
                reject('Bluetooth state: ' + BluetoothState.PoweredOff)
                break;
             case BluetoothState.Unauthorized:
@@ -52,12 +50,10 @@ class BLEServiceInstance {
                break;
             case BluetoothState.PoweredOn:
                resolve();
-               resolve();
                subscription.remove();
                break;
          }
       }, true);
-   });
    });
 
    public disconnectDevice = () => {
@@ -81,8 +77,6 @@ class BLEServiceInstance {
 
    public scanDevices = async (onDeviceFound: (device: Device) => void, UUIDs: UUID[] | null = null) => {
       this.manager.startDeviceScan(UUIDs, null, (error, device) => {
-   public scanDevices = async (onDeviceFound: (device: Device) => void, UUIDs: UUID[] | null = null) => {
-      this.manager.startDeviceScan(UUIDs, null, (error, device) => {
          if (error) {
             this.onError(error);
             console.error(error.message);
@@ -96,30 +90,23 @@ class BLEServiceInstance {
    };
 
    public connectToDevice = (deviceId: string) => new Promise<Device>((resolve, reject) =>  {
-   public connectToDevice = (deviceId: string) => new Promise<Device>((resolve, reject) =>  {
       this.manager.stopDeviceScan();
       this.manager
          .connectToDevice(deviceId)
          .then(device => {
             this.device = device;
             resolve(device)
-            resolve(device)
          })
          .catch(error => {
-            if (error.errorCode === BleErrorCode.DeviceAlreadyConnected && this.device) {
-              resolve(this.device)
             if (error.errorCode === BleErrorCode.DeviceAlreadyConnected && this.device) {
               resolve(this.device)
             } else {
                this.onError(error);
                reject(error)
-               reject(error)
             }
          });
    });
-   });
 
-   public discoverAllServicesAndCharacteristicsForDevice = async () => new Promise<Device>((resolve, reject) =>   {
    public discoverAllServicesAndCharacteristicsForDevice = async () => new Promise<Device>((resolve, reject) =>   {
       if (!this.device) {
          this.showErrorToast(deviceNotConnectedErrorText);
@@ -129,7 +116,6 @@ class BLEServiceInstance {
       this.manager
          .discoverAllServicesAndCharacteristicsForDevice(this.device.id)
          .then(device => {
-            resolve(device);
             resolve(device);
             this.device = device;
          })
