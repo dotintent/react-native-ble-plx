@@ -1,0 +1,25 @@
+name: 'Question'
+description: 'Ask question related to the library.'
+title: 'Question' 
+labels: [question]
+
+body:
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I checked the documentation and FAQ without finding a solution
+          required: true
+        - label: I checked to make sure that this issue has not already been filed
+          required: true
+        - label: I'm sure that question is related to the library itself and not Bluetooth Low Energy or Classic in general. If that so, please post your question on [StackOverflow](https://stackoverflow.com/questions/tagged/react-native-ble-plx?sort=active).
+          required: true
+        - label: I'm running the latest version
+    
+  - type: textarea
+    attributes:
+      label: Question
+      placeholder: Please describe the question.
+    validations:
+      required: true
