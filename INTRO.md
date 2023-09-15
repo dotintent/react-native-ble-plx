@@ -1,6 +1,6 @@
-<p align="center">
-  <a href="https://github.com/dotintent/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
-</p>
+<h1 align="center">
+  <a href="https://github.com/dotintent/react-native-ble-plx"><img alt="react-native-ble-plx" src="docs/logo.png" /></a>
+</h1>
 
 This guide is an introduction to BLE stack and APIs exported by this library. All examples
 will be based on CC2541 SensorTag.
@@ -34,7 +34,7 @@ To detect current state and following state changes we can use `onStateChange()`
 React.useEffect(() => {
   const subscription = manager.onStateChange((state) => {
       if (state === 'PoweredOn') {
-          this.scanAndConnect();
+          scanAndConnect();
           subscription.remove();
       }
   }, true);
@@ -48,7 +48,7 @@ Devices needs to be scanned first to be able to connect to them. There is a simp
 which allows only one callback to be registered to handle detected devices:
 
 ```js
-scanAndConnect() {
+function scanAndConnect() {
     manager.startDeviceScan(null, null, (error, device) => {
         if (error) {
             // Handle error (scanning will be stopped automatically)
