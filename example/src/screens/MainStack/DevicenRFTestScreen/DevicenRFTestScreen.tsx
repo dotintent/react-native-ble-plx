@@ -8,6 +8,7 @@ import { Device, fullUUID, type Base64 } from 'react-native-ble-plx'
 import { getDateAsBase64 } from '../../../utils/getDateAsBase64'
 import { Platform, ScrollView } from 'react-native'
 import base64 from 'react-native-base64'
+import { wait } from '../../../utils/wait'
 
 type DevicenRFTestScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_NRF_TEST_SCREEN'>
 
@@ -531,20 +532,36 @@ export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
       const initialState = await BLEService.getState()
       if (initialState === 'PoweredOff') {
         await BLEService.enable()
+        wait(1000)
       }
       await BLEService.disable()
-      await BLEService.getState()
-      const expectedPoweredOffState = await BLEService.getState()
-      if (expectedPoweredOffState !== 'PoweredOff') {
-        reject(new Error('BT disable error'))
-        setTestDisableState('ERROR')
+      while (true) {
+        let expectedPoweredOffState = await BLEService.getState()
+        if (expectedPoweredOffState === 'Resetting') {
+          wait(1000)
+          continue
+        }
+        if (expectedPoweredOffState !== 'PoweredOff') {
+          reject(new Error('BT disable error'))
+          setTestDisableState('ERROR')
+          return
+        }
+        break
       }
       setTestDisableState('DONE')
       await BLEService.enable()
-      const expectedPoweredOnState = await BLEService.getState()
-      if (expectedPoweredOnState !== 'PoweredOn') {
-        reject(new Error('BT enable error'))
-        setTestEnableState('ERROR')
+      while (true) {
+        let expectedPoweredOnState = await BLEService.getState()
+        if (expectedPoweredOnState === 'Resetting') {
+          wait(1000)
+          continue
+        }
+        if (expectedPoweredOnState !== 'PoweredOn') {
+          reject(new Error('BT enable error'))
+          setTestEnableState('ERROR')
+          return
+        }
+        break
       }
       setTestEnableState('DONE')
       console.info('success')

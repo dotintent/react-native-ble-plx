@@ -29,6 +29,9 @@ import type {
   BleManagerOptions
 } from './TypeDefinition'
 
+const enableDisableDeprecatedMessage =
+  'react-native-ble-plx: The enable and disable feature is no longer supported. In Android SDK 31+ there were major changes in permissions, which may cause problems with these functions, and in SDK 33+ they were completely removed.'
+
 /**
  *
  * BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
@@ -224,12 +227,14 @@ export class BleManager {
   // Mark: Monitoring state --------------------------------------------------------------------------------------------
 
   /**
+   * Deprecated
    * Enable Bluetooth. This function blocks until BLE is in PoweredOn state. [Android only]
    *
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<BleManager>} Promise completes when state transition was successful.
    */
   async enable(transactionId: ?TransactionId): Promise<BleManager> {
+    console.warn(enableDisableDeprecatedMessage)
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
@@ -238,12 +243,14 @@ export class BleManager {
   }
 
   /**
+   * Deprecated
    * Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Android only]
    *
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<BleManager>} Promise completes when state transition was successful.
    */
   async disable(transactionId: ?TransactionId): Promise<BleManager> {
+    console.warn(enableDisableDeprecatedMessage)
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }

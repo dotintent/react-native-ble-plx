@@ -1,4 +1,3 @@
-import { TransactionId } from './../../../../index.d';
 import {
    BleError,
    BleErrorCode,
@@ -6,6 +5,7 @@ import {
    Device,
    State as BluetoothState,
    LogLevel,
+   type TransactionId,
    type UUID,
    type Characteristic,
    type Base64,
