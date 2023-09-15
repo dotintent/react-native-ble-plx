@@ -8,6 +8,8 @@ export const StyledTextInput = styled(TextInput)`
     border-radius: 100px;
     border-color: ${theme.colors.mainRed};
     border-width: 1px;
-    padding: 6px 24px;
+    padding: 0px 24px;
+    height: 50px;
+    margin-bottom: 12px;
   `}
 `

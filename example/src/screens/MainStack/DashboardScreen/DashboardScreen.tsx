@@ -67,6 +67,7 @@ export const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
         label="Look for devices"
         onPress={() => BLEService.initializeBLE().then(() => BLEService.scanDevices(addFoundDevice))}
       />
+      <AppButton label="Ask for permissions" onPress={BLEService.requestBluetoothPermission} />
       <AppButton label="Go to nRF test" onPress={() => navigation.navigate('DEVICE_NRF_TEST_SCREEN')} />
       <FlatList
         style={{ flex: 1 }}

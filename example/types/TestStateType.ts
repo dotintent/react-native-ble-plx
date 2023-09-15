@@ -1,1 +1,1 @@
-export type TextStateType = 'DONE' | 'WAITING' | 'ERROR' | 'IN_PROGRESS'
+export type TestStateType = 'DONE' | 'WAITING' | 'ERROR' | 'IN_PROGRESS'
