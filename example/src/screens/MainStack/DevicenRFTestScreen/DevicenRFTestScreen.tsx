@@ -594,7 +594,12 @@ export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
             BLEService.connectToDevice(device.id)
               .then(() => BLEService.cancelDeviceConnection())
               .then(() => resolve())
-              .catch(reject)
+              .catch(error => {
+                if (error?.message === `Device ${device.id} was disconnected`) {
+                  resolve()
+                }
+                reject(error)
+              })
           }
         },
         [deviceTimeService]

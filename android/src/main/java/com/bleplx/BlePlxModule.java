@@ -44,6 +44,8 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import android.app.Activity;
+
 @ReactModule(name = BlePlxModule.NAME)
 public class BlePlxModule extends ReactContextBaseJavaModule {
   public static final String NAME = "BlePlx";
@@ -82,7 +84,11 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void createClient(String restoreStateIdentifier) {
-        bleAdapter = BleAdapterFactory.getNewAdapter(getReactApplicationContext());
+        final Activity activity = getCurrentActivity();
+        if (activity == null) {
+          return;
+        }
+        bleAdapter = BleAdapterFactory.getNewAdapter(activity);
         bleAdapter.createClient(restoreStateIdentifier,
                 new OnEventCallback<String>() {
                     @Override
