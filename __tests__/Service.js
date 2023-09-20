@@ -2,7 +2,7 @@ jest.mock('../src/BleManager')
 const { BleManager } = require('../src/BleManager')
 const { Service } = require('../src/Service')
 
-describe("Test if Service is properly calling BleManager's utility function: ", () => {
+describe("Test if Service is properly calling BleManager's utility function:", () => {
   const bleManager = new BleManager()
   const service = new Service({ id: 'serviceId', uuid: 'serviceUUID', deviceID: 'deviceId' }, bleManager)
 

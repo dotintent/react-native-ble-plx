@@ -1,4 +1,5 @@
 import { getDateUint8Array } from './getDateUint8Array'
+import base64 from 'react-native-base64'
 
 export const getCurrentDateAsBase64 = () => {
   const date = new Date()
@@ -10,5 +11,5 @@ export const getCurrentDateAsBase64 = () => {
     date.getMinutes(),
     date.getSeconds()
   )
-  return Base64.encodeFromByteArray(dateToSend)
+  return base64.encodeFromByteArray(dateToSend)
 }

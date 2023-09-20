@@ -2,20 +2,6 @@
 import { fillStringWithArguments } from './Utils'
 import type { BleErrorCodeMessageMapping } from './TypeDefinition'
 
-export interface NativeBleError {
-  errorCode: $Values<typeof BleErrorCode>;
-  attErrorCode: ?$Values<typeof BleATTErrorCode>;
-  iosErrorCode: ?$Values<typeof BleIOSErrorCode>;
-  androidErrorCode: ?$Values<typeof BleAndroidErrorCode>;
-  reason: ?string;
-
-  deviceID?: string;
-  serviceUUID?: string;
-  characteristicUUID?: string;
-  descriptorUUID?: string;
-  internalMessage?: string;
-}
-
 /**
  * BleError is an error class which is guaranteed to be thrown by all functions of this
  * library. It contains additional properties which help to identify problems in
@@ -552,4 +538,18 @@ export const BleAndroidErrorCode = {
    * ATT command was sent but channel is congested.
    */
   Congested: 0x8f
+}
+
+export interface NativeBleError {
+  errorCode: $Values<typeof BleErrorCode>;
+  attErrorCode: ?$Values<typeof BleATTErrorCode>;
+  iosErrorCode: ?$Values<typeof BleIOSErrorCode>;
+  androidErrorCode: ?$Values<typeof BleAndroidErrorCode>;
+  reason: ?string;
+
+  deviceID?: string;
+  serviceUUID?: string;
+  characteristicUUID?: string;
+  descriptorUUID?: string;
+  internalMessage?: string;
 }

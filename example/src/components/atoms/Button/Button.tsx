@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacityProps } from 'react-native'
+import type { TouchableOpacityProps } from 'react-native'
 import { Container, StyledText } from './Button.styled'
 export type AppButtonProps = TouchableOpacityProps & {
   label: string

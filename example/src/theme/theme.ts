@@ -1,6 +1,6 @@
 import { colors } from './colors';
 import { sizes } from './sizes';
-import { DefaultTheme } from 'styled-components';
+import type { DefaultTheme } from 'styled-components';
 
 export const commonTheme: DefaultTheme = {
    sizes,

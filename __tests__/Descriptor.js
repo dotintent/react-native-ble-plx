@@ -2,7 +2,7 @@ jest.mock('../src/BleManager')
 const { BleManager } = require('../src/BleManager')
 const { Descriptor } = require('../src/Descriptor')
 
-describe("Test if Descriptor is properly calling BleManager's utility function: ", () => {
+describe("Test if Descriptor is properly calling BleManager's utility function:", () => {
   const bleManager = new BleManager()
   const descriptor = new Descriptor(
     {

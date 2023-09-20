@@ -22,7 +22,7 @@ const writeWithoutResponseBase64Time = getDateAsBase64(new Date('2023-09-12T10:1
 const monitorExpectedMessage = 'Hi, it works!'
 const currentTimeCharacteristicTimeTriggerDescriptorValue = base64.encode('BLE-PLX')
 
-export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
+export const DevicenRFTestScreen = (_props: DevicenRFTestScreenProps) => {
   const [expectedDeviceName, setExpectedDeviceName] = useState('')
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [testDeviceConnectedState, setTestDeviceConnectedState] = useState<TestStateType>('WAITING')
@@ -158,7 +158,7 @@ export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
     }
   }
 
-  const startTestInfo = (testName: string) => console.log('starting: ', testName)
+  const startTestInfo = (testName: string) => console.info('starting: ', testName)
 
   const runTest = (functionToRun: () => Promise<any>, stateSetter: Dispatch<TestStateType>, testName: string) => {
     startTestInfo(testName)
@@ -444,7 +444,7 @@ export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
       BLEService.setupMonitor(
         deviceTimeService,
         currentTimeCharacteristic,
-        console.log,
+        () => {},
         error => {
           if (error.message === 'Operation was cancelled') {
             resolve()
@@ -587,7 +587,7 @@ export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
   }
 
   const cancelDeviceConnection = () =>
-    new Promise<void>(async (resolve, reject) => {
+    new Promise<void>((resolve, reject) => {
       BLEService.scanDevices(
         (device: Device) => {
           if (device.name?.toLocaleLowerCase() === expectedDeviceName.toLocaleLowerCase()) {

@@ -528,6 +528,7 @@ DEPENDENCIES:
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
+  - MultiplatformBleAdapter (from `https://github.com/Polidea/MultiPlatformBleAdapter.git`, branch `RxBluetooth-update`)
   - OpenSSL-Universal (= 1.1.1100)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -581,7 +582,6 @@ SPEC REPOS:
     - FlipperKit
     - fmt
     - libevent
-    - MultiplatformBleAdapter
     - OpenSSL-Universal
     - SocketRocket
     - YogaKit
@@ -600,6 +600,9 @@ EXTERNAL SOURCES:
   hermes-engine:
     :podspec: "../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec"
     :tag: hermes-2023-08-07-RNv0.72.4-813b2def12bc9df02654b3e3653ae4a68d0572e0
+  MultiplatformBleAdapter:
+    :branch: RxBluetooth-update
+    :git: https://github.com/Polidea/MultiPlatformBleAdapter.git
   RCT-Folly:
     :podspec: "../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec"
   RCTRequired:
@@ -673,6 +676,11 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
+CHECKOUT OPTIONS:
+  MultiplatformBleAdapter:
+    :commit: 46dbede0d21229bba7b2c6c19e24926f8dcc11f7
+    :git: https://github.com/Polidea/MultiPlatformBleAdapter.git
+
 SPEC CHECKSUMS:
   boost: 57d2868c099736d80fcd648bf211b4431e51a558
   CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
@@ -732,6 +740,6 @@ SPEC CHECKSUMS:
   Yoga: 3efc43e0d48686ce2e8c60f99d4e6bd349aff981
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e60c362035c875f49588e9ed0a69a048dd736fd8
+PODFILE CHECKSUM: 0f5087902db593c5807c52c7b1504d858d13b986
 
 COCOAPODS: 1.12.1
