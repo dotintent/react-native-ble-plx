@@ -56,9 +56,9 @@
   "author": "dotintent (https://withintent.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dotintent/react-native-ble-plx.git/issues"
+    "url": "https://github.com/dotintent/react-native-ble-plx/issues"
   },
-  "homepage": "https://github.com/dotintent/react-native-ble-plx.git#readme",
+  "homepage": "https://github.com/dotintent/react-native-ble-plx#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },

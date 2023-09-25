@@ -328,7 +328,7 @@ declare module 'react-native-ble-plx' {
     /**
      * iOS specific error code (if not an ATT error).
      */
-    iosErrorCode: BleATTErrorCode | null
+    iosErrorCode: BleIOSErrorCode | null
     /**
      * Android specific error code (if not an ATT error).
      */
