@@ -321,18 +321,22 @@ declare module 'react-native-ble-plx' {
      * Platform independent error code. Possible values are defined in {@link BleErrorCode}.
      */
     errorCode: BleErrorCode
+
     /**
      * Platform independent error code related to ATT errors.
      */
     attErrorCode: BleATTErrorCode | null
+
     /**
      * iOS specific error code (if not an ATT error).
      */
     iosErrorCode: BleIOSErrorCode | null
+
     /**
      * Android specific error code (if not an ATT error).
      */
     androidErrorCode: BleAndroidErrorCode | null
+
     /**
      * Platform specific error message.
      */
@@ -1675,14 +1679,17 @@ declare module 'react-native-ble-plx' {
      * Service unique identifier
      */
     id: Identifier
+
     /**
      * Service UUID
      */
     uuid: UUID
+
     /**
      * Device's ID to which service belongs
      */
     deviceID: DeviceId
+
     /**
      * Value indicating whether the type of service is primary or secondary.
      */
@@ -1817,46 +1824,57 @@ declare module 'react-native-ble-plx' {
      * Characteristic unique identifier
      */
     id: Identifier
+
     /**
      * Characteristic UUID
      */
     uuid: UUID
+
     /**
      * Service's ID to which characteristic belongs
      */
     serviceID: Identifier
+
     /**
      * Service's UUID to which characteristic belongs
      */
     serviceUUID: UUID
+
     /**
      * Device's ID to which characteristic belongs
      */
     deviceID: DeviceId
+
     /**
      * True if characteristic can be read
      */
     isReadable: boolean
+
     /**
      * True if characteristic can be written with response
      */
     isWritableWithResponse: boolean
+
     /**
      * True if characteristic can be written without response
      */
     isWritableWithoutResponse: boolean
+
     /**
      * True if characteristic can monitor value changes.
      */
     isNotifiable: boolean
+
     /**
      * True if characteristic is monitoring value changes without ACK.
      */
     isNotifying: boolean
+
     /**
      * True if characteristic is monitoring value changes with ACK.
      */
     isIndicatable: boolean
+
     /**
      * Characteristic value if present
      */
@@ -1957,34 +1975,42 @@ declare module 'react-native-ble-plx' {
      * @private
      */
     _manager: BleManager
+
     /**
      * Descriptor unique identifier
      */
     id: Identifier
+
     /**
      * Descriptor UUID
      */
     uuid: UUID
+
     /**
      * Characteristic's ID to which descriptor belongs
      */
     characteristicID: Identifier
+
     /**
      * Characteristic's UUID to which descriptor belongs
      */
     characteristicUUID: UUID
+
     /**
      * Service's ID to which descriptor belongs
      */
     serviceID: Identifier
+
     /**
      * Service's UUID to which descriptor belongs
      */
     serviceUUID: UUID
+
     /**
      * Device's ID to which descriptor belongs
      */
     deviceID: DeviceId
+
     /**
      * Descriptor value if present
      */

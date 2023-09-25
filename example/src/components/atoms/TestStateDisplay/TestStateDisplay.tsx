@@ -1,10 +1,11 @@
 import React from 'react'
-import { AppText } from '../AppText/AppText'
 import type { TestStateType } from 'example/types'
+import { AppText } from '../AppText/AppText'
 import { Container, Header, Label } from './TestStateDisplay.styled'
+
 export type TestStateDisplayProps = {
-  label?: string,
-  state: TestStateType,
+  label?: string
+  state: TestStateType
   value?: string
 }
 
@@ -15,7 +16,7 @@ const marks: Record<TestStateType, string> = {
   IN_PROGRESS: '\u260E'
 }
 
-export const TestStateDisplay = ({ label, state, value }: TestStateDisplayProps) => {
+export function TestStateDisplay({ label, state, value }: TestStateDisplayProps) {
   return (
     <Container>
       <Header>

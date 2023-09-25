@@ -18,9 +18,12 @@ const deviceNotConnectedErrorText = 'Device is not connected'
 
 class BLEServiceInstance {
   manager: BleManager
+
   device: Device | null
+
   characteristicMonitor: Subscription | null
-  isCharacteristicMonitorDisconnectExpected: boolean = false
+
+  isCharacteristicMonitorDisconnectExpected = false
 
   constructor() {
     this.device = null
@@ -29,28 +32,23 @@ class BLEServiceInstance {
     this.manager.setLogLevel(LogLevel.Verbose)
   }
 
-  getDevice = () => {
-    return this.device
-  }
+  getDevice = () => this.device
 
   initializeBLE = () =>
-    new Promise<void>((resolve, reject) => {
+    new Promise<void>(resolve => {
       const subscription = this.manager.onStateChange(state => {
         switch (state) {
           case BluetoothState.Unsupported:
             this.showErrorToast('')
-            reject('Bluetooth state: ' + BluetoothState.Unsupported)
             break
           case BluetoothState.PoweredOff:
             this.onBluetoothPowerOff()
-            reject('Bluetooth state: ' + BluetoothState.PoweredOff)
             this.manager.enable().catch((error: BleError) => {
               if (error.errorCode === BleErrorCode.BluetoothUnauthorized) {
                 this.requestBluetoothPermission()
               }
             })
             break
-
           case BluetoothState.Unauthorized:
             this.requestBluetoothPermission()
             break
@@ -58,6 +56,8 @@ class BLEServiceInstance {
             resolve()
             subscription.remove()
             break
+          default:
+            console.error('Unsupported state: ', state)
         }
       }, true)
     })
@@ -334,10 +334,12 @@ class BLEServiceInstance {
   }
 
   cancelTransaction = (transactionId: string) => this.manager.cancelTransaction(transactionId)
+
   enable = () =>
     this.manager.enable().catch(error => {
       this.onError(error)
     })
+
   disable = () =>
     this.manager.disable().catch(error => {
       this.onError(error)

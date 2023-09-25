@@ -1,13 +1,13 @@
 import React, { useState, type Dispatch } from 'react'
-import { AppButton, AppTextInput, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
 import type { TestStateType } from 'example/types'
-import type { MainStackParamList } from '../../../navigation'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { BLEService } from '../../../services'
 import { Device, fullUUID, type Base64 } from 'react-native-ble-plx'
-import { getDateAsBase64 } from '../../../utils/getDateAsBase64'
 import { Platform, ScrollView } from 'react-native'
 import base64 from 'react-native-base64'
+import { getDateAsBase64 } from '../../../utils/getDateAsBase64'
+import { BLEService } from '../../../services'
+import type { MainStackParamList } from '../../../navigation/navigators'
+import { AppButton, AppTextInput, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
 import { wait } from '../../../utils/wait'
 
 type DevicenRFTestScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_NRF_TEST_SCREEN'>
@@ -22,7 +22,7 @@ const writeWithoutResponseBase64Time = getDateAsBase64(new Date('2023-09-12T10:1
 const monitorExpectedMessage = 'Hi, it works!'
 const currentTimeCharacteristicTimeTriggerDescriptorValue = base64.encode('BLE-PLX')
 
-export const DevicenRFTestScreen = (_props: DevicenRFTestScreenProps) => {
+export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
   const [expectedDeviceName, setExpectedDeviceName] = useState('')
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [testDeviceConnectedState, setTestDeviceConnectedState] = useState<TestStateType>('WAITING')
@@ -160,7 +160,7 @@ export const DevicenRFTestScreen = (_props: DevicenRFTestScreenProps) => {
 
   const startTestInfo = (testName: string) => console.info('starting: ', testName)
 
-  const runTest = (functionToRun: () => Promise<any>, stateSetter: Dispatch<TestStateType>, testName: string) => {
+  const runTest = (functionToRun: () => Promise<unknown>, stateSetter: Dispatch<TestStateType>, testName: string) => {
     startTestInfo(testName)
     stateSetter('IN_PROGRESS')
     return functionToRun()
@@ -519,6 +519,7 @@ export const DevicenRFTestScreen = (_props: DevicenRFTestScreenProps) => {
   const startGetState = () => runTest(getState, setTestBTStateState, 'startGetState')
 
   const startDisableEnableTest = () =>
+    // eslint-disable-next-line no-async-promise-executor
     new Promise<void>(async (resolve, reject) => {
       startTestInfo('startDisableEnableTest')
       setTestEnableState('IN_PROGRESS')
@@ -536,7 +537,7 @@ export const DevicenRFTestScreen = (_props: DevicenRFTestScreenProps) => {
       }
       await BLEService.disable()
       while (true) {
-        let expectedPoweredOffState = await BLEService.getState()
+        const expectedPoweredOffState = await BLEService.getState()
         if (expectedPoweredOffState === 'Resetting') {
           wait(1000)
           continue
@@ -551,7 +552,7 @@ export const DevicenRFTestScreen = (_props: DevicenRFTestScreenProps) => {
       setTestDisableState('DONE')
       await BLEService.enable()
       while (true) {
-        let expectedPoweredOnState = await BLEService.getState()
+        const expectedPoweredOnState = await BLEService.getState()
         if (expectedPoweredOnState === 'Resetting') {
           wait(1000)
           continue

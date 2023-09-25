@@ -1,13 +1,13 @@
 import React from 'react'
-import { AppText, ScreenDefaultContainer } from '../../../components/atoms'
-import type { MainStackParamList } from '../../../navigation'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { BLEService } from '../../../services'
 import { ScrollView } from 'react-native'
+import { AppText, ScreenDefaultContainer } from '../../../components/atoms'
+import type { MainStackParamList } from '../../../navigation/navigators'
+import { BLEService } from '../../../services'
 
 type DeviceDetailsScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_DETAILS_SCREEN'>
 
-export const DeviceScreen = (_props: DeviceDetailsScreenProps) => {
+export function DeviceScreen(_props: DeviceDetailsScreenProps) {
   const connectedDevice = BLEService.getDevice()
   return (
     <ScreenDefaultContainer>

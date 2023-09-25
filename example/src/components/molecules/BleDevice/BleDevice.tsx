@@ -1,13 +1,14 @@
 import React from 'react'
-import { Container } from './BleDevice.styled'
 import { Device } from 'react-native-ble-plx'
+import { Container } from './BleDevice.styled'
 import { DeviceProperty } from './DeviceProperty/DeviceProperty'
+
 export type BleDeviceProps = {
-  onPress: (device: Device) => void,
+  onPress: (device: Device) => void
   device: Device
 }
 
-export const BleDevice = ({ device, onPress }: BleDeviceProps) => {
+export function BleDevice({ device, onPress }: BleDeviceProps) {
   const isConnectableInfoValueIsUnavailable = typeof device.isConnectable !== 'boolean'
   const isConnectableValue = device.isConnectable ? 'ture' : 'false'
   const parsedIsConnectable = isConnectableInfoValueIsUnavailable ? '-' : isConnectableValue

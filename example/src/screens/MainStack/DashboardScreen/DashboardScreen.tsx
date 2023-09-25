@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import { AppButton, AppText, ScreenDefaultContainer } from '../../../components/atoms'
-import type { MainStackParamList } from '../../../navigation'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { BLEService } from '../../../services'
-import { FlatList, View } from 'react-native'
+import { FlatList } from 'react-native'
 import { Device } from 'react-native-ble-plx'
+import { AppButton, AppText, ScreenDefaultContainer } from '../../../components/atoms'
+import type { MainStackParamList } from '../../../navigation/navigators'
+import { BLEService } from '../../../services'
 import { BleDevice } from '../../../components/molecules'
+import { DropDown } from './DashboardScreen.styled'
 
 type DashboardScreenProps = NativeStackScreenProps<MainStackParamList, 'DASHBOARD_SCREEN'>
 
-export const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
+export function DashboardScreen({ navigation }: DashboardScreenProps) {
   const [isConnecting, setIsConnecting] = useState(false)
   const [foundDevices, setFoundDevices] = useState<Device[]>([])
 
@@ -47,21 +48,9 @@ export const DashboardScreen = ({ navigation }: DashboardScreenProps) => {
   return (
     <ScreenDefaultContainer>
       {isConnecting && (
-        <View
-          style={{
-            zIndex: 100,
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            backgroundColor: '#00000066',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
+        <DropDown>
           <AppText style={{ fontSize: 30 }}>Connecting</AppText>
-        </View>
+        </DropDown>
       )}
       <AppButton
         label="Look for devices"

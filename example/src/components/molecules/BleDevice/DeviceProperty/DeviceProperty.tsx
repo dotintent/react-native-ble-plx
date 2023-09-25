@@ -1,11 +1,12 @@
 import React from 'react'
 import { Container, StyledTitleText, StyledValueText } from './DeviceProperty.styled'
+
 export type DevicePropertyProps = {
-  name: string,
+  name: string
   value?: number | string | null
 }
 
-export const DeviceProperty = ({ name, value }: DevicePropertyProps) => {
+export function DeviceProperty({ name, value }: DevicePropertyProps) {
   return (
     <Container>
       <StyledTitleText>{name}:</StyledTitleText>

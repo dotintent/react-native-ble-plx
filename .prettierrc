@@ -1,14 +1,21 @@
 {
   "printWidth": 120,
   "tabWidth": 2,
-  "useTabs": false,
-  "semi": false,
   "singleQuote": true,
-  "quoteProps": "as-needed",
-  "jsxSingleQuote": false,
+  "semi": false,
   "trailingComma": "none",
-  "bracketSpacing": true,
-  "jsxBracketSameLine": false,
   "arrowParens": "avoid",
-  "parser": "babel-flow"
+  "overrides": [
+    {
+      "files": ["src/**/*.*"],
+      "options": {
+        "parser": "babel-flow",
+          "useTabs": false,
+          "quoteProps": "as-needed",
+          "jsxSingleQuote": false,
+          "bracketSpacing": true,
+          "jsxBracketSameLine": false,
+      }
+    }
+  ]
 }

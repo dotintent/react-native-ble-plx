@@ -1,30 +1,31 @@
-import React from 'react';
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import React from 'react'
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
 
-import { MainStackComponent, type MainStackParamList } from '.';
+import { MainStackComponent, type MainStackParamList } from './navigators'
 
 const mainTheme = {
-   ...DefaultTheme,
-   dark: false,
-   colors: {
-      ...DefaultTheme.colors,
-      card: 'white',
-      background: 'white',
-   },
-};
-
-export interface AllScreenTypes extends MainStackParamList {}
-
-declare global {
-   namespace ReactNavigation {
-      interface RootParamList extends AllScreenTypes {}
-   }
+  ...DefaultTheme,
+  dark: false,
+  colors: {
+    ...DefaultTheme.colors,
+    card: 'white',
+    background: 'white'
+  }
 }
 
-const Navigation = () => (
-   <NavigationContainer theme={mainTheme}>
-      <MainStackComponent />
-   </NavigationContainer>
-);
+export type AllScreenTypes = MainStackParamList
 
-export default Navigation;
+// eslint-disable-next-line prettier/prettier
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends AllScreenTypes {}
+  }
+}
+
+export function Navigation() {
+  return (
+    <NavigationContainer theme={mainTheme}>
+      <MainStackComponent />
+    </NavigationContainer>
+  )
+}
