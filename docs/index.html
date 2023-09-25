@@ -1865,7 +1865,7 @@
               
                 
                 <li><a
-                  href='#deviceid-1'
+                  href='#deviceid'
                   class="">
                   DeviceId
                   
@@ -1950,12 +1950,18 @@
   </h2>
 
   
-    <p>This guide is an introduction to BLE stack and APIs exported by this library. All examples
+    <h1 align="center">
+  <a href="https://github.com/dotintent/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
+</h1>
+<p>This guide is an introduction to BLE stack and APIs exported by this library. All examples
 will be based on CC2541 SensorTag.</p>
 <h2>Creating BLE Manager</h2>
 <p>First step is to create BleManager instance which is an entry point to all available APIs.
 Make sure to create it after application started its execution. For example we can keep it
 as a static reference:</p>
+<pre class='hljs'><span class="hljs-keyword">import</span> { BleManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native-ble-plx'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> manager = <span class="hljs-keyword">new</span> BleManager()</pre>
 <p>Only <em>one</em> instance of BleManager is allowed. When you don't need any BLE functionality you
 can destroy created instance by calling <code>manager.destroy()</code> function. You can then recreate
 <code>BleManager</code> later on.</p>
@@ -1965,9 +1971,35 @@ of the manager for every re-render of a React Native Component.</p>
 <h2>Waiting for Powered On state</h2>
 <p>When iOS application launches BLE stack is not immediately available and we need to check its status.
 To detect current state and following state changes we can use <code>onStateChange()</code> function:</p>
+<pre class='hljs'>React.useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+  <span class="hljs-keyword">const</span> subscription = manager.onStateChange(<span class="hljs-function"><span class="hljs-params">state</span> =&gt;</span> {
+    <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'PoweredOn'</span>) {
+      scanAndConnect()
+      subscription.remove()
+    }
+  }, <span class="hljs-literal">true</span>)
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> subscription.remove()
+}, [manager])</pre>
 <h2>Scanning devices</h2>
 <p>Devices needs to be scanned first to be able to connect to them. There is a simple function
 which allows only one callback to be registered to handle detected devices:</p>
+<pre class='hljs'><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">scanAndConnect</span>(<span class="hljs-params"></span>) </span>{
+  manager.startDeviceScan(<span class="hljs-literal">null</span>, <span class="hljs-literal">null</span>, (error, device) =&gt; {
+    <span class="hljs-keyword">if</span> (error) {
+      <span class="hljs-comment">// Handle error (scanning will be stopped automatically)</span>
+      <span class="hljs-keyword">return</span>
+    }
+
+    <span class="hljs-comment">// Check if it is a device you are looking for based on advertisement data</span>
+    <span class="hljs-comment">// or other criteria.</span>
+    <span class="hljs-keyword">if</span> (device.name === <span class="hljs-string">'TI BLE Sensor Tag'</span> || device.name === <span class="hljs-string">'SensorTag'</span>) {
+      <span class="hljs-comment">// Stop scanning as it's not necessary if you are scanning for one device.</span>
+      manager.stopDeviceScan()
+
+      <span class="hljs-comment">// Proceed with connection.</span>
+    }
+  })
+}</pre>
 <p>It is worth to note that scanning function may emit one device multiple times. However
 when device is connected it won't broadcast and needs to be disconnected from central
 to be scanned again. Only one scanning listener can be registered.</p>
@@ -1977,6 +2009,17 @@ all services and characteristics it contains. Services may be understood
 as containers grouping characteristics based on their meaning. Characteristic is a
 container for a value which can be read, written and monitored based on available
 capabilities. For example connection may look like this:</p>
+<pre class='hljs'>device
+  .connect()
+  .then(<span class="hljs-function"><span class="hljs-params">device</span> =&gt;</span> {
+    <span class="hljs-keyword">return</span> device.discoverAllServicesAndCharacteristics()
+  })
+  .then(<span class="hljs-function"><span class="hljs-params">device</span> =&gt;</span> {
+    <span class="hljs-comment">// Do work on device with services and characteristics</span>
+  })
+  .catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
+    <span class="hljs-comment">// Handle errors</span>
+  })</pre>
 <p>Discovery of services and characteristics is required to be executed once per connection*.
 It can be a long process depending on number of characteristics and services available.</p>
 <p>* Extremely rarely, when peripheral's service/characteristic set can change during a connection
@@ -2068,9 +2111,9 @@ are presented in order which aligns them with usage.</p>
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> manager = <span class="hljs-keyword">new</span> <span class="hljs-title class_">BleManager</span>();
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> manager = <span class="hljs-keyword">new</span> BleManager();
 <span class="hljs-comment">// ... work with BLE manager ...</span>
-manager.<span class="hljs-title function_">destroy</span>();</pre>
+manager.destroy();</pre>
     
   
 
@@ -2309,17 +2352,17 @@ which doesn't exist is ignored.</p>
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> transactionId = <span class="hljs-string">&#x27;monitor_battery&#x27;</span>;
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> transactionId = <span class="hljs-string">'monitor_battery'</span>;
 
 <span class="hljs-comment">// Monitor battery notifications</span>
-manager.<span class="hljs-title function_">monitorCharacteristicForDevice</span>(
-  device.<span class="hljs-property">id</span>, <span class="hljs-string">&#x27;180F&#x27;</span>, <span class="hljs-string">&#x27;2A19&#x27;</span>,
-  <span class="hljs-function">(<span class="hljs-params">error, characteristic</span>) =&gt;</span> {
+manager.monitorCharacteristicForDevice(
+  device.id, <span class="hljs-string">'180F'</span>, <span class="hljs-string">'2A19'</span>,
+  (error, characteristic) =&gt; {
   <span class="hljs-comment">// Handle battery level changes...</span>
 }, transactionId);
 
 <span class="hljs-comment">// Cancel after specified amount of time</span>
-<span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> manager.<span class="hljs-title function_">cancelTransaction</span>(transactionId), <span class="hljs-number">2000</span>);</pre>
+setTimeout(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> manager.cancelTransaction(transactionId), <span class="hljs-number">2000</span>);</pre>
     
   
 
@@ -2612,10 +2655,10 @@ Look at
     <div class='py1 quiet mt1 prose-big'>Example</div>
     
       
-      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> subscription = <span class="hljs-variable language_">this</span>.<span class="hljs-property">manager</span>.<span class="hljs-title function_">onStateChange</span>(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
-     <span class="hljs-keyword">if</span> (state === <span class="hljs-string">&#x27;PoweredOn&#x27;</span>) {
-         <span class="hljs-variable language_">this</span>.<span class="hljs-title function_">scanAndConnect</span>();
-         subscription.<span class="hljs-title function_">remove</span>();
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">const</span> subscription = <span class="hljs-keyword">this</span>.manager.onStateChange(<span class="hljs-function">(<span class="hljs-params">state</span>) =&gt;</span> {
+     <span class="hljs-keyword">if</span> (state === <span class="hljs-string">'PoweredOn'</span>) {
+         <span class="hljs-keyword">this</span>.scanAndConnect();
+         subscription.remove();
      }
  }, <span class="hljs-literal">true</span>);</pre>
     
@@ -2800,7 +2843,7 @@ is a scanned
   <p>Request a connection parameter update. This functions may update connection parameters on Android API level 21 or
 above.</p>
 
-    <div class='pre p1 fill-light mt0'>requestConnectionPriorityForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, connectionPriority: <a href="#connectionpriority">ConnectionPriority</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+    <div class='pre p1 fill-light mt0'>requestConnectionPriorityForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, connectionPriority: <a href="#connectionpriority">ConnectionPriority</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -2817,7 +2860,7 @@ above.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    Device identifier.
 
           </div>
@@ -2889,7 +2932,7 @@ above.</p>
 
   <p>Reads RSSI for connected device.</p>
 
-    <div class='pre p1 fill-light mt0'>readRSSIForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+    <div class='pre p1 fill-light mt0'>readRSSIForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -2906,7 +2949,7 @@ above.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    Device identifier.
 
           </div>
@@ -2970,7 +3013,7 @@ above.</p>
   <p>Request new MTU value for this device. This function currently is not doing anything
 on iOS platform as MTU exchange is done automatically.</p>
 
-    <div class='pre p1 fill-light mt0'>requestMTUForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, mtu: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+    <div class='pre p1 fill-light mt0'>requestMTUForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, mtu: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -2987,7 +3030,7 @@ on iOS platform as MTU exchange is done automatically.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    Device identifier.
 
           </div>
@@ -3059,7 +3102,7 @@ on iOS platform as MTU exchange is done automatically.</p>
 
   <p>Returns a list of known devices by their identifiers.</p>
 
-    <div class='pre p1 fill-light mt0'>devices(deviceIdentifiers: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#deviceid-1">DeviceId</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></div>
+    <div class='pre p1 fill-light mt0'>devices(deviceIdentifiers: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#deviceid">DeviceId</a>>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#device">Device</a>>></div>
   
   
 
@@ -3076,7 +3119,7 @@ on iOS platform as MTU exchange is done automatically.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifiers</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#deviceid-1">DeviceId</a>>)</code>
+            <span class='code bold'>deviceIdentifiers</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#deviceid">DeviceId</a>>)</code>
 	    List of device identifiers.
 
           </div>
@@ -3203,7 +3246,7 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
 
   <p>Connects to <a href="#device">Device</a> with provided ID.</p>
 
-    <div class='pre p1 fill-light mt0'>connectToDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+    <div class='pre p1 fill-light mt0'>connectToDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, options: <a href="#connectionoptions">ConnectionOptions</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -3220,7 +3263,7 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -3286,7 +3329,7 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
 
   <p>Disconnects from <a href="#device">Device</a> if it's connected or cancels pending connection.</p>
 
-    <div class='pre p1 fill-light mt0'>cancelDeviceConnection(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+    <div class='pre p1 fill-light mt0'>cancelDeviceConnection(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -3303,7 +3346,7 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier to be closed.
 
@@ -3360,7 +3403,7 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
 
   <p>Monitors if <a href="#device">Device</a> was disconnected due to any errors or connection problems.</p>
 
-    <div class='pre p1 fill-light mt0'>onDeviceDisconnected(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, listener: function (error: <a href="#bleerror">BleError</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
+    <div class='pre p1 fill-light mt0'>onDeviceDisconnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>, listener: function (error: <a href="#bleerror">BleError</a>?, device: <a href="#device">Device</a>)): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -3377,7 +3420,7 @@ if that's the case with function <a href="#blemanagerisdeviceconnected">isDevice
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier to be monitored.
 
@@ -3449,7 +3492,7 @@ if available and
 
   <p>Check connection state of a <a href="#device">Device</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>isDeviceConnected(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
+    <div class='pre p1 fill-light mt0'>isDeviceConnected(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>></div>
   
   
 
@@ -3466,7 +3509,7 @@ if available and
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -3525,7 +3568,7 @@ if available and
 
   <p>Discovers all <a href="#service">Service</a>s,  <a href="#characteristic">Characteristic</a>s and <a href="#descriptor">Descriptor</a>s for <a href="#device">Device</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
+    <div class='pre p1 fill-light mt0'>discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
   
 
@@ -3542,7 +3585,7 @@ if available and
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -3609,7 +3652,7 @@ characteristics have been discovered.
 
   <p>List of discovered <a href="#service">Service</a>s for <a href="#device">Device</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>servicesForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
+    <div class='pre p1 fill-light mt0'>servicesForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#service">Service</a>>></div>
   
   
 
@@ -3626,7 +3669,7 @@ characteristics have been discovered.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -3686,7 +3729,7 @@ characteristics have been discovered.
 
   <p>List of discovered <a href="#characteristic">Characteristic</a>s for given <a href="#device">Device</a> and <a href="#service">Service</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>characteristicsForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
+    <div class='pre p1 fill-light mt0'>characteristicsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#characteristic">Characteristic</a>>></div>
   
   
 
@@ -3703,7 +3746,7 @@ characteristics have been discovered.
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -3775,7 +3818,7 @@ discovered for a
 
   <p>List of discovered <a href="#descriptor">Descriptor</a>s for given <a href="#device">Device</a>, <a href="#service">Service</a> and <a href="#characteristic">Characteristic</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>descriptorsForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#descriptor">Descriptor</a>>></div>
+    <div class='pre p1 fill-light mt0'>descriptorsForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#descriptor">Descriptor</a>>></div>
   
   
 
@@ -3792,7 +3835,7 @@ discovered for a
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -3876,7 +3919,7 @@ discovered for a
 
   <p>Read <a href="#characteristic">Characteristic</a> value.</p>
 
-    <div class='pre p1 fill-light mt0'>readCharacteristicForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+    <div class='pre p1 fill-light mt0'>readCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -3893,7 +3936,7 @@ discovered for a
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -3987,7 +4030,7 @@ UUID paths. Latest value of
 
   <p>Write <a href="#characteristic">Characteristic</a> value with response.</p>
 
-    <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+    <div class='pre p1 fill-light mt0'>writeCharacteristicWithResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -4004,7 +4047,7 @@ UUID paths. Latest value of
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -4105,7 +4148,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
 
   <p>Write <a href="#characteristic">Characteristic</a> value without response.</p>
 
-    <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
+    <div class='pre p1 fill-light mt0'>writeCharacteristicWithoutResponseForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, base64Value: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#characteristic">Characteristic</a>></div>
   
   
 
@@ -4122,7 +4165,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -4224,7 +4267,7 @@ UUID paths. Latest value of characteristic may not be stored inside returned obj
   <p>Monitor value changes of a <a href="#characteristic">Characteristic</a>. If notifications are enabled they will be used
 in favour of indications.</p>
 
-    <div class='pre p1 fill-light mt0'>monitorCharacteristicForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
+    <div class='pre p1 fill-light mt0'>monitorCharacteristicForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, listener: function (error: <a href="#bleerror">BleError</a>?, characteristic: <a href="#characteristic">Characteristic</a>?), transactionId: <a href="#transactionid">TransactionId</a>?): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -4241,7 +4284,7 @@ in favour of indications.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -4344,7 +4387,7 @@ in favour of indications.</p>
 
   <p>Read <a href="#descriptor">Descriptor</a> value.</p>
 
-    <div class='pre p1 fill-light mt0'>readDescriptorForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, descriptorUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#descriptor">Descriptor</a>></div>
+    <div class='pre p1 fill-light mt0'>readDescriptorForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, descriptorUUID: <a href="#uuid">UUID</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#descriptor">Descriptor</a>></div>
   
   
 
@@ -4361,7 +4404,7 @@ in favour of indications.</p>
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    <a href="#device">Device</a>
  identifier.
 
@@ -4465,7 +4508,7 @@ UUID paths. Latest value of
 
   <p>Write <a href="#descriptor">Descriptor</a> value.</p>
 
-    <div class='pre p1 fill-light mt0'>writeDescriptorForDevice(deviceIdentifier: <a href="#deviceid-1">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, descriptorUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#descriptor">Descriptor</a>></div>
+    <div class='pre p1 fill-light mt0'>writeDescriptorForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, serviceUUID: <a href="#uuid">UUID</a>, characteristicUUID: <a href="#uuid">UUID</a>, descriptorUUID: <a href="#uuid">UUID</a>, valueBase64: <a href="#base64">Base64</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#descriptor">Descriptor</a>></div>
   
   
 
@@ -4482,7 +4525,7 @@ UUID paths. Latest value of
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid-1">DeviceId</a>)</code>
+            <span class='code bold'>deviceIdentifier</span> <code class='quiet'>(<a href="#deviceid">DeviceId</a>)</code>
 	    Connected device identifier
 
           </div>
@@ -4666,7 +4709,7 @@ UUID paths. Latest value of
   
     <p>
       Type:
-      <a href="#deviceid-1">DeviceId</a>
+      <a href="#deviceid">DeviceId</a>
     </p>
   
   
@@ -6950,7 +6993,7 @@ UUID paths. Latest value of
   
     <p>
       Type:
-      <a href="#deviceid-1">DeviceId</a>
+      <a href="#deviceid">DeviceId</a>
     </p>
   
   
@@ -8078,7 +8121,7 @@ UUID paths. Latest value of
   
     <p>
       Type:
-      <a href="#deviceid-1">DeviceId</a>
+      <a href="#deviceid">DeviceId</a>
     </p>
   
   
@@ -9500,7 +9543,7 @@ UUID paths. Latest value of
   
     <p>
       Type:
-      <a href="#deviceid-1">DeviceId</a>
+      <a href="#deviceid">DeviceId</a>
     </p>
   
   
@@ -15659,6 +15702,11 @@ received by <a href="#blemanager">BleManager</a></p>
 
     <div class='pre p1 fill-light mt0'>BleErrorCodeMessageMapping</div>
   
+    <p>
+      Type:
+      {}
+    </p>
+  
   
 
   
@@ -17007,7 +17055,7 @@ specified due to OS specific behavior.</p>
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='deviceid-1'>
+    <h3 class='fl m0' id='deviceid'>
       DeviceId
     </h3>
     

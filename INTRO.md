@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="https://github.com/dotintent/react-native-ble-plx"><img alt="react-native-ble-plx" src="docs/logo.png" /></a>
+  <a href="https://github.com/dotintent/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
 </h1>
 
 This guide is an introduction to BLE stack and APIs exported by this library. All examples
@@ -12,9 +12,9 @@ Make sure to create it after application started its execution. For example we c
 as a static reference:
 
 ```js
-import { BleManager } from 'react-native-ble-plx';
+import { BleManager } from 'react-native-ble-plx'
 
-export const manager = new BleManager();
+export const manager = new BleManager()
 ```
 
 Only _one_ instance of BleManager is allowed. When you don't need any BLE functionality you
@@ -32,14 +32,14 @@ To detect current state and following state changes we can use `onStateChange()`
 
 ```js
 React.useEffect(() => {
-  const subscription = manager.onStateChange((state) => {
-      if (state === 'PoweredOn') {
-          scanAndConnect();
-          subscription.remove();
-      }
-  }, true);
-  return () => subscription.remove();
-}, [manager]);
+  const subscription = manager.onStateChange(state => {
+    if (state === 'PoweredOn') {
+      scanAndConnect()
+      subscription.remove()
+    }
+  }, true)
+  return () => subscription.remove()
+}, [manager])
 ```
 
 ## Scanning devices
@@ -49,63 +49,62 @@ which allows only one callback to be registered to handle detected devices:
 
 ```js
 function scanAndConnect() {
-    manager.startDeviceScan(null, null, (error, device) => {
-        if (error) {
-            // Handle error (scanning will be stopped automatically)
-            return
-        }
+  manager.startDeviceScan(null, null, (error, device) => {
+    if (error) {
+      // Handle error (scanning will be stopped automatically)
+      return
+    }
 
-        // Check if it is a device you are looking for based on advertisement data
-        // or other criteria.
-        if (device.name === 'TI BLE Sensor Tag' || 
-            device.name === 'SensorTag') {
-            
-            // Stop scanning as it's not necessary if you are scanning for one device.
-            manager.stopDeviceScan();
+    // Check if it is a device you are looking for based on advertisement data
+    // or other criteria.
+    if (device.name === 'TI BLE Sensor Tag' || device.name === 'SensorTag') {
+      // Stop scanning as it's not necessary if you are scanning for one device.
+      manager.stopDeviceScan()
 
-            // Proceed with connection.
-        }
-    });
+      // Proceed with connection.
+    }
+  })
 }
 ```
 
-It is worth to note that scanning function may emit one device multiple times. However 
-when device is connected it won't broadcast and needs to be disconnected from central 
+It is worth to note that scanning function may emit one device multiple times. However
+when device is connected it won't broadcast and needs to be disconnected from central
 to be scanned again. Only one scanning listener can be registered.
 
 ## Connecting and discovering services and characteristics
 
-Once device is scanned it is in disconnected state. We need to connect to it and discover 
+Once device is scanned it is in disconnected state. We need to connect to it and discover
 all services and characteristics it contains. Services may be understood
 as containers grouping characteristics based on their meaning. Characteristic is a
 container for a value which can be read, written and monitored based on available
 capabilities. For example connection may look like this:
 
-```javascript
-device.connect()
-    .then((device) => {
-        return device.discoverAllServicesAndCharacteristics()
-    })
-    .then((device) => {
-       // Do work on device with services and characteristics
-    })
-    .catch((error) => {
-        // Handle errors
-    });
+```js
+device
+  .connect()
+  .then(device => {
+    return device.discoverAllServicesAndCharacteristics()
+  })
+  .then(device => {
+    // Do work on device with services and characteristics
+  })
+  .catch(error => {
+    // Handle errors
+  })
 ```
 
-Discovery of services and characteristics is required to be executed once per connection\*. 
+Discovery of services and characteristics is required to be executed once per connection\*.
 It can be a long process depending on number of characteristics and services available.
 
-\* Extremely rarely, when peripheral's service/characteristic set can change during a connection 
+\* Extremely rarely, when peripheral's service/characteristic set can change during a connection
 an additional service discovery may be needed.
 
 ## Read, write and monitor values
 
-After successful discovery of services you can call 
-* {@link #blemanagerreadcharacteristicfordevice|BleManager.readCharacteristicForDevice()},
-* {@link #blemanagerwritecharacteristicwithresponsefordevice|BleManager.writeCharacteristicWithResponseForDevice()}, 
-* {@link #blemanagermonitorcharacteristicfordevice|BleManager.monitorCharacteristicForDevice()}
+After successful discovery of services you can call
+
+- {@link #blemanagerreadcharacteristicfordevice|BleManager.readCharacteristicForDevice()},
+- {@link #blemanagerwritecharacteristicwithresponsefordevice|BleManager.writeCharacteristicWithResponseForDevice()},
+- {@link #blemanagermonitorcharacteristicfordevice|BleManager.monitorCharacteristicForDevice()}
 
 and other functions which are described in detail in documentation.
-

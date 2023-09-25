@@ -1,44 +1,43 @@
 {
   "root": true,
-  "parser": "hermes-eslint",
-  "extends": [
-    "plugin:react/recommended",
-    "plugin:flowtype/recommended",
-    "plugin:prettier/recommended",
-    "@react-native-community",
-    "eslint:recommended",
-    "plugin:jest/recommended",
-    "plugin:ft-flow/recommended"
-  ],
-  "plugins": [
-    "ft-flow",
-    "react",
-    "react-native",
-    "flowtype",
-    "jest",
-    "prettier"
-  ],
-  "rules": {
-    "ft-flow/define-flow-type": "off",
-    "ft-flow/use-flow-type": "off",
-    "flowtype/define-flow-type": "off",
-    "flowtype/no-types-missing-file-annotation": 0,
-    "semi": ["error", "never"],
-    "comma-dangle": ["error", "never"],
-    "no-console": ["error", { "allow": ["info", "warn", "error"] }],
-    "react/display-name": 0,
-    "ft-flow/no-types-missing-file-annotation": 0,
-    "jest/no-export": 0
-  },
-  "globals": {
-    "$Keys": true,
-    "$Values": true
-  },
+  "parser": "@typescript-eslint/parser",
+  "extends": ["@react-native-community", "prettier"],
   "env": {
-    "react-native/react-native": true
+    "react-native/react-native": true,
+    "es2020": true
+  },
+  "overrides": [
+    {
+      "files": ["src/**", "integration-tests/**"],
+      "parser": "hermes-eslint",
+      "extends": [
+        "plugin:react/recommended",
+        "plugin:flowtype/recommended",
+        "plugin:prettier/recommended",
+        "@react-native-community",
+        "eslint:recommended",
+        "plugin:jest/recommended",
+        "plugin:ft-flow/recommended"
+      ],
+      "plugins": ["ft-flow", "react", "react-native", "flowtype", "jest", "prettier"],
+      "rules": {
+        "ft-flow/define-flow-type": "off",
+        "ft-flow/use-flow-type": "off",
+        "flowtype/define-flow-type": "off",
+        "flowtype/no-types-missing-file-annotation": 0,
+        "semi": ["error", "never"],
+        "comma-dangle": ["error", "never"],
+        "react/display-name": 0,
+        "ft-flow/no-types-missing-file-annotation": 0,
+        "jest/no-export": 0
+      },
+      "globals": {
+        "$Keys": true,
+        "$Values": true
+      }
     },
-  "overrides": [{
-      "files": ["*.tsx","*.ts","*.d.ts"],
+    {
+      "files": ["*.tsx", "*.ts", "*.d.ts"],
       "parser": "@typescript-eslint/parser",
       "extends": [
         "eslint:recommended",
@@ -48,12 +47,12 @@
         "airbnb",
         "airbnb-typescript",
         "prettier"
-    ],
-    "parserOptions": {
+      ],
+      "parserOptions": {
         "project": ["./tsconfig.json"]
-    },
-    "plugins": ["react-refresh", "@typescript-eslint"],
-    "rules":{
+      },
+      "plugins": ["react-refresh", "@typescript-eslint"],
+      "rules": {
         "import/prefer-default-export": "off",
         "import/no-default-export": 2,
         "@typescript-eslint/no-use-before-define": "off",
@@ -70,22 +69,26 @@
         "react/jsx-props-no-spreading": "off",
         "class-methods-use-this": "off",
         "eslint-comments/no-unused-disable": "off",
+        "no-console": ["error", { "allow": ["info", "warn", "error"] }],
         "@typescript-eslint/no-unused-vars": [
           "error",
-            { 
-              "argsIgnorePattern": "^_",
-              "varsIgnorePattern": "^_",
-              "caughtErrorsIgnorePattern": "^_"
-            }
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_"
+          }
         ]
-    },
-    "env": { "es2020": true }
+      },
+      "env": {
+        "es2020": true
+      }
     },
     {
       "files": ["*.d.ts"],
-      "rules":{
+      "rules": {
         "max-classes-per-file": "off",
         "prettier/prettier": "off"
       }
-    }]
+    }
+  ]
 }

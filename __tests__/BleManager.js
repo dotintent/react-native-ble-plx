@@ -1,4 +1,3 @@
-/* eslint-disable no-import-assign */
 import { BleManager, Device, Service, Characteristic } from '../src'
 import { BleErrorCode, BleErrorCodeMessage } from '../src/BleError'
 import * as Native from '../src/BleModule'

@@ -7,14 +7,14 @@
   "arrowParens": "avoid",
   "overrides": [
     {
-      "files": ["src/**/*.*"],
+      "files": ["src/*"],
       "options": {
         "parser": "babel-flow",
-          "useTabs": false,
-          "quoteProps": "as-needed",
-          "jsxSingleQuote": false,
-          "bracketSpacing": true,
-          "jsxBracketSameLine": false,
+        "useTabs": false,
+        "quoteProps": "as-needed",
+        "jsxSingleQuote": false,
+        "bracketSpacing": true,
+        "jsxBracketSameLine": false
       }
     }
   ]
