@@ -1,11 +1,11 @@
 const path = require('path')
 const fs = require('fs')
 
-const TEST_PROJECT_DIR_NAME = 'test_project'
-const EXAMPLE_PROJECT_DIR_NAME = 'example'
+const TEST_PROJECT_DIR_NAME = '../test_project'
+const EXAMPLE_PROJECT_DIR_NAME = '../example'
 
-const indexJsPath = path.join(__dirname, '..', EXAMPLE_PROJECT_DIR_NAME, 'index.js')
-const indexJsDestinationPath = path.join(__dirname, '..', TEST_PROJECT_DIR_NAME, 'index.js')
+const indexJsPath = path.join(__dirname, EXAMPLE_PROJECT_DIR_NAME, 'index.js')
+const indexJsDestinationPath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'index.js')
 
 const copyExampleProjectIndexJs = () => {
   console.info('Deleting index.js from test_project')
@@ -14,8 +14,8 @@ const copyExampleProjectIndexJs = () => {
   fs.copyFileSync(indexJsPath, indexJsDestinationPath)
 }
 
-const jsSourceDirectory = path.join(__dirname, '..', EXAMPLE_PROJECT_DIR_NAME, 'src')
-const jsSourceDestinationDirectory = path.join(__dirname, '..', TEST_PROJECT_DIR_NAME, 'src')
+const jsSourceDirectory = path.join(__dirname, EXAMPLE_PROJECT_DIR_NAME, 'src')
+const jsSourceDestinationDirectory = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'src')
 
 const copyExampleProjectJsFiles = () => {
   console.info('Copying src from example to test_project')
@@ -24,7 +24,6 @@ const copyExampleProjectJsFiles = () => {
 
 const androidManifestPath = path.join(
   __dirname,
-  '..',
   EXAMPLE_PROJECT_DIR_NAME,
   'android',
   'app',
@@ -34,7 +33,6 @@ const androidManifestPath = path.join(
 )
 const androidManifestDestinationPath = path.join(
   __dirname,
-  '..',
   TEST_PROJECT_DIR_NAME,
   'android',
   'app',
@@ -62,8 +60,8 @@ const addAndroidManifestPermissions = () => {
   fs.writeFileSync(androidManifestDestinationPath, destinationAndroidManifestLines.join('\n'))
 }
 
-const packageJsonPath = path.join(__dirname, '..', EXAMPLE_PROJECT_DIR_NAME, 'package.json')
-const packageJsonDestinationPath = path.join(__dirname, '..', TEST_PROJECT_DIR_NAME, 'package.json')
+const packageJsonPath = path.join(__dirname, EXAMPLE_PROJECT_DIR_NAME, 'package.json')
+const packageJsonDestinationPath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'package.json')
 
 const addMissingDependencies = () => {
   const sourcePackageJson = require(packageJsonPath)
@@ -88,8 +86,8 @@ const addMissingDependencies = () => {
   fs.writeFileSync(packageJsonDestinationPath, JSON.stringify(editedPackageJson, null, 2) + '\n')
 }
 
-const metroDestinationPath = path.join(__dirname, '..', TEST_PROJECT_DIR_NAME, 'metro.config.js')
-const metroSourcePath = path.join(__dirname, '..', EXAMPLE_PROJECT_DIR_NAME, 'metro.config.js')
+const metroDestinationPath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'metro.config.js')
+const metroSourcePath = path.join(__dirname, EXAMPLE_PROJECT_DIR_NAME, 'metro.config.js')
 
 const copyMetroConfig = () => {
   console.info('Deleting metro.config.js from test_project')
@@ -98,8 +96,8 @@ const copyMetroConfig = () => {
   fs.copyFileSync(metroSourcePath, metroDestinationPath)
 }
 
-const reactNativeDestinationPath = path.join(__dirname, '..', TEST_PROJECT_DIR_NAME, 'react-native.config.js')
-const reactNativeSourcePath = path.join(__dirname, '..', EXAMPLE_PROJECT_DIR_NAME, 'react-native.config.js')
+const reactNativeDestinationPath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'react-native.config.js')
+const reactNativeSourcePath = path.join(__dirname, EXAMPLE_PROJECT_DIR_NAME, 'react-native.config.js')
 
 const copyReactNativeConfig = () => {
   const doesDestinationFileExist = fs.existsSync(reactNativeDestinationPath)
@@ -113,8 +111,8 @@ const copyReactNativeConfig = () => {
   fs.copyFileSync(reactNativeSourcePath, reactNativeDestinationPath)
 }
 
-const babelConfigDestinationPath = path.join(__dirname, '..', TEST_PROJECT_DIR_NAME, 'babel.config.js')
-const babelConfigSourcePath = path.join(__dirname, '..', EXAMPLE_PROJECT_DIR_NAME, 'babel.config.js')
+const babelConfigDestinationPath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'babel.config.js')
+const babelConfigSourcePath = path.join(__dirname, EXAMPLE_PROJECT_DIR_NAME, 'babel.config.js')
 
 const copyBabelConfig = () => {
   console.info('Deleting babel.config.js from test_project')
@@ -131,7 +129,7 @@ const changePackageJsonName = () => {
 }
 
 const setMinSdkVersion = () => {
-  const gradlePath = path.join(__dirname, '..', TEST_PROJECT_DIR_NAME, 'android', 'app', 'build.gradle')
+  const gradlePath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'android', 'app', 'build.gradle')
   const gradleLines = fs.readFileSync(gradlePath, 'utf8').split('\n')
   const indexOfManifestTagEndLine = gradleLines.findIndex(line => line.includes('minSdkVersion'))
   gradleLines[indexOfManifestTagEndLine] = 'minSdkVersion 23'
