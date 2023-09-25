@@ -59,3 +59,5 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+/lib
+/test_project
