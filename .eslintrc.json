@@ -1,17 +1,17 @@
 {
   "root": true,
-  "parser": "babel-eslint",
+  "parser": "hermes-eslint",
   "extends": [
-    "@react-native-community",
-    "eslint:recommended",
     "plugin:react/recommended",
     "plugin:flowtype/recommended",
-    "plugin:jest/recommended",
     "plugin:prettier/recommended",
-    "prettier/flowtype",
-    "prettier/react"
+    "@react-native-community",
+    "eslint:recommended",
+    "plugin:jest/recommended",
+    "plugin:ft-flow/recommended"
   ],
   "plugins": [
+    "ft-flow",
     "react",
     "react-native",
     "flowtype",
@@ -19,10 +19,22 @@
     "prettier"
   ],
   "rules": {
-    "no-console": "error",
-    "react/display-name": 0
+    "ft-flow/define-flow-type": "off",
+    "ft-flow/use-flow-type": "off",
+    "flowtype/define-flow-type": "off",
+    "flowtype/no-types-missing-file-annotation": 0,
+    "semi": ["error", "never"],
+    "comma-dangle": ["error", "never"],
+    "no-console": ["error", { "allow": ["info", "warn", "error"] }],
+    "react/display-name": 0,
+    "ft-flow/no-types-missing-file-annotation": 0,
+    "jest/no-export": 0
+  },
+  "globals": {
+    "$Keys": true,
+    "$Values": true
   },
   "env": {
     "react-native/react-native": true
-  }
+    }
 }

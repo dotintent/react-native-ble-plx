@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "rootDir": "./",
     "paths": {
       "react-native-ble-plx": ["./src/index"]
     },

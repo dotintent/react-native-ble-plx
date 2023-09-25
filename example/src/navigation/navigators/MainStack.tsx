@@ -4,8 +4,8 @@ import * as screenComponents from '../../screens'
 import { useCommonScreenOptions } from '../components'
 
 export type MainStackParamList = {
-  DASHBOARD_SCREEN: undefined
-  DEVICE_DETAILS_SCREEN: undefined
+  DASHBOARD_SCREEN: undefined,
+  DEVICE_DETAILS_SCREEN: undefined,
   DEVICE_NRF_TEST_SCREEN: undefined
 }
 

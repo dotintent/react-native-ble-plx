@@ -8,6 +8,7 @@ import { Device, fullUUID, type Base64 } from 'react-native-ble-plx'
 import { getDateAsBase64 } from '../../../utils/getDateAsBase64'
 import { Platform, ScrollView } from 'react-native'
 import base64 from 'react-native-base64'
+import { wait } from '../../../utils/wait'
 
 type DevicenRFTestScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_NRF_TEST_SCREEN'>
 
@@ -21,7 +22,7 @@ const writeWithoutResponseBase64Time = getDateAsBase64(new Date('2023-09-12T10:1
 const monitorExpectedMessage = 'Hi, it works!'
 const currentTimeCharacteristicTimeTriggerDescriptorValue = base64.encode('BLE-PLX')
 
-export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
+export const DevicenRFTestScreen = (_props: DevicenRFTestScreenProps) => {
   const [expectedDeviceName, setExpectedDeviceName] = useState('')
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [testDeviceConnectedState, setTestDeviceConnectedState] = useState<TestStateType>('WAITING')
@@ -157,7 +158,7 @@ export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
     }
   }
 
-  const startTestInfo = (testName: string) => console.log('starting: ', testName)
+  const startTestInfo = (testName: string) => console.info('starting: ', testName)
 
   const runTest = (functionToRun: () => Promise<any>, stateSetter: Dispatch<TestStateType>, testName: string) => {
     startTestInfo(testName)
@@ -443,7 +444,7 @@ export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
       BLEService.setupMonitor(
         deviceTimeService,
         currentTimeCharacteristic,
-        console.log,
+        () => {},
         error => {
           if (error.message === 'Operation was cancelled') {
             resolve()
@@ -531,20 +532,36 @@ export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
       const initialState = await BLEService.getState()
       if (initialState === 'PoweredOff') {
         await BLEService.enable()
+        wait(1000)
       }
       await BLEService.disable()
-      await BLEService.getState()
-      const expectedPoweredOffState = await BLEService.getState()
-      if (expectedPoweredOffState !== 'PoweredOff') {
-        reject(new Error('BT disable error'))
-        setTestDisableState('ERROR')
+      while (true) {
+        let expectedPoweredOffState = await BLEService.getState()
+        if (expectedPoweredOffState === 'Resetting') {
+          wait(1000)
+          continue
+        }
+        if (expectedPoweredOffState !== 'PoweredOff') {
+          reject(new Error('BT disable error'))
+          setTestDisableState('ERROR')
+          return
+        }
+        break
       }
       setTestDisableState('DONE')
       await BLEService.enable()
-      const expectedPoweredOnState = await BLEService.getState()
-      if (expectedPoweredOnState !== 'PoweredOn') {
-        reject(new Error('BT enable error'))
-        setTestEnableState('ERROR')
+      while (true) {
+        let expectedPoweredOnState = await BLEService.getState()
+        if (expectedPoweredOnState === 'Resetting') {
+          wait(1000)
+          continue
+        }
+        if (expectedPoweredOnState !== 'PoweredOn') {
+          reject(new Error('BT enable error'))
+          setTestEnableState('ERROR')
+          return
+        }
+        break
       }
       setTestEnableState('DONE')
       console.info('success')
@@ -570,14 +587,19 @@ export const DevicenRFTestScreen = ({}: DevicenRFTestScreenProps) => {
   }
 
   const cancelDeviceConnection = () =>
-    new Promise<void>(async (resolve, reject) => {
+    new Promise<void>((resolve, reject) => {
       BLEService.scanDevices(
         (device: Device) => {
           if (device.name?.toLocaleLowerCase() === expectedDeviceName.toLocaleLowerCase()) {
             BLEService.connectToDevice(device.id)
               .then(() => BLEService.cancelDeviceConnection())
               .then(() => resolve())
-              .catch(reject)
+              .catch(error => {
+                if (error?.message === `Device ${device.id} was disconnected`) {
+                  resolve()
+                }
+                reject(error)
+              })
           }
         },
         [deviceTimeService]

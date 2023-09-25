@@ -1,4 +1,4 @@
 export const sizes = {
    defaultFontSize: 14,
-   defaultScreenPadding: 12,
-} as const;
+   defaultScreenPadding: 12
+} as const

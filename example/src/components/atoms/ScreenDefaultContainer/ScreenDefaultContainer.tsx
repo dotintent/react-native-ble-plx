@@ -5,5 +5,5 @@ export type ScreenDefaultContainerProps = {
 }
 
 export const ScreenDefaultContainer = ({ children }: ScreenDefaultContainerProps) => {
-  return <Container>{children}</Container>
+  return <Container edges={['bottom', 'left', 'right']}>{children}</Container>
 }

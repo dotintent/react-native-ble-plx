@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import { SafeAreaView,StyleSheet } from 'react-native'
+import { SafeAreaView, StyleSheet } from 'react-native'
 import { addAccessibilityLabel } from './utils'
 import TestCase, { type TestCaseType } from './TestCase'
 
