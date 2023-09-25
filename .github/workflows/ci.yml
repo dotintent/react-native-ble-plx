@@ -49,6 +49,10 @@ jobs:
 
   build-android:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        react_native_version: ['0.72.4', ' 0.71.13', '0.70.13']
     env:
       TURBO_CACHE_DIR: .turbo/android
     steps:
@@ -56,19 +60,21 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup
-        uses: ./.github/actions/setup
+        uses: ./.github/actions/setup_test_project
+        with:
+          REACT_NATIVE_VERSION: ${{ matrix.react_native_version }}
 
       - name: Cache turborepo for Android
         uses: actions/cache@v3
         with:
           path: ${{ env.TURBO_CACHE_DIR }}
-          key: ${{ runner.os }}-turborepo-android-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ matrix.react_native_version }}-turborepo-android-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-turborepo-android-
+            ${{ runner.os }}-${{ matrix.react_native_version }}-turborepo-android-
 
       - name: Check turborepo cache for Android
         run: |
-          TURBO_CACHE_STATUS=$(node -p "($(yarn --silent turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'build:android').cache.status")
+          TURBO_CACHE_STATUS=$(node -p "($(yarn --silent turbo run test:android --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'test:android').cache.status")
 
           if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
             echo "turbo_cache_hit=1" >> $GITHUB_ENV
@@ -93,16 +99,20 @@ jobs:
           path: |
             ~/.gradle/wrapper
             ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('example/android/gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-${{ matrix.react_native_version }}-gradle-${{ hashFiles('test_project/android/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-gradle-
+            ${{ runner.os }}-${{ matrix.react_native_version }}-gradle-
 
       - name: Build example for Android
         run: |
-          yarn turbo run build:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+          yarn turbo run test:android --cache-dir="${{ env.TURBO_CACHE_DIR }}"
 
   build-ios:
     runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        react_native_version: ['0.72.4', ' 0.71.13', '0.70.13']
     env:
       TURBO_CACHE_DIR: .turbo/ios
     steps:
@@ -110,19 +120,21 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup
-        uses: ./.github/actions/setup
+        uses: ./.github/actions/setup_test_project
+        with:
+          REACT_NATIVE_VERSION: ${{ matrix.react_native_version }}
 
       - name: Cache turborepo for iOS
         uses: actions/cache@v3
         with:
           path: ${{ env.TURBO_CACHE_DIR }}
-          key: ${{ runner.os }}-turborepo-ios-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ matrix.react_native_version }}-turborepo-ios-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-turborepo-ios-
+            ${{ runner.os }}-${{ matrix.react_native_version }}-turborepo-ios-
 
       - name: Check turborepo cache for iOS
         run: |
-          TURBO_CACHE_STATUS=$(node -p "($(yarn --silent turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'build:ios').cache.status")
+          TURBO_CACHE_STATUS=$(node -p "($(yarn --silent turbo run test:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'test:ios').cache.status")
 
           if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
             echo "turbo_cache_hit=1" >> $GITHUB_ENV
@@ -135,17 +147,18 @@ jobs:
         with:
           path: |
             **/ios/Pods
-          key: ${{ runner.os }}-cocoapods-${{ hashFiles('example/ios/Podfile.lock') }}
+          key: ${{ runner.os }}-${{ matrix.react_native_version }}-cocoapods-${{ hashFiles('test_project/ios/Podfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-cocoapods-
+            ${{ runner.os }}-${{ matrix.react_native_version }}-cocoapods-
 
       - name: Install cocoapods
-        if: env.turbo_cache_hit != 1 && steps.cocoapods-cache.outputs.cache-hit != 'true'
+        if: env.turbo_cache_hit != 1
         run: |
-          yarn example pods
+          cd test_project/ios
+          pod install --verbose
         env:
           NO_FLIPPER: 1
 
-      - name: Build example for iOS
+      - name: Build test_project for iOS
         run: |
-          yarn turbo run build:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+          yarn turbo run test:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
