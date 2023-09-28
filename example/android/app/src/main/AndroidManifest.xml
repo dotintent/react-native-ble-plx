@@ -10,6 +10,8 @@
     <!-- common -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"

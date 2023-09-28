@@ -426,6 +426,9 @@ export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
     return runTest(
       () =>
         BLEService.requestMTUForDevice(expectedMTU).then(device => {
+          if (Platform.OS === 'ios') {
+            return
+          }
           if (!device) {
             throw new Error('requestMTUForDevice error')
           }

@@ -21,7 +21,7 @@ It supports:
 - [observing characteristic notifications/indications](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Notifying)
 - [reading RSSI](https://github.com/dotintent/react-native-ble-plx/wiki/RSSI-Reading)
 - [negotiating MTU](https://github.com/dotintent/react-native-ble-plx/wiki/MTU-Negotiation)
-- [background mode on iOS](https://github.com/dotintent/react-native-ble-plx/wiki/Background-mode-(iOS))
+- [background mode on iOS](<https://github.com/dotintent/react-native-ble-plx/wiki/Background-mode-(iOS)>)
 - turning the device's Bluetooth adapter on
 
 It does NOT support:
@@ -43,21 +43,21 @@ It does NOT support:
 This version (2.x) breaks compatibility with old RN versions. Please check [old README](./docs/README_V1.md) (1.x)
 for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
-| React Native  | 2.0.0                          |
-| ------------- | ------------------------------ |
-| 0.63.3        | :white_check_mark:             |
-| 0.62.2        | :white_check_mark:             |
-| 0.61.5        | :white_check_mark:             |
-| 0.60.6        | :white_check_mark:             |
+| React Native | 2.0.0              |
+| ------------ | ------------------ |
+| 0.63.3       | :white_check_mark: |
+| 0.62.2       | :white_check_mark: |
+| 0.61.5       | :white_check_mark: |
+| 0.60.6       | :white_check_mark: |
 
 ## Recent Changes
 
 **2.0.3**
+
 - Updated MultiplatformBleAdapter to version 0.1.9
 
 [Current version changes](CHANGELOG.md)
 [All previous changes](CHANGELOG-pre-03.md)
-
 
 ## Documentation & Support
 
@@ -95,43 +95,49 @@ Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you
 ### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 
 1. `npm install --save react-native-ble-plx`
-1. In top level `build.gradle` make sure that min SDK version is at least 18:
+1. In top level `build.gradle` make sure that min SDK version is at least 23:
 
-    ```groovy
-    buildscript {
-        ext {
-            ...
-            minSdkVersion = 21
-            ...
-    ```
+   ```groovy
+   buildscript {
+       ext {
+           ...
+           minSdkVersion = 23
+           ...
+   ```
+
 1. In `build.gradle` make sure to add jitpack repository to known repositories:
 
-    ```groovy
-    allprojects {
-        repositories {
-          ...
-          maven { url 'https://www.jitpack.io' }
-        }
-    }
-    ```
+   ```groovy
+   allprojects {
+       repositories {
+         ...
+         maven { url 'https://www.jitpack.io' }
+       }
+   }
+   ```
+
 1. (Optional) In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
 
-    ```xml
-    <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        ...
-        <uses-permission android:name="android.permission.BLUETOOTH"/>
-        <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-        
-        <!-- Please use FINE location instead of COARSE:
-          https://github.com/dotintent/react-native-ble-plx/issues/730#issuecomment-681946908 -->
-        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+   ```xml
+   <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-        <!-- Add this line if your application always requires BLE. More info can be found on:
-            https://developer.android.com/guide/topics/connectivity/bluetooth-le.html#permissions
-          -->
-        <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+      ...
 
-        ...
-    ```
+      <!-- Android >= 12 -->
+      <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+      <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+      <!-- Android < 12 -->
+      <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+      <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+      <!-- common -->
+      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+      <!-- Add this line if your application always requires BLE. More info can be found on:
+          https://developer.android.com/guide/topics/connectivity/bluetooth-le.html#permissions
+        -->
+      <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
+
+       ...
+   ```
 
 ## Troubleshooting

@@ -9,20 +9,40 @@ import { BleDevice } from '../../../components/molecules'
 import { DropDown } from './DashboardScreen.styled'
 
 type DashboardScreenProps = NativeStackScreenProps<MainStackParamList, 'DASHBOARD_SCREEN'>
+type DeviceExtendedByUpdateTime = Device & { updateTimestamp: number }
+
+const MIN_TIME_BEFORE_UPDATE_IN_MILLISECONDS = 5000
 
 export function DashboardScreen({ navigation }: DashboardScreenProps) {
   const [isConnecting, setIsConnecting] = useState(false)
-  const [foundDevices, setFoundDevices] = useState<Device[]>([])
+  const [foundDevices, setFoundDevices] = useState<DeviceExtendedByUpdateTime[]>([])
 
-  const addFoundDevice = (device: Device) => {
+  const addFoundDevice = (device: Device) =>
     setFoundDevices(prevState => {
-      const indexToReplace = prevState.findIndex(currentDevice => currentDevice.id === device.id)
-      if (indexToReplace === -1) {
-        return prevState.concat(device)
+      if (!isFoundDeviceUpdateNecessary(prevState, device)) {
+        return prevState
       }
-      prevState[indexToReplace] = device
-      return prevState
+      // deep clone
+      const nextState: typeof prevState = JSON.parse(JSON.stringify(prevState))
+      const extendedDevice: DeviceExtendedByUpdateTime = {
+        ...device,
+        updateTimestamp: Date.now() + MIN_TIME_BEFORE_UPDATE_IN_MILLISECONDS
+      } as DeviceExtendedByUpdateTime
+
+      const indexToReplace = nextState.findIndex(currentDevice => currentDevice.id === device.id)
+      if (indexToReplace === -1) {
+        return nextState.concat(extendedDevice)
+      }
+      nextState[indexToReplace] = extendedDevice
+      return nextState
     })
+
+  const isFoundDeviceUpdateNecessary = (currentDevices: DeviceExtendedByUpdateTime[], updatedDevice: Device) => {
+    const currentDevice = currentDevices.find(({ id }) => updatedDevice.id === id)
+    if (!currentDevice) {
+      return true
+    }
+    return currentDevice.updateTimestamp < Date.now()
   }
 
   const onConnectSuccess = () => {

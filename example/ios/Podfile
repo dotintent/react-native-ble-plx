@@ -27,7 +27,6 @@ end
 
 target 'BlePlxExample' do
   config = use_native_modules!
-    pod 'MultiplatformBleAdapter', :git => 'https://github.com/Polidea/MultiPlatformBleAdapter.git', :branch => 'RxBluetooth-update'
   # Flags change depending on the env values.
   flags = get_default_flags()
 
