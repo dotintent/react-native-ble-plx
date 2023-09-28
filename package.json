@@ -2,9 +2,9 @@
   "name": "react-native-ble-plx",
   "version": "3.0.0",
   "description": "React Native Bluetooth Low Energy library",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "types": "lib/typescript/index.d.ts",
+  "main": "src/index",
+  "module": "src/index",
+  "types": "src/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
