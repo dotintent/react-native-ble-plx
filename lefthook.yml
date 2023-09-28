@@ -3,7 +3,7 @@ pre-commit:
   commands:
     lint:
       files: git diff --name-only @{push}
-      glob: "*.{js,ts,jsx,tsx}"
+      glob: '*.{js,ts,jsx,tsx}'
       run: yarn lint
 commit-msg:
   parallel: true

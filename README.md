@@ -40,21 +40,27 @@ It does NOT support:
 
 ## Compatibility
 
-This version (2.x) breaks compatibility with old RN versions. Please check [old README](./docs/README_V1.md) (1.x)
+For old RN versions (<0.60) please check [old README](./docs/README_V1.md) (1.x)
 for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
-| React Native | 2.0.0              |
+| React Native | 3.0.0              |
 | ------------ | ------------------ |
-| 0.63.3       | :white_check_mark: |
-| 0.62.2       | :white_check_mark: |
-| 0.61.5       | :white_check_mark: |
-| 0.60.6       | :white_check_mark: |
+| 0.72.4       | :white_check_mark: |
+| 0.71.13      | :white_check_mark: |
+| 0.70.13      | :white_check_mark: |
 
 ## Recent Changes
 
-**2.0.3**
+**3.0.0**
 
-- Updated MultiplatformBleAdapter to version 0.1.9
+- Added Example project
+- Updated MultiplatformBleAdapter to version 0.2.0.
+- Updated RN bridge config
+- Changed CI flow
+- Updated CI to RN 0.72.x
+- Updated docs
+- Updated dependencies
+- Fixed iOS 16 bugs
 
 [Current version changes](CHANGELOG.md)
 [All previous changes](CHANGELOG-pre-03.md)
@@ -68,8 +74,6 @@ Interested in React Native project involving Bluetooth Low Energy? [We can help 
 [Quick introduction can be found here](https://github.com/dotintent/react-native-ble-plx/blob/master/INTRO.md)
 
 Contact us at [intent](https://withintent.com/contact-us/?utm_source=github&utm_medium=github&utm_campaign=external_traffic).
-
-Contact us at [Gitter](https://gitter.im/RxBLELibraries/react-native-ble) if you have any questions, feedback or want to help!
 
 ## Configuration & Installation
 

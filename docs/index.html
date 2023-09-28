@@ -1968,6 +1968,44 @@ can destroy created instance by calling <code>manager.destroy()</code> function.
 <p>Note that you may experience undefined behaviour when calling a function on one <code>BleManager</code>
 and continuing with another instance. A frequently made error is to create a new instance
 of the manager for every re-render of a React Native Component.</p>
+<h2>Ask for permissions</h2>
+<p>Check if you requested following permissions</p>
+<ul>
+<li>PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION</li>
+<li>PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN (necessary for api 31+ )</li>
+<li>PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT (necessary for api 31+ )</li>
+</ul>
+<p>eg.</p>
+<pre class='hljs'>requestBluetoothPermission = <span class="hljs-keyword">async</span> () =&gt; {
+  <span class="hljs-keyword">if</span> (Platform.OS === <span class="hljs-string">'ios'</span>) {
+    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>
+  }
+  <span class="hljs-keyword">if</span> (Platform.OS === <span class="hljs-string">'android'</span> &amp;&amp; PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION) {
+    <span class="hljs-keyword">const</span> apiLevel = <span class="hljs-built_in">parseInt</span>(Platform.Version.toString(), <span class="hljs-number">10</span>)
+
+    <span class="hljs-keyword">if</span> (apiLevel &lt; <span class="hljs-number">31</span>) {
+      <span class="hljs-keyword">const</span> granted = <span class="hljs-keyword">await</span> PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
+      <span class="hljs-keyword">return</span> granted === PermissionsAndroid.RESULTS.GRANTED
+    }
+    <span class="hljs-keyword">if</span> (PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN &amp;&amp; PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT) {
+      <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+        PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      ])
+
+      <span class="hljs-keyword">return</span> (
+        result[<span class="hljs-string">'android.permission.BLUETOOTH_CONNECT'</span>] === PermissionsAndroid.RESULTS.GRANTED &amp;&amp;
+        result[<span class="hljs-string">'android.permission.BLUETOOTH_SCAN'</span>] === PermissionsAndroid.RESULTS.GRANTED &amp;&amp;
+        result[<span class="hljs-string">'android.permission.ACCESS_FINE_LOCATION'</span>] === PermissionsAndroid.RESULTS.GRANTED
+      )
+    }
+  }
+
+  <span class="hljs-keyword">this</span>.showErrorToast(<span class="hljs-string">'Permission have not been granted'</span>)
+
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
+}</pre>
 <h2>Waiting for Powered On state</h2>
 <p>When iOS application launches BLE stack is not immediately available and we need to check its status.
 To detect current state and following state changes we can use <code>onStateChange()</code> function:</p>
