@@ -8,7 +8,7 @@
   },
   "overrides": [
     {
-      "files": ["src/**", "integration-tests/**"],
+      "files": ["src/**", "__tests__/**", "integration-tests/**"],
       "parser": "hermes-eslint",
       "extends": [
         "plugin:react/recommended",

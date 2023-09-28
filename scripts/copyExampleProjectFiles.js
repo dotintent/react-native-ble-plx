@@ -22,15 +22,6 @@ const copyExampleProjectJsFiles = () => {
   fs.cpSync(jsSourceDirectory, jsSourceDestinationDirectory, { recursive: true })
 }
 
-const androidManifestPath = path.join(
-  __dirname,
-  EXAMPLE_PROJECT_DIR_NAME,
-  'android',
-  'app',
-  'src',
-  'main',
-  'AndroidManifest.xml'
-)
 const androidManifestDestinationPath = path.join(
   __dirname,
   TEST_PROJECT_DIR_NAME,
