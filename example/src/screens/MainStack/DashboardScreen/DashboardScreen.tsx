@@ -6,6 +6,7 @@ import { AppButton, AppText, ScreenDefaultContainer } from '../../../components/
 import type { MainStackParamList } from '../../../navigation/navigators'
 import { BLEService } from '../../../services'
 import { BleDevice } from '../../../components/molecules'
+import { cloneDeep } from '../../../utils/cloneDeep'
 import { DropDown } from './DashboardScreen.styled'
 
 type DashboardScreenProps = NativeStackScreenProps<MainStackParamList, 'DASHBOARD_SCREEN'>
@@ -23,7 +24,7 @@ export function DashboardScreen({ navigation }: DashboardScreenProps) {
         return prevState
       }
       // deep clone
-      const nextState: typeof prevState = JSON.parse(JSON.stringify(prevState))
+      const nextState = cloneDeep(prevState)
       const extendedDevice: DeviceExtendedByUpdateTime = {
         ...device,
         updateTimestamp: Date.now() + MIN_TIME_BEFORE_UPDATE_IN_MILLISECONDS
