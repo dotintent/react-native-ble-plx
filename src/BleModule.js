@@ -823,5 +823,11 @@ export interface BleModuleInterface {
   DisconnectionEvent: string;
 }
 
-export const BleModule: BleModuleInterface = NativeModules.BleClientManager
+/**
+ * Native module provider
+ *
+ * @private
+ */
+export const BleModule: BleModuleInterface = NativeModules.BlePlx
+
 export const EventEmitter = NativeEventEmitter

@@ -1,0 +1,90 @@
+name: 🐛 Bug report
+description: Report a reproducible bug or regression in this library.
+title: "🐛 "
+labels: [bug]
+body:
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      options:
+        - label: I checked the documentation and FAQ without finding a solution
+          required: true
+        - label: I checked to make sure that this issue has not already been filed
+          required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: Please describe the behavior you are expecting
+    validations:
+      required: true
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current Behavior
+      description: What is the current behavior?
+    validations:
+      required: true
+  
+  - type: input
+    id: library-version
+    attributes:
+      label: Library version
+      description: What version of the library are you using?
+      placeholder: "x.x.x"
+    validations:
+      required: true
+  
+  - type: input
+    attributes:
+      label: Device
+      description: Which device are you seeing this Problem on? Mention the full name of the phone, as well as the operating system and version. If you have tested this on multiple devices (ex. Android and iOS) then mention all of those devices (comma separated)
+      placeholder: ex. iPhone 14 (iOS 16.6)
+    validations:
+      required: true
+  
+  - type: textarea
+    id: react-native-info
+    attributes:
+      label: Environment info
+      description: Run `react-native info` in your terminal and paste the results here.
+      render: shell
+    validations:
+      required: true
+  
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Please provide detailed steps for reproducing the issue keeping the code reproducing the bug as simple as possible, with the minimum amount of code required to reproduce the issue. See https://stackoverflow.com/help/mcve.
+      value: |
+        1. …
+        2. …
+    validations:
+      required: true
+  
+  - type: textarea
+    id: reproducible-sample-code
+    attributes:
+      label: Formatted code sample or link to a repository
+      description: Please add minimal runnable repro as explained above so that the bug can be tested in isolation.
+      render: js
+    validations:
+      required: true
+  
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please provide any relevant log output from Xcode or Android Studio. This is important in case the issue is not reproducible except for under certain conditions. Both JS and platform logs can be enabled via [setLogLevel](https://dotintent.github.io/react-native-ble-plx/#blemanagersetloglevel) function call. 
+      render: shell
+    validations:
+      required: true
+  
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: Provide any additional information you think might be relevant to the issue.

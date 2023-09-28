@@ -1,4 +1,4 @@
-import { BleManager, Device, Service, Characteristic } from '../index'
+import { BleManager, Device, Service, Characteristic } from '../src'
 import { BleErrorCode, BleErrorCodeMessage } from '../src/BleError'
 import * as Native from '../src/BleModule'
 
@@ -6,7 +6,6 @@ import { NativeEventEmitter } from './Utils'
 import { Descriptor } from '../src/Descriptor'
 Native.EventEmitter = NativeEventEmitter
 
-/* eslint-disable no-unused-vars */
 var bleManager
 const restoreStateFunction = jest.fn()
 
@@ -220,10 +219,7 @@ test('BleManager handles errors properly while monitoring disconnections', () =>
 })
 
 test('BleManager calls BleModule isDeviceConnected function properly', async () => {
-  Native.BleModule.isDeviceConnected = jest
-    .fn()
-    .mockReturnValueOnce(false)
-    .mockReturnValueOnce(true)
+  Native.BleModule.isDeviceConnected = jest.fn().mockReturnValueOnce(false).mockReturnValueOnce(true)
   expect(await bleManager.isDeviceConnected('id')).toBe(false)
   expect(await bleManager.isDeviceConnected('id')).toBe(true)
   expect(Native.BleModule.isDeviceConnected.mock.calls.length).toBe(2)
@@ -240,9 +236,12 @@ test('BleManager properly calls BleModule discovery function', async () => {
 })
 
 test('BleManager properly calls servicesForDevice BleModule function', async () => {
-  Native.BleModule.servicesForDevice = jest
-    .fn()
-    .mockReturnValueOnce(Promise.resolve([{ uuid: 'a', deviceId: 'id' }, { uuid: 'b', deviceId: 'id' }]))
+  Native.BleModule.servicesForDevice = jest.fn().mockReturnValueOnce(
+    Promise.resolve([
+      { uuid: 'a', deviceId: 'id' },
+      { uuid: 'b', deviceId: 'id' }
+    ])
+  )
   const services = await bleManager.servicesForDevice('id')
   expect(services.length).toBe(2)
   expect(services[0]).toBeInstanceOf(Service)
@@ -253,9 +252,12 @@ test('BleManager properly calls servicesForDevice BleModule function', async () 
 })
 
 test('BleManager properly calls characteristicsForDevice BleModule function', async () => {
-  Native.BleModule.characteristicsForDevice = jest
-    .fn()
-    .mockReturnValueOnce(Promise.resolve([{ uuid: 'a', deviceId: 'id' }, { uuid: 'b', deviceId: 'id' }]))
+  Native.BleModule.characteristicsForDevice = jest.fn().mockReturnValueOnce(
+    Promise.resolve([
+      { uuid: 'a', deviceId: 'id' },
+      { uuid: 'b', deviceId: 'id' }
+    ])
+  )
   const characteristics = await bleManager.characteristicsForDevice('id', 'aa')
   expect(characteristics.length).toBe(2)
   expect(characteristics[0]).toBeInstanceOf(Characteristic)
@@ -266,9 +268,12 @@ test('BleManager properly calls characteristicsForDevice BleModule function', as
 })
 
 test('BleManager properly calls descriptorsForDevice BleModule function', async () => {
-  Native.BleModule.descriptorsForDevice = jest
-    .fn()
-    .mockReturnValueOnce(Promise.resolve([{ uuid: 'a', deviceId: 'id' }, { uuid: 'b', deviceId: 'id' }]))
+  Native.BleModule.descriptorsForDevice = jest.fn().mockReturnValueOnce(
+    Promise.resolve([
+      { uuid: 'a', deviceId: 'id' },
+      { uuid: 'b', deviceId: 'id' }
+    ])
+  )
   const descriptors = await bleManager.descriptorsForDevice('deviceId', 'serviceUUID', 'characteristicUUID')
   expect(descriptors.length).toBe(2)
   expect(descriptors[0]).toBeInstanceOf(Descriptor)

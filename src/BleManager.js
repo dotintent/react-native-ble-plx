@@ -29,6 +29,9 @@ import type {
   BleManagerOptions
 } from './TypeDefinition'
 
+const enableDisableDeprecatedMessage =
+  'react-native-ble-plx: The enable and disable feature is no longer supported. In Android SDK 31+ there were major changes in permissions, which may cause problems with these functions, and in SDK 33+ they were completely removed.'
+
 /**
  *
  * BleManager is an entry point for react-native-ble-plx library. It provides all means to discover and work with
@@ -45,8 +48,10 @@ import type {
  */
 export class BleManager {
   // Scan subscriptions
+  // $FlowIssue[missing-type-arg]
   _scanEventSubscription: ?EventEmitter
   // Listening to BleModule events
+  // $FlowIssue[missing-type-arg]
   _eventEmitter: EventEmitter
   // Unique identifier used to create internal transactionIds
   _uniqueId: number
@@ -69,6 +74,7 @@ export class BleManager {
 
     const restoreStateFunction = options.restoreStateFunction
     if (restoreStateFunction != null && options.restoreStateIdentifier != null) {
+      // $FlowIssue[prop-missing]
       this._activeSubscriptions[this._nextUniqueID()] = this._eventEmitter.addListener(
         BleModule.RestoreStateEvent,
         (nativeRestoredState: NativeBleRestoredState) => {
@@ -168,6 +174,7 @@ export class BleManager {
       })
       const value = await Promise.race([destroyPromise, promise])
       delete this._activePromises[id]
+      // $FlowIssue[incompatible-return]
       return value
     } catch (error) {
       delete this._activePromises[id]
@@ -238,12 +245,14 @@ export class BleManager {
   }
 
   /**
+   * Deprecated
    * Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Android only]
    *
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<BleManager>} Promise completes when state transition was successful.
    */
   async disable(transactionId: ?TransactionId): Promise<BleManager> {
+    console.warn(enableDisableDeprecatedMessage)
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
@@ -474,7 +483,9 @@ export class BleManager {
    */
   onDeviceDisconnected(deviceIdentifier: DeviceId, listener: (error: ?BleError, device: Device) => void): Subscription {
     const disconnectionListener = ([error, nativeDevice]: [?string, NativeDevice]) => {
-      if (deviceIdentifier !== nativeDevice.id) return
+      if (deviceIdentifier !== nativeDevice.id) {
+        return
+      }
       listener(error ? parseBleError(error, this._errorCodesToMessagesMapping) : null, new Device(nativeDevice, this))
     }
 
@@ -795,7 +806,7 @@ export class BleManager {
     characteristicIdentifier: Identifier,
     base64Value: Base64,
     transactionId: ?TransactionId
-  ) {
+  ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
@@ -992,7 +1003,9 @@ export class BleManager {
       NativeCharacteristic,
       TransactionId
     ]) => {
-      if (transactionId !== msgTransactionId) return
+      if (transactionId !== msgTransactionId) {
+        return
+      }
       if (error) {
         listener(parseBleError(error, this._errorCodesToMessagesMapping), null)
         return
