@@ -280,10 +280,10 @@ class BLEServiceInstance {
       this.showErrorToast(deviceNotConnectedErrorText)
       throw new Error(deviceNotConnectedErrorText)
     }
-    return this.manager.isDeviceConnected(this.device.id).catch(error => {
-      this.onError(error)
-    })
+    return this.manager.isDeviceConnected(this.device.id)
   }
+
+  isDeviceWithIdConnected = (id: string) => this.manager.isDeviceConnected(id).catch(console.error)
 
   getConnectedDevices = (expectedServices: UUID[]) => {
     if (!this.device) {
