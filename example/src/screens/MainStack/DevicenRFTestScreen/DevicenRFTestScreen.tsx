@@ -1,26 +1,25 @@
 import React, { useState, type Dispatch } from 'react'
 import type { TestStateType } from 'example/types'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { Device, fullUUID, type Base64 } from 'react-native-ble-plx'
+import { Device, type Base64 } from 'react-native-ble-plx'
 import { Platform, ScrollView } from 'react-native'
 import base64 from 'react-native-base64'
-import { getDateAsBase64 } from '../../../utils/getDateAsBase64'
 import { BLEService } from '../../../services'
 import type { MainStackParamList } from '../../../navigation/navigators'
 import { AppButton, AppTextInput, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
 import { wait } from '../../../utils/wait'
+import {
+  currentTimeCharacteristic,
+  currentTimeCharacteristicTimeTriggerDescriptor,
+  currentTimeCharacteristicTimeTriggerDescriptorValue,
+  deviceTimeCharacteristic,
+  deviceTimeService,
+  monitorExpectedMessage,
+  writeWithResponseBase64Time,
+  writeWithoutResponseBase64Time
+} from '../../../consts/nRFDeviceConsts'
 
 type DevicenRFTestScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_NRF_TEST_SCREEN'>
-
-const deviceTimeService = fullUUID('1847')
-const currentTimeCharacteristic = fullUUID('2A2B')
-const deviceTimeCharacteristic = fullUUID('2B90')
-const currentTimeCharacteristicTimeTriggerDescriptor = fullUUID('290E')
-
-const writeWithResponseBase64Time = getDateAsBase64(new Date('2022-08-11T08:17:19Z'))
-const writeWithoutResponseBase64Time = getDateAsBase64(new Date('2023-09-12T10:12:16Z'))
-const monitorExpectedMessage = 'Hi, it works!'
-const currentTimeCharacteristicTimeTriggerDescriptorValue = base64.encode('BLE-PLX')
 
 export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
   const [expectedDeviceName, setExpectedDeviceName] = useState('')

@@ -77,6 +77,16 @@ class BLEServiceInstance {
       })
   }
 
+  disconnectDeviceById = (id: string) =>
+    this.manager
+      .cancelDeviceConnection(id)
+      .then(() => this.showSuccessToast('Device disconnected'))
+      .catch(error => {
+        if (error?.code !== BleErrorCode.DeviceDisconnected) {
+          this.onError(error)
+        }
+      })
+
   onBluetoothPowerOff = () => {
     this.showErrorToast('Bluetooth is turned off')
   }
@@ -211,6 +221,9 @@ class BLEServiceInstance {
     )
   }
 
+  setupCustomMonitor: BleManager['monitorCharacteristicForDevice'] = (...args) =>
+    this.manager.monitorCharacteristicForDevice(...args)
+
   finishMonitor = () => {
     this.isCharacteristicMonitorDisconnectExpected = true
     this.characteristicMonitor?.remove()
@@ -312,6 +325,9 @@ class BLEServiceInstance {
     }
     return this.manager.onDeviceDisconnected(this.device.id, listener)
   }
+
+  onDeviceDisconnectedCustom: BleManager['onDeviceDisconnected'] = (...args) =>
+    this.manager.onDeviceDisconnected(...args)
 
   readRSSIForDevice = () => {
     if (!this.device) {
