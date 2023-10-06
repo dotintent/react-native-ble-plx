@@ -37,6 +37,7 @@ It does NOT support:
 3. [Documentation & Support](#documentation--support)
 4. [Configuration & Installation](#configuration--installation)
 5. [Troubleshooting](#troubleshooting)
+6. [Contributions](#contributions)
 
 ## Compatibility
 
@@ -189,3 +190,7 @@ The plugin provides props for extra customization. Every time you change the pro
    ```
 
 ## Troubleshooting
+
+## Contributions
+
+- Special thanks to @EvanBacon for supporting the expo config plugin.
