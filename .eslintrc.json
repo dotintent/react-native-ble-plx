@@ -96,7 +96,9 @@
         "no-underscore-dangle": 0,
         "@typescript-eslint/naming-convention": 0,
         "import/no-default-export": 0,
-        "@typescript-eslint/no-shadow": 0
+        "@typescript-eslint/no-shadow": 0,
+        "global-require": 0,
+        "@typescript-eslint/no-var-requires": 0
       }
     }
   ]

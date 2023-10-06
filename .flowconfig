@@ -26,6 +26,10 @@ node_modules/warning/.*
 !<PROJECT_ROOT>/node_modules/react-native/
 <PROJECT_ROOT>/node_modules/react-native/Libraries/DevToolsSettings/DevToolsSettingsManager.d.ts
 
+; Output files
+<PROJECT_ROOT>/lib/.*
+<PROJECT_ROOT>/test_project/.*
+
 [untyped]
 .*/node_modules/@react-native-community/cli/.*/.*
 

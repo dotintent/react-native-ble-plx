@@ -28,7 +28,9 @@
   ],
   "scripts": {
     "build": "babel src/ -d lib/",
-    "test": "jest",
+    "test": "yarn test:package ; yarn test:example ; yarn test:plugin",
+    "test:package": "jest --config jest.config.js --passWithNoTests",
+    "test:example": "jest --config example/jest.config.js",
     "docs": "documentation build src/index.js -o docs --config documentation.yml -f html",
     "typecheck": "tsc --noEmit",
     "lint": "flow && eslint \"**/*.{js,ts,tsx}\" && documentation lint index.js && yarn typecheck",
@@ -43,6 +45,7 @@
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build",
     "build:plugin": "tsc --build plugin",
     "clean:plugin": "expo-module clean plugin",
+    "test:plugin": "jest --config plugin/jest.config.js",
     "prepare": "npm run clean:plugin && npm run build:plugin",
     "lint:plugin": "eslint plugin/src/*"
   },

@@ -1,4 +1,4 @@
-import { ConfigPlugin, withAndroidManifest, AndroidConfig } from '@expo/config-plugins'
+import { type ConfigPlugin, withAndroidManifest, AndroidConfig } from '@expo/config-plugins'
 
 type InnerManifest = AndroidConfig.Manifest.AndroidManifest['manifest']
 
