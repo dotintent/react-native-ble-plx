@@ -68,6 +68,20 @@ requestBluetoothPermission = async () => {
 }
 ```
 
+With `neverForLocation` flag active, you can remove `ACCESS_FINE_LOCATION` permissions ask e.g.:
+
+```js
+const result = await PermissionsAndroid.requestMultiple([
+  PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+  PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT
+])
+
+return (
+  result['android.permission.BLUETOOTH_CONNECT'] === PermissionsAndroid.RESULTS.GRANTED &&
+  result['android.permission.BLUETOOTH_SCAN'] === PermissionsAndroid.RESULTS.GRANTED
+)
+```
+
 ## Waiting for Powered On state
 
 When iOS application launches BLE stack is not immediately available and we need to check its status.
