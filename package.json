@@ -40,7 +40,11 @@
     "build:ios": "cd example/ios && xcodebuild -workspace BlePlxExample.xcworkspace -scheme BlePlxExample -configuration Debug -sdk iphonesimulator CC=clang CPLUSPLUS=clang++ LD=clang LDPLUSPLUS=clang++ GCC_OPTIMIZATION_LEVEL=0 GCC_PRECOMPILE_PREFIX_HEADER=YES ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
     "test:ios": "cd test_project/ios && xcodebuild -workspace BlePlxExample.xcworkspace -scheme BlePlxExample -configuration Debug -sdk iphonesimulator ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
     "bootstrap": "yarn example && yarn install && yarn example pods",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build"
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build",
+    "build:plugin": "tsc --build plugin",
+    "clean:plugin": "expo-module clean plugin",
+    "prepare": "npm run clean:plugin && npm run build:plugin",
+    "lint:plugin": "eslint plugin/src/*"
   },
   "keywords": [
     "react-native",
@@ -89,6 +93,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "expo-module-scripts": "^3.1.0",
     "flow-bin": "^0.203.1",
     "hermes-eslint": "^0.15.1",
     "jest": "^29.7.0",
@@ -103,6 +108,9 @@
   },
   "resolutions": {
     "@types/react": "17.0.21"
+  },
+  "dependencies": {
+    "@expo/config-plugins": "^7.2.5"
   },
   "peerDependencies": {
     "react": "*",

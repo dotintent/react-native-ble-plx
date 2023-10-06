@@ -89,6 +89,15 @@
         "max-classes-per-file": "off",
         "prettier/prettier": "off"
       }
+    },
+    {
+      "files": ["plugin/**"],
+      "rules": {
+        "no-underscore-dangle": 0,
+        "@typescript-eslint/naming-convention": 0,
+        "import/no-default-export": 0,
+        "@typescript-eslint/no-shadow": 0
+      }
     }
   ]
 }
