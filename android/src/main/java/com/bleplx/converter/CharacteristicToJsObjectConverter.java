@@ -2,9 +2,9 @@ package com.bleplx.converter;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
-import com.polidea.multiplatformbleadapter.Characteristic;
-import com.polidea.multiplatformbleadapter.utils.Base64Converter;
-import com.polidea.multiplatformbleadapter.utils.UUIDConverter;
+import com.bleplx.adapter.Characteristic;
+import com.bleplx.adapter.utils.Base64Converter;
+import com.bleplx.adapter.utils.UUIDConverter;
 
 public class CharacteristicToJsObjectConverter extends JSObjectConverter<Characteristic> {
 

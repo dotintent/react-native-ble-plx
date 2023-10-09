@@ -4,7 +4,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.polidea.multiplatformbleadapter.errors.BleError;
+import com.bleplx.adapter.errors.BleError;
 
 public class BleErrorToJsObjectConverter {
 
