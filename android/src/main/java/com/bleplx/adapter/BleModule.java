@@ -445,6 +445,7 @@ public class BleModule implements BleAdapter {
                     .equals(RxBleConnection.RxBleConnectionState.CONNECTED);
             onSuccessCallback.onSuccess(connected);
         } catch (Exception e) {
+            RxBleLog.e(e, "Error while checking if device is connected");
             onErrorCallback.onError(errorConverter.toError(e));
         }
     }
