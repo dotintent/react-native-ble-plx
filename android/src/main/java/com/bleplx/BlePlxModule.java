@@ -36,15 +36,18 @@ import com.bleplx.converter.ScanResultToJsObjectConverter;
 import com.bleplx.converter.ServiceToJsObjectConverter;
 import com.bleplx.utils.ReadableArrayConverter;
 import com.bleplx.utils.SafePromise;
+import com.polidea.rxandroidble2.internal.RxBleLog;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.app.Activity;
+
+import io.reactivex.exceptions.UndeliverableException;
+import io.reactivex.plugins.RxJavaPlugins;
 
 @ReactModule(name = BlePlxModule.NAME)
 public class BlePlxModule extends ReactContextBaseJavaModule {
@@ -52,6 +55,17 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
     public BlePlxModule(ReactApplicationContext reactContext) {
       super(reactContext);
+      RxJavaPlugins.setErrorHandler(throwable -> {
+        if (throwable instanceof UndeliverableException) {
+          RxBleLog.e("Handle all unhandled exceptions from RxJava: " + throwable.getMessage());
+        } else {
+          Thread currentThread = Thread.currentThread();
+          Thread.UncaughtExceptionHandler errorHandler = currentThread.getUncaughtExceptionHandler();
+          if (errorHandler != null) {
+            errorHandler.uncaughtException(currentThread, throwable);
+          }
+        }
+      });
     }
 
     @Override
