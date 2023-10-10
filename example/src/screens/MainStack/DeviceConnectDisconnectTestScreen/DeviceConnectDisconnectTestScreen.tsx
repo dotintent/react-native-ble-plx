@@ -4,12 +4,12 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { BleError, Characteristic, Device, type Subscription } from 'react-native-ble-plx'
 import { ScrollView } from 'react-native'
 import base64 from 'react-native-base64'
+import Toast from 'react-native-toast-message'
 import { BLEService } from '../../../services'
 import type { MainStackParamList } from '../../../navigation/navigators'
 import { AppButton, AppTextInput, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
-import { deviceTimeService, currentTimeCharacteristic } from '../../../consts/nRFDeviceConsts'
+import { currentTimeCharacteristic, deviceTimeService } from '../../../consts/nRFDeviceConsts'
 import { wait } from '../../../utils/wait'
-import Toast from 'react-native-toast-message'
 
 type DeviceConnectDisconnectTestScreenProps = NativeStackScreenProps<
   MainStackParamList,
