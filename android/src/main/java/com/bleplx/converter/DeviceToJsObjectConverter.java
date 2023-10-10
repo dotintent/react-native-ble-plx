@@ -2,8 +2,8 @@ package com.bleplx.converter;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
-import com.polidea.multiplatformbleadapter.Device;
-import com.polidea.multiplatformbleadapter.utils.Constants;
+import com.bleplx.adapter.Device;
+import com.bleplx.adapter.utils.Constants;
 
 public class DeviceToJsObjectConverter extends JSObjectConverter<Device> {
 

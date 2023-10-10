@@ -14,20 +14,20 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
-import com.polidea.multiplatformbleadapter.BleAdapter;
-import com.polidea.multiplatformbleadapter.BleAdapterFactory;
-import com.polidea.multiplatformbleadapter.Characteristic;
-import com.polidea.multiplatformbleadapter.ConnectionOptions;
-import com.polidea.multiplatformbleadapter.ConnectionState;
-import com.polidea.multiplatformbleadapter.Descriptor;
-import com.polidea.multiplatformbleadapter.Device;
-import com.polidea.multiplatformbleadapter.OnErrorCallback;
-import com.polidea.multiplatformbleadapter.OnEventCallback;
-import com.polidea.multiplatformbleadapter.OnSuccessCallback;
-import com.polidea.multiplatformbleadapter.RefreshGattMoment;
-import com.polidea.multiplatformbleadapter.ScanResult;
-import com.polidea.multiplatformbleadapter.Service;
-import com.polidea.multiplatformbleadapter.errors.BleError;
+import com.bleplx.adapter.BleAdapter;
+import com.bleplx.adapter.BleAdapterFactory;
+import com.bleplx.adapter.Characteristic;
+import com.bleplx.adapter.ConnectionOptions;
+import com.bleplx.adapter.ConnectionState;
+import com.bleplx.adapter.Descriptor;
+import com.bleplx.adapter.Device;
+import com.bleplx.adapter.OnErrorCallback;
+import com.bleplx.adapter.OnEventCallback;
+import com.bleplx.adapter.OnSuccessCallback;
+import com.bleplx.adapter.RefreshGattMoment;
+import com.bleplx.adapter.ScanResult;
+import com.bleplx.adapter.Service;
+import com.bleplx.adapter.errors.BleError;
 import com.bleplx.converter.BleErrorToJsObjectConverter;
 import com.bleplx.converter.CharacteristicToJsObjectConverter;
 import com.bleplx.converter.DescriptorToJsObjectConverter;
@@ -936,7 +936,7 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void addListener(String eventName) {
-      // Keep: Required for RN built in Event Emitter Calls.  
+      // Keep: Required for RN built in Event Emitter Calls.
     }
 
     @ReactMethod

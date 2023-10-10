@@ -2,9 +2,9 @@ package com.bleplx.converter;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
-import com.polidea.multiplatformbleadapter.Descriptor;
-import com.polidea.multiplatformbleadapter.utils.Base64Converter;
-import com.polidea.multiplatformbleadapter.utils.UUIDConverter;
+import com.bleplx.adapter.Descriptor;
+import com.bleplx.adapter.utils.Base64Converter;
+import com.bleplx.adapter.utils.UUIDConverter;
 
 public class DescriptorToJsObjectConverter extends JSObjectConverter<Descriptor> {
 

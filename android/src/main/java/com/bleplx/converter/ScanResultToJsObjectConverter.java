@@ -5,10 +5,10 @@ import androidx.annotation.NonNull;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.polidea.multiplatformbleadapter.AdvertisementData;
-import com.polidea.multiplatformbleadapter.ScanResult;
-import com.polidea.multiplatformbleadapter.utils.Base64Converter;
-import com.polidea.multiplatformbleadapter.utils.UUIDConverter;
+import com.bleplx.adapter.AdvertisementData;
+import com.bleplx.adapter.ScanResult;
+import com.bleplx.adapter.utils.Base64Converter;
+import com.bleplx.adapter.utils.UUIDConverter;
 
 import java.util.Map;
 import java.util.UUID;

@@ -2,8 +2,8 @@ package com.bleplx.converter;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
-import com.polidea.multiplatformbleadapter.Service;
-import com.polidea.multiplatformbleadapter.utils.UUIDConverter;
+import com.bleplx.adapter.Service;
+import com.bleplx.adapter.utils.UUIDConverter;
 
 public class ServiceToJsObjectConverter extends JSObjectConverter<Service> {
 
