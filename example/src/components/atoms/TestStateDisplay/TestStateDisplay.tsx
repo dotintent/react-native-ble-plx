@@ -1,5 +1,5 @@
 import React from 'react'
-import type { TestStateType } from 'example/types'
+import type { TestStateType } from '../../../types'
 import { AppText } from '../AppText/AppText'
 import { Container, Header, Label } from './TestStateDisplay.styled'
 
@@ -21,9 +21,9 @@ export function TestStateDisplay({ label, state, value }: TestStateDisplayProps)
     <Container>
       <Header>
         <Label>{label}</Label>
-        {state && <AppText>{marks[state]}</AppText>}
+        {!!state && <AppText>{marks[state]}</AppText>}
       </Header>
-      {value && <AppText>{value}</AppText>}
+      {!!value && <AppText>{value}</AppText>}
     </Container>
   )
 }

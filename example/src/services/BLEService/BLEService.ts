@@ -5,6 +5,7 @@ import {
   Device,
   State as BluetoothState,
   LogLevel,
+  type DeviceId,
   type TransactionId,
   type UUID,
   type Characteristic,
@@ -77,7 +78,7 @@ class BLEServiceInstance {
       })
   }
 
-  disconnectDeviceById = (id: string) =>
+  disconnectDeviceById = (id: DeviceId) =>
     this.manager
       .cancelDeviceConnection(id)
       .then(() => this.showSuccessToast('Device disconnected'))
@@ -105,7 +106,7 @@ class BLEServiceInstance {
     })
   }
 
-  connectToDevice = (deviceId: string) =>
+  connectToDevice = (deviceId: DeviceId) =>
     new Promise<Device>((resolve, reject) => {
       this.manager.stopDeviceScan()
       this.manager
@@ -268,7 +269,7 @@ class BLEServiceInstance {
     })
   }
 
-  getCharacteristicsForDevice = (serviceUUID: string) => {
+  getCharacteristicsForDevice = (serviceUUID: UUID) => {
     if (!this.device) {
       this.showErrorToast(deviceNotConnectedErrorText)
       throw new Error(deviceNotConnectedErrorText)
@@ -278,7 +279,7 @@ class BLEServiceInstance {
     })
   }
 
-  getDescriptorsForDevice = (serviceUUID: string, characteristicUUID: string) => {
+  getDescriptorsForDevice = (serviceUUID: UUID, characteristicUUID: UUID) => {
     if (!this.device) {
       this.showErrorToast(deviceNotConnectedErrorText)
       throw new Error(deviceNotConnectedErrorText)
@@ -296,7 +297,7 @@ class BLEServiceInstance {
     return this.manager.isDeviceConnected(this.device.id)
   }
 
-  isDeviceWithIdConnected = (id: string) => this.manager.isDeviceConnected(id).catch(console.error)
+  isDeviceWithIdConnected = (id: DeviceId) => this.manager.isDeviceConnected(id).catch(console.error)
 
   getConnectedDevices = (expectedServices: UUID[]) => {
     if (!this.device) {
@@ -349,7 +350,7 @@ class BLEServiceInstance {
     })
   }
 
-  cancelTransaction = (transactionId: string) => this.manager.cancelTransaction(transactionId)
+  cancelTransaction = (transactionId: TransactionId) => this.manager.cancelTransaction(transactionId)
 
   enable = () =>
     this.manager.enable().catch(error => {

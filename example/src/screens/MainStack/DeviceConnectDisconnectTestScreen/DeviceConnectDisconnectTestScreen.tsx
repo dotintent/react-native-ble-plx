@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
-import type { TestStateType } from 'example/types'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { BleError, Characteristic, Device, type Subscription } from 'react-native-ble-plx'
+import { BleError, Characteristic, Device, type Subscription, type DeviceId } from 'react-native-ble-plx'
 import { ScrollView } from 'react-native'
 import base64 from 'react-native-base64'
 import Toast from 'react-native-toast-message'
+import type { TestStateType } from '../../../types'
 import { BLEService } from '../../../services'
 import type { MainStackParamList } from '../../../navigation/navigators'
 import { AppButton, AppTextInput, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
@@ -123,7 +123,7 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
 
   const startDisconnect = (device: Device) => BLEService.disconnectDeviceById(device.id)
 
-  const startCharacteristicMonitor = (directDeviceId?: string) => {
+  const startCharacteristicMonitor = (directDeviceId?: DeviceId) => {
     if (!deviceId && !directDeviceId) {
       console.error('Device not ready')
       return
@@ -153,7 +153,7 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
     }
   }
 
-  const setupOnDeviceDisconnected = (directDeviceId?: string) => {
+  const setupOnDeviceDisconnected = (directDeviceId?: DeviceId) => {
     if (!deviceId && !directDeviceId) {
       console.error('Device not ready')
       return
