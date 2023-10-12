@@ -457,6 +457,9 @@ export class BleManager {
    * @returns {Promise<Device>} Connected {@link Device} object if successful.
    */
   async connectToDevice(deviceIdentifier: DeviceId, options: ?ConnectionOptions): Promise<Device> {
+    if (await this.isDeviceConnected(deviceIdentifier)) {
+      await this.cancelDeviceConnection(deviceIdentifier)
+    }
     const nativeDevice = await this._callPromise(BleModule.connectToDevice(deviceIdentifier, options))
     return new Device(nativeDevice, this)
   }

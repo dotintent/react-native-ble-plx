@@ -70,6 +70,8 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
           console.info(`connecting to ${device.id}`)
           await startConnectToDevice(device)
           setConnectCounter(prevCount => prevCount + 1)
+          setupOnDeviceDisconnected()
+          await wait(1000)
           console.info(`discovering in ${device.id}`)
           await startDiscoverServices()
           setCharacteristicDiscoverCounter(prevCount => prevCount + 1)
@@ -159,6 +161,7 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
       return
     }
     BLEService.onDeviceDisconnectedCustom(directDeviceId || deviceId, disconnectedListener)
+    console.info('On device disconnected ready')
   }
 
   const disconnectedListener = (error: BleError | null, device: Device | null) => {
