@@ -28,6 +28,7 @@ import type {
   ConnectionOptions,
   BleManagerOptions
 } from './TypeDefinition'
+import { Platform } from 'react-native'
 
 const enableDisableDeprecatedMessage =
   'react-native-ble-plx: The enable and disable feature is no longer supported. In Android SDK 31+ there were major changes in permissions, which may cause problems with these functions, and in SDK 33+ they were completely removed.'
@@ -457,6 +458,9 @@ export class BleManager {
    * @returns {Promise<Device>} Connected {@link Device} object if successful.
    */
   async connectToDevice(deviceIdentifier: DeviceId, options: ?ConnectionOptions): Promise<Device> {
+    if (Platform.OS === 'android' && (await this.isDeviceConnected(deviceIdentifier))) {
+      await this.cancelDeviceConnection(deviceIdentifier)
+    }
     const nativeDevice = await this._callPromise(BleModule.connectToDevice(deviceIdentifier, options))
     return new Device(nativeDevice, this)
   }
