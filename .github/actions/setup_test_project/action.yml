@@ -17,7 +17,7 @@ runs:
         node-version: ${{ inputs.NODE_VERSION }}
 
     - name: Initialize project template
-      run: npx react-native@latest init BlePlxExample --verbose --version ${{ inputs.REACT_NATIVE_VERSION }} --directory test_project --skip-install --verbose
+      run: npx react-native@latest init BlePlxExample --version ${{ inputs.REACT_NATIVE_VERSION }} --directory test_project --skip-install --verbose
       shell: bash
 
     - name: Cache dependencies
