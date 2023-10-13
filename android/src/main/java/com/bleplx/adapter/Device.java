@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-/** @noinspection unused*/
 public class Device {
 
     private String id;

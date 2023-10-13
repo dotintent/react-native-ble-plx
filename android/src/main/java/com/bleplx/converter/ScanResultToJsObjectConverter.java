@@ -38,6 +38,7 @@ public class ScanResultToJsObjectConverter extends JSObjectConverter<ScanResult>
         result.putString(Metadata.NAME, scanResult.getDeviceName());
         result.putInt(Metadata.RSSI, scanResult.getRssi());
         result.putInt(Metadata.MTU, scanResult.getMtu());
+        result.putBoolean(Metadata.IS_CONNECTABLE, scanResult.isConnectable());
 
         AdvertisementData advData = scanResult.getAdvertisementData();
         result.putString(Metadata.MANUFACTURER_DATA,
@@ -88,7 +89,6 @@ public class ScanResultToJsObjectConverter extends JSObjectConverter<ScanResult>
         }
 
         // Attributes which are not accessible on Android
-        result.putNull(Metadata.IS_CONNECTABLE);
         result.putNull(Metadata.OVERFLOW_SERVICE_UUIDS);
         return result;
     }
