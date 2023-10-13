@@ -48,11 +48,16 @@ jobs:
         run: yarn prepack
 
   build-android:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       fail-fast: false
       matrix:
-        react_native_version: ['0.72.4', ' 0.71.13', '0.70.13']
+        configurations:
+          [
+            { react_native_version: '0.72.6', node_version: 18 },
+            { react_native_version: '0.71.14', node_version: 16 },
+            { react_native_version: '0.70.13', node_version: 16 }
+          ]
     env:
       TURBO_CACHE_DIR: .turbo/android
     steps:
@@ -62,15 +67,16 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup_test_project
         with:
-          REACT_NATIVE_VERSION: ${{ matrix.react_native_version }}
+          REACT_NATIVE_VERSION: ${{ matrix.configurations.react_native_version }}
+          NODE_VERSION: ${{ matrix.configurations.node_version }}
 
       - name: Cache turborepo for Android
         uses: actions/cache@v3
         with:
           path: ${{ env.TURBO_CACHE_DIR }}
-          key: ${{ runner.os }}-${{ matrix.react_native_version }}-turborepo-android-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-turborepo-android-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.react_native_version }}-turborepo-android-
+            ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-turborepo-android-
 
       - name: Check turborepo cache for Android
         run: |
@@ -99,9 +105,9 @@ jobs:
           path: |
             ~/.gradle/wrapper
             ~/.gradle/caches
-          key: ${{ runner.os }}-${{ matrix.react_native_version }}-gradle-${{ hashFiles('test_project/android/gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-${{ hashFiles('test_project/android/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.react_native_version }}-gradle-
+            ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-
 
       - name: Build example for Android
         run: |
@@ -112,7 +118,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        react_native_version: ['0.72.4', ' 0.71.13', '0.70.13']
+        configurations:
+          [
+            { react_native_version: '0.72.6', node_version: 18 },
+            { react_native_version: '0.71.14', node_version: 16 },
+            { react_native_version: '0.70.13', node_version: 16 }
+          ]
     env:
       TURBO_CACHE_DIR: .turbo/ios
     steps:
@@ -122,15 +133,16 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup_test_project
         with:
-          REACT_NATIVE_VERSION: ${{ matrix.react_native_version }}
+          REACT_NATIVE_VERSION: ${{ matrix.configurations.react_native_version }}
+          NODE_VERSION: ${{ matrix.configurations.node_version }}
 
       - name: Cache turborepo for iOS
         uses: actions/cache@v3
         with:
           path: ${{ env.TURBO_CACHE_DIR }}
-          key: ${{ runner.os }}-${{ matrix.react_native_version }}-turborepo-ios-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-turborepo-ios-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.react_native_version }}-turborepo-ios-
+            ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-turborepo-ios-
 
       - name: Check turborepo cache for iOS
         run: |
@@ -147,9 +159,9 @@ jobs:
         with:
           path: |
             **/ios/Pods
-          key: ${{ runner.os }}-${{ matrix.react_native_version }}-cocoapods-${{ hashFiles('test_project/ios/Podfile.lock') }}
+          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-cocoapods-${{ hashFiles('test_project/ios/Podfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.react_native_version }}-cocoapods-
+            ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-cocoapods-
 
       - name: Install cocoapods
         if: env.turbo_cache_hit != 1

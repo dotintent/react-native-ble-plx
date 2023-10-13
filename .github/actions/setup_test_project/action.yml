@@ -4,6 +4,9 @@ inputs:
   REACT_NATIVE_VERSION:
     description: React Native version to use
     required: false
+  NODE_VERSION:
+    description: Node version to use # https://github.com/actions/setup-node#supported-version-syntax
+    required: false
 
 runs:
   using: composite
@@ -11,10 +14,10 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
-        node-version-file: .nvmrc
+        node-version: ${{ inputs.NODE_VERSION }}
 
     - name: Initialize project template
-      run: npx react-native@latest init BlePlxExample --version ${{ inputs.REACT_NATIVE_VERSION }} --directory test_project --skip-install --verbose
+      run: npx react-native@latest init BlePlxExample --verbose --version ${{ inputs.REACT_NATIVE_VERSION }} --directory test_project --skip-install --verbose
       shell: bash
 
     - name: Cache dependencies
@@ -27,7 +30,7 @@ runs:
         restore-keys: |
           ${{ runner.os }}-${{ inputs.REACT_NATIVE_VERSION }}-yarn-${{ hashFiles('**/yarn.lock') }}
           ${{ runner.os }}-${{ inputs.REACT_NATIVE_VERSION }}-yarn-
-    
+
     - name: Copy project files
       run: node ./scripts/copyExampleProjectFiles.js
       shell: bash
