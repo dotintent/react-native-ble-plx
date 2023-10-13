@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { BleError, Characteristic, Device, type Subscription, type DeviceId } from 'react-native-ble-plx'
+import { BleError, Characteristic, Device, type Subscription, type DeviceId, BleErrorCode } from 'react-native-ble-plx'
 import { ScrollView } from 'react-native'
 import base64 from 'react-native-base64'
 import Toast from 'react-native-toast-message'
@@ -15,6 +15,7 @@ type DeviceConnectDisconnectTestScreenProps = NativeStackScreenProps<
   MainStackParamList,
   'DEVICE_CONNECT_DISCONNECT_TEST_SCREEN'
 >
+const NUMBER_OF_CALLS_IN_THE_TEST_SCENARIO = 10
 
 export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnectTestScreenProps) {
   const [expectedDeviceName, setExpectedDeviceName] = useState('')
@@ -66,7 +67,7 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
       setTestScanDevicesState('DONE')
       setDeviceId(device.id)
       try {
-        for (let i = 0; i < 10; i += 1) {
+        for (let i = 0; i < NUMBER_OF_CALLS_IN_THE_TEST_SCENARIO; i += 1) {
           console.info(`connecting to ${device.id}`)
           await startConnectToDevice(device)
           setConnectCounter(prevCount => prevCount + 1)
@@ -85,7 +86,7 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
       setTestScanDevicesState('DONE')
       setDeviceId(device.id)
       try {
-        for (let i = 0; i < 10; i += 1) {
+        for (let i = 0; i < NUMBER_OF_CALLS_IN_THE_TEST_SCENARIO; i += 1) {
           await startConnectToDevice(device)
           console.info(`connecting to ${device.id}`)
           setConnectInDisconnectTestCounter(prevCount => prevCount + 1)
@@ -106,7 +107,7 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
       return
     }
     try {
-      for (let i = 0; i < 10; i += 1) {
+      for (let i = 0; i < NUMBER_OF_CALLS_IN_THE_TEST_SCENARIO; i += 1) {
         console.info(`discovering in ${deviceId}`)
         await startDiscoverServices()
         setCharacteristicDiscoverCounter(prevCount => prevCount + 1)
@@ -138,7 +139,7 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
 
   const characteristicListener = (error: BleError | null, characteristic: Characteristic | null) => {
     if (error) {
-      if (error.errorCode === 302) {
+      if (error.errorCode === BleErrorCode.ServiceNotFound || error.errorCode === BleErrorCode.ServicesNotDiscovered) {
         startDiscoverServices().then(() => startCharacteristicMonitor())
         return
       }
@@ -171,7 +172,8 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
     }
   }
 
-  const show1103Crash = async () => {
+  // https://github.com/dotintent/react-native-ble-plx/issues/1103
+  const showIssue1103Crash = async () => {
     setTestScanDevicesState('IN_PROGRESS')
     await BLEService.initializeBLE()
     await BLEService.scanDevices(
@@ -208,7 +210,7 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
           value={expectedDeviceName}
           onChangeText={setExpectedDeviceName}
         />
-        <AppButton label="#1103" onPress={show1103Crash} />
+        <AppButton label="#1103" onPress={showIssue1103Crash} />
         <AppButton label="Just connect" onPress={startConnectOnly} />
         <AppButton label="Setup on device disconnected" onPress={() => setupOnDeviceDisconnected()} />
         <TestStateDisplay label="Looking for device" state={testScanDevicesState} />
