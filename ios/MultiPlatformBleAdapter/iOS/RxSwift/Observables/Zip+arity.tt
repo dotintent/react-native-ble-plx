@@ -1,0 +1,120 @@
+//
+//  Zip+arity.swift
+//  RxSwift
+//
+//  Created by Krunoslav Zaher on 5/23/15.
+//  Copyright © 2015 Krunoslav Zaher. All rights reserved.
+//
+
+<% for i in 2 ... 8 { %>
+
+// <%= i %>
+
+extension ObservableType {
+    /**
+    Merges the specified observable sequences into one observable sequence by using the selector function whenever all of the observable sequences have produced an element at a corresponding index.
+
+    - seealso: [zip operator on reactivex.io](http://reactivex.io/documentation/operators/zip.html)
+
+    - parameter resultSelector: Function to invoke for each series of elements at corresponding indexes in the sources.
+    - returns: An observable sequence containing the result of combining elements of the sources using the specified result selector function.
+    */
+    public static func zip<<%= (Array(1...i).map { "O\($0): ObservableType" }).joined(separator: ", ") %>>
+        (<%= (Array(1...i).map { "_ source\($0): O\($0)" }).joined(separator: ", ") %>, resultSelector: @escaping (<%= (Array(1...i).map { "O\($0).Element" }).joined(separator: ", ") %>) throws -> Element)
+        -> Observable<Element> {
+        return Zip<%= i %>(
+            <%= (Array(1...i).map { "source\($0): source\($0).asObservable()" }).joined(separator: ", ") %>,
+            resultSelector: resultSelector
+        )
+    }
+}
+
+extension ObservableType where Element == Any {
+    /**
+    Merges the specified observable sequences into one observable sequence of tuples whenever all of the observable sequences have produced an element at a corresponding index.
+
+    - seealso: [zip operator on reactivex.io](http://reactivex.io/documentation/operators/zip.html)
+
+    - returns: An observable sequence containing the result of combining elements of the sources.
+    */
+    public static func zip<<%= (Array(1...i).map { "O\($0): ObservableType" }).joined(separator: ", ") %>>
+        (<%= (Array(1...i).map { "_ source\($0): O\($0)" }).joined(separator: ", ") %>)
+        -> Observable<(<%= (Array(1...i).map { "O\($0).Element" }).joined(separator: ", ") %>)> {
+        return Zip<%= i %>(
+            <%= (Array(1...i).map { "source\($0): source\($0).asObservable()" }).joined(separator: ", ") %>,
+            resultSelector: { (<%= (Array(0..<i).map { "$\($0)" }).joined(separator: ", ") %>) }
+        )
+    }
+}
+
+final class ZipSink<%= i %>_<<%= (Array(1...i).map { "E\($0)" }).joined(separator: ", ") %>, Observer: ObserverType> : ZipSink<Observer> {
+    typealias Result = Observer.Element 
+    typealias Parent = Zip<%= i %><<%= (Array(1...i).map { "E\($0)" }).joined(separator: ", ") %>, Result>
+
+    let parent: Parent
+
+<%= (Array(1...i).map {
+"    var values\($0): Queue<E\($0)> = Queue(capacity: 2)"
+}).joined(separator: "\n") %>
+
+    init(parent: Parent, observer: Observer, cancel: Cancelable) {
+        self.parent = parent
+        super.init(arity: <%= i %>, observer: observer, cancel: cancel)
+    }
+
+    override func hasElements(_ index: Int) -> Bool {
+        switch index {
+<%= (Array(0..<i).map {
+"        case \($0): return !self.values\($0 + 1).isEmpty\n"
+}).joined(separator: "") %>
+        default:
+            rxFatalError("Unhandled case \(index)")
+        }
+    }
+
+    func run() -> Disposable {
+<%= (Array(1...i).map {
+"        let subscription\($0) = SingleAssignmentDisposable()"
+}).joined(separator: "\n") %>
+
+<%= (Array(1...i).map {
+"        let observer\($0) = ZipObserver(lock: self.lock, parent: self, index: \($0 - 1), setNextValue: { self.values\($0).enqueue($0) }, this: subscription\($0))"
+}).joined(separator: "\n") %>
+
+<%= (Array(1...i).map {
+"        subscription\($0).setDisposable(self.parent.source\($0).subscribe(observer\($0)))" }).joined(separator: "\n")
+%>
+
+        return Disposables.create([
+<%= (Array(1...i).map { "           subscription\($0)" }).joined(separator: ",\n") %>
+        ])
+    }
+
+    override func getResult() throws -> Result {
+        try self.parent.resultSelector(<%= (Array(1...i).map { "self.values\($0).dequeue()!" }).joined(separator: ", ") %>)
+    }
+}
+
+final class Zip<%= i %><<%= (Array(1...i).map { "E\($0)" }).joined(separator: ", ") %>, Result> : Producer<Result> {
+    typealias ResultSelector = (<%= (Array(1...i).map { "E\($0)" }).joined(separator: ", ") %>) throws -> Result
+
+<%= (Array(1...i).map { "    let source\($0): Observable<E\($0)>" }).joined(separator: "\n") %>
+
+    let resultSelector: ResultSelector
+
+    init(<%= (Array(1...i).map { "source\($0): Observable<E\($0)>" }).joined(separator: ", ") %>, resultSelector: @escaping ResultSelector) {
+<%= (Array(1...i).map {
+"        self.source\($0) = source\($0)" }).joined(separator: "\n")
+%>
+
+        self.resultSelector = resultSelector
+    }
+
+    override func run<Observer: ObserverType>(_ observer: Observer, cancel: Cancelable) -> (sink: Disposable, subscription: Disposable) where Observer.Element == Result {
+        let sink = ZipSink<%= i %>_(parent: self, observer: observer, cancel: cancel)
+        let subscription = sink.run()
+        return (sink: sink, subscription: subscription)
+    }
+}
+
+<% } %>
