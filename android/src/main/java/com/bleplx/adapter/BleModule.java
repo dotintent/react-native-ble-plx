@@ -1160,8 +1160,8 @@ public class BleModule implements BleAdapter {
 
     private void safeStartDeviceScan(final UUID[] uuids,
                                      final int scanMode,
-                                     int callbackType,
-                                     boolean legacyScan,
+                                     final int callbackType,
+                                     final boolean legacyScan,
                                      final OnEventCallback<ScanResult> onEventCallback,
                                      final OnErrorCallback onErrorCallback) {
         if (rxBleClient == null) {
