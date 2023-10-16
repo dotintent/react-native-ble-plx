@@ -188,6 +188,7 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
         int scanMode = DEFAULT_SCAN_MODE_LOW_POWER;
         int callbackType = DEFAULT_CALLBACK_TYPE_ALL_MATCHES;
+        boolean legacyScan = true;
 
         if (options != null) {
             if (options.hasKey("scanMode") && options.getType("scanMode") == ReadableType.Number) {
@@ -196,11 +197,14 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
             if (options.hasKey("callbackType") && options.getType("callbackType") == ReadableType.Number) {
                 callbackType = options.getInt("callbackType");
             }
+          if (options.hasKey("legacyScan") && options.getType("legacyScan") == ReadableType.Boolean) {
+            legacyScan = options.getBoolean("legacyScan");
+          }
         }
 
         bleAdapter.startDeviceScan(
                 filteredUUIDs != null ? ReadableArrayConverter.toStringArray(filteredUUIDs) : null,
-                scanMode, callbackType,
+                scanMode, callbackType, legacyScan,
                 new OnEventCallback<ScanResult>() {
                     @Override
                     public void onEvent(ScanResult data) {

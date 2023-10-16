@@ -28,6 +28,7 @@ public interface BleAdapter {
             String[] filteredUUIDs,
             int scanMode,
             int callbackType,
+            boolean legacyScan,
             OnEventCallback<ScanResult> onEventCallback,
             OnErrorCallback onErrorCallback);
 

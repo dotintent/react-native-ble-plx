@@ -177,6 +177,7 @@ public class BleModule implements BleAdapter {
     public void startDeviceScan(String[] filteredUUIDs,
                                 int scanMode,
                                 int callbackType,
+                                boolean legacyScan,
                                 OnEventCallback<ScanResult> onEventCallback,
                                 OnErrorCallback onErrorCallback) {
         UUID[] uuids = null;
@@ -189,7 +190,7 @@ public class BleModule implements BleAdapter {
             }
         }
 
-        safeStartDeviceScan(uuids, scanMode, callbackType, onEventCallback, onErrorCallback);
+        safeStartDeviceScan(uuids, scanMode, callbackType, legacyScan, onEventCallback, onErrorCallback);
     }
 
     @Override
@@ -1159,7 +1160,8 @@ public class BleModule implements BleAdapter {
 
     private void safeStartDeviceScan(final UUID[] uuids,
                                      final int scanMode,
-                                     int callbackType,
+                                     final int callbackType,
+                                     final boolean legacyScan,
                                      final OnEventCallback<ScanResult> onEventCallback,
                                      final OnErrorCallback onErrorCallback) {
         if (rxBleClient == null) {
@@ -1170,6 +1172,7 @@ public class BleModule implements BleAdapter {
         ScanSettings scanSettings = new ScanSettings.Builder()
                 .setScanMode(scanMode)
                 .setCallbackType(callbackType)
+                .setLegacy(legacyScan)
                 .build();
 
         int length = uuids == null ? 0 : uuids.length;

@@ -5,6 +5,7 @@ import { AppText } from '../AppText/AppText'
 export const Container = styled(TouchableOpacity)`
   ${({ theme }) => css`
     background-color: ${theme.colors.mainRed};
+    margin: 10px;
     padding: 12px;
     align-items: center;
     border-radius: 100px;
