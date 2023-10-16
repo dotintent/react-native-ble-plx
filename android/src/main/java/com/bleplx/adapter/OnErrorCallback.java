@@ -4,5 +4,5 @@ import com.bleplx.adapter.errors.BleError;
 
 public interface OnErrorCallback {
 
-    void onError(BleError error);
+  void onError(BleError error);
 }
