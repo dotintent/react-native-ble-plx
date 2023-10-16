@@ -1,5 +1,14 @@
+//
+//  BleClient.m
+//  BleClient
+//
+//  Created by Przemysław Lenart on 27/07/16.
+//  Copyright © 2016 Polidea. All rights reserved.
+//
+
 #import "BlePlx.h"
-@import MultiplatformBleAdapter;
+#import "BlePlx-Swift.h"
+
 
 @interface BlePlx () <BleClientManagerDelegate>
 @property(nonatomic) BleClientManager* manager;

@@ -3,7 +3,7 @@
 //
 //  Created by Przemysław Lenart on 25/07/16.
 //
-//KN - TEST
+
 import Foundation
 import CoreBluetooth
 

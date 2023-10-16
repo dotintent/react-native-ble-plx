@@ -500,7 +500,7 @@ public class BleClientManager : NSObject {
 
     // Mark: Discovery -------------------------------------------------------------------------------------------------
 
-    // After connection for peripheral to be usable, 
+    // After connection for peripheral to be usable,
     // user should discover all services and characteristics for peripheral.
     @objc
     public func discoverAllServicesAndCharacteristicsForDevice(_ deviceIdentifier: String,
