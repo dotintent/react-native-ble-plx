@@ -77,14 +77,14 @@ export function DashboardScreen({ navigation }: DashboardScreenProps) {
         label="Look for devices"
         onPress={() => {
           setFoundDevices([])
-          BLEService.initializeBLE().then(() => BLEService.scanDevices(true, addFoundDevice))
+          BLEService.initializeBLE().then(() => BLEService.scanDevices(addFoundDevice, null, true))
         }}
       />
       <AppButton
         label="Look for devices (legacy off)"
         onPress={() => {
           setFoundDevices([])
-          BLEService.initializeBLE().then(() => BLEService.scanDevices(false, addFoundDevice))
+          BLEService.initializeBLE().then(() => BLEService.scanDevices(addFoundDevice, null, false))
         }}
       />
       <AppButton label="Ask for permissions" onPress={BLEService.requestBluetoothPermission} />

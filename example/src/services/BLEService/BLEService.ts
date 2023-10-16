@@ -92,7 +92,7 @@ class BLEServiceInstance {
     this.showErrorToast('Bluetooth is turned off')
   }
 
-  scanDevices = async (legacyScan: boolean, onDeviceFound: (device: Device) => void, UUIDs: UUID[] | null = null) => {
+  scanDevices = async (onDeviceFound: (device: Device) => void, UUIDs: UUID[] | null = null, legacyScan?: boolean) => {
     this.manager.startDeviceScan(UUIDs, { legacyScan }, (error, device) => {
       if (error) {
         this.onError(error)
