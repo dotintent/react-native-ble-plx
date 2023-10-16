@@ -84,8 +84,6 @@ export function DashboardScreen({ navigation }: DashboardScreenProps) {
         label="Connect/disconnect test"
         onPress={() => navigation.navigate('DEVICE_CONNECT_DISCONNECT_TEST_SCREEN')}
       />
-      <AppButton label="Call disconnect with wrong id" onPress={() => BLEService.isDeviceWithIdConnected('asd')} />
-      <AppButton label="Call disconnect with wrong id" onPress={() => BLEService.isDeviceWithIdConnected('asd')} />
       <FlatList
         style={{ flex: 1 }}
         data={foundDevices}
