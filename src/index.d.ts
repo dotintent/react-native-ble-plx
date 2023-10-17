@@ -162,6 +162,11 @@ declare module 'react-native-ble-plx' {
      * Scan callback type for Bluetooth LE scan [Android only]
      */
     callbackType?: ScanCallbackType
+    /**
+     * Use legacyScan (default true) [Android only]
+     * https://developer.android.com/reference/android/bluetooth/le/ScanSettings.Builder#setLegacy(boolean)
+     */
+    legacyScan?: boolean
   }
 
   /**

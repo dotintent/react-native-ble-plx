@@ -165,7 +165,7 @@ The plugin provides props for extra customization. Every time you change the pro
    }
    ```
 
-1. (Optional) In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
+1. In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
 
    ```xml
    <manifest xmlns:android="http://schemas.android.com/apk/res/android">
@@ -188,6 +188,23 @@ The plugin provides props for extra customization. Every time you change the pro
 
        ...
    ```
+
+1. (Optional) In SDK 31+ You can remove `ACCESS_FINE_LOCATION` (or mark it as `android:maxSdkVersion="30"` ) from `AndroidManifest.xml` and add `neverForLocation` flag into `BLUETOOTH_SCAN` permissions which says that you will not use location based on scanning eg:
+
+   ```xml
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Android >= 12 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- Android < 12 -->
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
+
+       ...
+   ```
+
+   With `neverForLocation` flag active, you no longer need to ask for `ACCESS_FINE_LOCATION` in your app
 
 ## Troubleshooting
 

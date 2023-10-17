@@ -75,10 +75,25 @@ export function DashboardScreen({ navigation }: DashboardScreenProps) {
       )}
       <AppButton
         label="Look for devices"
-        onPress={() => BLEService.initializeBLE().then(() => BLEService.scanDevices(addFoundDevice))}
+        onPress={() => {
+          setFoundDevices([])
+          BLEService.initializeBLE().then(() => BLEService.scanDevices(addFoundDevice, null, true))
+        }}
+      />
+      <AppButton
+        label="Look for devices (legacy off)"
+        onPress={() => {
+          setFoundDevices([])
+          BLEService.initializeBLE().then(() => BLEService.scanDevices(addFoundDevice, null, false))
+        }}
       />
       <AppButton label="Ask for permissions" onPress={BLEService.requestBluetoothPermission} />
       <AppButton label="Go to nRF test" onPress={() => navigation.navigate('DEVICE_NRF_TEST_SCREEN')} />
+      <AppButton label="Call disconnect with wrong id" onPress={() => BLEService.isDeviceWithIdConnected('asd')} />
+      <AppButton
+        label="Connect/disconnect test"
+        onPress={() => navigation.navigate('DEVICE_CONNECT_DISCONNECT_TEST_SCREEN')}
+      />
       <FlatList
         style={{ flex: 1 }}
         data={foundDevices}

@@ -5,6 +5,7 @@ import {
   Device,
   State as BluetoothState,
   LogLevel,
+  type DeviceId,
   type TransactionId,
   type UUID,
   type Characteristic,
@@ -77,12 +78,22 @@ class BLEServiceInstance {
       })
   }
 
+  disconnectDeviceById = (id: DeviceId) =>
+    this.manager
+      .cancelDeviceConnection(id)
+      .then(() => this.showSuccessToast('Device disconnected'))
+      .catch(error => {
+        if (error?.code !== BleErrorCode.DeviceDisconnected) {
+          this.onError(error)
+        }
+      })
+
   onBluetoothPowerOff = () => {
     this.showErrorToast('Bluetooth is turned off')
   }
 
-  scanDevices = async (onDeviceFound: (device: Device) => void, UUIDs: UUID[] | null = null) => {
-    this.manager.startDeviceScan(UUIDs, null, (error, device) => {
+  scanDevices = async (onDeviceFound: (device: Device) => void, UUIDs: UUID[] | null = null, legacyScan?: boolean) => {
+    this.manager.startDeviceScan(UUIDs, { legacyScan }, (error, device) => {
       if (error) {
         this.onError(error)
         console.error(error.message)
@@ -95,7 +106,7 @@ class BLEServiceInstance {
     })
   }
 
-  connectToDevice = (deviceId: string) =>
+  connectToDevice = (deviceId: DeviceId) =>
     new Promise<Device>((resolve, reject) => {
       this.manager.stopDeviceScan()
       this.manager
@@ -211,6 +222,9 @@ class BLEServiceInstance {
     )
   }
 
+  setupCustomMonitor: BleManager['monitorCharacteristicForDevice'] = (...args) =>
+    this.manager.monitorCharacteristicForDevice(...args)
+
   finishMonitor = () => {
     this.isCharacteristicMonitorDisconnectExpected = true
     this.characteristicMonitor?.remove()
@@ -255,7 +269,7 @@ class BLEServiceInstance {
     })
   }
 
-  getCharacteristicsForDevice = (serviceUUID: string) => {
+  getCharacteristicsForDevice = (serviceUUID: UUID) => {
     if (!this.device) {
       this.showErrorToast(deviceNotConnectedErrorText)
       throw new Error(deviceNotConnectedErrorText)
@@ -265,7 +279,7 @@ class BLEServiceInstance {
     })
   }
 
-  getDescriptorsForDevice = (serviceUUID: string, characteristicUUID: string) => {
+  getDescriptorsForDevice = (serviceUUID: UUID, characteristicUUID: UUID) => {
     if (!this.device) {
       this.showErrorToast(deviceNotConnectedErrorText)
       throw new Error(deviceNotConnectedErrorText)
@@ -280,10 +294,10 @@ class BLEServiceInstance {
       this.showErrorToast(deviceNotConnectedErrorText)
       throw new Error(deviceNotConnectedErrorText)
     }
-    return this.manager.isDeviceConnected(this.device.id).catch(error => {
-      this.onError(error)
-    })
+    return this.manager.isDeviceConnected(this.device.id)
   }
+
+  isDeviceWithIdConnected = (id: DeviceId) => this.manager.isDeviceConnected(id).catch(console.error)
 
   getConnectedDevices = (expectedServices: UUID[]) => {
     if (!this.device) {
@@ -313,6 +327,9 @@ class BLEServiceInstance {
     return this.manager.onDeviceDisconnected(this.device.id, listener)
   }
 
+  onDeviceDisconnectedCustom: BleManager['onDeviceDisconnected'] = (...args) =>
+    this.manager.onDeviceDisconnected(...args)
+
   readRSSIForDevice = () => {
     if (!this.device) {
       this.showErrorToast(deviceNotConnectedErrorText)
@@ -333,7 +350,7 @@ class BLEServiceInstance {
     })
   }
 
-  cancelTransaction = (transactionId: string) => this.manager.cancelTransaction(transactionId)
+  cancelTransaction = (transactionId: TransactionId) => this.manager.cancelTransaction(transactionId)
 
   enable = () =>
     this.manager.enable().catch(error => {
@@ -393,14 +410,12 @@ class BLEServiceInstance {
       if (PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN && PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT) {
         const result = await PermissionsAndroid.requestMultiple([
           PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
-          PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
-          PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+          PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT
         ])
 
         return (
           result['android.permission.BLUETOOTH_CONNECT'] === PermissionsAndroid.RESULTS.GRANTED &&
-          result['android.permission.BLUETOOTH_SCAN'] === PermissionsAndroid.RESULTS.GRANTED &&
-          result['android.permission.ACCESS_FINE_LOCATION'] === PermissionsAndroid.RESULTS.GRANTED
+          result['android.permission.BLUETOOTH_SCAN'] === PermissionsAndroid.RESULTS.GRANTED
         )
       }
     }

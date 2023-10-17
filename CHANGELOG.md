@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.0.1] - 2023-10-03
+
+### Changed
+
+- Android permissions section in docs and readme
+
 ## [3.0.0] - 2023-09-28
 
 ### Added

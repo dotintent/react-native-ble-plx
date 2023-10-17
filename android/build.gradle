@@ -81,7 +81,6 @@ android {
 repositories {
   mavenCentral()
   google()
-  maven { url 'https://jitpack.io' }
 }
 
 
@@ -90,7 +89,8 @@ dependencies {
   // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
-  implementation 'com.github.dotintent:MultiPlatformBleAdapter:0.2.0'
+  implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
+  implementation "com.polidea.rxandroidble2:rxandroidble:1.17.2"
 }
 
 if (isNewArchitectureEnabled()) {
