@@ -178,6 +178,13 @@ export interface ScanOptions {
    * @instance
    */
   callbackType?: $Values<typeof ScanCallbackType>;
+  /**
+   * Use legacyScan (default true) [Android only]
+   * https://developer.android.com/reference/android/bluetooth/le/ScanSettings.Builder#setLegacy(boolean)
+   * @memberof ScanOptions
+   * @instance
+   */
+  legacyScan?: boolean;
 }
 
 /**

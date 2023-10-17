@@ -1723,6 +1723,12 @@
                         #callbackType
                       </a></li>
                       
+                      <li><a
+                        href='#scanoptionslegacyscan'
+                        class='regular pre-open'>
+                        #legacyScan
+                      </a></li>
+                      
                     </ul>
                   
                   
@@ -2006,6 +2012,16 @@ of the manager for every re-render of a React Native Component.</p>
 
   <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>
 }</pre>
+<p>With <code>neverForLocation</code> flag active, you can remove <code>ACCESS_FINE_LOCATION</code> permissions ask e.g.:</p>
+<pre class='hljs'><span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> PermissionsAndroid.requestMultiple([
+  PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
+  PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT
+])
+
+<span class="hljs-keyword">return</span> (
+  result[<span class="hljs-string">'android.permission.BLUETOOTH_CONNECT'</span>] === PermissionsAndroid.RESULTS.GRANTED &amp;&amp;
+  result[<span class="hljs-string">'android.permission.BLUETOOTH_SCAN'</span>] === PermissionsAndroid.RESULTS.GRANTED
+)</pre>
 <h2>Waiting for Powered On state</h2>
 <p>When iOS application launches BLE stack is not immediately available and we need to check its status.
 To detect current state and following state changes we can use <code>onStateChange()</code> function:</p>
@@ -2041,6 +2057,8 @@ which allows only one callback to be registered to handle detected devices:</p>
 <p>It is worth to note that scanning function may emit one device multiple times. However
 when device is connected it won't broadcast and needs to be disconnected from central
 to be scanned again. Only one scanning listener can be registered.</p>
+<h3>Bluetooth 5 Advertisements</h3>
+<p>To see devices that use Bluetooth 5 Advertising Extension you have to set the legacyScan variable to <code>false</code> in <a href="#scanoptions">Scan options</a> when you are starting <a href="#blemanagerstartdevicescan">BleManager.startDeviceScan()</a>,</p>
 <h2>Connecting and discovering services and characteristics</h2>
 <p>Once device is scanned it is in disconnected state. We need to connect to it and discover
 all services and characteristics it contains. Services may be understood
@@ -16302,6 +16320,61 @@ and overwrite values of interest to you.</p>
     <p>
       Type:
       $Values&#x3C;any>
+    </p>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='scanoptionslegacyscan'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>legacyScan</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Use legacyScan (default true) [Android only]
+<a href="https://developer.android.com/reference/android/bluetooth/le/ScanSettings.Builder#setLegacy(boolean">https://developer.android.com/reference/android/bluetooth/le/ScanSettings.Builder#setLegacy(boolean</a>)</p>
+
+    <div class='pre p1 fill-light mt0'>legacyScan</div>
+  
+    <p>
+      Type:
+      <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>
     </p>
   
   
