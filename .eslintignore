@@ -1,4 +1,5 @@
 /**/node_modules/*
 node_modules/
 docs/**
+plugin/build
 lib/**
