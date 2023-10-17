@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>react-native-ble-plx 3.0.0 | Documentation</title>
+  <title>react-native-ble-plx 3.0.1 | Documentation</title>
   <meta name='description' content='React Native Bluetooth Low Energy library'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>react-native-ble-plx</h3>
-          <div class='mb1'><code>3.0.0</code></div>
+          <div class='mb1'><code>3.0.1</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -2057,8 +2057,8 @@ which allows only one callback to be registered to handle detected devices:</p>
 <p>It is worth to note that scanning function may emit one device multiple times. However
 when device is connected it won't broadcast and needs to be disconnected from central
 to be scanned again. Only one scanning listener can be registered.</p>
-<h3>Bluetooth 5 Advertisements</h3>
-<p>To see devices that use Bluetooth 5 Advertising Extension you have to set the legacyScan variable to <code>false</code> in <a href="#scanoptions">Scan options</a> when you are starting <a href="#blemanagerstartdevicescan">BleManager.startDeviceScan()</a>,</p>
+<h3>Bluetooth 5 Advertisements in Android</h3>
+<p>To see devices that use Bluetooth 5 Advertising Extension you have to set the <code>legacyScan</code> variable to <code>false</code> in <a href="#scanoptions">Scan options</a> when you are starting <a href="#blemanagerstartdevicescan">BleManager.startDeviceScan()</a>,</p>
 <h2>Connecting and discovering services and characteristics</h2>
 <p>Once device is scanned it is in disconnected state. We need to connect to it and discover
 all services and characteristics it contains. Services may be understood
