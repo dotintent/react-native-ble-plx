@@ -128,6 +128,10 @@ It is worth to note that scanning function may emit one device multiple times. H
 when device is connected it won't broadcast and needs to be disconnected from central
 to be scanned again. Only one scanning listener can be registered.
 
+### Bluetooth 5 Advertisements in Android
+
+To see devices that use Bluetooth 5 Advertising Extension you have to set the `legacyScan` variable to `false` in {@link #scanoptions|Scan options} when you are starting {@link #blemanagerstartdevicescan|BleManager.startDeviceScan()},
+
 ## Connecting and discovering services and characteristics
 
 Once device is scanned it is in disconnected state. We need to connect to it and discover
