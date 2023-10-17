@@ -44,7 +44,7 @@ It does NOT support:
 For old RN versions (<0.60) please check [old README](./docs/README_V1.md) (1.x)
 for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
-| React Native | 3.0.0              |
+| React Native | 3.1.0              |
 | ------------ | ------------------ |
 | 0.72.4       | :white_check_mark: |
 | 0.71.13      | :white_check_mark: |
@@ -52,16 +52,15 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 ## Recent Changes
 
-**3.0.0**
+**3.1.0**
 
-- Added Example project
-- Updated MultiplatformBleAdapter to version 0.2.0.
-- Updated RN bridge config
-- Changed CI flow
-- Updated CI to RN 0.72.x
-- Updated docs
-- Updated dependencies
-- Fixed iOS 16 bugs
+- Added Handling Bluetooth 5 Advertising Extensions on Android by legacyScan flag
+- Added isConnectable flag for android devices
+- Added Expo config plugin for prebuilding
+- Changed Android permissions section in docs and readme
+- Merged MultiPlatformBleAdapter (https://github.com/dotintent/MultiPlatformBleAdapter) with react-native-ble-plx repo
+- Fixed application crash when multiple listeners were set to watch the disconnect action and the device was disconnected
+- Fixed handling wrong Bluetooth Address error on Android
 
 [Current version changes](CHANGELOG.md)
 [All previous changes](CHANGELOG-pre-03.md)
