@@ -10,47 +10,49 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-/** @noinspection unused*/
+/**
+ * @noinspection unused
+ */
 public class Service {
 
-    final private int id;
-    final private String deviceID;
-    final private BluetoothGattService btGattService;
+  final private int id;
+  final private String deviceID;
+  final private BluetoothGattService btGattService;
 
-    public Service(int id, String deviceID, BluetoothGattService btGattService) {
-        this.id = id;
-        this.deviceID = deviceID;
-        this.btGattService = btGattService;
-    }
+  public Service(int id, String deviceID, BluetoothGattService btGattService) {
+    this.id = id;
+    this.deviceID = deviceID;
+    this.btGattService = btGattService;
+  }
 
-    public int getId() {
-        return this.id;
-    }
+  public int getId() {
+    return this.id;
+  }
 
-    public UUID getUuid() {
-        return btGattService.getUuid();
-    }
+  public UUID getUuid() {
+    return btGattService.getUuid();
+  }
 
-    public String getDeviceID() {
-        return deviceID;
-    }
+  public String getDeviceID() {
+    return deviceID;
+  }
 
-    public boolean isPrimary() {
-        return btGattService.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY;
-    }
+  public boolean isPrimary() {
+    return btGattService.getType() == BluetoothGattService.SERVICE_TYPE_PRIMARY;
+  }
 
-    @Nullable
-    public Characteristic getCharacteristicByUUID(@NonNull UUID uuid) {
-        BluetoothGattCharacteristic characteristic = btGattService.getCharacteristic(uuid);
-        if (characteristic == null) return null;
-        return new Characteristic(this, characteristic);
-    }
+  @Nullable
+  public Characteristic getCharacteristicByUUID(@NonNull UUID uuid) {
+    BluetoothGattCharacteristic characteristic = btGattService.getCharacteristic(uuid);
+    if (characteristic == null) return null;
+    return new Characteristic(this, characteristic);
+  }
 
-    public List<Characteristic> getCharacteristics() {
-        ArrayList<Characteristic> characteristics = new ArrayList<>(btGattService.getCharacteristics().size());
-        for (BluetoothGattCharacteristic gattCharacteristic : btGattService.getCharacteristics()) {
-            characteristics.add(new Characteristic(this, gattCharacteristic));
-        }
-        return characteristics;
+  public List<Characteristic> getCharacteristics() {
+    ArrayList<Characteristic> characteristics = new ArrayList<>(btGattService.getCharacteristics().size());
+    for (BluetoothGattCharacteristic gattCharacteristic : btGattService.getCharacteristics()) {
+      characteristics.add(new Characteristic(this, gattCharacteristic));
     }
+    return characteristics;
+  }
 }
