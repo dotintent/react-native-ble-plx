@@ -8,6 +8,7 @@ export type MainStackParamList = {
   DEVICE_DETAILS_SCREEN: undefined
   DEVICE_NRF_TEST_SCREEN: undefined
   DEVICE_CONNECT_DISCONNECT_TEST_SCREEN: undefined
+  DEVICE_ON_DISCONNECT_TEST_SCREEN: undefined
 }
 
 const MainStack = createNativeStackNavigator<MainStackParamList>()
@@ -43,6 +44,13 @@ export function MainStackComponent() {
         component={screenComponents.DeviceConnectDisconnectTestScreen}
         options={{
           headerTitle: 'Connect/disconnect'
+        }}
+      />
+      <MainStack.Screen
+        name="DEVICE_ON_DISCONNECT_TEST_SCREEN"
+        component={screenComponents.DeviceOnDisconnectTestScreen}
+        options={{
+          headerTitle: 'On disconnect test'
         }}
       />
     </MainStack.Navigator>
