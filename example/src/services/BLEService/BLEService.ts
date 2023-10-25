@@ -14,6 +14,7 @@ import {
 } from 'react-native-ble-plx'
 import { PermissionsAndroid, Platform } from 'react-native'
 import Toast from 'react-native-toast-message'
+import { deviceTimeCharacteristic, deviceTimeService, writeWithResponseBase64Time } from '../../consts/nRFDeviceConsts'
 
 const deviceNotConnectedErrorText = 'Device is not connected'
 
@@ -423,6 +424,79 @@ class BLEServiceInstance {
     this.showErrorToast('Permission have not been granted')
 
     return false
+  }
+
+  // https://github.com/dotintent/react-native-ble-plx/issues/1113
+  timeStampWhenConnected: Date = new Date()
+
+  deviceStatus: {
+    DeviceId: Device['id']
+    DeviceName: Device['name']
+    SerialNumber: string
+  } = {
+    DeviceId: '',
+    DeviceName: '',
+    SerialNumber: ''
+  }
+
+  isConnectionRequired = false
+
+  messageStream: string[] = []
+
+  onDisconnect: null | Subscription = null
+
+  getNewBleInstance = async () => {
+    await this.manager.destroy()
+    this.manager = new BleManager()
+  }
+
+  issue1113Test = (deviceId: Device['id']) => {
+    this.manager
+      .connectToDevice(deviceId, {
+        refreshGatt: 'OnConnected',
+        autoConnect: Platform.OS === 'ios'
+      })
+      .then(async device => {
+        this.timeStampWhenConnected = new Date()
+        this.device = device
+        this.deviceStatus.DeviceId = device.id
+        this.deviceStatus.DeviceName = device.name
+        this.deviceStatus.SerialNumber = ''
+        await this.manager.discoverAllServicesAndCharacteristicsForDevice(device.id)
+        this.messageStream.push(`Connected device - ${device.id}`)
+        await this.manager.writeCharacteristicWithResponseForDevice(
+          this.device.id,
+          deviceTimeService,
+          deviceTimeCharacteristic,
+          writeWithResponseBase64Time
+        )
+        if (!this.isConnectionRequired) {
+          this.onDeviceDisconnected(() => {
+            console.info('onDeviceDisconnected called')
+          })
+        }
+        this.isConnectionRequired = true
+      })
+      .catch(err => {
+        console.info(`Error in connectDevice: ${JSON.stringify(err)}`)
+        if ([0, 2, 103, 3, 201, 200, 203, 102].includes(err.errorCode)) {
+          if ([2].includes(err.errorCode)) {
+            console.info('new instance and rety ******')
+            // this.getNewBleInstance()
+            this.manager.connectToDevice(deviceId, {
+              refreshGatt: 'OnConnected',
+              autoConnect: Platform.OS === 'ios'
+            })
+          } else if ([103, 3, 201, 200, 203, 102].includes(err.errorCode)) {
+            this.manager.connectToDevice(deviceId, {
+              refreshGatt: 'OnConnected',
+              autoConnect: Platform.OS === 'ios'
+            })
+          }
+          return
+        }
+        console.error(err)
+      })
   }
 
   showErrorToast = (error: string) => {
