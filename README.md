@@ -9,8 +9,6 @@
 
 ## About this library
 
-This is React Native Bluetooth Low Energy library wrapping [Multiplatform Ble Adapter](https://github.com/dotintent/MultiPlatformBleAdapter/).
-
 It supports:
 
 - [observing device's Bluetooth adapter state](https://github.com/dotintent/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
@@ -44,7 +42,7 @@ It does NOT support:
 For old RN versions (<0.60) please check [old README](./docs/README_V1.md) (1.x)
 for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
-| React Native | 3.1.0              |
+| React Native | 3.1.1              |
 | ------------ | ------------------ |
 | 0.72.4       | :white_check_mark: |
 | 0.71.13      | :white_check_mark: |
@@ -52,15 +50,9 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 ## Recent Changes
 
-**3.1.0**
+**3.1.1**
 
-- Added Handling Bluetooth 5 Advertising Extensions on Android by legacyScan flag
-- Added isConnectable flag for android devices
-- Added Expo config plugin for prebuilding
-- Changed Android permissions section in docs and readme
-- Merged MultiPlatformBleAdapter (https://github.com/dotintent/MultiPlatformBleAdapter) with react-native-ble-plx repo
-- Fixed application crash when multiple listeners were set to watch the disconnect action and the device was disconnected
-- Fixed handling wrong Bluetooth Address error on Android
+- Fixed expo config plugin for prebuilding
 
 [Current version changes](CHANGELOG.md)
 [All previous changes](CHANGELOG-pre-03.md)
@@ -93,7 +85,10 @@ After installing this npm package, add the [config plugin](https://docs.expo.io/
 }
 ```
 
-Next, rebuild your app as described in the ["Adding custom native code"](https://docs.expo.io/workflow/customizing/) guide.
+Then you should build the version using native modules (e.g. with `npx expo prebuild` command).
+And install it directly into your device with `npx expo run:android`.
+
+You can find more details in the ["Adding custom native code"](https://docs.expo.io/workflow/customizing/) guide.
 
 ## API
 
