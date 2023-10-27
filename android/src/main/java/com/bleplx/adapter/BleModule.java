@@ -1227,7 +1227,7 @@ public class BleModule implements BleAdapter {
     Observable<RxBleConnection> connect = device
       .establishConnection(autoConnect)
       .doOnSubscribe(disposable -> onConnectionStateChangedCallback.onEvent(ConnectionState.CONNECTING))
-      .doOnDispose(() -> {
+      .doFinally(() -> {
         safeExecutor.error(BleErrorUtils.cancelled());
         onDeviceDisconnected(device);
         onConnectionStateChangedCallback.onEvent(ConnectionState.DISCONNECTED);
