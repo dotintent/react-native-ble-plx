@@ -119,12 +119,14 @@ const changePackageJsonName = () => {
   fs.writeFileSync(packageJsonDestinationPath, JSON.stringify(packageJson, null, 2) + '\n')
 }
 
-const setMinSdkVersion = () => {
-  const gradlePath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'android', 'app', 'build.gradle')
-  const gradleLines = fs.readFileSync(gradlePath, 'utf8').split('\n')
-  const indexOfManifestTagEndLine = gradleLines.findIndex(line => line.includes('minSdkVersion'))
-  gradleLines[indexOfManifestTagEndLine] = 'minSdkVersion 23'
-  fs.writeFileSync(gradlePath, gradleLines.join('\n'))
+const setCompileSdkVersion = () => {
+  if (process.env.REACT_NATIVE_VERSION.includes('0.70')) {
+    const gradlePath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'android', 'app', 'build.gradle')
+    const gradleLines = fs.readFileSync(gradlePath, 'utf8').split('\n')
+    const indexOfManifestTagEndLine = gradleLines.findIndex(line => line.includes('compileSdkVersion'))
+    gradleLines[indexOfManifestTagEndLine] = 'compileSdkVersion 32'
+    fs.writeFileSync(gradlePath, gradleLines.join('\n'))
+  }
 }
 
 const copyExampleProjectFiles = () => {
@@ -136,7 +138,7 @@ const copyExampleProjectFiles = () => {
   copyReactNativeConfig()
   copyBabelConfig()
   changePackageJsonName()
-  setMinSdkVersion()
+  setCompileSdkVersion()
 }
 
 copyExampleProjectFiles()
