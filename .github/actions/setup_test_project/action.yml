@@ -32,7 +32,7 @@ runs:
           ${{ runner.os }}-${{ inputs.REACT_NATIVE_VERSION }}-yarn-
 
     - name: Copy project files
-      run: node ./scripts/copyExampleProjectFiles.js
+      run: REACT_NATIVE_VERSION=${{ inputs.REACT_NATIVE_VERSION }} node ./scripts/copyExampleProjectFiles.js
       shell: bash
 
     - name: Install dependencies
