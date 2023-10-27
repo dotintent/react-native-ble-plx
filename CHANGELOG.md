@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.1.1] - 2023-10-26
+
+### Fixed
+
+- Expo config plugin for prebuilding
+
 ## [3.1.0] - 2023-10-17
 
 ### Added
