@@ -21,7 +21,7 @@ public struct AdvertisementData {
     public var manufacturerData: Data? {
         return advertisementData[CBAdvertisementDataManufacturerDataKey] as? Data
     }
-
+    
     /// A dictionary containing service-specific advertisement data.
     /// The keys are CBUUID objects, representing CBService UUIDs. The values are Data objects,
     /// representing service-specific data.

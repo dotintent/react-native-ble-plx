@@ -49,6 +49,13 @@ export interface NativeDevice {
   manufacturerData: ?Base64;
 
   /**
+   * Raw device scan data. When you have specific advertiser data,
+   * you can implement your own processing.
+   * @private
+   */
+  rawScanRecord: Base64;
+
+  /**
    * Map od service UUIDs with associated data.
    * @private
    */

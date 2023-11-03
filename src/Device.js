@@ -50,6 +50,13 @@ export class Device implements NativeDevice {
   manufacturerData: ?Base64
 
   /**
+   * Raw device scan data. When you have specific advertiser data,
+   * you can implement your own processing.
+   * @private
+   */
+  rawScanRecord: Base64
+
+  /**
    * Map of service UUIDs (as keys) with associated data (as values).
    */
   serviceData: ?{ [uuid: UUID]: Base64 }

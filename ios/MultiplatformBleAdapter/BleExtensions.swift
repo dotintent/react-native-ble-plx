@@ -61,6 +61,7 @@ extension ScannedPeripheral {
             "solicitedServiceUUIDs": solicitedServiceUUIDs as Any,
             "isConnectable": advertisementData.isConnectable as Any,
             "overflowServiceUUIDs": overflowServiceUUIDs as Any
+            "rawScanRecord": advertisementData as Any
         ]
     }
 }
@@ -89,6 +90,7 @@ extension Peripheral {
             "solicitedServiceUUIDs": NSNull(),
             "isConnectable": NSNull(),
             "overflowServiceUUIDs": NSNull()
+            "rawScanRecord": NSNull()
         ]
     }
 }
