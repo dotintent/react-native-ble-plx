@@ -11,9 +11,9 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		595626793BEED3FC259F7B59 /* libPods-BlePlxExample-BlePlxExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 89FC88BA2E600C400032DF0E /* libPods-BlePlxExample-BlePlxExampleTests.a */; };
+		28C45BBDDDCCB122EB428135 /* libPods-BlePlxExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0ED6751A18107B8303018618 /* libPods-BlePlxExample.a */; };
+		5905B33B967699002FBD948C /* libPods-BlePlxExample-BlePlxExampleTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 324DB6DF88F20FB1B2C47AC5 /* libPods-BlePlxExample-BlePlxExampleTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		9EF8FA8801B973F1683D9C1E /* libPods-BlePlxExample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F609D8752A2FC2356F74B894 /* libPods-BlePlxExample.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,20 +30,20 @@
 		00E356EE1AD99517003FC87E /* BlePlxExampleTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlePlxExampleTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* BlePlxExampleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlePlxExampleTests.m; sourceTree = "<group>"; };
+		0ED6751A18107B8303018618 /* libPods-BlePlxExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlePlxExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* BlePlxExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlePlxExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = BlePlxExample/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = BlePlxExample/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BlePlxExample/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BlePlxExample/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = BlePlxExample/main.m; sourceTree = "<group>"; };
-		16545747FB36AD9A9A390BDF /* Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
-		1F6C3CDAB69263EA888D1B36 /* Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig"; path = "Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig"; sourceTree = "<group>"; };
-		4B3CDBCAF0BB1A3851F3345D /* Pods-BlePlxExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlePlxExample.release.xcconfig"; path = "Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample.release.xcconfig"; sourceTree = "<group>"; };
+		25E74C8417B9580C0D220F68 /* Pods-BlePlxExample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlePlxExample.release.xcconfig"; path = "Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample.release.xcconfig"; sourceTree = "<group>"; };
+		324DB6DF88F20FB1B2C47AC5 /* libPods-BlePlxExample-BlePlxExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlePlxExample-BlePlxExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = BlePlxExample/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		89FC88BA2E600C400032DF0E /* libPods-BlePlxExample-BlePlxExampleTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlePlxExample-BlePlxExampleTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		974552CED9D3ED2E3A5ACF17 /* Pods-BlePlxExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlePlxExample.debug.xcconfig"; path = "Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample.debug.xcconfig"; sourceTree = "<group>"; };
+		966E85B547FC7B6D5D751BFD /* Pods-BlePlxExample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlePlxExample.debug.xcconfig"; path = "Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample.debug.xcconfig"; sourceTree = "<group>"; };
+		A6BBFCEFCAFC33D9BD3A439A /* Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig"; path = "Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F609D8752A2FC2356F74B894 /* libPods-BlePlxExample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BlePlxExample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9C06D4ADB93E4A49EBA543C /* Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig"; path = "Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				595626793BEED3FC259F7B59 /* libPods-BlePlxExample-BlePlxExampleTests.a in Frameworks */,
+				5905B33B967699002FBD948C /* libPods-BlePlxExample-BlePlxExampleTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,7 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9EF8FA8801B973F1683D9C1E /* libPods-BlePlxExample.a in Frameworks */,
+				28C45BBDDDCCB122EB428135 /* libPods-BlePlxExample.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,8 +100,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				F609D8752A2FC2356F74B894 /* libPods-BlePlxExample.a */,
-				89FC88BA2E600C400032DF0E /* libPods-BlePlxExample-BlePlxExampleTests.a */,
+				0ED6751A18107B8303018618 /* libPods-BlePlxExample.a */,
+				324DB6DF88F20FB1B2C47AC5 /* libPods-BlePlxExample-BlePlxExampleTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -140,10 +140,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				974552CED9D3ED2E3A5ACF17 /* Pods-BlePlxExample.debug.xcconfig */,
-				4B3CDBCAF0BB1A3851F3345D /* Pods-BlePlxExample.release.xcconfig */,
-				16545747FB36AD9A9A390BDF /* Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig */,
-				1F6C3CDAB69263EA888D1B36 /* Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig */,
+				966E85B547FC7B6D5D751BFD /* Pods-BlePlxExample.debug.xcconfig */,
+				25E74C8417B9580C0D220F68 /* Pods-BlePlxExample.release.xcconfig */,
+				F9C06D4ADB93E4A49EBA543C /* Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig */,
+				A6BBFCEFCAFC33D9BD3A439A /* Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -155,12 +155,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "BlePlxExampleTests" */;
 			buildPhases = (
-				AA23F4F272F8B0798E916257 /* [CP] Check Pods Manifest.lock */,
+				28D7EDC2AEAD714FF5857821 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				2555E1AD83F9E6E758770149 /* [CP] Embed Pods Frameworks */,
-				52200E06C139DDD86979B38A /* [CP] Copy Pods Resources */,
+				E9B9519F8760957568CCEE5D /* [CP] Embed Pods Frameworks */,
+				3ECC178946750D06E3CC2C84 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -176,14 +176,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "BlePlxExample" */;
 			buildPhases = (
-				8060FD8EE81FE92CCC821452 /* [CP] Check Pods Manifest.lock */,
+				724DBF7CBB8886A0878F1084 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				4BFE5F6D95FB2D335A44CCC9 /* [CP] Embed Pods Frameworks */,
-				D7E76B0FA6A3AD05F5BC9D36 /* [CP] Copy Pods Resources */,
+				5AE8B3200C0CFA5AE96DFBF8 /* [CP] Embed Pods Frameworks */,
+				2AD2A8A5C4E30AA5A3543A73 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -266,80 +266,7 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		2555E1AD83F9E6E758770149 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4BFE5F6D95FB2D335A44CCC9 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		52200E06C139DDD86979B38A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8060FD8EE81FE92CCC821452 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-BlePlxExample-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AA23F4F272F8B0798E916257 /* [CP] Check Pods Manifest.lock */ = {
+		28D7EDC2AEAD714FF5857821 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -361,7 +288,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D7E76B0FA6A3AD05F5BC9D36 /* [CP] Copy Pods Resources */ = {
+		2AD2A8A5C4E30AA5A3543A73 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -376,6 +303,79 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		3ECC178946750D06E3CC2C84 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5AE8B3200C0CFA5AE96DFBF8 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample/Pods-BlePlxExample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		724DBF7CBB8886A0878F1084 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-BlePlxExample-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E9B9519F8760957568CCEE5D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-BlePlxExample-BlePlxExampleTests/Pods-BlePlxExample-BlePlxExampleTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -430,7 +430,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 16545747FB36AD9A9A390BDF /* Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig */;
+			baseConfigurationReference = F9C06D4ADB93E4A49EBA543C /* Pods-BlePlxExample-BlePlxExampleTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -457,7 +457,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F6C3CDAB69263EA888D1B36 /* Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig */;
+			baseConfigurationReference = A6BBFCEFCAFC33D9BD3A439A /* Pods-BlePlxExample-BlePlxExampleTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -481,12 +481,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 974552CED9D3ED2E3A5ACF17 /* Pods-BlePlxExample.debug.xcconfig */;
+			baseConfigurationReference = 966E85B547FC7B6D5D751BFD /* Pods-BlePlxExample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = U72M5MDD87;
+				DEVELOPMENT_TEAM = J8TDRBT8NT;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BlePlxExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -509,7 +509,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4B3CDBCAF0BB1A3851F3345D /* Pods-BlePlxExample.release.xcconfig */;
+			baseConfigurationReference = 25E74C8417B9580C0D220F68 /* Pods-BlePlxExample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

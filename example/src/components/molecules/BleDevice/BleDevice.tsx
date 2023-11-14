@@ -19,6 +19,7 @@ export function BleDevice({ device, onPress }: BleDeviceProps) {
       <DeviceProperty name="localName" value={device.localName} />
       <DeviceProperty name="id" value={device.id} />
       <DeviceProperty name="manufacturerData" value={device.manufacturerData} />
+      <DeviceProperty name="rawScanRecord" value={device.rawScanRecord} />
       <DeviceProperty name="isConnectable" value={parsedIsConnectable} />
       <DeviceProperty name="mtu" value={device.mtu.toString()} />
       <DeviceProperty name="rssi" value={device.rssi} />

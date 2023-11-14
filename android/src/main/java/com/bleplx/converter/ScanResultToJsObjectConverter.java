@@ -27,6 +27,7 @@ public class ScanResultToJsObjectConverter extends JSObjectConverter<ScanResult>
     String LOCAL_NAME = "localName";
     String TX_POWER_LEVEL = "txPowerLevel";
     String SOLICITED_SERVICE_UUIDS = "solicitedServiceUUIDs";
+    String RAW_SCAN_RECORD = "rawScanRecord";
     String IS_CONNECTABLE = "isConnectable";
     String OVERFLOW_SERVICE_UUIDS = "overflowServiceUUIDs";
   }
@@ -86,6 +87,12 @@ public class ScanResultToJsObjectConverter extends JSObjectConverter<ScanResult>
       result.putArray(Metadata.SOLICITED_SERVICE_UUIDS, solicitedServiceUUIDs);
     } else {
       result.putNull(Metadata.SOLICITED_SERVICE_UUIDS);
+    }
+
+    if (advData.getRawScanRecord() != null) {
+      result.putString(Metadata.RAW_SCAN_RECORD, Base64Converter.encode(advData.getRawScanRecord()));
+    } else {
+      result.putNull(Metadata.RAW_SCAN_RECORD);
     }
 
     // Attributes which are not accessible on Android

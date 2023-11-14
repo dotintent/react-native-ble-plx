@@ -47,20 +47,27 @@ extension ScannedPeripheral {
             .solicitedServiceUUIDs?
             .map { (uuid: CBUUID) in uuid.fullUUIDString }
 
+
+        let advertisementDataDict: [AnyHashable: Any] = [
+            "localName": advertisementData.localName as Any,
+            "manufacturerData": manufacturerData as Any,
+            "serviceData": serviceData as Any,
+            "serviceUUIDs": serviceUUIDs as Any,
+            "txPowerLevel": advertisementData.txPowerLevel as Any,
+            "isConnectable": advertisementData.isConnectable as Any,
+            "solicitedServiceUUIDs": solicitedServiceUUIDs as Any,
+            "overflowServiceUUIDs": overflowServiceUUIDs as Any
+        ]
+
+        let advertisementDataJSON = try? JSONSerialization.data(withJSONObject: advertisementDataDict, options: [])
+        let advertisementDataBase64 = advertisementDataJSON?.base64EncodedString()
+
         return [
             "id": peripheral.identifier.uuidString,
             "name": peripheral.name as Any,
             "rssi": rssi,
             "mtu": mtu,
-
-            "manufacturerData": manufacturerData as Any,
-            "serviceData": serviceData as Any,
-            "serviceUUIDs": serviceUUIDs as Any,
-            "localName": advertisementData.localName as Any,
-            "txPowerLevel": advertisementData.txPowerLevel as Any,
-            "solicitedServiceUUIDs": solicitedServiceUUIDs as Any,
-            "isConnectable": advertisementData.isConnectable as Any,
-            "overflowServiceUUIDs": overflowServiceUUIDs as Any
+            "rawScanRecord": advertisementDataBase64 as Any
         ]
     }
 }
@@ -88,7 +95,8 @@ extension Peripheral {
             "txPowerLevel": NSNull(),
             "solicitedServiceUUIDs": NSNull(),
             "isConnectable": NSNull(),
-            "overflowServiceUUIDs": NSNull()
+            "overflowServiceUUIDs": NSNull(),
+            "rawScanRecord": NSNull()
         ]
     }
 }

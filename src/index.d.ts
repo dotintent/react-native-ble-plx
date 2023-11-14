@@ -791,6 +791,13 @@ declare module 'react-native-ble-plx' {
     manufacturerData: Base64 | null
 
     /**
+     * Raw device scan data. When you have specific advertiser data, 
+     * you can implement your own processing.
+     * @private
+     */
+    rawScanRecord: Base64
+
+    /**
      * Map od service UUIDs with associated data.
      * @private
      */
@@ -1429,6 +1436,13 @@ declare module 'react-native-ble-plx' {
      * Device's custom manufacturer data. Its format is defined by manufacturer.
      */
     manufacturerData: Base64 | null
+
+    /**
+     * Raw device scan data. When you have specific advertiser data, 
+     * you can implement your own processing.
+     * @private
+     */
+    rawScanRecord: Base64
 
     /**
      * Map of service UUIDs (as keys) with associated data (as values).
