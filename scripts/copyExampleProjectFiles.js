@@ -121,6 +121,7 @@ const changePackageJsonName = () => {
 
 const setCompileSdkVersion = () => {
   if (process.env.REACT_NATIVE_VERSION.includes('0.70')) {
+    console.info('Fixing compile sdk version')
     const gradlePath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'android', 'app', 'build.gradle')
     const gradleLines = fs.readFileSync(gradlePath, 'utf8').split('\n')
     const indexOfManifestTagEndLine = gradleLines.findIndex(line => line.includes('compileSdkVersion'))
@@ -129,16 +130,61 @@ const setCompileSdkVersion = () => {
   }
 }
 
+const REPO_UTILS_DIR_NAME = '../repoUtils'
+
+const expoAppEntryPath = path.join(__dirname, REPO_UTILS_DIR_NAME, 'expoAppExporter.js')
+const expoAppEntryPathDestinationPath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'App.tsx')
+
+const copyExampleProjectExpoAppEntry = () => {
+  console.info('Deleting expo App entry from test_project')
+  fs.unlinkSync(expoAppEntryPathDestinationPath)
+  console.info('Copying expo App entry from repoUtils to test_project')
+  fs.copyFileSync(expoAppEntryPath, expoAppEntryPathDestinationPath)
+}
+
+const mainPackageJsonPath = path.join(__dirname, '..', 'package.json')
+
+const addExpoDependencies = () => {
+  const mainPackageJson = require(mainPackageJsonPath)
+  const editedPackageJson = require(packageJsonDestinationPath)
+  console.info(`Adding branch ${process.env.BRANCH_NAME} code as npm module`)
+
+  editedPackageJson.dependencies[mainPackageJson.name] = `dotintent/react-native-ble-plx#${process.env.BRANCH_NAME}`
+
+  fs.writeFileSync(packageJsonDestinationPath, JSON.stringify(editedPackageJson, null, 2) + '\n')
+}
+
+const expoAppJsonPath = path.join(__dirname, TEST_PROJECT_DIR_NAME, 'app.json')
+
+const addExpoAndroidPackageName = () => {
+  const expoAppJson = require(expoAppJsonPath)
+  console.info(`Adding package name for expo`)
+  const bundleId = 'com.testProject'
+
+  expoAppJson.expo.android.package = bundleId
+  expoAppJson.expo.ios.bundleIdentifier = bundleId
+
+  fs.writeFileSync(expoAppJsonPath, JSON.stringify(expoAppJson, null, 2) + '\n')
+}
+
 const copyExampleProjectFiles = () => {
-  copyExampleProjectIndexJs()
-  copyExampleProjectJsFiles()
-  addAndroidManifestPermissions()
-  addMissingDependencies()
-  copyMetroConfig()
-  copyReactNativeConfig()
-  copyBabelConfig()
-  changePackageJsonName()
-  setCompileSdkVersion()
+  if (process.env.IS_EXPO === 'true') {
+    copyExampleProjectExpoAppEntry()
+    copyExampleProjectJsFiles()
+    addMissingDependencies()
+    addExpoDependencies()
+    addExpoAndroidPackageName()
+  } else {
+    copyExampleProjectIndexJs()
+    copyExampleProjectJsFiles()
+    addAndroidManifestPermissions()
+    addMissingDependencies()
+    copyMetroConfig()
+    copyReactNativeConfig()
+    copyBabelConfig()
+    changePackageJsonName()
+    setCompileSdkVersion()
+  }
 }
 
 copyExampleProjectFiles()
