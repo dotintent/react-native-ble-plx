@@ -101,6 +101,7 @@ class BLEServiceInstance {
         return
       }
       if (device) {
+        console.log(device.name, device.manufacturerData)
         onDeviceFound(device)
       }
     })
