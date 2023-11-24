@@ -49,13 +49,18 @@ extension ScannedPeripheral {
 
 
         let advertisementDataDict: [AnyHashable: Any] = [
+            "id": peripheral.identifier.uuidString,
+            "name": peripheral.name as Any,
+            "rssi": rssi,
+            "mtu": mtu,
+
             "localName": advertisementData.localName as Any,
             "manufacturerData": manufacturerData as Any,
             "serviceData": serviceData as Any,
             "serviceUUIDs": serviceUUIDs as Any,
             "txPowerLevel": advertisementData.txPowerLevel as Any,
-            "isConnectable": advertisementData.isConnectable as Any,
             "solicitedServiceUUIDs": solicitedServiceUUIDs as Any,
+            "isConnectable": advertisementData.isConnectable as Any,
             "overflowServiceUUIDs": overflowServiceUUIDs as Any
         ]
 
@@ -67,6 +72,15 @@ extension ScannedPeripheral {
             "name": peripheral.name as Any,
             "rssi": rssi,
             "mtu": mtu,
+
+            "localName": advertisementData.localName as Any,
+            "manufacturerData": manufacturerData as Any,
+            "serviceData": serviceData as Any,
+            "serviceUUIDs": serviceUUIDs as Any,
+            "txPowerLevel": advertisementData.txPowerLevel as Any,
+            "solicitedServiceUUIDs": solicitedServiceUUIDs as Any,
+            "isConnectable": advertisementData.isConnectable as Any,
+            "overflowServiceUUIDs": overflowServiceUUIDs as Any,
             "rawScanRecord": advertisementDataBase64 as Any
         ]
     }
