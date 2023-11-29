@@ -7,6 +7,10 @@ inputs:
   NODE_VERSION:
     description: Node version to use # https://github.com/actions/setup-node#supported-version-syntax
     required: false
+  IS_EXPO:
+    description: Should template use expo
+    required: false
+    default: 'false'
 
 runs:
   using: composite
@@ -16,8 +20,22 @@ runs:
       with:
         node-version: ${{ inputs.NODE_VERSION }}
 
-    - name: Initialize project template
+    - name: Display current inputs
+      run: echo REACT_NATIVE_VERSION $REACT_NATIVE_VERSION & echo NODE_VERSION $NODE_VERSION & echo IS_EXPO $IS_EXPO
+      shell: bash
+      env:
+        REACT_NATIVE_VERSION: ${{ inputs.REACT_NATIVE_VERSION }}
+        NODE_VERSION: ${{ inputs.NODE_VERSION }}
+        IS_EXPO: ${{ inputs.IS_EXPO }}
+
+    - name: Initialize project default template
+      if: inputs.IS_EXPO != 'true'
       run: npx react-native@latest init BlePlxExample --version ${{ inputs.REACT_NATIVE_VERSION }} --directory test_project --skip-install --verbose
+      shell: bash
+
+    - name: Initialize project expo template
+      if: inputs.IS_EXPO == 'true'
+      run: npx create-expo-app test_project -t expo-template-blank-typescript --no-install
       shell: bash
 
     - name: Cache dependencies
@@ -32,8 +50,12 @@ runs:
           ${{ runner.os }}-${{ inputs.REACT_NATIVE_VERSION }}-yarn-
 
     - name: Copy project files
-      run: REACT_NATIVE_VERSION=${{ inputs.REACT_NATIVE_VERSION }} node ./scripts/copyExampleProjectFiles.js
+      run: node ./scripts/copyExampleProjectFiles.js
       shell: bash
+      env:
+        REACT_NATIVE_VERSION: ${{ inputs.REACT_NATIVE_VERSION }}
+        BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+        IS_EXPO: ${{ inputs.IS_EXPO || 'false'}}
 
     - name: Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'

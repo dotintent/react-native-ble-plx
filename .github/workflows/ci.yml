@@ -69,6 +69,7 @@ jobs:
         with:
           REACT_NATIVE_VERSION: ${{ matrix.configurations.react_native_version }}
           NODE_VERSION: ${{ matrix.configurations.node_version }}
+          IS_EXPO: ${{ matrix.configurations.is_expo }}
 
       - name: Cache turborepo for Android
         uses: actions/cache@v3
@@ -135,6 +136,7 @@ jobs:
         with:
           REACT_NATIVE_VERSION: ${{ matrix.configurations.react_native_version }}
           NODE_VERSION: ${{ matrix.configurations.node_version }}
+          IS_EXPO: ${{ matrix.configurations.is_expo }}
 
       - name: Cache turborepo for iOS
         uses: actions/cache@v3
@@ -172,5 +174,67 @@ jobs:
           NO_FLIPPER: 1
 
       - name: Build test_project for iOS
+        if: env.turbo_cache_hit != 1
         run: |
           yarn turbo run test:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
+
+  prebuild-expo:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        configurations: [{ react_native_version: 'expo', node_version: 18, is_expo: 'true' }]
+    env:
+      TURBO_CACHE_DIR: .turbo/android
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup
+        uses: ./.github/actions/setup_test_project
+        with:
+          REACT_NATIVE_VERSION: ${{ matrix.configurations.react_native_version }}
+          NODE_VERSION: ${{ matrix.configurations.node_version }}
+          IS_EXPO: ${{ matrix.configurations.is_expo }}
+
+      - name: Cache turborepo for Android
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.TURBO_CACHE_DIR }}
+          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-turborepo-android-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-turborepo-android-
+
+      - name: Check turborepo cache for Expo
+        run: |
+          TURBO_CACHE_STATUS=$(node -p "($(yarn --silent turbo run test:android --cache-dir="${{ env.TURBO_CACHE_DIR }}" --dry=json)).tasks.find(t => t.task === 'test:android').cache.status")
+
+          if [[ $TURBO_CACHE_STATUS == "HIT" ]]; then
+            echo "turbo_cache_hit=1" >> $GITHUB_ENV
+          fi
+
+      - name: Install JDK
+        if: env.turbo_cache_hit != 1
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+      - name: Finalize Android SDK
+        if: env.turbo_cache_hit != 1
+        run: |
+          /bin/bash -c "yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null"
+
+      - name: Cache Gradle
+        if: env.turbo_cache_hit != 1
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/wrapper
+            ~/.gradle/caches
+          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-${{ hashFiles('test_project/android/gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-
+
+      - name: Prebuild example for expo
+        run: yarn turbo run test:expo --cache-dir="${{ env.TURBO_CACHE_DIR }}"
