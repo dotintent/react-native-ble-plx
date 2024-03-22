@@ -10,7 +10,7 @@ export type BleDeviceProps = {
 
 export function BleDevice({ device, onPress }: BleDeviceProps) {
   const isConnectableInfoValueIsUnavailable = typeof device.isConnectable !== 'boolean'
-  const isConnectableValue = device.isConnectable ? 'ture' : 'false'
+  const isConnectableValue = device.isConnectable ? 'true' : 'false'
   const parsedIsConnectable = isConnectableInfoValueIsUnavailable ? '-' : isConnectableValue
 
   return (
