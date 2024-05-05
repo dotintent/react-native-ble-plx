@@ -132,12 +132,12 @@ export class BleManager {
   /**
    * Destroys {@link BleManager} instance. A new instance needs to be created to continue working with
    * this library. All operations which were in progress completes with
+   * @returns {Promise<void>} Promise may return an error when the function cannot be called.
    * {@link #bleerrorcodebluetoothmanagerdestroyed|BluetoothManagerDestroyed} error code.
    */
-  destroy() {
+  async destroy() {
     // Destroy native module object
-    BleModule.destroyClient()
-
+    await this._callPromise(BleModule.destroyClient())
     // Unsubscribe from any subscriptions
     if (this._scanEventSubscription != null) {
       this._scanEventSubscription.remove()
@@ -147,6 +147,8 @@ export class BleManager {
 
     // Destroy all promises
     this._destroyPromises()
+
+    return this
   }
 
   /**
@@ -188,9 +190,11 @@ export class BleManager {
   /**
    * Sets new log level for native module's logging mechanism.
    * @param {LogLevel} logLevel New log level to be set.
+   * @returns {Promise<LogLevel>} Current log level.
    */
-  setLogLevel(logLevel: $Keys<typeof LogLevel>) {
-    BleModule.setLogLevel(logLevel)
+  async setLogLevel(logLevel: $Keys<typeof LogLevel>): Promise<$Keys<typeof LogLevel>> {
+    await this._callPromise(BleModule.setLogLevel(logLevel))
+    return this
   }
 
   /**
@@ -224,9 +228,10 @@ export class BleManager {
    * setTimeout(() => manager.cancelTransaction(transactionId), 2000);
    *
    * @param {TransactionId} transactionId Id of pending transactions.
+   * @returns {Promise<void>}
    */
   cancelTransaction(transactionId: TransactionId) {
-    BleModule.cancelTransaction(transactionId)
+    return this._callPromise(BleModule.cancelTransaction(transactionId))
   }
 
   // Mark: Monitoring state --------------------------------------------------------------------------------------------
@@ -334,16 +339,17 @@ export class BleManager {
    * scanned {@link Device}. If `null` is passed, all available {@link Device}s will be scanned.
    * @param {?ScanOptions} options Optional configuration for scanning operation.
    * @param {function(error: ?BleError, scannedDevice: ?Device)} listener Function which will be called for every scanned
+   * @returns {Promise<void>} Promise may return an error when the function cannot be called.
    * {@link Device} (devices may be scanned multiple times). It's first argument is potential {@link Error} which is set
    * to non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument
    * is a scanned {@link Device}.
+   * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
    */
-  startDeviceScan(
+  async startDeviceScan(
     UUIDs: ?Array<UUID>,
     options: ?ScanOptions,
-    listener: (error: ?BleError, scannedDevice: ?Device) => void
+    listener: (error: ?BleError, scannedDevice: ?Device) => Promise<void>
   ) {
-    this.stopDeviceScan()
     const scanListener = ([error, nativeDevice]: [?string, ?NativeDevice]) => {
       listener(
         error ? parseBleError(error, this._errorCodesToMessagesMapping) : null,
@@ -352,18 +358,19 @@ export class BleManager {
     }
     // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
     this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
-    BleModule.startDeviceScan(UUIDs, options)
+    return this._callPromise(BleModule.startDeviceScan(UUIDs, options))
   }
 
   /**
    * Stops {@link Device} scan if in progress.
+   * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
    */
-  stopDeviceScan() {
+  async stopDeviceScan() {
     if (this._scanEventSubscription != null) {
       this._scanEventSubscription.remove()
       this._scanEventSubscription = null
     }
-    BleModule.stopDeviceScan()
+    return this._callPromise(BleModule.stopDeviceScan())
   }
 
   /**

@@ -791,7 +791,7 @@ declare module 'react-native-ble-plx' {
     manufacturerData: Base64 | null
 
     /**
-     * Raw device scan data. When you have specific advertiser data, 
+     * Raw device scan data. When you have specific advertiser data,
      * you can implement your own processing.
      * @private
      */
@@ -1021,17 +1021,19 @@ declare module 'react-native-ble-plx' {
     /**
      * Destroys {@link BleManager} instance. A new instance needs to be created to continue working with
      * this library. All operations which were in progress completes with
+     * @returns {Promise<void>}
      * {@link #bleerrorcodebluetoothmanagerdestroyed|BluetoothManagerDestroyed} error code.
      */
-    destroy(): void
+    destroy(): Promise<void>;
 
     // Mark: Common ----------------------------------------------------------------------------------------------------
 
     /**
      * Sets new log level for native module's logging mechanism.
      * @param {LogLevel} logLevel New log level to be set.
+     * @returns {Promise<LogLevel>} Current log level.
      */
-    setLogLevel(logLevel: LogLevel): void
+    setLogLevel(logLevel: LogLevel): Promise<LogLevel>
 
     /**
      * Get current log level for native module's logging mechanism.
@@ -1062,8 +1064,9 @@ declare module 'react-native-ble-plx' {
      * setTimeout(() => manager.cancelTransaction(transactionId), 2000);
      *
      * @param {TransactionId} transactionId Id of pending transactions.
+     * @returns {Promise<void>}
      */
-    cancelTransaction(transactionId: TransactionId): void
+    cancelTransaction(transactionId: TransactionId): Promise<void>
 
     // Mark: Monitoring state ------------------------------------------------------------------------------------------
 
@@ -1122,17 +1125,19 @@ declare module 'react-native-ble-plx' {
      * {@link Device} (devices may be scanned multiple times). It's first argument is potential {@link Error} which is set
      * to non `null` value when scanning failed. You have to start scanning process again if that happens. Second argument
      * is a scanned {@link Device}.
+     * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
      */
     startDeviceScan(
       UUIDs: UUID[] | null,
       options: ScanOptions | null,
       listener: (error: BleError | null, scannedDevice: Device | null) => void
-    ): void
+    ): Promise<void>
 
     /**
      * Stops {@link Device} scan if in progress.
+     * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
      */
-    stopDeviceScan(): void
+    stopDeviceScan(): Promise<void>
 
     /**
      * Request a connection parameter update. This functions may update connection parameters on Android API level 21 or
@@ -1438,7 +1443,7 @@ declare module 'react-native-ble-plx' {
     manufacturerData: Base64 | null
 
     /**
-     * Raw device scan data. When you have specific advertiser data, 
+     * Raw device scan data. When you have specific advertiser data,
      * you can implement your own processing.
      * @private
      */

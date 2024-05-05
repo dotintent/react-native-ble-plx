@@ -277,9 +277,10 @@ export interface BleModuleInterface {
   /**
    * Destroys previously instantiated module. This function is
    * only safe when previously BleModule was created.
+   * @returns {Promise<void>} Promise may return an error when the function cannot be called.
    * @private
    */
-  destroyClient(): void;
+  destroyClient(): Promise<void>;
 
   // Monitoring state
 
@@ -317,15 +318,17 @@ export interface BleModuleInterface {
    * @param {?Array<UUID>} filteredUUIDs List of UUIDs for services which needs to be present to detect device during
    * scanning.
    * @param {?ScanOptions} options Platform dependent options
+   * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
    * @private
    */
-  startDeviceScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): void;
+  startDeviceScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): Promise<void>;
 
   /**
    * Stops device scan.
    * @private
+   * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
    */
-  stopDeviceScan(): void;
+  stopDeviceScan(): Promise<void>;
 
   // Device operations
 
@@ -778,16 +781,18 @@ export interface BleModuleInterface {
    * Cancels specified transaction
    *
    * @param {TransactionId} transactionId Transaction handle for operation to be cancelled
+   * @returns {Promise<void>}
    * @private
    */
-  cancelTransaction(transactionId: TransactionId): void;
+  cancelTransaction(transactionId: TransactionId): Promise<void>;
 
   /**
    * Sets new log level for native module's logging mechanism.
    * @param {LogLevel} logLevel New log level to be set.
+   * @returns {Promise<LogLevel>} Current log level.
    * @private
    */
-  setLogLevel(logLevel: $Keys<typeof LogLevel>): void;
+  setLogLevel(logLevel: $Keys<typeof LogLevel>): Promise<LogLevel>;
 
   /**
    * Get current log level for native module's logging mechanism.

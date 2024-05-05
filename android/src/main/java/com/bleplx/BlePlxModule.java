@@ -19,6 +19,7 @@ import com.bleplx.adapter.RefreshGattMoment;
 import com.bleplx.adapter.ScanResult;
 import com.bleplx.adapter.Service;
 import com.bleplx.adapter.errors.BleError;
+import com.bleplx.adapter.errors.BleErrorCode;
 import com.bleplx.converter.BleErrorToJsObjectConverter;
 import com.bleplx.converter.CharacteristicToJsObjectConverter;
 import com.bleplx.converter.DescriptorToJsObjectConverter;
@@ -117,25 +118,41 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void destroyClient() {
+  public void destroyClient(final Promise promise) {
+    if (!this.isRequestPossibleHandler("destroyClient", promise)) {
+      return;
+    }
+
     bleAdapter.destroyClient();
     bleAdapter = null;
+    promise.resolve(null);
   }
 
   // Mark: Common --------------------------------------------------------------------------------
 
   @ReactMethod
-  public void cancelTransaction(String transactionId) {
+  public void cancelTransaction(String transactionId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("cancelTransaction", promise)) {
+      return;
+    }
     bleAdapter.cancelTransaction(transactionId);
+    promise.resolve(null);
   }
 
   @ReactMethod
-  public void setLogLevel(String logLevel) {
+  public void setLogLevel(String logLevel, final Promise promise) {
+    if (!this.isRequestPossibleHandler("setLogLevel", promise)) {
+      return;
+    }
     bleAdapter.setLogLevel(logLevel);
+    promise.resolve(bleAdapter.getLogLevel());
   }
 
   @ReactMethod
-  public void logLevel(Promise promise) {
+  public void logLevel(final Promise promise) {
+    if (!this.isRequestPossibleHandler("logLevel", promise)) {
+      return;
+    }
     promise.resolve(bleAdapter.getLogLevel());
   }
 
@@ -143,6 +160,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void enable(final String transactionId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("enable", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.enable(transactionId, new OnSuccessCallback<Void>() {
       @Override
@@ -159,6 +179,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void disable(final String transactionId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("disable", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.disable(transactionId, new OnSuccessCallback<Void>() {
       @Override
@@ -174,14 +197,20 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void state(Promise promise) {
+  public void state(final Promise promise) {
+    if (!this.isRequestPossibleHandler("state", promise)) {
+      return;
+    }
     promise.resolve(bleAdapter.getCurrentState());
   }
 
   // Mark: Scanning ------------------------------------------------------------------------------
 
   @ReactMethod
-  public void startDeviceScan(@Nullable ReadableArray filteredUUIDs, @Nullable ReadableMap options) {
+  public void startDeviceScan(@Nullable ReadableArray filteredUUIDs, @Nullable ReadableMap options, final Promise promise) {
+    if (!this.isRequestPossibleHandler("startDeviceScan", promise)) {
+      return;
+    }
     final int DEFAULT_SCAN_MODE_LOW_POWER = 0;
     final int DEFAULT_CALLBACK_TYPE_ALL_MATCHES = 1;
 
@@ -218,7 +247,10 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void stopDeviceScan() {
+  public void stopDeviceScan(final Promise promise) {
+    if (!this.isRequestPossibleHandler("stopDeviceScan", promise)) {
+      return;
+    }
     bleAdapter.stopDeviceScan();
   }
 
@@ -226,6 +258,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void devices(final ReadableArray deviceIdentifiers, final Promise promise) {
+    if (!this.isRequestPossibleHandler("devices", promise)) {
+      return;
+    }
     bleAdapter.getKnownDevices(ReadableArrayConverter.toStringArray(deviceIdentifiers),
       new OnSuccessCallback<Device[]>() {
         @Override
@@ -246,6 +281,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void connectedDevices(final ReadableArray serviceUUIDs, final Promise promise) {
+    if (!this.isRequestPossibleHandler("connectedDevices", promise)) {
+      return;
+    }
     bleAdapter.getConnectedDevices(ReadableArrayConverter.toStringArray(serviceUUIDs),
       new OnSuccessCallback<Device[]>() {
         @Override
@@ -268,6 +306,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void requestConnectionPriorityForDevice(final String deviceId, int connectionPriority, final String transactionId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("requestConnectionPriorityForDevice", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.requestConnectionPriorityForDevice(deviceId, connectionPriority, transactionId,
       new OnSuccessCallback<Device>() {
@@ -285,6 +326,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void requestMTUForDevice(final String deviceId, int mtu, final String transactionId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("requestMTUForDevice", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.requestMTUForDevice(deviceId, mtu, transactionId,
       new OnSuccessCallback<Device>() {
@@ -302,6 +346,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void readRSSIForDevice(final String deviceId, final String transactionId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("readRSSIForDevice", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.readRSSIForDevice(deviceId, transactionId,
       new OnSuccessCallback<Device>() {
@@ -319,6 +366,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void connectToDevice(final String deviceId, @Nullable ReadableMap options, final Promise promise) {
+    if (!this.isRequestPossibleHandler("connectToDevice", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
 
     boolean autoConnect = false;
@@ -379,7 +429,10 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void cancelDeviceConnection(String deviceId, Promise promise) {
+  public void cancelDeviceConnection(String deviceId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("cancelDeviceConnection", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.cancelDeviceConnection(deviceId,
       new OnSuccessCallback<Device>() {
@@ -397,6 +450,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void isDeviceConnected(String deviceId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("isDeviceConnected", promise)) {
+      return;
+    }
     bleAdapter.isDeviceConnected(deviceId,
       new OnSuccessCallback<Boolean>() {
         @Override
@@ -415,6 +471,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void discoverAllServicesAndCharacteristicsForDevice(String deviceId, final String transactionId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("discoverAllServicesAndCharacteristicsForDevice", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.discoverAllServicesAndCharacteristicsForDevice(deviceId, transactionId,
       new OnSuccessCallback<Device>() {
@@ -434,6 +493,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void servicesForDevice(final String deviceId, final Promise promise) {
+    if (!this.isRequestPossibleHandler("servicesForDevice", promise)) {
+      return;
+    }
     try {
       List<Service> services = bleAdapter.getServicesForDevice(deviceId);
       WritableArray jsArray = Arguments.createArray();
@@ -451,6 +513,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   public void characteristicsForDevice(final String deviceId,
                                        final String serviceUUID,
                                        final Promise promise) {
+    if (!this.isRequestPossibleHandler("characteristicsForDevice", promise)) {
+      return;
+    }
     try {
       List<Characteristic> characteristics = bleAdapter.getCharacteristicsForDevice(deviceId, serviceUUID);
 
@@ -466,6 +531,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void characteristicsForService(final int serviceIdentifier, final Promise promise) {
+    if (!this.isRequestPossibleHandler("characteristicsForService", promise)) {
+      return;
+    }
     try {
       List<Characteristic> characteristics = bleAdapter.getCharacteristicsForService(serviceIdentifier);
       WritableArray jsCharacteristics = Arguments.createArray();
@@ -483,6 +551,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                    final String serviceUUID,
                                    final String characteristicUUID,
                                    final Promise promise) {
+    if (!this.isRequestPossibleHandler("descriptorsForDevice", promise)) {
+      return;
+    }
     try {
       List<Descriptor> descriptors = bleAdapter.descriptorsForDevice(deviceIdentifier, serviceUUID, characteristicUUID);
       WritableArray jsDescriptors = Arguments.createArray();
@@ -499,6 +570,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   public void descriptorsForService(final int serviceIdentifier,
                                     final String characteristicUUID,
                                     final Promise promise) {
+    if (!this.isRequestPossibleHandler("descriptorsForService", promise)) {
+      return;
+    }
     try {
       List<Descriptor> descriptors = bleAdapter.descriptorsForService(serviceIdentifier, characteristicUUID);
       WritableArray jsDescriptors = Arguments.createArray();
@@ -514,6 +588,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void descriptorsForCharacteristic(final int characteristicIdentifier,
                                            final Promise promise) {
+    if (!this.isRequestPossibleHandler("descriptorsForCharacteristic", promise)) {
+      return;
+    }
     try {
       List<Descriptor> descriptors = bleAdapter.descriptorsForCharacteristic(characteristicIdentifier);
       WritableArray jsDescriptors = Arguments.createArray();
@@ -536,6 +613,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                            final Boolean response,
                                            final String transactionId,
                                            final Promise promise) {
+    if (!this.isRequestPossibleHandler("writeCharacteristicForDevice", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
 
     bleAdapter.writeCharacteristicForDevice(
@@ -561,6 +641,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                             final Boolean response,
                                             final String transactionId,
                                             final Promise promise) {
+    if (!this.isRequestPossibleHandler("writeCharacteristicForService", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.writeCharacteristicForService(
       serviceIdentifier, characteristicUUID, valueBase64, response, transactionId,
@@ -584,6 +667,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                   final Boolean response,
                                   final String transactionId,
                                   final Promise promise) {
+    if (!this.isRequestPossibleHandler("writeCharacteristic", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
 
     bleAdapter.writeCharacteristic(characteristicIdentifier, valueBase64, response, transactionId,
@@ -606,6 +692,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                           final String characteristicUUID,
                                           final String transactionId,
                                           final Promise promise) {
+    if (!this.isRequestPossibleHandler("readCharacteristicForDevice", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
 
     bleAdapter.readCharacteristicForDevice(
@@ -629,6 +718,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                            final String characteristicUUID,
                                            final String transactionId,
                                            final Promise promise) {
+    if (!this.isRequestPossibleHandler("readCharacteristicForService", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
 
     bleAdapter.readCharacteristicForService(
@@ -651,6 +743,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   public void readCharacteristic(final int characteristicIdentifier,
                                  final String transactionId,
                                  final Promise promise) {
+    if (!this.isRequestPossibleHandler("readCharacteristic", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
 
     bleAdapter.readCharacteristic(
@@ -675,6 +770,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                              final String characteristicUUID,
                                              final String transactionId,
                                              final Promise promise) {
+    if (!this.isRequestPossibleHandler("monitorCharacteristicForDevice", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.monitorCharacteristicForDevice(
       deviceId, serviceUUID, characteristicUUID, transactionId,
@@ -701,6 +799,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                               final String characteristicUUID,
                                               final String transactionId,
                                               final Promise promise) {
+    if (!this.isRequestPossibleHandler("monitorCharacteristicForService", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.monitorCharacteristicForService(
       serviceIdentifier, characteristicUUID, transactionId,
@@ -726,6 +827,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   public void monitorCharacteristic(final int characteristicIdentifier,
                                     final String transactionId,
                                     final Promise promise) {
+    if (!this.isRequestPossibleHandler("monitorCharacteristic", promise)) {
+      return;
+    }
     final SafePromise safePromise = new SafePromise(promise);
     //TODO resolve safePromise with null when monitoring has been completed
     bleAdapter.monitorCharacteristic(
@@ -755,6 +859,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                       final String descriptorUUID,
                                       final String transactionId,
                                       final Promise promise) {
+    if (!this.isRequestPossibleHandler("readDescriptorForDevice", promise)) {
+      return;
+    }
     bleAdapter.readDescriptorForDevice(
       deviceId,
       serviceUUID,
@@ -780,6 +887,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                        final String descriptorUUID,
                                        final String transactionId,
                                        final Promise promise) {
+    if (!this.isRequestPossibleHandler("readDescriptorForService", promise)) {
+      return;
+    }
     bleAdapter.readDescriptorForService(
       serviceIdentifier,
       characteristicUUID,
@@ -804,6 +914,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                               final String descriptorUUID,
                                               final String transactionId,
                                               final Promise promise) {
+    if (!this.isRequestPossibleHandler("readDescriptorForCharacteristic", promise)) {
+      return;
+    }
     bleAdapter.readDescriptorForCharacteristic(
       characteristicIdentifier,
       descriptorUUID,
@@ -826,6 +939,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   public void readDescriptor(final int descriptorIdentifier,
                              final String transactionId,
                              final Promise promise) {
+    if (!this.isRequestPossibleHandler("readDescriptor", promise)) {
+      return;
+    }
     bleAdapter.readDescriptor(
       descriptorIdentifier,
       transactionId,
@@ -851,6 +967,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                        final String valueBase64,
                                        final String transactionId,
                                        final Promise promise) {
+    if (!this.isRequestPossibleHandler("writeDescriptorForDevice", promise)) {
+      return;
+    }
     bleAdapter.writeDescriptorForDevice(
       deviceId,
       serviceUUID,
@@ -880,6 +999,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                         final String valueBase64,
                                         final String transactionId,
                                         final Promise promise) {
+    if (!this.isRequestPossibleHandler("writeDescriptorForService", promise)) {
+      return;
+    }
     bleAdapter.writeDescriptorForService(
       serviceIdentifier,
       characteristicUUID,
@@ -907,6 +1029,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                                final String valueBase64,
                                                final String transactionId,
                                                final Promise promise) {
+    if (!this.isRequestPossibleHandler("writeDescriptorForCharacteristic", promise)) {
+      return;
+    }
     bleAdapter.writeDescriptorForCharacteristic(
       characteristicIdentifier,
       descriptorUUID,
@@ -932,6 +1057,9 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                               final String valueBase64,
                               final String transactionId,
                               final Promise promise) {
+    if (!this.isRequestPossibleHandler("writeDescriptor", promise)) {
+      return;
+    }
     bleAdapter.writeDescriptor(
       descriptorIdentifier,
       valueBase64,
@@ -965,5 +1093,16 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
     getReactApplicationContext()
       .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
       .emit(event.name, params);
+  }
+
+  private boolean isRequestPossibleHandler(String functionName, final Promise promise) {
+    if(this.bleAdapter == null){
+      BleError bleError = new BleError(BleErrorCode.BluetoothManagerDestroyed, String.format("BleManager cannot call the %s function because BleManager has been destroyed", functionName), null);
+
+      promise.reject(null, errorConverter.toJs(bleError));
+      return false;
+    }
+
+    return true;
   }
 }

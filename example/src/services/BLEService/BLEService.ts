@@ -93,17 +93,20 @@ class BLEServiceInstance {
   }
 
   scanDevices = async (onDeviceFound: (device: Device) => void, UUIDs: UUID[] | null = null, legacyScan?: boolean) => {
-    this.manager.startDeviceScan(UUIDs, { legacyScan }, (error, device) => {
-      if (error) {
-        this.onError(error)
-        console.error(error.message)
-        this.manager.stopDeviceScan()
-        return
-      }
-      if (device) {
-        onDeviceFound(device)
-      }
-    })
+    this.manager
+      .startDeviceScan(UUIDs, { legacyScan }, (error, device) => {
+        if (error) {
+          this.onError(error)
+          console.error(error.message)
+          this.manager.stopDeviceScan()
+          return
+        }
+        if (device) {
+          onDeviceFound(device)
+        }
+      })
+      .then(() => console.log('scanning'))
+      .catch(console.error)
   }
 
   connectToDevice = (deviceId: DeviceId) =>
