@@ -272,8 +272,9 @@ export class BleManager {
    *
    * @returns {Promise<State>} Promise which emits current state of BleManager.
    */
-  state(): Promise<$Keys<typeof State>> {
-    return this._callPromise(BleModule.state())
+  async state(): Promise<$Keys<typeof State>> {
+    await this._callPromise(BleModule.state())
+    return this
   }
 
   /**

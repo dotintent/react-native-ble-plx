@@ -10,21 +10,33 @@ type DeviceConnectDisconnectTestScreenProps = NativeStackScreenProps<MainStackPa
 type TestData = { name: string; expected: string; response: string | null }
 export function InstanceDestroyScreen(_props: DeviceConnectDisconnectTestScreenProps) {
   const [dataReads, setDataReads] = useState<((TestData & { time: string }) | string)[]>([])
-  const callPromise = (promise: Promise<any>) =>
+  const callPromise = async (promise: Promise<any>) =>
     promise
       .then(() => {
+        console.log('------------ finished ----------------------')
         const status = 'finished'
         console.info(status)
         return status
       })
       .catch((error: BleError) => {
+        console.log('------------ ERROR ----------------------')
         const { reason } = error
-        console.error(reason)
-        return reason
+        if (reason) {
+          console.error(reason)
+          return reason
+        }
+        return 'Error'
       })
 
   const startChain = async () => {
     const functionsToTest: { name: string; functionToCall: () => Promise<any> }[] = [
+      {
+        name: 'destroy',
+        functionToCall: () =>
+          new Promise<void>(resolve => {
+            resolve(BLEService.createNewManager())
+          })
+      },
       {
         name: 'destroy',
         functionToCall: BLEService.manager.destroy
@@ -155,9 +167,10 @@ export function InstanceDestroyScreen(_props: DeviceConnectDisconnectTestScreenP
       }
     ] as const
 
-    functionsToTest.forEach(async ({ name, functionToCall }, index) => {
+    for (let i = 0; i < functionsToTest.length; i += 1) {
       try {
-        console.info(`${index} - ${name}`)
+        const { name, functionToCall } = functionsToTest[i]
+        console.info(`${i} - ${name}`)
         const response = await callPromise(functionToCall())
         const expected = name === 'destroy' ? 'finished' : 'error'
         addDataToTimeReads({
@@ -165,10 +178,10 @@ export function InstanceDestroyScreen(_props: DeviceConnectDisconnectTestScreenP
           expected,
           response
         })
-      } catch (error) {
-        setDataReads(prevState => prevState.concat(JSON.stringify(error)))
+      } catch (e) {
+        console.error(e)
       }
-    })
+    }
   }
   const addDataToTimeReads = ({ name, expected, response }: TestData) => {
     setDataReads(prevState =>
@@ -186,7 +199,7 @@ export function InstanceDestroyScreen(_props: DeviceConnectDisconnectTestScreenP
       const { expected, name, time, response } = entry
 
       return (
-        <View key={name} style={{ marginBottom: 20 }}>
+        <View key={`${name}-${index.toString()}`} style={{ marginBottom: 20 }}>
           <AppText>{time}</AppText>
           <AppText>{name}</AppText>
           <AppText>expected: {expected}</AppText>

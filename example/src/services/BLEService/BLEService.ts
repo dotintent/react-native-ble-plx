@@ -33,6 +33,10 @@ class BLEServiceInstance {
     this.manager.setLogLevel(LogLevel.Verbose)
   }
 
+  createNewManager = () => {
+    this.manager = new BleManager()
+  }
+
   getDevice = () => this.device
 
   initializeBLE = () =>
