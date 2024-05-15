@@ -58,7 +58,7 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 - Fixed missing advertising data fields on iOS
 
 [Current version changes](CHANGELOG.md)
-[All previous changes](CHANGELOG-pre-03.md)
+[All previous changes](CHANGELOG-pre-3.0.0.md)
 
 ## Documentation & Support
 
