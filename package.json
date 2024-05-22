@@ -1,6 +1,6 @@
 {
   "name": "react-native-ble-plx",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "React Native Bluetooth Low Energy library",
   "main": "src/index",
   "module": "src/index",
@@ -45,7 +45,7 @@
     "test:ios": "cd test_project/ios && xcodebuild -workspace BlePlxExample.xcworkspace -scheme BlePlxExample -configuration Debug -sdk iphonesimulator ASSETCATALOG_COMPILER_OPTIMIZATION=time DEBUG_INFORMATION_FORMAT=dwarf COMPILER_INDEX_STORE_ENABLE=NO",
     "test:expo": "cd test_project && npx expo prebuild",
     "bootstrap": "yarn example && yarn install && yarn example pods",
-    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build plugin/build lib",
     "build:plugin": "tsc --build plugin",
     "clean:plugin": "expo-module clean plugin",
     "test:plugin": "jest --config plugin/jest.config.js",
@@ -117,7 +117,7 @@
     "@types/react": "^18.2.44"
   },
   "dependencies": {
-    "@expo/config-plugins": "^8.0.4"
+    "@expo/config-plugins": "^7.2.5 || ^8.0.0"
   },
   "peerDependencies": {
     "react": "*",

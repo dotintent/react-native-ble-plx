@@ -95,6 +95,7 @@ export function DashboardScreen({ navigation }: DashboardScreenProps) {
         onPress={() => navigation.navigate('DEVICE_CONNECT_DISCONNECT_TEST_SCREEN')}
       />
       <AppButton label="instance destroy screen" onPress={() => navigation.navigate('INSTANCE_DESTROY_SCREEN')} />
+      <AppButton label="On disconnect test" onPress={() => navigation.navigate('DEVICE_ON_DISCONNECT_TEST_SCREEN')} />
       <FlatList
         style={{ flex: 1 }}
         data={foundDevices}

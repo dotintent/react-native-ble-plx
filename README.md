@@ -42,20 +42,23 @@ It does NOT support:
 For old RN versions (<0.60) please check [old README](./docs/README_V1.md) (1.x)
 for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
-| React Native | 3.1.1              |
+| React Native | 3.1.2              |
 | ------------ | ------------------ |
-| 0.72.4       | :white_check_mark: |
+| 0.72.6       | :white_check_mark: |
 | 0.71.13      | :white_check_mark: |
 | 0.70.13      | :white_check_mark: |
+| Expo 49      | :white_check_mark: |
 
 ## Recent Changes
 
-**3.1.1**
+**3.1.2**
 
-- Fixed expo config plugin for prebuilding
+- Added rawScanRecord to advertising data
+- Fixed onDisconnected event
+- Fixed missing advertising data fields on iOS
 
 [Current version changes](CHANGELOG.md)
-[All previous changes](CHANGELOG-pre-03.md)
+[All previous changes](CHANGELOG-pre-3.0.0.md)
 
 ## Documentation & Support
 
@@ -108,7 +111,7 @@ The plugin provides props for extra customization. Every time you change the pro
   "expo": {
     "plugins": [
       [
-        "@config-plugins/react-native-ble-plx",
+        "react-native-ble-plx",
         {
           "isBackgroundEnabled": true,
           "modes": ["peripheral", "central"],

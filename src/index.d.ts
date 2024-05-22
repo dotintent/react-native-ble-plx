@@ -1445,7 +1445,6 @@ declare module 'react-native-ble-plx' {
     /**
      * Raw device scan data. When you have specific advertiser data,
      * you can implement your own processing.
-     * @private
      */
     rawScanRecord: Base64
 
