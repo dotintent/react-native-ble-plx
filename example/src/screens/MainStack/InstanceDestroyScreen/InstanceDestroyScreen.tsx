@@ -1,208 +1,105 @@
 import React, { useState } from 'react'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { BleError, ConnectionPriority, LogLevel } from 'react-native-ble-plx'
+import { BleError } from 'react-native-ble-plx'
 import { ScrollView, View } from 'react-native'
-import { BLEService } from '../../../services'
 import type { MainStackParamList } from '../../../navigation/navigators'
-import { AppButton, AppText, ScreenDefaultContainer } from '../../../components/atoms'
+import { AppButton, AppText, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
+import { functionsToTest } from './utils'
+import { BLEService } from '../../../services'
+import { TestStateType } from '../../../types'
 
 type DeviceConnectDisconnectTestScreenProps = NativeStackScreenProps<MainStackParamList, 'INSTANCE_DESTROY_SCREEN'>
-type TestData = { name: string; expected: string; response: string | null }
+type TestData = { name: string; response: string | null }
+
 export function InstanceDestroyScreen(_props: DeviceConnectDisconnectTestScreenProps) {
-  const [dataReads, setDataReads] = useState<((TestData & { time: string }) | string)[]>([])
+  const [dataReads, setDataReads] = useState<(TestData | string)[]>([])
+  const [instanceExistsCalls, setInstanceExistsCalls] = useState(0)
+  const [instanceDestroyedCalls, setInstanceDestroyedCalls] = useState(0)
+  const [instanceDestroyedCallsWithCorrectInfo, setInstanceDestroyedCallsWithCorrectInfo] = useState(0)
+  const [correctInstaceDestroy, setCorrectInstaceDestroy] = useState<TestStateType>('WAITING')
+  const [secondInstaceDestroyFinishedWithError, setSecondInstaceDestroyFinishedWithError] =
+    useState<TestStateType>('WAITING')
+
   const callPromise = async (promise: Promise<any>) =>
     promise
-      .then(() => {
-        console.log('------------ finished ----------------------')
-        const status = 'finished'
+      .then(value => {
+        const status = value?.toString() || 'finished'
         console.info(status)
         return status
       })
       .catch((error: BleError) => {
-        console.log('------------ ERROR ----------------------')
         const { reason } = error
         if (reason) {
           console.error(reason)
           return reason
         }
+        console.error(error)
         return 'Error'
       })
 
-  const startChain = async () => {
-    const functionsToTest: { name: string; functionToCall: () => Promise<any> }[] = [
-      {
-        name: 'destroy',
-        functionToCall: () =>
-          new Promise<void>(resolve => {
-            resolve(BLEService.createNewManager())
-          })
-      },
-      {
-        name: 'destroy',
-        functionToCall: BLEService.manager.destroy
-      },
-      {
-        name: 'setLogLevel',
-        functionToCall: () => BLEService.manager.setLogLevel(LogLevel.Verbose)
-      },
-      {
-        name: 'cancelTransaction',
-        functionToCall: () => BLEService.manager.cancelTransaction('transactionId')
-      },
-      {
-        name: 'state',
-        functionToCall: BLEService.manager.state
-      },
-      {
-        name: 'startDeviceScan',
-        functionToCall: () => BLEService.manager.startDeviceScan(null, null, () => {})
-      },
-      {
-        name: 'stopDeviceScan',
-        functionToCall: BLEService.manager.stopDeviceScan
-      },
-      {
-        name: 'requestConnectionPriorityForDevice',
-        functionToCall: () =>
-          BLEService.manager.requestConnectionPriorityForDevice('deviceIdentifier', ConnectionPriority.High)
-      },
-      {
-        name: 'readRSSIForDevice',
-        functionToCall: () => BLEService.manager.readRSSIForDevice('deviceIdentifier')
-      },
-      {
-        name: 'requestMTUForDevice',
-        functionToCall: () => BLEService.manager.requestMTUForDevice('deviceIdentifier', 300)
-      },
-      {
-        name: 'devices',
-        functionToCall: () => BLEService.manager.devices(['device'])
-      },
-      {
-        name: 'connectedDevices',
-        functionToCall: () => BLEService.manager.connectedDevices(['UUID'])
-      },
-      {
-        name: 'connectToDevice',
-        functionToCall: () => BLEService.manager.connectToDevice('deviceIdentifier')
-      },
-      {
-        name: 'cancelDeviceConnection',
-        functionToCall: () => BLEService.manager.cancelDeviceConnection('deviceIdentifier')
-      },
-      {
-        name: 'isDeviceConnected',
-        functionToCall: () => BLEService.manager.isDeviceConnected('deviceIdentifier')
-      },
-      {
-        name: 'discoverAllServicesAndCharacteristicsForDevice',
-        functionToCall: () => BLEService.manager.discoverAllServicesAndCharacteristicsForDevice('deviceIdentifier')
-      },
-      {
-        name: 'servicesForDevice',
-        functionToCall: () => BLEService.manager.servicesForDevice('deviceIdentifier')
-      },
-      {
-        name: 'characteristicsForDevice',
-        functionToCall: () => BLEService.manager.characteristicsForDevice('deviceIdentifier', 'UUID')
-      },
-      {
-        name: 'descriptorsForDevice',
-        functionToCall: () =>
-          BLEService.manager.descriptorsForDevice('deviceIdentifier', 'serviceUUID', 'characteristicUUID')
-      },
-      {
-        name: 'readCharacteristicForDevice',
-        functionToCall: () =>
-          BLEService.manager.readCharacteristicForDevice('deviceIdentifier', 'serviceUUID', 'characteristicUUID')
-      },
-      {
-        name: 'writeCharacteristicWithResponseForDevice',
-        functionToCall: () =>
-          BLEService.manager.writeCharacteristicWithResponseForDevice(
-            'deviceIdentifier',
-            'serviceUUID',
-            'characteristicUUID',
-            'base64Value'
-          )
-      },
-      {
-        name: 'writeCharacteristicWithoutResponseForDevice',
-        functionToCall: () =>
-          BLEService.manager.writeCharacteristicWithoutResponseForDevice(
-            'deviceIdentifier',
-            'serviceUUID',
-            'characteristicUUID',
-            'base64Value'
-          )
-      },
-      {
-        name: 'readDescriptorForDevice',
-        functionToCall: () =>
-          BLEService.manager.readDescriptorForDevice(
-            'deviceIdentifier',
-            'serviceUUID',
-            'characteristicUUID',
-            'descriptorUUID'
-          )
-      },
-      {
-        name: 'writeDescriptorForDevice',
-        functionToCall: () =>
-          BLEService.manager.writeDescriptorForDevice(
-            'deviceIdentifier',
-            'serviceUUID',
-            'characteristicUUID',
-            'descriptorUUID',
-            'Base64'
-          )
-      },
-      {
-        name: 'disable',
-        functionToCall: () => BLEService.manager.disable()
-      },
-      {
-        name: 'enable',
-        functionToCall: () => BLEService.manager.enable()
-      }
-    ] as const
-
+  const startChain = async (increaseCounter: () => void) => {
     for (let i = 0; i < functionsToTest.length; i += 1) {
       try {
-        const { name, functionToCall } = functionsToTest[i]
-        console.info(`${i} - ${name}`)
-        const response = await callPromise(functionToCall())
-        const expected = name === 'destroy' ? 'finished' : 'error'
-        addDataToTimeReads({
-          name,
-          expected,
-          response
-        })
+        const testObject = functionsToTest[i]
+        if (testObject) {
+          const { name, functionToCall } = testObject
+          console.info(`${i} - ${name}`)
+          const response = await callPromise(functionToCall())
+          if (response && response.includes('BleManager has been destroyed')) {
+            setInstanceDestroyedCallsWithCorrectInfo(prevState => prevState + 1)
+          }
+          addDataToTimeReads({
+            name,
+            response
+          })
+          increaseCounter()
+        } else {
+          addDataToTimeReads({
+            name: `index-${i}`,
+            response: '-----ERROR-----'
+          })
+        }
       } catch (e) {
+        console.info(`PROBLEM WITH INDEX - ${i}`)
         console.error(e)
       }
     }
   }
-  const addDataToTimeReads = ({ name, expected, response }: TestData) => {
+
+  const addDataToTimeReads = ({ name, response }: TestData) => {
     setDataReads(prevState =>
       prevState.concat({
-        time: new Date().toTimeString(),
         name,
-        expected,
         response
       })
     )
   }
 
+  const startTest = async () => {
+    await startChain(() => setInstanceExistsCalls(prevState => prevState + 1))
+    await BLEService.manager
+      .destroy()
+      .then(() => setCorrectInstaceDestroy('DONE'))
+      .catch(() => setCorrectInstaceDestroy('ERROR'))
+    await BLEService.manager
+      .destroy()
+      .then(() => setSecondInstaceDestroyFinishedWithError('ERROR'))
+      .catch(error =>
+        setSecondInstaceDestroyFinishedWithError(
+          error?.reason?.includes('BleManager has been destroyed') ? 'DONE' : 'ERROR'
+        )
+      )
+
+    await startChain(() => setInstanceDestroyedCalls(prevState => prevState + 1))
+  }
+
   const timeEntriesToRender = dataReads.map((entry, index) => {
     if (typeof entry === 'object') {
-      const { expected, name, time, response } = entry
+      const { name, response } = entry
 
       return (
         <View key={`${name}-${index.toString()}`} style={{ marginBottom: 20 }}>
-          <AppText>{time}</AppText>
           <AppText>{name}</AppText>
-          <AppText>expected: {expected}</AppText>
           <AppText>result: {response}</AppText>
         </View>
       )
@@ -218,7 +115,20 @@ export function InstanceDestroyScreen(_props: DeviceConnectDisconnectTestScreenP
   return (
     <ScreenDefaultContainer>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <AppButton label="Start" onPress={() => startChain()} />
+        <AppButton label="Start" onPress={startTest} />
+        <AppText>It can get stuck on several functions per minute</AppText>
+        <AppText>
+          Finished calls with existing instance: {instanceExistsCalls}/{functionsToTest.length}
+        </AppText>
+        <TestStateDisplay label="First destroy finished successful" state={correctInstaceDestroy} />
+        <TestStateDisplay label="First destroy errored successful" state={secondInstaceDestroyFinishedWithError} />
+        <AppText>
+          Finished calls with destroyed instance: {instanceDestroyedCalls}/{functionsToTest.length}
+        </AppText>
+        <AppText>
+          Finished calls with correct info about instance destroyed: {instanceDestroyedCallsWithCorrectInfo}/
+          {functionsToTest.length}
+        </AppText>
         {timeEntriesToRender}
       </ScrollView>
     </ScreenDefaultContainer>

@@ -29,6 +29,7 @@ import type {
   BleManagerOptions
 } from './TypeDefinition'
 import { Platform } from 'react-native'
+import { temporaryIOSPromiseFix } from './Utils'
 
 const enableDisableDeprecatedMessage =
   'react-native-ble-plx: The enable and disable feature is no longer supported. In Android SDK 31+ there were major changes in permissions, which may cause problems with these functions, and in SDK 33+ they were completely removed.'
@@ -129,15 +130,27 @@ export class BleManager {
     }
   }
 
+  //   async readRSSIForDevice(deviceIdentifier: DeviceId, transactionId: ?TransactionId): Promise<Device> {
+  //     if (!transactionId) {
+  //       transactionId = this._nextUniqueID()
+  //     }
+  //     const nativeDevice = await this._callPromise(BleModule.readRSSIForDevice(deviceIdentifier, transactionId))
+  //     return new Device(nativeDevice, this)
+  //   }
   /**
    * Destroys {@link BleManager} instance. A new instance needs to be created to continue working with
    * this library. All operations which were in progress completes with
    * @returns {Promise<void>} Promise may return an error when the function cannot be called.
    * {@link #bleerrorcodebluetoothmanagerdestroyed|BluetoothManagerDestroyed} error code.
    */
-  async destroy() {
-    // Destroy native module object
-    await this._callPromise(BleModule.destroyClient())
+  destroy = async () => {
+    let response
+    if (Platform.OS === 'android') {
+      response = await this._callPromise(BleModule.destroyClient())
+    } else {
+      response = await temporaryIOSPromiseFix(BleModule.destroyClient)
+    }
+
     // Unsubscribe from any subscriptions
     if (this._scanEventSubscription != null) {
       this._scanEventSubscription.remove()
@@ -148,7 +161,7 @@ export class BleManager {
     // Destroy all promises
     this._destroyPromises()
 
-    return this
+    return response
   }
 
   /**
@@ -192,9 +205,11 @@ export class BleManager {
    * @param {LogLevel} logLevel New log level to be set.
    * @returns {Promise<LogLevel>} Current log level.
    */
-  async setLogLevel(logLevel: $Keys<typeof LogLevel>): Promise<$Keys<typeof LogLevel>> {
-    await this._callPromise(BleModule.setLogLevel(logLevel))
-    return this
+  setLogLevel(logLevel: $Keys<typeof LogLevel>): Promise<$Keys<typeof LogLevel>> {
+    if (Platform.OS === 'android') {
+      return this._callPromise(BleModule.setLogLevel(logLevel))
+    }
+    return temporaryIOSPromiseFix(() => BleModule.setLogLevel(logLevel))
   }
 
   /**
@@ -231,7 +246,10 @@ export class BleManager {
    * @returns {Promise<void>}
    */
   cancelTransaction(transactionId: TransactionId) {
-    return this._callPromise(BleModule.cancelTransaction(transactionId))
+    if (Platform.OS === 'android') {
+      return this._callPromise(BleModule.cancelTransaction(transactionId))
+    }
+    return temporaryIOSPromiseFix(() => BleModule.cancelTransaction(transactionId))
   }
 
   // Mark: Monitoring state --------------------------------------------------------------------------------------------
@@ -272,9 +290,11 @@ export class BleManager {
    *
    * @returns {Promise<State>} Promise which emits current state of BleManager.
    */
-  async state(): Promise<$Keys<typeof State>> {
-    await this._callPromise(BleModule.state())
-    return this
+  state = (): Promise<$Keys<typeof State>> => {
+    if (Platform.OS === 'android') {
+      return this._callPromise(BleModule.state())
+    }
+    return temporaryIOSPromiseFix(BleModule.state)
   }
 
   /**
@@ -359,19 +379,27 @@ export class BleManager {
     }
     // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
     this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
-    return this._callPromise(BleModule.startDeviceScan(UUIDs, options))
+
+    if (Platform.OS === 'android') {
+      return this._callPromise(BleModule.startDeviceScan(UUIDs, options))
+    }
+    return temporaryIOSPromiseFix(() => BleModule.startDeviceScan(UUIDs, options))
   }
 
   /**
    * Stops {@link Device} scan if in progress.
    * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
    */
-  async stopDeviceScan() {
+  stopDeviceScan = async () => {
     if (this._scanEventSubscription != null) {
       this._scanEventSubscription.remove()
       this._scanEventSubscription = null
     }
-    return this._callPromise(BleModule.stopDeviceScan())
+
+    if (Platform.OS === 'android') {
+      return this._callPromise(BleModule.stopDeviceScan())
+    }
+    return temporaryIOSPromiseFix(BleModule.stopDeviceScan)
   }
 
   /**

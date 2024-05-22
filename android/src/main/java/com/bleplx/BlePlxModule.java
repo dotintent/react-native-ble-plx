@@ -244,6 +244,8 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
           sendEvent(Event.ScanEvent, errorConverter.toJSCallback(error));
         }
       });
+
+      promise.resolve(null);
   }
 
   @ReactMethod
@@ -252,6 +254,7 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
       return;
     }
     bleAdapter.stopDeviceScan();
+    promise.resolve(null);
   }
 
   // Mark: Device management ---------------------------------------------------------------------

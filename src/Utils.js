@@ -24,3 +24,10 @@ export function fillStringWithArguments(value: string, object: Object): string {
     return object[arg] || '?'
   })
 }
+
+export function temporaryIOSPromiseFix<T>(functionToCall: (() => void) | Promise<T>): Promise<T> {
+  return new Promise(resolve => {
+    functionToCall()
+    resolve()
+  })
+}
