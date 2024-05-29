@@ -6,7 +6,7 @@ import type { MainStackParamList } from '../../../navigation/navigators'
 import { AppButton, AppText, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
 import { functionsToTest } from './utils'
 import { BLEService } from '../../../services'
-import { TestStateType } from '../../../types'
+import { type TestStateType } from '../../../types'
 
 type DeviceConnectDisconnectTestScreenProps = NativeStackScreenProps<MainStackParamList, 'INSTANCE_DESTROY_SCREEN'>
 type TestData = { name: string; response: string | null }
@@ -79,16 +79,26 @@ export function InstanceDestroyScreen(_props: DeviceConnectDisconnectTestScreenP
     await startChain(() => setInstanceExistsCalls(prevState => prevState + 1))
     await BLEService.manager
       .destroy()
-      .then(() => setCorrectInstaceDestroy('DONE'))
-      .catch(() => setCorrectInstaceDestroy('ERROR'))
+      .then(info => {
+        console.info('first destroy try - then', info)
+        setCorrectInstaceDestroy('DONE')
+      })
+      .catch(error => {
+        console.error('first destroy try - catch', error)
+        setCorrectInstaceDestroy('ERROR')
+      })
     await BLEService.manager
       .destroy()
-      .then(() => setSecondInstaceDestroyFinishedWithError('ERROR'))
-      .catch(error =>
+      .then(info => {
+        console.info('second destroy try - then', info)
+        setSecondInstaceDestroyFinishedWithError('ERROR')
+      })
+      .catch(error => {
+        console.error('second destroy try - catch', error)
         setSecondInstaceDestroyFinishedWithError(
           error?.reason?.includes('BleManager has been destroyed') ? 'DONE' : 'ERROR'
         )
-      )
+      })
 
     await startChain(() => setInstanceDestroyedCalls(prevState => prevState + 1))
   }

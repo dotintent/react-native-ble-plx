@@ -792,7 +792,7 @@ export interface BleModuleInterface {
    * @returns {Promise<LogLevel>} Current log level.
    * @private
    */
-  setLogLevel(logLevel: $Keys<typeof LogLevel>): Promise<LogLevel>;
+  setLogLevel(logLevel: $Keys<typeof LogLevel>): Promise<$Keys<typeof LogLevel> | void>;
 
   /**
    * Get current log level for native module's logging mechanism.

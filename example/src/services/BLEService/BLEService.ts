@@ -35,6 +35,7 @@ class BLEServiceInstance {
 
   createNewManager = () => {
     this.manager = new BleManager()
+    this.manager.setLogLevel(LogLevel.Verbose)
   }
 
   getDevice = () => this.device
@@ -63,6 +64,8 @@ class BLEServiceInstance {
             break
           default:
             console.error('Unsupported state: ', state)
+          // resolve()
+          // subscription.remove()
         }
       }, true)
     })
@@ -407,10 +410,10 @@ class BLEServiceInstance {
     if (Platform.OS === 'ios') {
       return true
     }
-    if (Platform.OS === 'android' && PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION) {
+    if (Platform.OS === 'android') {
       const apiLevel = parseInt(Platform.Version.toString(), 10)
 
-      if (apiLevel < 31) {
+      if (apiLevel < 31 && PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION) {
         const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION)
         return granted === PermissionsAndroid.RESULTS.GRANTED
       }

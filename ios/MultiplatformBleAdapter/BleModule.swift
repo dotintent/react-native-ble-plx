@@ -64,7 +64,7 @@ public class BleClientManager : NSObject {
 
     // Constants
     static let cccdUUID = CBUUID(string: "2902")
-    
+
     // MARK: Lifecycle -------------------------------------------------------------------------------------------------
 
     @objc
