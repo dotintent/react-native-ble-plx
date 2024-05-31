@@ -360,11 +360,13 @@ export interface BleModuleInterface {
 
   /**
    * Request new MTU value for this device. This function currently is not doing anything
-   * on iOS platform as MTU exchange is done automatically.
+   * on iOS platform as MTU exchange is done automatically. Since Android 14,
+   * mtu management has been changed, more information can be found at the link:
+   * https://developer.android.com/about/versions/14/behavior-changes-all#mtu-set-to-517
    * @param {DeviceId} deviceIdentifier Device identifier.
    * @param {number} mtu New MTU to negotiate.
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
-   * @returns {Promise<NativeDevice>} Device with updated MTU size. Default value is 23.
+   * @returns {Promise<NativeDevice>} Device with updated MTU size. Default value is 23 (517 since Android 14)..
    * @private
    */
   requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number, transactionId: TransactionId): Promise<NativeDevice>;
