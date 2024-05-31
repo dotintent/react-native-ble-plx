@@ -2,6 +2,21 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.2.0] - 2024-05-31
+
+### Added
+
+- Android Instance will be checked before calling its method, an error will be visible on the RN side
+- Added information related to Android 14 to the documentation.
+
+### Changed
+
+- Changed destroyClient, cancelTransaction, setLogLevel, startDeviceScan, stopDeviceScan calls to promises to allow error reporting if it occurs.
+
+### Fixed
+
+- Fixed one of the functions calls that clean up the BLE instance after it is destroyed.
+
 ## [3.1.2] - 2023-10-26
 
 ### Added

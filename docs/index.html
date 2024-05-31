@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset='utf-8'>
-  <title>react-native-ble-plx 3.1.2 | Documentation</title>
+  <title>react-native-ble-plx 3.2.0 | Documentation</title>
   <meta name='description' content='React Native Bluetooth Low Energy library'>
   <meta name='viewport' content='width=device-width,initial-scale=1'>
   <link href='assets/bass.css' rel='stylesheet'>
@@ -15,7 +15,7 @@
       <div id='split-left' class='overflow-auto fs0 height-viewport-100'>
         <div class='py1 px2'>
           <h3 class='mb0 no-anchor'>react-native-ble-plx</h3>
-          <div class='mb1'><code>3.1.2</code></div>
+          <div class='mb1'><code>3.2.0</code></div>
           <input
             placeholder='Filter'
             id='filter-input'
@@ -2189,7 +2189,7 @@ manager.destroy();</pre>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>destroy()</span>
+            <span class='code strong strong truncate'>destroy</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2198,24 +2198,34 @@ manager.destroy();</pre>
   
 
   <p>Destroys <a href="#blemanager">BleManager</a> instance. A new instance needs to be created to continue working with
-this library. All operations which were in progress completes with
-<a href="#bleerrorcodebluetoothmanagerdestroyed">BluetoothManagerDestroyed</a> error code.</p>
+this library. All operations which were in progress completes with</p>
 
-    <div class='pre p1 fill-light mt0'>destroy()</div>
-  
-  
-
-  
-  
-  
-  
+    <div class='pre p1 fill-light mt0'>destroy</div>
   
   
 
   
+  
+  
+  
+  
+  
 
   
 
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        Promise may return an error when the function cannot be called.
+
+<a href="#bleerrorcodebluetoothmanagerdestroyed">BluetoothManagerDestroyed</a>
+ error code.
+
+      
+    
   
 
   
@@ -2250,7 +2260,7 @@ this library. All operations which were in progress completes with
 
   <p>Sets new log level for native module's logging mechanism.</p>
 
-    <div class='pre p1 fill-light mt0'>setLogLevel(logLevel: <a href="#loglevel">LogLevel</a>)</div>
+    <div class='pre p1 fill-light mt0'>setLogLevel(logLevel: <a href="#loglevel">LogLevel</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></div>
   
   
 
@@ -2279,6 +2289,14 @@ this library. All operations which were in progress completes with
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#loglevel">LogLevel</a>></code>:
+        Current log level.
+
+      
+    
   
 
   
@@ -2375,7 +2393,7 @@ promise or a callback which registers errors, <a href="#bleerror">BleError</a> w
 <a href="#bleerrorcodeoperationcancelled">OperationCancelled</a> will be emitted in that case. Cancelling transaction
 which doesn't exist is ignored.</p>
 
-    <div class='pre p1 fill-light mt0'>cancelTransaction(transactionId: <a href="#transactionid">TransactionId</a>)</div>
+    <div class='pre p1 fill-light mt0'>cancelTransaction(transactionId: <a href="#transactionid">TransactionId</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></div>
   
   
 
@@ -2404,6 +2422,14 @@ which doesn't exist is ignored.</p>
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        
+
+      
+    
   
 
   
@@ -2587,7 +2613,7 @@ Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Andro
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>state()</span>
+            <span class='code strong strong truncate'>state</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2598,7 +2624,7 @@ Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Andro
   <p>Current, global <a href="#state">State</a> of a <a href="#blemanager">BleManager</a>. All APIs are working only when active state
 is "PoweredOn".</p>
 
-    <div class='pre p1 fill-light mt0'>state(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></div>
+    <div class='pre p1 fill-light mt0'>state</div>
   
   
 
@@ -2645,7 +2671,7 @@ is "PoweredOn".</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>onStateChange(listener, emitCurrentState)</span>
+            <span class='code strong strong truncate'>onStateChange</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2655,7 +2681,7 @@ is "PoweredOn".</p>
 
   <p>Notifies about <a href="#state">State</a> changes of a <a href="#blemanager">BleManager</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>onStateChange(listener: function (newState: <a href="#state">State</a>), emitCurrentState: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="#subscription">Subscription</a></div>
+    <div class='pre p1 fill-light mt0'>onStateChange</div>
   
   
 
@@ -2752,7 +2778,7 @@ Look at
 
   <p>Starts device scanning. When previous scan is in progress it will be stopped before executing this command.</p>
 
-    <div class='pre p1 fill-light mt0'>startDeviceScan(UUIDs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?, options: <a href="#scanoptions">ScanOptions</a>?, listener: function (error: <a href="#bleerror">BleError</a>?, scannedDevice: <a href="#device">Device</a>?))</div>
+    <div class='pre p1 fill-light mt0'>startDeviceScan(UUIDs: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#uuid">UUID</a>>?, options: <a href="#scanoptions">ScanOptions</a>?, listener: function (error: <a href="#bleerror">BleError</a>?, scannedDevice: <a href="#device">Device</a>?)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></div>
   
   
 
@@ -2801,6 +2827,21 @@ s will be scanned.
             <span class='code bold'>listener</span> <code class='quiet'>(function (error: <a href="#bleerror">BleError</a>?, scannedDevice: <a href="#device">Device</a>?))</code>
 	    Function which will be called for every scanned
 
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        Promise may return an error when the function cannot be called.
+
 <a href="#device">Device</a>
  (devices may be scanned multiple times). It's first argument is potential 
 <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error">Error</a>
@@ -2812,15 +2853,14 @@ is a scanned
 <a href="#device">Device</a>
 .
 
-          </div>
-          
-        </div>
       
-    </div>
-  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        the promise may be rejected if the operation is impossible to perform.
 
-  
-
+      
+    
   
 
   
@@ -2845,7 +2885,7 @@ is a scanned
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>stopDeviceScan()</span>
+            <span class='code strong strong truncate'>stopDeviceScan</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2855,7 +2895,7 @@ is a scanned
 
   <p>Stops <a href="#device">Device</a> scan if in progress.</p>
 
-    <div class='pre p1 fill-light mt0'>stopDeviceScan()</div>
+    <div class='pre p1 fill-light mt0'>stopDeviceScan</div>
   
   
 
@@ -2870,6 +2910,14 @@ is a scanned
 
   
 
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></code>:
+        the promise may be rejected if the operation is impossible to perform.
+
+      
+    
   
 
   
@@ -3073,7 +3121,9 @@ above.</p>
   
 
   <p>Request new MTU value for this device. This function currently is not doing anything
-on iOS platform as MTU exchange is done automatically.</p>
+on iOS platform as MTU exchange is done automatically. Since Android 14,
+mtu management has been changed, more information can be found at the link:
+<a href="https://developer.android.com/about/versions/14/behavior-changes-all#mtu-set-to-517">https://developer.android.com/about/versions/14/behavior-changes-all#mtu-set-to-517</a></p>
 
     <div class='pre p1 fill-light mt0'>requestMTUForDevice(deviceIdentifier: <a href="#deviceid">DeviceId</a>, mtu: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, transactionId: <a href="#transactionid">TransactionId</a>?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></div>
   
@@ -3126,7 +3176,7 @@ on iOS platform as MTU exchange is done automatically.</p>
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
       <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#device">Device</a>></code>:
-        Device with updated MTU size. Default value is 23.
+        Device with updated MTU size. Default value is 23 (517 since Android 14)..
 
       
     

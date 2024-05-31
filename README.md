@@ -43,19 +43,19 @@ For old RN versions (<0.60) please check [old README](./docs/README_V1.md) (1.x)
 for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 | React Native | 3.1.2              |
-| ------------ | ------------------ |
-| 0.72.6       | :white_check_mark: |
-| 0.71.13      | :white_check_mark: |
-| 0.70.13      | :white_check_mark: |
-| Expo 49      | :white_check_mark: |
+|--------------| ------------------ |
+| 0.74.1       | :white_check_mark: |
+| 0.69.6       | :white_check_mark: |
+| Expo 51      | :white_check_mark: |
 
 ## Recent Changes
 
-**3.1.2**
+**3.2.0**
 
-- Added rawScanRecord to advertising data
-- Fixed onDisconnected event
-- Fixed missing advertising data fields on iOS
+- Added Android Instance checking before calling its method, an error will be visible on the RN side
+- Added information related to Android 14 to the documentation.
+- Changed destroyClient, cancelTransaction, setLogLevel, startDeviceScan, stopDeviceScan calls to promises to allow error reporting if it occurs.
+- Fixed one of the functions calls that clean up the BLE instance after it is destroyed.
 
 [Current version changes](CHANGELOG.md)
 [All previous changes](CHANGELOG-pre-3.0.0.md)
