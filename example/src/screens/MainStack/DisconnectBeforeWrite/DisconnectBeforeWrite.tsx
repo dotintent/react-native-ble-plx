@@ -1,7 +1,7 @@
-import React, { useState, type Dispatch, useMemo } from 'react'
+import React, { useState, type Dispatch, useMemo, useRef } from 'react'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { Device, type Base64 } from 'react-native-ble-plx'
-import { ScrollView, View } from 'react-native'
+import { Device, type Base64, type Subscription } from 'react-native-ble-plx'
+import { ScrollView, View, StyleSheet } from 'react-native'
 import type { TestStateType } from '../../../types'
 import { BLEService } from '../../../services'
 import type { MainStackParamList } from '../../../navigation/navigators'
@@ -12,14 +12,16 @@ import { wait } from '../../../utils/wait'
 import { getDateAsBase64 } from '../../../utils/getDateAsBase64'
 
 type DisconnectBeforeWriteProps = NativeStackScreenProps<MainStackParamList, 'DISCONNECT_BEFORE_WRITE'>
-const WRITE_TEST_COUNT = 5
-const WAITING_BETWEEN_TEST = 10000
+const WRITE_TEST_COUNT = 3
+const WAITING_BETWEEN_TEST = 5000
 export function DisconnectBeforeWrite(_props: DisconnectBeforeWriteProps) {
   const [expectedDeviceName, setExpectedDeviceName] = useState('')
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [testDeviceConnectedState, setTestDeviceConnectedState] = useState<TestStateType>('WAITING')
   const [testDiscoverServicesAndCharacteristicsFoundState, setTestDiscoverServicesAndCharacteristicsFoundState] =
     useState<TestStateType>('WAITING')
+  const [isOperationOnTheBLEInstanceIsInProgress, setIsOperationOnTheBLEInstanceIsInProgress] = useState(false)
+  const [shouldCleanOldDisconnectListener, setShouldCleanOldDisconnectListener] = useState<boolean>(true)
   const [waiting, setWaiting] = useState<boolean | undefined>(undefined)
   const [
     testDeviceTimeReadCharacteristicForDeviceAfterWriteWithResponseStateValue,
@@ -33,6 +35,7 @@ export function DisconnectBeforeWrite(_props: DisconnectBeforeWriteProps) {
     testDeviceTimeReadCharacteristicForDeviceAfterWriteWithResponseState,
     setTestDeviceTimeReadCharacteristicForDeviceAfterWriteWithResponseState
   ] = useState<TestStateType[]>(Array(WRITE_TEST_COUNT).fill('WAITING'))
+  const disconnectListener = useRef<Subscription | null>(null)
 
   const onStartHandler = async () => {
     setTestDeviceConnectedState('WAITING')
@@ -44,13 +47,18 @@ export function DisconnectBeforeWrite(_props: DisconnectBeforeWriteProps) {
   }
 
   const onDeviceDisconnected = () => {
-    BLEService.onDeviceDisconnected((error, device) => {
+    if (disconnectListener.current && shouldCleanOldDisconnectListener) {
+      disconnectListener.current?.remove()
+    }
+    disconnectListener.current = BLEService.onDeviceDisconnected((error, device) => {
       if (error) {
-        setOnDeviceDisconnectedMessages(prevState => prevState.concat(`Error - ${error.name} | ${error.message}`))
+        setOnDeviceDisconnectedMessages(prevState =>
+          prevState.concat(`${new Date().toISOString()}\nError - ${error.name} | ${error.message}`)
+        )
       }
       if (device) {
         setOnDeviceDisconnectedMessages(prevState =>
-          prevState.concat(`Device disconnected ${device.name} | ${device.id}`)
+          prevState.concat(`${new Date().toISOString()}\nDevice disconnected ${device.name} | ${device.id}`)
         )
       }
     })
@@ -166,9 +174,29 @@ export function DisconnectBeforeWrite(_props: DisconnectBeforeWriteProps) {
   }
 
   const deviceDisconnectedMessages = useMemo(
-    () => onDeviceDisconnectedMessages.map(message => <AppText key={message}>{message}</AppText>),
+    () =>
+      onDeviceDisconnectedMessages.map((message, index) => (
+        <AppText key={`${message}-${index.toString()}`} style={{ marginBottom: 15 }}>
+          {message}
+        </AppText>
+      )),
     [onDeviceDisconnectedMessages]
   )
+
+  const resetInstance = async () => {
+    setIsOperationOnTheBLEInstanceIsInProgress(true)
+    await BLEService.manager.destroy()
+    await wait(1000)
+    await BLEService.createNewManager()
+    await wait(1000)
+    setIsOperationOnTheBLEInstanceIsInProgress(false)
+  }
+
+  const overwriteInstance = async () => {
+    setIsOperationOnTheBLEInstanceIsInProgress(true)
+    await BLEService.createNewManager()
+    setIsOperationOnTheBLEInstanceIsInProgress(false)
+  }
 
   const writeTestStatuses = useMemo(
     () =>
@@ -197,12 +225,33 @@ export function DisconnectBeforeWrite(_props: DisconnectBeforeWriteProps) {
   return (
     <ScreenDefaultContainer>
       <ScrollView showsVerticalScrollIndicator={false}>
+        {isOperationOnTheBLEInstanceIsInProgress && (
+          <View
+            style={{
+              ...StyleSheet.absoluteFillObject,
+              backgroundColor: '#000000AA',
+              zIndex: 100,
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <AppText>WAIT</AppText>
+          </View>
+        )}
         <AppTextInput
           placeholder="Device name to connect"
           value={expectedDeviceName}
           onChangeText={setExpectedDeviceName}
         />
         <AppButton label="Start" onPress={onStartHandler} />
+        <AppButton
+          label={`Clean old disconnect listener when new is defined: \n${shouldCleanOldDisconnectListener ? 'true' : 'false'}`}
+          onPress={() => setShouldCleanOldDisconnectListener(prevState => !prevState)}
+        />
+        <AppButton label="Reset instance" onPress={resetInstance} />
+        <AppButton label="Overwrite instance" onPress={overwriteInstance} />
+        <AppButton label="Clean" onPress={() => setOnDeviceDisconnectedMessages([])} />
+        <AppButton label="Start write and wait test only" onPress={startWriteAndWaitTest} />
         <TestStateDisplay label="Looking for device" state={testScanDevicesState} />
         <TestStateDisplay label="Device connected" state={testDeviceConnectedState} />
         <TestStateDisplay
