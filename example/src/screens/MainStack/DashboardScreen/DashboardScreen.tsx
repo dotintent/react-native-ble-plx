@@ -66,8 +66,8 @@ export function DashboardScreen({ navigation }: DashboardScreenProps) {
     />
   )
 
-  return (
-    <ScreenDefaultContainer>
+  const header = () => (
+    <>
       {isConnecting && (
         <DropDown>
           <AppText style={{ fontSize: 30 }}>Connecting</AppText>
@@ -96,8 +96,15 @@ export function DashboardScreen({ navigation }: DashboardScreenProps) {
       />
       <AppButton label="instance destroy screen" onPress={() => navigation.navigate('INSTANCE_DESTROY_SCREEN')} />
       <AppButton label="On disconnect test" onPress={() => navigation.navigate('DEVICE_ON_DISCONNECT_TEST_SCREEN')} />
+      <AppButton label="Disconnect before write" onPress={() => navigation.navigate('DISCONNECT_BEFORE_WRITE')} />
+    </>
+  )
+
+  return (
+    <ScreenDefaultContainer>
       <FlatList
         style={{ flex: 1 }}
+        ListHeaderComponent={header}
         data={foundDevices}
         renderItem={({ item }) => deviceRender(item)}
         keyExtractor={device => device.id}

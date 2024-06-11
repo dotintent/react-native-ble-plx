@@ -11,6 +11,7 @@ export type MainStackParamList = {
   AUTODISCONNECT_SCREEN: undefined
   INSTANCE_DESTROY_SCREEN: undefined
   DEVICE_ON_DISCONNECT_TEST_SCREEN: undefined
+  DISCONNECT_BEFORE_WRITE: undefined
 }
 
 const MainStack = createNativeStackNavigator<MainStackParamList>()
@@ -60,6 +61,13 @@ export function MainStackComponent() {
         component={screenComponents.DeviceOnDisconnectTestScreen}
         options={{
           headerTitle: 'On disconnect test'
+        }}
+      />
+      <MainStack.Screen
+        name="DISCONNECT_BEFORE_WRITE"
+        component={screenComponents.DisconnectBeforeWrite}
+        options={{
+          headerTitle: 'Disconnect before write'
         }}
       />
     </MainStack.Navigator>
