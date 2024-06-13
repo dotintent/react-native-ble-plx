@@ -2,7 +2,17 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 # Getting Started
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+> **Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+
+## Prerequisites
+
+For iOS create symlink to the node path (if not already done)
+
+```bash
+sudo ln -s $(which node) /usr/local/bin/node
+```
+
+If you are getting `ln: /usr/local/bin/node: File exists` error, that means you have already created the symlink.
 
 ## Step 1: Start the Metro Server
 
