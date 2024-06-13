@@ -23,3 +23,9 @@ body:
       placeholder: Please describe the question.
     validations:
       required: true
+      
+  - type: textarea
+    attributes:
+      label: Question related code
+      placeholder: Please provide as much context of your issue as it is possible including information how you initialize your ble manager and how you use it.
+      render: markdown
