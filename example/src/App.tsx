@@ -31,7 +31,7 @@ export function App() {
     //  startTimer()
     await BLEService.initializeBLE()
     await BLEService.scanDevices(onDeviceFound, onScanError)
-  }, [onDeviceFound, onScanError])
+  }, [onDeviceFound, onScanError]) // the dependency array does not matter as `scanForDevices` is called by useEffect with no dependencies
 
   useEffect(() => {
     scanForDevices()
