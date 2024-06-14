@@ -10,7 +10,8 @@ import {
   type UUID,
   type Characteristic,
   type Base64,
-  type Subscription
+  type Subscription,
+  ScanMode
 } from 'react-native-ble-plx'
 import { PermissionsAndroid, Platform } from 'react-native'
 import Toast from 'react-native-toast-message'
@@ -99,12 +100,14 @@ class BLEServiceInstance {
     this.showErrorToast('Bluetooth is turned off')
   }
 
-  scanDevices = async (onDeviceFound: (device: Device) => void, UUIDs: UUID[] | null = null, legacyScan?: boolean) => {
-    this.manager
-      .startDeviceScan(UUIDs, { legacyScan }, (error, device) => {
+  scanDevices = async (onDeviceFound: (device: Device) => void, onScanError: (error: BleError) => void) => {
+    try {
+      await this.manager.startDeviceScan(null, { legacyScan: true, scanMode: ScanMode.LowLatency }, (error, device) => {
+        this.log('scan result', device?.name)
+
         if (error) {
+          onScanError(error)
           this.onError(error)
-          console.error(error.message)
           this.manager.stopDeviceScan()
           return
         }
@@ -112,9 +115,12 @@ class BLEServiceInstance {
           onDeviceFound(device)
         }
       })
-      .then(() => console.log('scanning'))
-      .catch(console.error)
+    } catch (error) {
+      console.error('scan error', error)
+    }
   }
+
+  log = console.log
 
   connectToDevice = (deviceId: DeviceId) =>
     new Promise<Device>((resolve, reject) => {
