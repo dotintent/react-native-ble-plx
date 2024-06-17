@@ -112,7 +112,7 @@ class BLEServiceInstance {
           onDeviceFound(device)
         }
       })
-      .then(() => console.log('scanning'))
+      .then(() => {})
       .catch(console.error)
   }
 
