@@ -60,6 +60,6 @@ runs:
     - name: Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: |
-        yarn install --cwd test_project
+        yarn install --cwd example
         yarn install
       shell: bash
