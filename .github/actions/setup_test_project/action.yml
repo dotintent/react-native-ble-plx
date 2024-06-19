@@ -16,7 +16,7 @@ runs:
   using: composite
   steps:
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ inputs.NODE_VERSION }}
 
@@ -60,7 +60,6 @@ runs:
     - name: Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: |
-        cd test_project && rm -f yarn.lock 
-        cd touch yarn.lock && yarn install
-        cd .. && yarn install
+        yarn install --cwd test_project
+        yarn install
       shell: bash
