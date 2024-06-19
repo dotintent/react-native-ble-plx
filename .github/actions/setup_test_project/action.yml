@@ -60,7 +60,7 @@ runs:
     - name: Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: |
-        cd test_project && rm yarn.lock 
+        cd test_project && rm -f yarn.lock 
         cd touch yarn.lock && yarn install
         cd .. && yarn install
       shell: bash
