@@ -49,17 +49,17 @@ runs:
           ${{ runner.os }}-${{ inputs.REACT_NATIVE_VERSION }}-yarn-${{ hashFiles('**/yarn.lock') }}
           ${{ runner.os }}-${{ inputs.REACT_NATIVE_VERSION }}-yarn-
 
-    - name: Copy project files
-      run: node ./scripts/copyExampleProjectFiles.js
-      shell: bash
-      env:
-        REACT_NATIVE_VERSION: ${{ inputs.REACT_NATIVE_VERSION }}
-        BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
-        IS_EXPO: ${{ inputs.IS_EXPO || 'false'}}
+    # - name: Copy project files
+    #   run: node ./scripts/copyExampleProjectFiles.js
+    #   shell: bash
+    #   env:
+    #     REACT_NATIVE_VERSION: ${{ inputs.REACT_NATIVE_VERSION }}
+    #     BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+    #     IS_EXPO: ${{ inputs.IS_EXPO || 'false'}}
 
     - name: Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: |
-        yarn install --cwd test_project
+        yarn install --cwd example
         yarn install
       shell: bash
