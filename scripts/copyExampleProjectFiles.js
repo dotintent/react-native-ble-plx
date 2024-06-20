@@ -20,7 +20,6 @@ const jsSourceDestinationDirectory = path.join(__dirname, TEST_PROJECT_DIR_NAME,
 const copyExampleProjectJsFiles = () => {
   console.info('Copying src from example to test_project')
   fs.cpSync(jsSourceDirectory, jsSourceDestinationDirectory, { recursive: true })
-  fs.readFile('test_project/yarn.lock', (err, data) => {})
 }
 
 const androidManifestDestinationPath = path.join(
