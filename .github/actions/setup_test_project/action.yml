@@ -61,5 +61,5 @@ runs:
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: |
         yarn install --cwd example --frozen-lockfile
-        npm install --force
+        yarn install
       shell: bash
