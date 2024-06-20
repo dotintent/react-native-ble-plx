@@ -60,6 +60,6 @@ runs:
     - name: Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: |
-        yarn install --cwd example
+        yarn install --cwd example --immutable
         yarn install
       shell: bash
