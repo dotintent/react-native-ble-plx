@@ -94,11 +94,6 @@ jobs:
           distribution: 'zulu'
           java-version: '17'
 
-      # - name: Finalize Android SDK
-      #   if: env.turbo_cache_hit != 1
-      #   run: |
-      #     /bin/bash -c "yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null"
-
       - name: Cache Gradle
         if: env.turbo_cache_hit != 1
         uses: actions/cache@v3
