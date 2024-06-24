@@ -132,6 +132,7 @@
     "modulePathIgnorePatterns": [
       "<rootDir>/integration-tests",
       "<rootDir>/example/node_modules",
+      "<rootDir>/example-expo/node_modules",
       "<rootDir>/lib/"
     ]
   },
