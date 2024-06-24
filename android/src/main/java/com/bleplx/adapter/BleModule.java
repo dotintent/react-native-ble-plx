@@ -35,6 +35,7 @@ import com.bleplx.adapter.utils.ServiceFactory;
 import com.bleplx.adapter.utils.UUIDConverter;
 import com.bleplx.adapter.utils.mapper.RxBleDeviceToDeviceMapper;
 import com.bleplx.adapter.utils.mapper.RxScanResultToScanResultMapper;
+import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.polidea.rxandroidble2.NotificationSetupMode;
 import com.polidea.rxandroidble2.RxBleAdapterStateObservable;
 import com.polidea.rxandroidble2.RxBleClient;
@@ -56,7 +57,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
 
-public class BleModule implements BleAdapter {
+public class BleModule extends ReactContextBaseJavaModule implements BleAdapter {
+  public static final String NAME = "Ble";
 
   private final ErrorConverter errorConverter = new ErrorConverter();
 
@@ -99,6 +101,12 @@ public class BleModule implements BleAdapter {
 
   private int currentLogLevel = RxBleLog.NONE;
 
+  @Override
+  @NonNull
+  public String getName() {
+    return NAME;
+  }
+
   public BleModule(Context context) {
     this.context = context;
     bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
@@ -118,6 +126,15 @@ public class BleModule implements BleAdapter {
     }
   }
 
+  private void clearActiveConnections() {
+    pendingTransactions.removeAllSubscriptions();
+    connectingDevices.removeAllSubscriptions();
+    connectedDevices.clear();
+    activeConnections.clear();
+    discoveredDevices.clear();
+
+  }
+
   @Override
   public void destroyClient() {
     if (adapterStateChangesSubscription != null) {
@@ -128,15 +145,10 @@ public class BleModule implements BleAdapter {
       scanSubscription.dispose();
       scanSubscription = null;
     }
-    pendingTransactions.removeAllSubscriptions();
-    connectingDevices.removeAllSubscriptions();
-
+    clearActiveConnections();
     discoveredServices.clear();
     discoveredCharacteristics.clear();
     discoveredDescriptors.clear();
-    connectedDevices.clear();
-    activeConnections.clear();
-    discoveredDevices.clear();
 
     rxBleClient = null;
     IdGenerator.clear();
@@ -1565,5 +1577,10 @@ public class BleModule implements BleAdapter {
         discoveredDescriptors.remove(key);
       }
     }
+  }
+
+  @Override
+  public void invalidate() {
+    clearActiveConnections();
   }
 }
