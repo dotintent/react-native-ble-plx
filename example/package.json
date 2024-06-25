@@ -32,6 +32,6 @@
     "@react-native/typescript-config": "0.74.83"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   }
 }

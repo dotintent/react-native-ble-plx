@@ -5,7 +5,7 @@ import { Device } from './Device'
 import { Service } from './Service'
 import { Characteristic } from './Characteristic'
 import { Descriptor } from './Descriptor'
-import { State, LogLevel, type BleErrorCodeMessageMapping, ConnectionPriority } from './TypeDefinition'
+import { State, LogLevel, ConnectionPriority } from './TypeDefinition'
 import { BleModule, EventEmitter } from './BleModule'
 import {
   parseBleError,
@@ -18,6 +18,7 @@ import {
 } from './BleError'
 import type { NativeDevice, NativeCharacteristic, NativeDescriptor, NativeBleRestoredState } from './BleModule'
 import type {
+  BleErrorCodeMessageMapping,
   Subscription,
   DeviceId,
   Identifier,
@@ -135,7 +136,7 @@ export class BleManager {
    * @returns {Promise<void>} Promise may return an error when the function cannot be called.
    * {@link #bleerrorcodebluetoothmanagerdestroyed|BluetoothManagerDestroyed} error code.
    */
-  destroy = async (): Promise<void> => {
+  async destroy(): Promise<void> {
     const response = await this._callPromise(BleModule.destroyClient())
 
     // Unsubscribe from any subscriptions
@@ -229,7 +230,7 @@ export class BleManager {
    * @param {TransactionId} transactionId Id of pending transactions.
    * @returns {Promise<void>}
    */
-  cancelTransaction(transactionId: TransactionId) {
+  cancelTransaction(transactionId: TransactionId): Promise<void> {
     return this._callPromise(BleModule.cancelTransaction(transactionId))
   }
 
@@ -271,7 +272,7 @@ export class BleManager {
    *
    * @returns {Promise<State>} Promise which emits current state of BleManager.
    */
-  state = (): Promise<$Keys<typeof State>> => {
+  state(): Promise<$Keys<typeof State>> {
     return this._callPromise(BleModule.state())
   }
 
@@ -292,10 +293,7 @@ export class BleManager {
    *
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
-  onStateChange = (
-    listener: (newState: $Keys<typeof State>) => void,
-    emitCurrentState: boolean = false
-  ): Subscription => {
+  onStateChange(listener: (newState: $Keys<typeof State>) => void, emitCurrentState: boolean = false): Subscription {
     const subscription: Subscription = this._eventEmitter.addListener(BleModule.StateChangeEvent, listener)
     const id = this._nextUniqueID()
     var wrappedSubscription: Subscription
@@ -352,7 +350,7 @@ export class BleManager {
     UUIDs: ?Array<UUID>,
     options: ?ScanOptions,
     listener: (error: ?BleError, scannedDevice: ?Device) => Promise<void>
-  ) {
+  ): Promise<void> {
     const scanListener = ([error, nativeDevice]: [?string, ?NativeDevice]) => {
       listener(
         error ? parseBleError(error, this._errorCodesToMessagesMapping) : null,
@@ -369,7 +367,7 @@ export class BleManager {
    * Stops {@link Device} scan if in progress.
    * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
    */
-  stopDeviceScan = async (): Promise<void> => {
+  stopDeviceScan(): Promise<void> {
     if (this._scanEventSubscription != null) {
       this._scanEventSubscription.remove()
       this._scanEventSubscription = null
