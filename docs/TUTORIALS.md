@@ -101,7 +101,7 @@ bleManagerInstance.setLogLevel(LogLevel.Verbose)
 
 #### Android
 
-To collect native logs on Android, you can open the Logcat in Android Studio and set filters to `package:mine (tag:BluetoothGatt | tag:ReactNativeJS | RxBle)`
+To collect native logs on Android, you can open the Logcat in Android Studio and set filters to `package:mine (tag:BluetoothGatt | tag:ReactNativeJS | RxBle)`.
 
 #### iOS
 
