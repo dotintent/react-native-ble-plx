@@ -92,12 +92,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
-
-      - name: Finalize Android SDK
-        if: env.turbo_cache_hit != 1
-        run: |
-          /bin/bash -c "yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null"
+          java-version: '17'
 
       - name: Cache Gradle
         if: env.turbo_cache_hit != 1
@@ -106,7 +101,7 @@ jobs:
           path: |
             ~/.gradle/wrapper
             ~/.gradle/caches
-          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-${{ hashFiles('test_project/android/gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-${{ hashFiles('example/android/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-
 
@@ -161,19 +156,19 @@ jobs:
         with:
           path: |
             **/ios/Pods
-          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-cocoapods-${{ hashFiles('test_project/ios/Podfile.lock') }}
+          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-cocoapods-${{ hashFiles('example/ios/Podfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-cocoapods-
 
       - name: Install cocoapods
         if: env.turbo_cache_hit != 1
         run: |
-          cd test_project/ios
+          cd example/ios
           pod install --verbose
         env:
           NO_FLIPPER: 1
 
-      - name: Build test_project for iOS
+      - name: Build example for iOS
         if: env.turbo_cache_hit != 1
         run: |
           yarn turbo run test:ios --cache-dir="${{ env.TURBO_CACHE_DIR }}"
@@ -218,7 +213,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
 
       - name: Finalize Android SDK
         if: env.turbo_cache_hit != 1
@@ -232,7 +227,7 @@ jobs:
           path: |
             ~/.gradle/wrapper
             ~/.gradle/caches
-          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-${{ hashFiles('test_project/android/gradle/wrapper/gradle-wrapper.properties') }}
+          key: ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-${{ hashFiles('example/android/gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.configurations.react_native_version }}-gradle-
 
