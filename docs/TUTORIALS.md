@@ -90,3 +90,19 @@ bleManagerInstance
     console.error('Get connected devices error:', error)
   })
 ```
+
+### Collecting native logs
+
+If you encounter any issues with the library, you can enable native logs to get more information about what is happening under the hood. To enable native logs, you need to set the `logLevel` property on the BleManager instance to `LogLevel.Verbose`.
+
+```js
+bleManagerInstance.setLogLevel(LogLevel.Verbose)
+```
+
+#### Android
+
+To collect native logs on Android, you can open the Logcat in Android Studio and set filters to `package:mine (tag:BluetoothGatt | tag:ReactNativeJS | RxBle)`
+
+#### iOS
+
+To collect native logs on iOS, you can open the Xcode console.

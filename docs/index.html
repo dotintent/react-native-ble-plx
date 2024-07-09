@@ -2198,6 +2198,13 @@ an additional service discovery may be needed.</p>
   .catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
     <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'Get connected devices error:'</span>, error)
   })</pre>
+<h3>Collecting native logs</h3>
+<p>If you encounter any issues with the library, you can enable native logs to get more information about what is happening under the hood. To enable native logs, you need to set the <code>logLevel</code> property on the BleManager instance to <code>LogLevel.Verbose</code>.</p>
+<pre class='hljs'>bleManagerInstance.setLogLevel(LogLevel.Verbose)</pre>
+<h4>Android</h4>
+<p>To collect native logs on Android, you can open the Logcat in Android Studio and set filters to <code>package:mine (tag:BluetoothGatt | tag:ReactNativeJS | RxBle)</code>.</p>
+<h4>iOS</h4>
+<p>To collect native logs on iOS, you can open the Xcode console.</p>
 
   
 </section></div>
