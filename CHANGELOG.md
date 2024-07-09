@@ -2,6 +2,17 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.2.1] - 2024-07-9
+
+### Changed
+
+- reverted methods from arrow functions to regular functions to avoid issues with `this` context
+- improved react native fast refresh support on android
+
+### Fixed
+
+- Example app xcode node path issue
+
 ## [3.2.0] - 2024-05-31
 
 ### Added

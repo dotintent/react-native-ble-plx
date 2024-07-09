@@ -20,6 +20,8 @@ node_modules/warning/.*
 
 ; Example app
 <PROJECT_ROOT>/example/.*
+<PROJECT_ROOT>/example-expo/.*
+
 
 ; Node modules errors
 <PROJECT_ROOT>/node_modules/.*
