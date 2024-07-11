@@ -1267,7 +1267,10 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
     }
 
     if (timeout != null) {
-      connect = connect.timeout(timeout, TimeUnit.MILLISECONDS);
+      connect = connect.timeout(
+        Observable.timer(timeout, TimeUnit.MILLISECONDS),
+        item -> Observable.never()
+      );
     }
 
 
