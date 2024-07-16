@@ -1,6 +1,11 @@
 package com.bleplx.utils;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReadableArray;
+import com.facebook.react.bridge.WritableArray;
+
+import java.util.List;
+import java.util.UUID;
 
 public class ReadableArrayConverter {
   public static String[] toStringArray(ReadableArray readableArray) {
@@ -9,5 +14,15 @@ public class ReadableArrayConverter {
       stringArray[i] = readableArray.getString(i);
     }
     return stringArray;
+  }
+
+  public static ReadableArray toReadableArray(List<UUID> uuids) {
+    WritableArray array = Arguments.createArray();
+
+    for (UUID uuid : uuids) {
+      array.pushString(uuid.toString());
+    }
+
+    return array;
   }
 }

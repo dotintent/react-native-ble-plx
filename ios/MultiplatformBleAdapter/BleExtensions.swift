@@ -104,7 +104,7 @@ extension Peripheral {
 
             "manufacturerData": NSNull(),
             "serviceData": NSNull(),
-            "serviceUUIDs": NSNull(),
+            "serviceUUIDs": services?.map { $0.uuid.fullUUIDString } ?? NSNull(),
             "localName": NSNull(),
             "txPowerLevel": NSNull(),
             "solicitedServiceUUIDs": NSNull(),
