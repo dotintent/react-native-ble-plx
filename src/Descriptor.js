@@ -55,7 +55,7 @@ export class Descriptor implements NativeDescriptor {
    */
   constructor(nativeDescriptor: NativeDescriptor, manager: BleManager) {
     Object.assign(this, nativeDescriptor)
-    Object.defineProperty(this, '_manager', { value: manager })
+    Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
   }
 
   /**
