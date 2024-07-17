@@ -1,31 +1,52 @@
-<h1 align="center">
-  <a href="https://github.com/dotintent/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
+<h1 align="center" >
+  <a href="https://github.com/dotintent/react-native-ble-plx"><img style="max-height: 300px;" alt="react-native-ble-plx" src="logo.png" /></a>
 </h1>
 
 This guide is an introduction to BLE stack and APIs exported by this library. All examples
 will be based on CC2541 SensorTag.
 
-## Creating BLE Manager
+### Install and prepare package
 
-First step is to create BleManager instance which is an entry point to all available APIs.
-Make sure to create it after application started its execution. For example we can keep it
-as a static reference:
+In the case of Expo, you will need to prepare a plugin config, detailed information can be found here: https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#expo-sdk-43
+In the case of react native CLI you need to configure two environments:
 
-```js
+- [iOS](https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#ios-example-setup)
+- [Android](https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#android-example-setup)
+
+### Creating BLE Manager
+
+First step is to create BleManager instance which is an entry point to all available APIs. It should be declared **OUTSIDE the life cycle of React**. Make sure to create it after application started its execution. We can keep it as a static reference by either creating our own abstraction (ex.1) or by simply creating a new instance (ex.2).
+
+#### Ex.1
+
+```ts
+import { BleManager } from 'react-native-ble-plx'
+
+// create your own singleton class
+class BLEServiceInstance {
+  manager: BleManage
+
+  constructor() {
+    this.manager = new BleManager()
+  }
+}
+
+export const BLEService = new BLEServiceInstance()
+```
+
+#### Ex.2
+
+```ts
 import { BleManager } from 'react-native-ble-plx'
 
 export const manager = new BleManager()
 ```
 
-Only _one_ instance of BleManager is allowed. When you don't need any BLE functionality you
-can destroy created instance by calling `manager.destroy()` function. You can then recreate
-`BleManager` later on.
+Only _one_ instance of BleManager is allowed. When you don't need any BLE functionality you can destroy created instance by calling `manager.destroy()` function. You can then recreate `BleManager` later on.
 
-Note that you may experience undefined behaviour when calling a function on one `BleManager`
-and continuing with another instance. A frequently made error is to create a new instance
-of the manager for every re-render of a React Native Component.
+Note that you may experience undefined behavior when calling a function on one `BleManager` and continuing with another instance. A frequently made error is to create a new instance of the manager for every re-render of a React Native Component.
 
-## Ask for permissions
+### Ask for permissions
 
 Check if you requested following permissions
 
@@ -82,7 +103,7 @@ return (
 )
 ```
 
-## Waiting for Powered On state
+### Waiting for Powered On state
 
 When iOS application launches BLE stack is not immediately available and we need to check its status.
 To detect current state and following state changes we can use `onStateChange()` function:
@@ -99,7 +120,7 @@ React.useEffect(() => {
 }, [manager])
 ```
 
-## Scanning devices
+### Scanning devices
 
 Devices needs to be scanned first to be able to connect to them. There is a simple function
 which allows only one callback to be registered to handle detected devices:
@@ -128,11 +149,11 @@ It is worth to note that scanning function may emit one device multiple times. H
 when device is connected it won't broadcast and needs to be disconnected from central
 to be scanned again. Only one scanning listener can be registered.
 
-### Bluetooth 5 Advertisements in Android
+#### Bluetooth 5 Advertisements in Android
 
 To see devices that use Bluetooth 5 Advertising Extension you have to set the `legacyScan` variable to `false` in {@link #scanoptions|Scan options} when you are starting {@link #blemanagerstartdevicescan|BleManager.startDeviceScan()},
 
-## Connecting and discovering services and characteristics
+### Connecting and discovering services and characteristics
 
 Once device is scanned it is in disconnected state. We need to connect to it and discover
 all services and characteristics it contains. Services may be understood
@@ -160,7 +181,7 @@ It can be a long process depending on number of characteristics and services ava
 \* Extremely rarely, when peripheral's service/characteristic set can change during a connection
 an additional service discovery may be needed.
 
-## Read, write and monitor values
+### Read, write and monitor values
 
 After successful discovery of services you can call
 
@@ -168,4 +189,4 @@ After successful discovery of services you can call
 - {@link #blemanagerwritecharacteristicwithresponsefordevice|BleManager.writeCharacteristicWithResponseForDevice()},
 - {@link #blemanagermonitorcharacteristicfordevice|BleManager.monitorCharacteristicForDevice()}
 
-and other functions which are described in detail in documentation.
+and other functions which are described in detail in documentation. You can also check our _example app_ which is available in the repository.

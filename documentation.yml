@@ -1,6 +1,8 @@
 toc:
-  - name: Introduction
-    file: INTRO.md
+  - name: Getting started
+    file: ./docs/GETTING_STARTED.md
+  - name: Tutorials
+    file: ./docs/TUTORIALS.md
   - name: Main Classes
     description: |
       Classes described below are main building blocks for your BLE support. They
@@ -42,3 +44,4 @@ toc:
   - TransactionId
   - Subscription
   - Base64
+  - RefreshGattMoment

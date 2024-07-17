@@ -29,9 +29,19 @@
               
                 
                 <li><a
-                  href='#introduction'
+                  href='#getting-started'
                   class="h5 bold black caps">
-                  Introduction
+                  Getting started
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
+                  href='#tutorials'
+                  class="h5 bold black caps">
+                  Tutorials
                   
                 </a>
                 
@@ -1957,30 +1967,45 @@
           
             <div class='keyline-top-not py2'><section class='py2 clearfix'>
 
-  <h2 id='introduction' class='mt0'>
-    Introduction
+  <h2 id='getting-started' class='mt0'>
+    Getting started
   </h2>
 
   
-    <h1 align="center">
-  <a href="https://github.com/dotintent/react-native-ble-plx"><img alt="react-native-ble-plx" src="logo.png" /></a>
+    <h1 align="center" >
+  <a href="https://github.com/dotintent/react-native-ble-plx"><img style="max-height: 300px;" alt="react-native-ble-plx" src="logo.png" /></a>
 </h1>
 <p>This guide is an introduction to BLE stack and APIs exported by this library. All examples
 will be based on CC2541 SensorTag.</p>
-<h2>Creating BLE Manager</h2>
-<p>First step is to create BleManager instance which is an entry point to all available APIs.
-Make sure to create it after application started its execution. For example we can keep it
-as a static reference:</p>
+<h3>Install and prepare package</h3>
+<p>In the case of Expo, you will need to prepare a plugin config, detailed information can be found here: <a href="https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#expo-sdk-43">https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#expo-sdk-43</a>
+In the case of react native CLI you need to configure two environments:</p>
+<ul>
+<li><a href="https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#ios-example-setup">iOS</a></li>
+<li><a href="https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#android-example-setup">Android</a></li>
+</ul>
+<h3>Creating BLE Manager</h3>
+<p>First step is to create BleManager instance which is an entry point to all available APIs. It should be declared <strong>OUTSIDE the life cycle of React</strong>. Make sure to create it after application started its execution. We can keep it as a static reference by either creating our own abstraction (ex.1) or by simply creating a new instance (ex.2).</p>
+<h4>Ex.1</h4>
+<pre class='hljs'><span class="hljs-keyword">import</span> { BleManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native-ble-plx'</span>
+
+<span class="hljs-comment">// create your own singleton class</span>
+<span class="hljs-keyword">class</span> BLEServiceInstance {
+  manager: BleManage
+
+  <span class="hljs-keyword">constructor</span>(<span class="hljs-params"></span>) {
+    <span class="hljs-keyword">this</span>.manager = <span class="hljs-keyword">new</span> BleManager()
+  }
+}
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> BLEService = <span class="hljs-keyword">new</span> BLEServiceInstance()</pre>
+<h4>Ex.2</h4>
 <pre class='hljs'><span class="hljs-keyword">import</span> { BleManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native-ble-plx'</span>
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> manager = <span class="hljs-keyword">new</span> BleManager()</pre>
-<p>Only <em>one</em> instance of BleManager is allowed. When you don't need any BLE functionality you
-can destroy created instance by calling <code>manager.destroy()</code> function. You can then recreate
-<code>BleManager</code> later on.</p>
-<p>Note that you may experience undefined behaviour when calling a function on one <code>BleManager</code>
-and continuing with another instance. A frequently made error is to create a new instance
-of the manager for every re-render of a React Native Component.</p>
-<h2>Ask for permissions</h2>
+<p>Only <em>one</em> instance of BleManager is allowed. When you don't need any BLE functionality you can destroy created instance by calling <code>manager.destroy()</code> function. You can then recreate <code>BleManager</code> later on.</p>
+<p>Note that you may experience undefined behavior when calling a function on one <code>BleManager</code> and continuing with another instance. A frequently made error is to create a new instance of the manager for every re-render of a React Native Component.</p>
+<h3>Ask for permissions</h3>
 <p>Check if you requested following permissions</p>
 <ul>
 <li>PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION</li>
@@ -2028,7 +2053,7 @@ of the manager for every re-render of a React Native Component.</p>
   result[<span class="hljs-string">'android.permission.BLUETOOTH_CONNECT'</span>] === PermissionsAndroid.RESULTS.GRANTED &amp;&amp;
   result[<span class="hljs-string">'android.permission.BLUETOOTH_SCAN'</span>] === PermissionsAndroid.RESULTS.GRANTED
 )</pre>
-<h2>Waiting for Powered On state</h2>
+<h3>Waiting for Powered On state</h3>
 <p>When iOS application launches BLE stack is not immediately available and we need to check its status.
 To detect current state and following state changes we can use <code>onStateChange()</code> function:</p>
 <pre class='hljs'>React.useEffect(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
@@ -2040,7 +2065,7 @@ To detect current state and following state changes we can use <code>onStateChan
   }, <span class="hljs-literal">true</span>)
   <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> subscription.remove()
 }, [manager])</pre>
-<h2>Scanning devices</h2>
+<h3>Scanning devices</h3>
 <p>Devices needs to be scanned first to be able to connect to them. There is a simple function
 which allows only one callback to be registered to handle detected devices:</p>
 <pre class='hljs'><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">scanAndConnect</span>(<span class="hljs-params"></span>) </span>{
@@ -2063,9 +2088,9 @@ which allows only one callback to be registered to handle detected devices:</p>
 <p>It is worth to note that scanning function may emit one device multiple times. However
 when device is connected it won't broadcast and needs to be disconnected from central
 to be scanned again. Only one scanning listener can be registered.</p>
-<h3>Bluetooth 5 Advertisements in Android</h3>
+<h4>Bluetooth 5 Advertisements in Android</h4>
 <p>To see devices that use Bluetooth 5 Advertising Extension you have to set the <code>legacyScan</code> variable to <code>false</code> in <a href="#scanoptions">Scan options</a> when you are starting <a href="#blemanagerstartdevicescan">BleManager.startDeviceScan()</a>,</p>
-<h2>Connecting and discovering services and characteristics</h2>
+<h3>Connecting and discovering services and characteristics</h3>
 <p>Once device is scanned it is in disconnected state. We need to connect to it and discover
 all services and characteristics it contains. Services may be understood
 as containers grouping characteristics based on their meaning. Characteristic is a
@@ -2086,14 +2111,100 @@ capabilities. For example connection may look like this:</p>
 It can be a long process depending on number of characteristics and services available.</p>
 <p>* Extremely rarely, when peripheral's service/characteristic set can change during a connection
 an additional service discovery may be needed.</p>
-<h2>Read, write and monitor values</h2>
+<h3>Read, write and monitor values</h3>
 <p>After successful discovery of services you can call</p>
 <ul>
 <li><a href="#blemanagerreadcharacteristicfordevice">BleManager.readCharacteristicForDevice()</a>,</li>
 <li><a href="#blemanagerwritecharacteristicwithresponsefordevice">BleManager.writeCharacteristicWithResponseForDevice()</a>,</li>
 <li><a href="#blemanagermonitorcharacteristicfordevice">BleManager.monitorCharacteristicForDevice()</a></li>
 </ul>
-<p>and other functions which are described in detail in documentation.</p>
+<p>and other functions which are described in detail in documentation. You can also check our <em>example app</em> which is available in the repository.</p>
+
+  
+</section></div>
+          
+        
+          
+            <div class='keyline-top-not py2'><section class='py2 clearfix'>
+
+  <h2 id='tutorials' class='mt0'>
+    Tutorials
+  </h2>
+
+  
+    <h3>Monitoring device connection</h3>
+<p><code>onDeviceDisconnected</code> method allows you to monitor the disconnection of a device, more about the method can be found <a href="#here">BleManager.onDeviceDisconnected()</a>. Using it you can implement your own logic to handle the disconnection event. For example, you can try to reconnect to the device or show a notification to the user.</p>
+<p>Note: connection will be monitored only when app is in foreground.</p>
+<pre class='hljs'><span class="hljs-keyword">const</span> setupOnDeviceDisconnected = <span class="hljs-function">(<span class="hljs-params">deviceIdToMonitor: <span class="hljs-built_in">String</span></span>) =&gt;</span> {
+  bleManagerInstance.onDeviceDisconnected(deviceIdToMonitor, disconnectedListener)
+}
+
+<span class="hljs-keyword">const</span> disconnectedListener = <span class="hljs-function">(<span class="hljs-params">error: BleError | <span class="hljs-literal">null</span>, device: Device | <span class="hljs-literal">null</span></span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (error) {
+    <span class="hljs-built_in">console</span>.error(<span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>))
+  }
+  <span class="hljs-keyword">if</span> (device) {
+    <span class="hljs-built_in">console</span>.info(<span class="hljs-built_in">JSON</span>.stringify(device, <span class="hljs-literal">null</span>, <span class="hljs-number">4</span>))
+
+    <span class="hljs-comment">// reconnect to the device</span>
+    device.connect()
+  }
+}</pre>
+<h3>Reading and writing to characteristics</h3>
+<h4>Prepare the connection with your device</h4>
+<p>The first thing you need to do is connect to your device. Once the connection is established you can only perform basic operations without the possibility of interacting with the services on the device. To be able to interact with the services on the device, so you need to call an additional command <code>device.discoverAllServicesAndCharacteristics()</code> because even though you know what service and characteristics are on the device, they all must be visible to the GATT client, which handles all operations.</p>
+<pre class='hljs'>device
+  .connect()
+  .then(<span class="hljs-function"><span class="hljs-params">device</span> =&gt;</span> {
+    <span class="hljs-keyword">return</span> device.discoverAllServicesAndCharacteristics()
+  })
+  .then(<span class="hljs-function"><span class="hljs-params">device</span> =&gt;</span> {
+    <span class="hljs-comment">// A fully functional connection you can use, now you can read, write and monitor values</span>
+  })
+  .catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
+    <span class="hljs-comment">// Handle errors</span>
+  })</pre>
+<h4>Reading from a characteristic</h4>
+<p>To read a value from a characteristic, you need to call the <code>readCharacteristic</code> method on the device object. The method returns a promise that resolves to the characteristic value.</p>
+<pre class='hljs'>device
+  .readCharacteristicForService(serviceUUID, characteristicUUID)
+  .then(<span class="hljs-function"><span class="hljs-params">characteristic</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Read characteristic value:'</span>, characteristic.value)
+  })
+  .catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'Read characteristic error:'</span>, error)
+  })</pre>
+<h4>Writing to a characteristic</h4>
+<p>To write a value to a characteristic, you need to call the <code>writeCharacteristicWithResponse</code> or <code>writeCharacteristicWithoutResponse</code> method on the device object. The method returns a promise that resolves when the write operation is completed.</p>
+<pre class='hljs'>device
+  .writeCharacteristicWithResponseForService(serviceUUID, characteristicUUID, value)
+  .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">'Write characteristic success'</span>)
+  })
+  .catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'Write characteristic error:'</span>, error)
+  })</pre>
+<h3>Connecting to a device that is already connected to the OS</h3>
+<p>If you want to connect to a device that isn't discoverable because it is already connected to the system, you can use the <code>getConnectedDevices</code> method to get a list of connected devices. Then you can use the <code>connect</code> method on the device object to connect to the device, after making sure that the device is not already connected.</p>
+<pre class='hljs'>bleManagerInstance
+  .getConnectedDevices([serviceUUIDs])
+  .then(<span class="hljs-function"><span class="hljs-params">devices</span> =&gt;</span> {
+    <span class="hljs-keyword">const</span> device = devices.find(<span class="hljs-function"><span class="hljs-params">d</span> =&gt;</span> d.id === deviceIdWeWantToConnectTo)
+
+    <span class="hljs-keyword">if</span> (device &amp;&amp; !device.isConnected) {
+      device.connect()
+    }
+  })
+  .catch(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> {
+    <span class="hljs-built_in">console</span>.error(<span class="hljs-string">'Get connected devices error:'</span>, error)
+  })</pre>
+<h3>Collecting native logs</h3>
+<p>If you encounter any issues with the library, you can enable native logs to get more information about what is happening under the hood. To enable native logs, you need to set the <code>logLevel</code> property on the BleManager instance to <code>LogLevel.Verbose</code>.</p>
+<pre class='hljs'>bleManagerInstance.setLogLevel(LogLevel.Verbose)</pre>
+<h4>Android</h4>
+<p>To collect native logs on Android, you can open the Logcat in Android Studio and set filters to <code>package:mine (tag:BluetoothGatt | tag:ReactNativeJS | RxBle)</code>.</p>
+<h4>iOS</h4>
+<p>To collect native logs on iOS, you can open the Xcode console.</p>
 
   
 </section></div>

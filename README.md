@@ -27,6 +27,7 @@ It does NOT support:
 - bluetooth classic devices.
 - communicating between phones using BLE (Peripheral support)
 - [bonding peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Bonding)
+- [beacons](https://github.com/dotintent/react-native-ble-plx/wiki/=-FAQ:-Beacons)
 
 ## Table of Contents
 
@@ -43,7 +44,7 @@ For old RN versions (<0.60) please check [old README](./docs/README_V1.md) (1.x)
 for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 | React Native | 3.1.2              |
-|--------------| ------------------ |
+| ------------ | ------------------ |
 | 0.74.1       | :white_check_mark: |
 | 0.69.6       | :white_check_mark: |
 | Expo 51      | :white_check_mark: |
