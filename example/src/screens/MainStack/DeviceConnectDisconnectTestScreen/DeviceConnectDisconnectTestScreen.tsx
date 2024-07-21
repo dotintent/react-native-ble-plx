@@ -1,11 +1,11 @@
 import React, { useRef, useState } from 'react'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { BleError, Characteristic, Device, type Subscription, type DeviceId, BleErrorCode } from 'react-native-ble-plx'
-import { ScrollView } from 'react-native'
+import { Alert, ScrollView } from 'react-native'
 import base64 from 'react-native-base64'
 import Toast from 'react-native-toast-message'
 import type { TestStateType } from '../../../types'
-import { BLEService } from '../../../services'
+import { BLEService, usePersistentDeviceName } from '../../../services'
 import type { MainStackParamList } from '../../../navigation/navigators'
 import { AppButton, AppTextInput, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
 import { currentTimeCharacteristic, deviceTimeService } from '../../../consts/nRFDeviceConsts'
@@ -16,9 +16,10 @@ type DeviceConnectDisconnectTestScreenProps = NativeStackScreenProps<
   'DEVICE_CONNECT_DISCONNECT_TEST_SCREEN'
 >
 const NUMBER_OF_CALLS_IN_THE_TEST_SCENARIO = 10
+const CONNECTION_TIMEOUT = 5000
 
 export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnectTestScreenProps) {
-  const [expectedDeviceName, setExpectedDeviceName] = useState('')
+  const [expectedDeviceName, setExpectedDeviceName] = usePersistentDeviceName()
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [deviceId, setDeviceId] = useState('')
   const [connectCounter, setConnectCounter] = useState(0)
@@ -27,11 +28,59 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
   const [disconnectCounter, setDisconnectCounter] = useState(0)
   const [monitorMessages, setMonitorMessages] = useState<string[]>([])
   const monitorSubscriptionRef = useRef<Subscription | null>(null)
+  const [timeoutTestState, setTimeoutTestState] = useState<TestStateType>('WAITING')
+  const [timeoutTestLabel, setTimeoutTestLabel] = useState('Timeout Test')
+
+  const startTimeoutTest = async () => {
+    await BLEService.initializeBLE()
+    setTimeoutTestLabel('Running')
+    await BLEService.scanDevices(
+      async (device: Device) => {
+        if (checkDeviceName(device)) {
+          BLEService.stopDeviceScan()
+          Alert.alert(
+            'Prepare for Timeout Test',
+            'Please turn off Bluetooth on the device you want to connect to. Press OK when ready.',
+            [
+              {
+                text: 'OK',
+                onPress: () => runTimeoutTest(device)
+              }
+            ]
+          )
+        }
+      },
+      [deviceTimeService]
+    )
+  }
+
+  const runTimeoutTest = async (device: Device) => {
+    setTimeoutTestState('IN_PROGRESS')
+
+    try {
+      await BLEService.connectToDevice(device.id, CONNECTION_TIMEOUT)
+      setTimeoutTestState('ERROR')
+      setTimeoutTestLabel('Device was able to connect')
+    } catch (error) {
+      if (
+        error instanceof Error &&
+        (error.message === 'Operation was cancelled' || error.message === 'Operation timed out')
+      ) {
+        console.info('Timeout test successful: Connection timed out as expected')
+        setTimeoutTestState('DONE')
+        setTimeoutTestLabel('Success')
+      } else {
+        console.error('Unexpected error during timeout test:', error)
+        setTimeoutTestState('ERROR')
+        setTimeoutTestLabel('Error occurred')
+      }
+    }
+  }
 
   const addMonitorMessage = (message: string) => setMonitorMessages(prevMessages => [...prevMessages, message])
 
   const checkDeviceName = (device: Device) =>
-    device.name?.toLocaleLowerCase() === expectedDeviceName.toLocaleLowerCase()
+    device.name?.toLocaleLowerCase() === expectedDeviceName?.toLocaleLowerCase()
 
   const startConnectAndDiscover = async () => {
     setTestScanDevicesState('IN_PROGRESS')
@@ -224,6 +273,8 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
           value={connectInDisconnectTestCounter.toString()}
         />
         <TestStateDisplay label="Disconnect counter" value={disconnectCounter.toString()} />
+        <AppButton label="Start Timeout Test" onPress={startTimeoutTest} />
+        <TestStateDisplay label={timeoutTestLabel} state={timeoutTestState} />
         <AppButton label="Setup monitor" onPress={() => startCharacteristicMonitor()} />
         <AppButton label="Remove monitor" onPress={monitorSubscriptionRef.current?.remove} />
         <TestStateDisplay label="Connect in disconnect test counter" value={JSON.stringify(monitorMessages, null, 4)} />
