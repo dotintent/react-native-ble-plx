@@ -4,7 +4,7 @@ import { Device, type Base64 } from 'react-native-ble-plx'
 import { Platform, ScrollView } from 'react-native'
 import base64 from 'react-native-base64'
 import type { TestStateType } from '../../../types'
-import { BLEService } from '../../../services'
+import { BLEService, usePersistentDeviceName } from '../../../services'
 import type { MainStackParamList } from '../../../navigation/navigators'
 import { AppButton, AppTextInput, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
 import { wait } from '../../../utils/wait'
@@ -22,7 +22,7 @@ import {
 type DevicenRFTestScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_NRF_TEST_SCREEN'>
 
 export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
-  const [expectedDeviceName, setExpectedDeviceName] = useState('')
+  const [expectedDeviceName, setExpectedDeviceName] = usePersistentDeviceName()
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [testDeviceConnectedState, setTestDeviceConnectedState] = useState<TestStateType>('WAITING')
   const [testDiscoverServicesAndCharacteristicsFoundState, setTestDiscoverServicesAndCharacteristicsFoundState] =
@@ -115,7 +115,7 @@ export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
   }
 
   const onDeviceFound = (device: Device) => {
-    if (device.name?.toLocaleLowerCase() === expectedDeviceName.toLocaleLowerCase()) {
+    if (device.name?.toLocaleLowerCase() === expectedDeviceName?.toLocaleLowerCase()) {
       setTestScanDevicesState('DONE')
       startConnectToDevice(device)
         .then(onDeviceDisconnected)
@@ -593,7 +593,7 @@ export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
     new Promise<void>((resolve, reject) => {
       BLEService.scanDevices(
         (device: Device) => {
-          if (device.name?.toLocaleLowerCase() === expectedDeviceName.toLocaleLowerCase()) {
+          if (device.name?.toLocaleLowerCase() === expectedDeviceName?.toLocaleLowerCase()) {
             BLEService.connectToDevice(device.id)
               .then(() => BLEService.cancelDeviceConnection())
               .then(() => resolve())
