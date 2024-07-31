@@ -15,7 +15,7 @@ export const functionsToTest: { name: string; functionToCall: () => Promise<any>
   },
   {
     name: 'state',
-    functionToCall: BLEService.manager.state
+    functionToCall: () => BLEService.manager.state()
   },
   {
     name: 'startDeviceScan',
@@ -23,7 +23,7 @@ export const functionsToTest: { name: string; functionToCall: () => Promise<any>
   },
   {
     name: 'stopDeviceScan',
-    functionToCall: BLEService.manager.stopDeviceScan
+    functionToCall: () => BLEService.manager.stopDeviceScan()
   },
   {
     name: 'requestConnectionPriorityForDevice',
