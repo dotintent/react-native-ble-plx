@@ -1975,8 +1975,12 @@
     <h1 align="center" >
   <a href="https://github.com/dotintent/react-native-ble-plx"><img style="max-height: 300px;" alt="react-native-ble-plx" src="logo.png" /></a>
 </h1>
-<p>This guide is an introduction to BLE stack and APIs exported by this library. All examples
-will be based on CC2541 SensorTag.</p>
+<p>This guide is an introduction to BLE stack and APIs exported by this library. For further information you can refer to</p>
+<ul>
+<li>tutorials and API reference available in this documentation,</li>
+<li><a href="https://github.com/dotintent/react-native-ble-plx/wiki">GitHub wiki</a>,</li>
+<li>example app available in the repository.</li>
+</ul>
 <h3>Install and prepare package</h3>
 <p>In the case of Expo, you will need to prepare a plugin config, detailed information can be found here: <a href="https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#expo-sdk-43">https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#expo-sdk-43</a>
 In the case of react native CLI you need to configure two environments:</p>
@@ -1985,7 +1989,7 @@ In the case of react native CLI you need to configure two environments:</p>
 <li><a href="https://github.com/dotintent/react-native-ble-plx?tab=readme-ov-file#android-example-setup">Android</a></li>
 </ul>
 <h3>Creating BLE Manager</h3>
-<p>First step is to create BleManager instance which is an entry point to all available APIs. It should be declared <strong>OUTSIDE the life cycle of React</strong>. Make sure to create it after application started its execution. We can keep it as a static reference by either creating our own abstraction (ex.1) or by simply creating a new instance (ex.2).</p>
+<p>First step is to create BleManager instance which is an entry point to all available APIs. Make sure to create it after application started its execution. We can keep it as a static reference by either creating our own abstraction (ex.1) or by simply creating a new instance (ex.2).</p>
 <h4>Ex.1</h4>
 <pre class='hljs'><span class="hljs-keyword">import</span> { BleManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native-ble-plx'</span>
 
@@ -2003,8 +2007,7 @@ In the case of react native CLI you need to configure two environments:</p>
 <pre class='hljs'><span class="hljs-keyword">import</span> { BleManager } <span class="hljs-keyword">from</span> <span class="hljs-string">'react-native-ble-plx'</span>
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> manager = <span class="hljs-keyword">new</span> BleManager()</pre>
-<p>Only <em>one</em> instance of BleManager is allowed. When you don't need any BLE functionality you can destroy created instance by calling <code>manager.destroy()</code> function. You can then recreate <code>BleManager</code> later on.</p>
-<p>Note that you may experience undefined behavior when calling a function on one <code>BleManager</code> and continuing with another instance. A frequently made error is to create a new instance of the manager for every re-render of a React Native Component.</p>
+<p>When you don't need any BLE functionality you can destroy created instance by calling <code>manager.destroy()</code> function. You can then recreate <code>BleManager</code> later on.</p>
 <h3>Ask for permissions</h3>
 <p>Check if you requested following permissions</p>
 <ul>
@@ -2300,7 +2303,7 @@ manager.destroy();</pre>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>destroy</span>
+            <span class='code strong strong truncate'>destroy()</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2311,7 +2314,7 @@ manager.destroy();</pre>
   <p>Destroys <a href="#blemanager">BleManager</a> instance. A new instance needs to be created to continue working with
 this library. All operations which were in progress completes with</p>
 
-    <div class='pre p1 fill-light mt0'>destroy</div>
+    <div class='pre p1 fill-light mt0'>destroy(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></div>
   
   
 
@@ -2724,7 +2727,7 @@ Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Andro
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>state</span>
+            <span class='code strong strong truncate'>state()</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2735,7 +2738,7 @@ Disable Bluetooth. This function blocks until BLE is in PoweredOff state. [Andro
   <p>Current, global <a href="#state">State</a> of a <a href="#blemanager">BleManager</a>. All APIs are working only when active state
 is "PoweredOn".</p>
 
-    <div class='pre p1 fill-light mt0'>state</div>
+    <div class='pre p1 fill-light mt0'>state(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#state">State</a>></div>
   
   
 
@@ -2782,7 +2785,7 @@ is "PoweredOn".</p>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>onStateChange</span>
+            <span class='code strong strong truncate'>onStateChange(listener, emitCurrentState)</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -2792,7 +2795,7 @@ is "PoweredOn".</p>
 
   <p>Notifies about <a href="#state">State</a> changes of a <a href="#blemanager">BleManager</a>.</p>
 
-    <div class='pre p1 fill-light mt0'>onStateChange</div>
+    <div class='pre p1 fill-light mt0'>onStateChange(listener: function (newState: <a href="#state">State</a>), emitCurrentState: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>): <a href="#subscription">Subscription</a></div>
   
   
 
@@ -2996,7 +2999,7 @@ is a scanned
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>stopDeviceScan</span>
+            <span class='code strong strong truncate'>stopDeviceScan()</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -3006,7 +3009,7 @@ is a scanned
 
   <p>Stops <a href="#device">Device</a> scan if in progress.</p>
 
-    <div class='pre p1 fill-light mt0'>stopDeviceScan</div>
+    <div class='pre p1 fill-light mt0'>stopDeviceScan(): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;void></div>
   
   
 

@@ -2,6 +2,18 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.3.0] - XXXX-XX-XX
+
+### Changed
+
+- internal `_manager` property isn't enumerable anymore. This change will hide it from the `console.log`, `JSON.stringify` and other similar methods.
+- `BleManager` is now a singleton. It will be created only once and reused across the app. This change will allow users to declare instance in React tree (hooks and components). This change should not affect the existing codebase, where `BleManager` is created once and used across the app.
+
+### Fixed
+
+- Timeout parameter in connect method on Android causing the connection to be closed after the timeout period even if connection was established.
+- Missing `serviceUUIDs` data after `discoverAllServicesAndCharacteristics` method call
+
 ## [3.2.1] - 2024-07-9
 
 ### Changed

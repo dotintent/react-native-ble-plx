@@ -93,7 +93,7 @@
     "babel-plugin-syntax-hermes-parser": "^0.15.1",
     "commitlint": "^17.0.2",
     "del-cli": "^5.1.0",
-    "documentation": "^14.0.3",
+    "documentation": "12.3.0",
     "eslint": "^8.51.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^17.1.0",
