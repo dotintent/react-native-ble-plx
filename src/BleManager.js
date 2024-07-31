@@ -69,6 +69,8 @@ export class BleManager {
 
   /**
    * Creates an instance of {@link BleManager}.
+   * It will return already created instance if it was created before.
+   * If you want to create a new instance to for example use different options, you have to call {@link #blemanagerdestroy|destroy()} on the previous one.
    */
   constructor(options: BleManagerOptions = {}) {
     if (BleManager.sharedInstance !== null) {
