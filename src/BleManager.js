@@ -65,10 +65,18 @@ export class BleManager {
   // Map of error codes to error messages
   _errorCodesToMessagesMapping: BleErrorCodeMessageMapping
 
+  static sharedInstance: BleManager | null = null
+
   /**
    * Creates an instance of {@link BleManager}.
+   * It will return already created instance if it was created before.
+   * If you want to create a new instance to for example use different options, you have to call {@link #blemanagerdestroy|destroy()} on the previous one.
    */
   constructor(options: BleManagerOptions = {}) {
+    if (BleManager.sharedInstance !== null) {
+      return BleManager.sharedInstance
+    }
+
     this._eventEmitter = new EventEmitter(BleModule)
     this._uniqueId = 0
     this._activePromises = {}
@@ -98,6 +106,7 @@ export class BleManager {
       : BleErrorCodeMessage
 
     BleModule.createClient(options.restoreStateIdentifier || null)
+    BleManager.sharedInstance = this
   }
 
   /**
@@ -145,6 +154,10 @@ export class BleManager {
       this._scanEventSubscription = null
     }
     this._destroySubscriptions()
+
+    if (BleManager.sharedInstance) {
+      BleManager.sharedInstance = null
+    }
 
     // Destroy all promises
     this._destroyPromises()
