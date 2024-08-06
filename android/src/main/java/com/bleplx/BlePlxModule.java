@@ -1,7 +1,5 @@
 package com.bleplx;
 
-import android.app.Activity;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -52,9 +50,11 @@ import io.reactivex.plugins.RxJavaPlugins;
 @ReactModule(name = BlePlxModule.NAME)
 public class BlePlxModule extends ReactContextBaseJavaModule {
   public static final String NAME = "BlePlx";
+  private final ReactApplicationContext reactContext;
 
   public BlePlxModule(ReactApplicationContext reactContext) {
     super(reactContext);
+    this.reactContext = reactContext;
     RxJavaPlugins.setErrorHandler(throwable -> {
       if (throwable instanceof UndeliverableException) {
         RxBleLog.e("Handle all unhandled exceptions from RxJava: " + throwable.getMessage());
@@ -98,11 +98,7 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createClient(String restoreStateIdentifier) {
-    final Activity activity = getCurrentActivity();
-    if (activity == null) {
-      return;
-    }
-    bleAdapter = BleAdapterFactory.getNewAdapter(activity);
+    bleAdapter = BleAdapterFactory.getNewAdapter(reactContext);
     bleAdapter.createClient(restoreStateIdentifier,
       new OnEventCallback<String>() {
         @Override
