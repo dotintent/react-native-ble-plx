@@ -314,7 +314,6 @@ export class BleManager {
     if (emitCurrentState) {
       var cancelled = false
       this._callPromise(this.state()).then(currentState => {
-        console.log(currentState)
         if (!cancelled) {
           listener(currentState)
         }
