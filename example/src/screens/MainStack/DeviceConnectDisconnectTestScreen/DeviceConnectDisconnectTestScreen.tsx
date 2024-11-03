@@ -58,7 +58,7 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
     setTimeoutTestState('IN_PROGRESS')
 
     try {
-      await BLEService.connectToDevice(device.id, CONNECTION_TIMEOUT)
+      await BLEService.connectToDevice(device.id, CONNECTION_TIMEOUT, true)
       setTimeoutTestState('ERROR')
       setTimeoutTestLabel('Device was able to connect')
     } catch (error) {
@@ -66,7 +66,6 @@ export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnec
         error instanceof Error &&
         (error.message === 'Operation was cancelled' || error.message === 'Operation timed out')
       ) {
-        console.info('Timeout test successful: Connection timed out as expected')
         setTimeoutTestState('DONE')
         setTimeoutTestLabel('Success')
       } else {
