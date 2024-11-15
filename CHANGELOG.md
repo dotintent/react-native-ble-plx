@@ -2,6 +2,16 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.2.2] - 2024-07-9
+
+### Changed
+
+- Updated dependencies to work with Expo 52
+
+### Fixed
+
+- Upgrading To Expo 52 Issues
+
 ## [3.2.1] - 2024-07-9
 
 ### Changed
