@@ -104,6 +104,7 @@
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-prettier": "^5.0.1",
     "eslint-plugin-react-refresh": "^0.4.3",
+    "expo": "^51.0.14",
     "expo-module-scripts": "^3.1.0",
     "flow-bin": "^0.203.1",
     "hermes-eslint": "^0.15.1",
@@ -124,11 +125,8 @@
   "resolutions": {
     "@types/react": "^18.2.44"
   },
-  "dependencies": {
-    "@expo/config-plugins": "^7.2.5 || ^8.0.0",
-    "expo": "^51.0.14"
-  },
   "peerDependencies": {
+    "@expo/config-plugins": "^7.2.5 || ^8.0.0",
     "react": "*",
     "react-native": "*"
   },
