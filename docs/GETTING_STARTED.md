@@ -24,7 +24,7 @@ import { BleManager } from 'react-native-ble-plx'
 
 // create your own singleton class
 class BLEServiceInstance {
-  manager: BleManage
+  manager: BleManager
 
   constructor() {
     this.manager = new BleManager()
