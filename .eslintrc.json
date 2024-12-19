@@ -98,7 +98,8 @@
         "import/no-default-export": 0,
         "@typescript-eslint/no-shadow": 0,
         "global-require": 0,
-        "@typescript-eslint/no-var-requires": 0
+        "@typescript-eslint/no-var-requires": 0,
+        "import/no-extraneous-dependencies": "off"
       }
     }
   ]
