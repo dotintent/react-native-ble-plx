@@ -1,10 +1,10 @@
 import React, { useState, type Dispatch } from 'react'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Device, type Base64 } from 'react-native-ble-plx'
-import { Platform, ScrollView } from 'react-native'
+import { Platform, ScrollView, Alert } from 'react-native'
 import base64 from 'react-native-base64'
 import type { TestStateType } from '../../../types'
-import { BLEService } from '../../../services'
+import { BLEService, usePersistentDeviceName } from '../../../services'
 import type { MainStackParamList } from '../../../navigation/navigators'
 import { AppButton, AppTextInput, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
 import { wait } from '../../../utils/wait'
@@ -18,11 +18,12 @@ import {
   writeWithResponseBase64Time,
   writeWithoutResponseBase64Time
 } from '../../../consts/nRFDeviceConsts'
+import { isAndroidSdkAbove34 } from '../../../utils/isAndroidAbove14'
 
 type DevicenRFTestScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_NRF_TEST_SCREEN'>
 
 export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
-  const [expectedDeviceName, setExpectedDeviceName] = useState('')
+  const [expectedDeviceName, setExpectedDeviceName] = usePersistentDeviceName()
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [testDeviceConnectedState, setTestDeviceConnectedState] = useState<TestStateType>('WAITING')
   const [testDiscoverServicesAndCharacteristicsFoundState, setTestDiscoverServicesAndCharacteristicsFoundState] =
@@ -115,7 +116,7 @@ export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
   }
 
   const onDeviceFound = (device: Device) => {
-    if (device.name?.toLocaleLowerCase() === expectedDeviceName.toLocaleLowerCase()) {
+    if (device.name?.toLocaleLowerCase() === expectedDeviceName?.toLocaleLowerCase()) {
       setTestScanDevicesState('DONE')
       startConnectToDevice(device)
         .then(onDeviceDisconnected)
@@ -240,10 +241,23 @@ export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
     new Promise<void>((resolve, reject) => {
       startTestInfo('startTestMonitorCurrentTimeCharacteristicForDevice')
       setTestMonitorCurrentTimeCharacteristicForDevice('IN_PROGRESS')
+      Alert.alert(
+        'Monitor Current Time Characteristic',
+        `Please send the following message to the device: "${monitorExpectedMessage}"`,
+        [
+          {
+            text: 'OK'
+          }
+        ]
+      )
       BLEService.setupMonitor(
         deviceTimeService,
         currentTimeCharacteristic,
         async characteristic => {
+          console.info(
+            'startTestMonitorCurrentTimeCharacteristicForDevice',
+            `received value: ${characteristic.value && base64.decode(characteristic.value)}, expected value: ${monitorExpectedMessage}`
+          )
           if (characteristic.value && base64.decode(characteristic.value) === monitorExpectedMessage) {
             setTestMonitorCurrentTimeCharacteristicForDevice('DONE')
             await BLEService.finishMonitor()
@@ -421,7 +435,8 @@ export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
     runTest(getConnectedDevices, setTestConnectedDevicesState, 'startGetConnectedDevices')
 
   const startRequestMTUForDevice = () => {
-    const expectedMTU = 40
+    const expectedMTU = isAndroidSdkAbove34 ? 517 : 40
+
     return runTest(
       () =>
         BLEService.requestMTUForDevice(expectedMTU).then(device => {
@@ -593,7 +608,7 @@ export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
     new Promise<void>((resolve, reject) => {
       BLEService.scanDevices(
         (device: Device) => {
-          if (device.name?.toLocaleLowerCase() === expectedDeviceName.toLocaleLowerCase()) {
+          if (device.name?.toLocaleLowerCase() === expectedDeviceName?.toLocaleLowerCase()) {
             BLEService.connectToDevice(device.id)
               .then(() => BLEService.cancelDeviceConnection())
               .then(() => resolve())

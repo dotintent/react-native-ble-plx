@@ -98,7 +98,8 @@ export class Device implements NativeDevice {
    * @private
    */
   constructor(nativeDevice: NativeDevice, manager: BleManager) {
-    Object.assign(this, nativeDevice, { _manager: manager })
+    Object.assign(this, nativeDevice)
+    Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
   }
 
   /**

@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components'
 import Toast from 'react-native-toast-message'
 import { commonTheme } from './theme/theme'
 import { Navigation } from './navigation'
+import './services/storage/storage'
 
 export function App() {
   return (

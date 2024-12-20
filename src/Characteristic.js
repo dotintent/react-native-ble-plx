@@ -72,7 +72,8 @@ export class Characteristic implements NativeCharacteristic {
    * @private
    */
   constructor(nativeCharacteristic: NativeCharacteristic, manager: BleManager) {
-    Object.assign(this, nativeCharacteristic, { _manager: manager })
+    Object.assign(this, nativeCharacteristic)
+    Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
   }
 
   /**

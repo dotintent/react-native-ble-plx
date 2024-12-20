@@ -116,11 +116,15 @@ class BLEServiceInstance {
       .catch(console.error)
   }
 
-  connectToDevice = (deviceId: DeviceId) =>
+  stopDeviceScan = () => {
+    this.manager.stopDeviceScan()
+  }
+
+  connectToDevice = (deviceId: DeviceId, timeout?: number, ignoreError = false) =>
     new Promise<Device>((resolve, reject) => {
       this.manager.stopDeviceScan()
       this.manager
-        .connectToDevice(deviceId)
+        .connectToDevice(deviceId, { timeout })
         .then(device => {
           this.device = device
           resolve(device)
@@ -129,7 +133,9 @@ class BLEServiceInstance {
           if (error.errorCode === BleErrorCode.DeviceAlreadyConnected && this.device) {
             resolve(this.device)
           } else {
-            this.onError(error)
+            if (!ignoreError) {
+              this.onError(error)
+            }
             reject(error)
           }
         })

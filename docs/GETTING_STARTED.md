@@ -2,8 +2,11 @@
   <a href="https://github.com/dotintent/react-native-ble-plx"><img style="max-height: 300px;" alt="react-native-ble-plx" src="logo.png" /></a>
 </h1>
 
-This guide is an introduction to BLE stack and APIs exported by this library. All examples
-will be based on CC2541 SensorTag.
+This guide is an introduction to BLE stack and APIs exported by this library. For further information you can refer to
+
+- tutorials and API reference available in this documentation,
+- [GitHub wiki](https://github.com/dotintent/react-native-ble-plx/wiki),
+- example app available in the repository.
 
 ### Install and prepare package
 
@@ -15,7 +18,7 @@ In the case of react native CLI you need to configure two environments:
 
 ### Creating BLE Manager
 
-First step is to create BleManager instance which is an entry point to all available APIs. It should be declared **OUTSIDE the life cycle of React**. Make sure to create it after application started its execution. We can keep it as a static reference by either creating our own abstraction (ex.1) or by simply creating a new instance (ex.2).
+First step is to create BleManager instance which is an entry point to all available APIs. Make sure to create it after application started its execution. We can keep it as a static reference by either creating our own abstraction (ex.1) or by simply creating a new instance (ex.2).
 
 #### Ex.1
 
@@ -42,9 +45,7 @@ import { BleManager } from 'react-native-ble-plx'
 export const manager = new BleManager()
 ```
 
-Only _one_ instance of BleManager is allowed. When you don't need any BLE functionality you can destroy created instance by calling `manager.destroy()` function. You can then recreate `BleManager` later on.
-
-Note that you may experience undefined behavior when calling a function on one `BleManager` and continuing with another instance. A frequently made error is to create a new instance of the manager for every re-render of a React Native Component.
+When you don't need any BLE functionality you can destroy created instance by calling `manager.destroy()` function. You can then recreate `BleManager` later on.
 
 ### Ask for permissions
 

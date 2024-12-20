@@ -3,6 +3,7 @@ package com.bleplx.adapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -59,6 +60,20 @@ public class Device {
   @Nullable
   public List<Service> getServices() {
     return services;
+  }
+
+  @Nullable
+  public List<UUID> getServicesUUIDs() {
+    if (services == null) {
+      return null;
+    }
+
+    List<UUID> servicesUUIDs = new ArrayList<>();
+    for (Service service : services) {
+      servicesUUIDs.add(service.getUuid());
+    }
+
+    return servicesUUIDs;
   }
 
   public void setServices(@Nullable List<Service> services) {
