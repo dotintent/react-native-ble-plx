@@ -74,6 +74,7 @@ export class BleManager {
    */
   constructor(options: BleManagerOptions = {}) {
     if (BleManager.sharedInstance !== null) {
+      // $FlowFixMe - Constructor returns shared instance for singleton pattern
       return BleManager.sharedInstance
     }
 
