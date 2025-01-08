@@ -62,3 +62,12 @@ buck-out/
 *.jsbundle
 /lib
 /test_project
+
+# Yarn
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.yarnrc.yml
