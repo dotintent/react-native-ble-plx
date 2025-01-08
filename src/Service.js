@@ -43,7 +43,8 @@ export class Service implements NativeService {
    * @ignore
    */
   constructor(nativeService: NativeService, manager: BleManager) {
-    Object.assign(this, nativeService, { _manager: manager })
+    Object.assign(this, nativeService)
+    Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
   }
 
   /**

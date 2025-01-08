@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native'
 import Toast from 'react-native-toast-message'
 import { wait } from '../../../utils/wait'
 import type { TestStateType } from '../../../types'
-import { BLEService } from '../../../services'
+import { BLEService, usePersistentDeviceName } from '../../../services'
 import type { MainStackParamList } from '../../../navigation/navigators'
 import { AppButton, AppTextInput, ScreenDefaultContainer, TestStateDisplay } from '../../../components/atoms'
 import { deviceTimeService } from '../../../consts/nRFDeviceConsts'
@@ -13,14 +13,14 @@ import { deviceTimeService } from '../../../consts/nRFDeviceConsts'
 type DeviceOnDisconnectTestScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_ON_DISCONNECT_TEST_SCREEN'>
 
 export function DeviceOnDisconnectTestScreen(_props: DeviceOnDisconnectTestScreenProps) {
-  const [expectedDeviceName, setExpectedDeviceName] = useState('')
+  const [expectedDeviceName, setExpectedDeviceName] = usePersistentDeviceName()
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [deviceId, setDeviceId] = useState('')
   const [currentTest, setCurrentTest] = useState<null | 'disconnectByDevice' | 'disconnectByPLX'>(null)
   const onDisconnectRef = useRef<Subscription | null>(null)
 
   const checkDeviceName = (device: Device) =>
-    device.name?.toLocaleLowerCase() === expectedDeviceName.toLocaleLowerCase()
+    device.name?.toLocaleLowerCase() === expectedDeviceName?.toLocaleLowerCase()
 
   const connectAndDiscover = async () => {
     setTestScanDevicesState('IN_PROGRESS')

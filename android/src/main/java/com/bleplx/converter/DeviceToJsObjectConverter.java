@@ -1,8 +1,15 @@
 package com.bleplx.converter;
 
+import android.util.Log;
+
 import com.bleplx.adapter.Device;
+import com.bleplx.utils.ReadableArrayConverter;
 import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.WritableMap;
+
+import java.util.List;
+import java.util.UUID;
 
 public class DeviceToJsObjectConverter extends JSObjectConverter<Device> {
 
@@ -39,10 +46,15 @@ public class DeviceToJsObjectConverter extends JSObjectConverter<Device> {
       result.putNull(Metadata.MTU);
     }
 
+    if(value.getServices() != null) {
+      result.putArray(Metadata.SERVICE_UUIDS, ReadableArrayConverter.toReadableArray(value.getServicesUUIDs()));
+    } else {
+      result.putNull(Metadata.SERVICE_UUIDS);
+    }
+
     // Advertisement data is not set
     result.putNull(Metadata.MANUFACTURER_DATA);
     result.putNull(Metadata.SERVICE_DATA);
-    result.putNull(Metadata.SERVICE_UUIDS);
     result.putNull(Metadata.LOCAL_NAME);
     result.putNull(Metadata.TX_POWER_LEVEL);
     result.putNull(Metadata.SOLICITED_SERVICE_UUIDS);
