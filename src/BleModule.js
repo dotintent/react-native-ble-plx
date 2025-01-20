@@ -56,7 +56,7 @@ export interface NativeDevice {
   rawScanRecord: Base64;
 
   /**
-   * Map od service UUIDs with associated data.
+   * Map of service UUIDs with associated data.
    * @private
    */
   serviceData: ?{ [uuid: UUID]: Base64 };
