@@ -566,7 +566,15 @@ export class BleManager {
     const nativeDevice = await this._callPromise(
       BleModule.discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier, transactionId)
     )
-    return new Device(nativeDevice, this)
+    const services = await this._callPromise(BleModule.servicesForDevice(deviceIdentifier))
+    const serviceUUIDs = services.map(service => service.uuid)
+
+    // $FlowFixMe
+    const device = {
+      ...nativeDevice,
+      serviceUUIDs
+    }
+    return new Device(device, this)
   }
 
   // Mark: Service and characteristic getters --------------------------------------------------------------------------
