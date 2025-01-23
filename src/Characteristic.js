@@ -5,7 +5,15 @@ import type { BleManager } from './BleManager'
 import type { BleError } from './BleError'
 import { Descriptor } from './Descriptor'
 import type { NativeCharacteristic } from './BleModule'
-import type { DeviceId, Identifier, UUID, TransactionId, Base64, Subscription } from './TypeDefinition'
+import type {
+  DeviceId,
+  Identifier,
+  UUID,
+  TransactionId,
+  CharacteristicSubscriptionType,
+  Base64,
+  Subscription
+} from './TypeDefinition'
 
 /**
  * Characteristic object.
@@ -130,14 +138,16 @@ export class Characteristic implements NativeCharacteristic {
    * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener callback which emits
    * this {@link Characteristic} with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
    * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
   monitor(
     listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId
+    transactionId: ?TransactionId,
+    subscriptionType: ?CharacteristicSubscriptionType
   ): Subscription {
-    return this._manager._monitorCharacteristic(this.id, listener, transactionId)
+    return this._manager._monitorCharacteristic(this.id, listener, transactionId, subscriptionType)
   }
 
   /**

@@ -768,13 +768,14 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
                                              final String serviceUUID,
                                              final String characteristicUUID,
                                              final String transactionId,
+                                             final String subscriptionType,
                                              final Promise promise) {
     if (!this.isRequestPossibleHandler("monitorCharacteristicForDevice", promise)) {
       return;
     }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.monitorCharacteristicForDevice(
-      deviceId, serviceUUID, characteristicUUID, transactionId,
+      deviceId, serviceUUID, characteristicUUID, transactionId, subscriptionType,
       new OnEventCallback<Characteristic>() {
         @Override
         public void onEvent(Characteristic data) {
@@ -797,13 +798,14 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   public void monitorCharacteristicForService(final int serviceIdentifier,
                                               final String characteristicUUID,
                                               final String transactionId,
+                                              final String subscriptionType,
                                               final Promise promise) {
     if (!this.isRequestPossibleHandler("monitorCharacteristicForService", promise)) {
       return;
     }
     final SafePromise safePromise = new SafePromise(promise);
     bleAdapter.monitorCharacteristicForService(
-      serviceIdentifier, characteristicUUID, transactionId,
+      serviceIdentifier, characteristicUUID, transactionId, subscriptionType,
       new OnEventCallback<Characteristic>() {
         @Override
         public void onEvent(Characteristic data) {
@@ -825,6 +827,7 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void monitorCharacteristic(final int characteristicIdentifier,
                                     final String transactionId,
+                                    final String subscriptionType,
                                     final Promise promise) {
     if (!this.isRequestPossibleHandler("monitorCharacteristic", promise)) {
       return;
@@ -832,7 +835,7 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
     final SafePromise safePromise = new SafePromise(promise);
     //TODO resolve safePromise with null when monitoring has been completed
     bleAdapter.monitorCharacteristic(
-      characteristicIdentifier, transactionId,
+      characteristicIdentifier, transactionId, subscriptionType,
       new OnEventCallback<Characteristic>() {
         @Override
         public void onEvent(Characteristic data) {

@@ -8,7 +8,15 @@ import type { Service } from './Service'
 import type { Descriptor } from './Descriptor'
 import { ConnectionPriority } from './TypeDefinition'
 import type { NativeDevice } from './BleModule'
-import type { DeviceId, Base64, UUID, Subscription, TransactionId, ConnectionOptions } from './TypeDefinition'
+import type {
+  DeviceId,
+  Base64,
+  UUID,
+  Subscription,
+  TransactionId,
+  CharacteristicSubscriptionType,
+  ConnectionOptions
+} from './TypeDefinition'
 
 /**
  * Device instance which can be retrieved only by calling
@@ -298,6 +306,7 @@ export class Device implements NativeDevice {
    * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener - callback which emits
    * {@link Characteristic} objects with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
    * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
@@ -305,14 +314,16 @@ export class Device implements NativeDevice {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId
+    transactionId: ?TransactionId,
+    subscriptionType?: CharacteristicSubscriptionType
   ): Subscription {
     return this._manager.monitorCharacteristicForDevice(
       this.id,
       serviceUUID,
       characteristicUUID,
       listener,
-      transactionId
+      transactionId,
+      subscriptionType
     )
   }
 

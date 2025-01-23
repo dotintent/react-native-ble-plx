@@ -689,6 +689,7 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
                                              String serviceUUID,
                                              String characteristicUUID,
                                              String transactionId,
+                                             String subscriptionType,
                                              OnEventCallback<Characteristic> onEventCallback,
                                              OnErrorCallback onErrorCallback) {
     final Characteristic characteristic = getCharacteristicOrEmitError(
@@ -697,13 +698,14 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
       return;
     }
 
-    safeMonitorCharacteristicForDevice(characteristic, transactionId, onEventCallback, onErrorCallback);
+    safeMonitorCharacteristicForDevice(characteristic, transactionId, subscriptionType, onEventCallback, onErrorCallback);
   }
 
   @Override
   public void monitorCharacteristicForService(int serviceIdentifier,
                                               String characteristicUUID,
                                               String transactionId,
+                                              String subscriptionType,
                                               OnEventCallback<Characteristic> onEventCallback,
                                               OnErrorCallback onErrorCallback) {
     final Characteristic characteristic = getCharacteristicOrEmitError(
@@ -712,11 +714,11 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
       return;
     }
 
-    safeMonitorCharacteristicForDevice(characteristic, transactionId, onEventCallback, onErrorCallback);
+    safeMonitorCharacteristicForDevice(characteristic, transactionId, subscriptionType, onEventCallback, onErrorCallback);
   }
 
   @Override
-  public void monitorCharacteristic(int characteristicIdentifier, String transactionId,
+  public void monitorCharacteristic(int characteristicIdentifier, String transactionId, String subscriptionType,
                                     OnEventCallback<Characteristic> onEventCallback,
                                     OnErrorCallback onErrorCallback) {
     final Characteristic characteristic = getCharacteristicOrEmitError(characteristicIdentifier, onErrorCallback);
@@ -724,7 +726,7 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
       return;
     }
 
-    safeMonitorCharacteristicForDevice(characteristic, transactionId, onEventCallback, onErrorCallback);
+    safeMonitorCharacteristicForDevice(characteristic, transactionId, subscriptionType, onEventCallback, onErrorCallback);
   }
 
   @Override
@@ -1439,6 +1441,7 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
 
   private void safeMonitorCharacteristicForDevice(final Characteristic characteristic,
                                                   final String transactionId,
+                                                  final String subscriptionType,
                                                   final OnEventCallback<Characteristic> onEventCallback,
                                                   final OnErrorCallback onErrorCallback) {
     final RxBleConnection connection = getConnectionOrEmitError(characteristic.getDeviceId(), onErrorCallback);
@@ -1453,12 +1456,15 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
         NotificationSetupMode setupMode = cccDescriptor != null
           ? NotificationSetupMode.QUICK_SETUP
           : NotificationSetupMode.COMPAT;
-        if (characteristic.isNotifiable()) {
-          return connection.setupNotification(characteristic.gattCharacteristic, setupMode);
-        }
-
-        if (characteristic.isIndicatable()) {
-          return connection.setupIndication(characteristic.gattCharacteristic, setupMode);
+        
+        if ("notification".equals(subscriptionType) && characteristic.isNotifiable()) {
+            return connection.setupNotification(characteristic.gattCharacteristic, setupMode);
+        } else if ("indication".equals(subscriptionType) && characteristic.isIndicatable()) {
+            return connection.setupIndication(characteristic.gattCharacteristic, setupMode);
+        } else if (characteristic.isNotifiable()) {
+            return connection.setupNotification(characteristic.gattCharacteristic, setupMode);
+        } else if (characteristic.isIndicatable()) {
+            return connection.setupIndication(characteristic.gattCharacteristic, setupMode);
         }
 
         return Observable.error(new CannotMonitorCharacteristicException(characteristic));
