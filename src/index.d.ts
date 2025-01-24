@@ -27,6 +27,11 @@ declare module 'react-native-ble-plx' {
   export type TransactionId = string
 
   /**
+   * Characteritic subscription type.
+   */
+  export type CharacteristicSubscriptionType = 'notification' | 'indication'
+
+  /**
    * Subscription
    * @interface
    */
@@ -1355,6 +1360,7 @@ declare module 'react-native-ble-plx' {
      * @param {function(error?: BleError, characteristic?: Characteristic)} listener - callback which emits
      * {@link Characteristic} objects with modified value for each notification.
      * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+     * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
      * {@link #blemanagercanceltransaction|cancelTransaction()} function.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
@@ -1363,7 +1369,8 @@ declare module 'react-native-ble-plx' {
       serviceUUID: UUID,
       characteristicUUID: UUID,
       listener: (error: BleError | null, characteristic: Characteristic | null) => void,
-      transactionId?: TransactionId
+      transactionId?: TransactionId,
+      subscriptionType?: CharacteristicSubscriptionType
     ): Subscription
 
     // Mark: Descriptors operations ----------------------------------------------------------------------------------
@@ -1647,6 +1654,7 @@ declare module 'react-native-ble-plx' {
      * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener - callback which emits
      * {@link Characteristic} objects with modified value for each notification.
      * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+     * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
      * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
@@ -1654,7 +1662,8 @@ declare module 'react-native-ble-plx' {
       serviceUUID: UUID,
       characteristicUUID: UUID,
       listener: (error: BleError | null, characteristic: Characteristic | null) => void,
-      transactionId?: TransactionId
+      transactionId?: TransactionId,
+      subscriptionType?: CharacteristicSubscriptionType
     ): Subscription
 
     /**
@@ -1797,13 +1806,15 @@ declare module 'react-native-ble-plx' {
      * @param {function(error?: BleError, characteristic?: Characteristic)} listener callback which emits
      * {@link Characteristic} objects with modified value for each notification.
      * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+     * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
      * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
     monitorCharacteristic(
       characteristicUUID: UUID,
       listener: (error: BleError | null, characteristic: Characteristic | null) => void,
-      transactionId?: string
+      transactionId?: string,
+      subscriptionType?: CharacteristicSubscriptionType
     ): Subscription
 
     /**
@@ -1959,12 +1970,14 @@ declare module 'react-native-ble-plx' {
      * @param {function(error?: BleError, characteristic?: Characteristic)} listener callback which emits
      * this {@link Characteristic} with modified value for each notification.
      * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+     * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
      * {@link #blemanagercanceltransaction|bleManager.cancelTransaction()} function.
      * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
      */
     monitor(
       listener: (error: BleError | null, characteristic: Characteristic | null) => void,
-      transactionId?: string
+      transactionId?: string,
+      subscriptionType?: CharacteristicSubscriptionType
     ): Subscription
 
     /**

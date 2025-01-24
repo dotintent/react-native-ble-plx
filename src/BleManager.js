@@ -24,6 +24,7 @@ import type {
   Identifier,
   UUID,
   TransactionId,
+  CharacteristicSubscriptionType,
   Base64,
   ScanOptions,
   ConnectionOptions,
@@ -958,11 +959,18 @@ export class BleManager {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId
+    transactionId: ?TransactionId,
+    subscriptionType: ?CharacteristicSubscriptionType
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
     return this._handleMonitorCharacteristic(
-      BleModule.monitorCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId),
+      BleModule.monitorCharacteristicForDevice(
+        deviceIdentifier,
+        serviceUUID,
+        characteristicUUID,
+        filledTransactionId,
+        subscriptionType
+      ),
       filledTransactionId,
       listener
     )
@@ -985,11 +993,17 @@ export class BleManager {
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
     listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId
+    transactionId: ?TransactionId,
+    subscriptionType: ?CharacteristicSubscriptionType
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
     return this._handleMonitorCharacteristic(
-      BleModule.monitorCharacteristicForService(serviceIdentifier, characteristicUUID, filledTransactionId),
+      BleModule.monitorCharacteristicForService(
+        serviceIdentifier,
+        characteristicUUID,
+        filledTransactionId,
+        subscriptionType
+      ),
       filledTransactionId,
       listener
     )
@@ -1003,6 +1017,7 @@ export class BleManager {
    * @param {function(error: ?BleError, characteristic: ?Characteristic)} listener - callback which emits
    * {@link Characteristic} objects with modified value for each notification.
    * @param {?TransactionId} transactionId optional `transactionId` which can be used in
+   * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
    * {@link #blemanagercanceltransaction|cancelTransaction()} function.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    * @private
@@ -1010,11 +1025,12 @@ export class BleManager {
   _monitorCharacteristic(
     characteristicIdentifier: Identifier,
     listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId
+    transactionId: ?TransactionId,
+    subscriptionType: ?CharacteristicSubscriptionType
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
     return this._handleMonitorCharacteristic(
-      BleModule.monitorCharacteristic(characteristicIdentifier, filledTransactionId),
+      BleModule.monitorCharacteristic(characteristicIdentifier, filledTransactionId, subscriptionType),
       filledTransactionId,
       listener
     )

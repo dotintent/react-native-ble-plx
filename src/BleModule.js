@@ -8,6 +8,7 @@ import type {
   Identifier,
   UUID,
   TransactionId,
+  CharacteristicSubscriptionType,
   Base64,
   ScanOptions,
   ConnectionOptions
@@ -607,6 +608,7 @@ export interface BleModuleInterface {
    * @param {UUID} serviceUUID Service UUID
    * @param {UUID} characteristicUUID Characteristic UUID
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
    * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
    * @private
    */
@@ -614,7 +616,8 @@ export interface BleModuleInterface {
     deviceIdentifier: DeviceId,
     serviceUUID: UUID,
     characteristicUUID: UUID,
-    transactionId: TransactionId
+    transactionId: TransactionId,
+    subscriptionType: ?CharacteristicSubscriptionType
   ): Promise<void>;
 
   /**
@@ -623,13 +626,15 @@ export interface BleModuleInterface {
    * @param {Identifier} serviceIdentifier Service ID
    * @param {UUID} characteristicUUID Characteristic UUID
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
    * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
    * @private
    */
   monitorCharacteristicForService(
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
-    transactionId: TransactionId
+    transactionId: TransactionId,
+    subscriptionType: ?CharacteristicSubscriptionType
   ): Promise<void>;
 
   /**
@@ -637,10 +642,15 @@ export interface BleModuleInterface {
    *
    * @param {Identifier} characteristicIdentifier Characteristic ID
    * @param {TransactionId} transactionId Transaction handle used to cancel operation
+   * @param {?CharacteristicSubscriptionType} subscriptionType [android only] subscription type of the characteristic
    * @returns {Promise<void>} Value which is returned when monitoring was cancelled or resulted in error
    * @private
    */
-  monitorCharacteristic(characteristicIdentifier: Identifier, transactionId: TransactionId): Promise<void>;
+  monitorCharacteristic(
+    characteristicIdentifier: Identifier,
+    transactionId: TransactionId,
+    subscriptionType: ?CharacteristicSubscriptionType
+  ): Promise<void>;
 
   // Descriptor operations
 

@@ -30,6 +30,11 @@ export type Base64 = string
 export type TransactionId = string
 
 /**
+ * Characteritic subscription type.
+ */
+export type CharacteristicSubscriptionType = 'notification' | 'indication'
+
+/**
  * [Android only] ConnectionOptions parameter to describe when to call BluetoothGatt.refresh()
  */
 export type RefreshGattMoment = 'OnConnected'

@@ -163,6 +163,7 @@ public interface BleAdapter {
     String serviceUUID,
     String characteristicUUID,
     String transactionId,
+    String subscriptionType,
     OnEventCallback<Characteristic> onEventCallback,
     OnErrorCallback onErrorCallback);
 
@@ -170,12 +171,14 @@ public interface BleAdapter {
     int serviceIdentifier,
     String characteristicUUID,
     String transactionId,
+    String subscriptionType,
     OnEventCallback<Characteristic> onEventCallback,
     OnErrorCallback onErrorCallback);
 
   void monitorCharacteristic(
     int characteristicIdentifier,
     String transactionId,
+    String subscriptionType,
     OnEventCallback<Characteristic> onEventCallback,
     OnErrorCallback onErrorCallback);
 
