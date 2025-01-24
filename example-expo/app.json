@@ -13,7 +13,8 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.withintent.bleplxexample"
+      "bundleIdentifier": "com.withintent.bleplxexample",
+      "appleTeamId": "RF945WPAGS"
     },
     "android": {
       "adaptiveIcon": {
