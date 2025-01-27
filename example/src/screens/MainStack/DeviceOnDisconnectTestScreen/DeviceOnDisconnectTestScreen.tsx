@@ -13,7 +13,7 @@ import { deviceTimeService } from '../../../consts/nRFDeviceConsts'
 type DeviceOnDisconnectTestScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_ON_DISCONNECT_TEST_SCREEN'>
 
 export function DeviceOnDisconnectTestScreen(_props: DeviceOnDisconnectTestScreenProps) {
-  const [expectedDeviceName, setExpectedDeviceName] = usePersistentDeviceName()
+  const { deviceName: expectedDeviceName, setDeviceName: setExpectedDeviceName } = usePersistentDeviceName()
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [deviceId, setDeviceId] = useState('')
   const [currentTest, setCurrentTest] = useState<null | 'disconnectByDevice' | 'disconnectByPLX'>(null)

@@ -34,7 +34,7 @@ describe("Test if Service is properly calling BleManager's utility function:", (
   test('monitorCharacteristic', async () => {
     const listener = jest.fn()
     await service.monitorCharacteristic('bbbb', listener, 'id')
-    expect(bleManager._monitorCharacteristicForService).toBeCalledWith('serviceId', 'bbbb', listener, 'id')
+    expect(bleManager._monitorCharacteristicForService).toBeCalledWith('serviceId', 'bbbb', listener, 'id', undefined)
   })
 
   test('readDescriptorForCharacteristic', async () => {

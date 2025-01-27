@@ -19,7 +19,7 @@ const NUMBER_OF_CALLS_IN_THE_TEST_SCENARIO = 10
 const CONNECTION_TIMEOUT = 5000
 
 export function DeviceConnectDisconnectTestScreen(_props: DeviceConnectDisconnectTestScreenProps) {
-  const [expectedDeviceName, setExpectedDeviceName] = usePersistentDeviceName()
+  const { deviceName: expectedDeviceName, setDeviceName: setExpectedDeviceName } = usePersistentDeviceName()
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [deviceId, setDeviceId] = useState('')
   const [connectCounter, setConnectCounter] = useState(0)

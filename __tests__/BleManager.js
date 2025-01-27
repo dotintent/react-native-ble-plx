@@ -340,7 +340,7 @@ test('BleManager properly monitors characteristic value', async () => {
   subscription.remove()
   expect(listener).toHaveBeenCalledTimes(2)
   expect(Native.BleModule.cancelTransaction).toBeCalledWith('x')
-  expect(Native.BleModule.monitorCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', 'x')
+  expect(Native.BleModule.monitorCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', 'x', undefined)
 })
 
 test('BleManager properly handles errors while monitoring characteristic values', async () => {
