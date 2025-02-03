@@ -54,9 +54,9 @@ jobs:
       matrix:
         configurations:
           [
-            { react_native_version: '0.72.6', node_version: 18 },
-            { react_native_version: '0.71.14', node_version: 18 },
-            { react_native_version: '0.70.13', node_version: 18 }
+            { react_native_version: '0.77.0', node_version: 18 },
+            { react_native_version: '0.76.6', node_version: 18 },
+            # { react_native_version: '0.75.4', node_version: 18 }
           ]
     env:
       TURBO_CACHE_DIR: .turbo/android
@@ -116,9 +116,9 @@ jobs:
       matrix:
         configurations:
           [
-            { react_native_version: '0.72.6', node_version: 18 },
-            { react_native_version: '0.71.14', node_version: 18 },
-            { react_native_version: '0.70.13', node_version: 18 }
+            { react_native_version: '0.77.0', node_version: 18 },
+            { react_native_version: '0.76.6', node_version: 18 },
+            { react_native_version: '0.75.4', node_version: 18 }
           ]
     env:
       TURBO_CACHE_DIR: .turbo/ios

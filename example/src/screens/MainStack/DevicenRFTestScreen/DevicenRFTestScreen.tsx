@@ -23,7 +23,7 @@ import { isAndroidSdkAbove34 } from '../../../utils/isAndroidAbove14'
 type DevicenRFTestScreenProps = NativeStackScreenProps<MainStackParamList, 'DEVICE_NRF_TEST_SCREEN'>
 
 export function DevicenRFTestScreen(_props: DevicenRFTestScreenProps) {
-  const [expectedDeviceName, setExpectedDeviceName] = usePersistentDeviceName()
+  const { deviceName: expectedDeviceName, setDeviceName: setExpectedDeviceName } = usePersistentDeviceName()
   const [testScanDevicesState, setTestScanDevicesState] = useState<TestStateType>('WAITING')
   const [testDeviceConnectedState, setTestDeviceConnectedState] = useState<TestStateType>('WAITING')
   const [testDiscoverServicesAndCharacteristicsFoundState, setTestDiscoverServicesAndCharacteristicsFoundState] =

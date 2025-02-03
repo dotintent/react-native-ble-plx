@@ -32,7 +32,7 @@ describe("Test if Characteristic is properly calling BleManager's utility functi
   test('monitor', async () => {
     const listener = jest.fn()
     await characteristic.monitor(listener, 'id')
-    expect(bleManager._monitorCharacteristic).toBeCalledWith('cId', listener, 'id')
+    expect(bleManager._monitorCharacteristic).toBeCalledWith('cId', listener, 'id', undefined)
   })
 
   test('readDescriptor', async () => {

@@ -568,7 +568,7 @@ export class BleManager {
       BleModule.discoverAllServicesAndCharacteristicsForDevice(deviceIdentifier, transactionId)
     )
     const services = await this._callPromise(BleModule.servicesForDevice(deviceIdentifier))
-    const serviceUUIDs = services.map(service => service.uuid)
+    const serviceUUIDs = (services || []).map(service => service.uuid)
 
     // $FlowFixMe
     const device = {
