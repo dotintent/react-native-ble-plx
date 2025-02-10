@@ -14,6 +14,7 @@ import type {
   Base64,
   Subscription
 } from './TypeDefinition'
+import { isIOS } from './Utils'
 
 /**
  * Characteristic object.
@@ -147,7 +148,9 @@ export class Characteristic implements NativeCharacteristic {
     transactionId: ?TransactionId,
     subscriptionType: ?CharacteristicSubscriptionType
   ): Subscription {
-    return this._manager._monitorCharacteristic(this.id, listener, transactionId, subscriptionType)
+    const commonArgs = [this.id, listener, transactionId]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+    return this._manager._monitorCharacteristic(...args)
   }
 
   /**

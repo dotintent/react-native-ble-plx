@@ -1,6 +1,7 @@
 // @flow
 'use strict'
 
+import { Platform } from 'react-native'
 import type { UUID } from './TypeDefinition'
 
 /**
@@ -24,3 +25,5 @@ export function fillStringWithArguments(value: string, object: Object): string {
     return object[arg] || '?'
   })
 }
+
+export const isIOS = Platform.OS === 'ios'

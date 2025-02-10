@@ -30,6 +30,7 @@ import type {
   ConnectionOptions,
   BleManagerOptions
 } from './TypeDefinition'
+import { isIOS } from './Utils'
 import { Platform } from 'react-native'
 
 const enableDisableDeprecatedMessage =
@@ -963,14 +964,11 @@ export class BleManager {
     subscriptionType: ?CharacteristicSubscriptionType
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
+    const commonArgs = [deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+
     return this._handleMonitorCharacteristic(
-      BleModule.monitorCharacteristicForDevice(
-        deviceIdentifier,
-        serviceUUID,
-        characteristicUUID,
-        filledTransactionId,
-        subscriptionType
-      ),
+      BleModule.monitorCharacteristicForDevice(...args),
       filledTransactionId,
       listener
     )
@@ -997,13 +995,11 @@ export class BleManager {
     subscriptionType: ?CharacteristicSubscriptionType
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
+    const commonArgs = [serviceIdentifier, characteristicUUID, filledTransactionId]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+
     return this._handleMonitorCharacteristic(
-      BleModule.monitorCharacteristicForService(
-        serviceIdentifier,
-        characteristicUUID,
-        filledTransactionId,
-        subscriptionType
-      ),
+      BleModule.monitorCharacteristicForService(...args),
       filledTransactionId,
       listener
     )
@@ -1029,11 +1025,10 @@ export class BleManager {
     subscriptionType: ?CharacteristicSubscriptionType
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
-    return this._handleMonitorCharacteristic(
-      BleModule.monitorCharacteristic(characteristicIdentifier, filledTransactionId, subscriptionType),
-      filledTransactionId,
-      listener
-    )
+    const commonArgs = [characteristicIdentifier, filledTransactionId]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+
+    return this._handleMonitorCharacteristic(BleModule.monitorCharacteristic(...args), filledTransactionId, listener)
   }
 
   /**
