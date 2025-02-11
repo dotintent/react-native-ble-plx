@@ -1211,7 +1211,7 @@ PODS:
     - React-jsiexecutor
     - React-RCTFBReactNativeSpec
     - ReactCommon/turbomodule/core
-  - react-native-ble-plx (3.4.0):
+  - react-native-ble-plx (3.5.0):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1917,7 +1917,7 @@ SPEC CHECKSUMS:
   React-logger: 9a0c4e1e41cd640ac49d69aacadab783f7e0096b
   React-Mapbuffer: 6993c785c22a170c02489bc78ed207814cbd700f
   React-microtasksnativemodule: 19230cd0933df6f6dc1336c9a9edc382d62638ae
-  react-native-ble-plx: f633f4cbdccb13cfebba990ec98dd2a908577e99
+  react-native-ble-plx: a9a719a39e5f286b2ea787698ffe3209e263c20a
   react-native-safe-area-context: 6b85173d2cee963d5232ac2fd260e8ebd63273dc
   React-nativeconfig: cd0fbb40987a9658c24dab5812c14e5522a64929
   React-NativeModulesApple: 45187d13c68d47250a7416b18ff082c7cc07bff7
@@ -1955,4 +1955,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1f6b8dae8c618b21f01439456de8661dd328d9b9
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2
