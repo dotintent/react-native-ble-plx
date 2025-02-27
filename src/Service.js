@@ -15,6 +15,7 @@ import type {
   TransactionId,
   CharacteristicSubscriptionType
 } from './TypeDefinition'
+import { isIOS } from './Utils'
 
 /**
  * Service object.
@@ -152,13 +153,10 @@ export class Service implements NativeService {
     transactionId: ?TransactionId,
     subscriptionType: ?CharacteristicSubscriptionType
   ): Subscription {
-    return this._manager._monitorCharacteristicForService(
-      this.id,
-      characteristicUUID,
-      listener,
-      transactionId,
-      subscriptionType
-    )
+    const commonArgs = [this.id, characteristicUUID, listener, transactionId]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+
+    return this._manager._monitorCharacteristicForService(...args)
   }
 
   /**

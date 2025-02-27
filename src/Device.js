@@ -17,6 +17,7 @@ import type {
   CharacteristicSubscriptionType,
   ConnectionOptions
 } from './TypeDefinition'
+import { isIOS } from './Utils'
 
 /**
  * Device instance which can be retrieved only by calling
@@ -317,14 +318,10 @@ export class Device implements NativeDevice {
     transactionId: ?TransactionId,
     subscriptionType?: CharacteristicSubscriptionType
   ): Subscription {
-    return this._manager.monitorCharacteristicForDevice(
-      this.id,
-      serviceUUID,
-      characteristicUUID,
-      listener,
-      transactionId,
-      subscriptionType
-    )
+    const commonArgs = [this.id, serviceUUID, characteristicUUID, listener, transactionId]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+
+    return this._manager.monitorCharacteristicForDevice(...args)
   }
 
   /**
