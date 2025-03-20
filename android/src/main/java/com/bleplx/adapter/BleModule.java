@@ -1563,27 +1563,33 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
 
   private void cleanServicesAndCharacteristicsForDevice(@NonNull Device device) {
     for (int i = discoveredServices.size() - 1; i >= 0; i--) {
-      int key = discoveredServices.keyAt(i);
-      Service service = discoveredServices.get(key);
+      if (i < discoveredServices.size()) { // guards concurrent changes in discoveredServices while iterating to avoid #1144
+        int key = discoveredServices.keyAt(i);
+        Service service = discoveredServices.get(key);
 
-      if (service.getDeviceID().equals(device.getId())) {
-        discoveredServices.remove(key);
+        if (service == null || service.getDeviceID().equals(device.getId())) {
+          discoveredServices.remove(key);
+        }
       }
     }
     for (int i = discoveredCharacteristics.size() - 1; i >= 0; i--) {
-      int key = discoveredCharacteristics.keyAt(i);
-      Characteristic characteristic = discoveredCharacteristics.get(key);
+      if (i < discoveredCharacteristics.size()) {
+        int key = discoveredCharacteristics.keyAt(i);
+        Characteristic characteristic = discoveredCharacteristics.get(key);
 
-      if (characteristic.getDeviceId().equals(device.getId())) {
-        discoveredCharacteristics.remove(key);
+        if (characteristic == null || characteristic.getDeviceId().equals(device.getId())) {
+          discoveredCharacteristics.remove(key);
+        }
       }
     }
 
     for (int i = discoveredDescriptors.size() - 1; i >= 0; i--) {
-      int key = discoveredDescriptors.keyAt(i);
-      Descriptor descriptor = discoveredDescriptors.get(key);
-      if (descriptor.getDeviceId().equals(device.getId())) {
-        discoveredDescriptors.remove(key);
+      if (i < discoveredDescriptors.size()) {
+        int key = discoveredDescriptors.keyAt(i);
+        Descriptor descriptor = discoveredDescriptors.get(key);
+        if (descriptor == null || descriptor.getDeviceId().equals(device.getId())) {
+          discoveredDescriptors.remove(key);
+        }
       }
     }
   }
