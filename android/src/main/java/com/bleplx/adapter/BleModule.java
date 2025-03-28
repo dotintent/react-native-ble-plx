@@ -1562,34 +1562,45 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
   }
 
   private void cleanServicesAndCharacteristicsForDevice(@NonNull Device device) {
-    for (int i = discoveredServices.size() - 1; i >= 0; i--) {
-      if (i < discoveredServices.size()) { // guards concurrent changes in discoveredServices while iterating to avoid #1144
-        int key = discoveredServices.keyAt(i);
-        Service service = discoveredServices.get(key);
-
-        if (service == null || service.getDeviceID().equals(device.getId())) {
-          discoveredServices.remove(key);
-        }
+    List<Integer> discoveredServicesKeysToRemove = new ArrayList<>();
+    for (int i = 0; i < discoveredServices.size(); i++) {
+      int key = discoveredServices.keyAt(i);
+      Service service = discoveredServices.get(key);
+      if (service == null || service.getDeviceID().equals(device.getId())) {
+          discoveredServicesKeysToRemove.add(key);
       }
     }
-    for (int i = discoveredCharacteristics.size() - 1; i >= 0; i--) {
-      if (i < discoveredCharacteristics.size()) {
-        int key = discoveredCharacteristics.keyAt(i);
-        Characteristic characteristic = discoveredCharacteristics.get(key);
-
-        if (characteristic == null || characteristic.getDeviceId().equals(device.getId())) {
-          discoveredCharacteristics.remove(key);
-        }
+    for (int key : discoveredServicesKeysToRemove) {
+      if (discoveredServices.contains(key)) {
+        discoveredServices.remove(key);
+      }
+    }
+    
+    List<Integer> discoveredCharacteristicsKeysToRemove = new ArrayList<>();
+    for (int i = 0; i < discoveredCharacteristics.size(); i++) {
+      int key = discoveredCharacteristics.keyAt(i);
+      Characteristic characteristic = discoveredCharacteristics.get(key);
+      if (characteristic == null || characteristic.getDeviceId().equals(device.getId())) {
+        discoveredCharacteristicsKeysToRemove.add(key);
+      }
+    }
+    for (int key : discoveredCharacteristicsKeysToRemove) {
+      if (discoveredCharacteristics.contains(key)) {
+        discoveredCharacteristics.remove(key);
       }
     }
 
-    for (int i = discoveredDescriptors.size() - 1; i >= 0; i--) {
-      if (i < discoveredDescriptors.size()) {
-        int key = discoveredDescriptors.keyAt(i);
-        Descriptor descriptor = discoveredDescriptors.get(key);
-        if (descriptor == null || descriptor.getDeviceId().equals(device.getId())) {
-          discoveredDescriptors.remove(key);
-        }
+    List<Integer> discoveredDescriptorsKeysToRemove = new ArrayList<>();
+    for (int i = 0; i < discoveredDescriptors.size(); i++) {
+      int key = discoveredDescriptors.keyAt(i);
+      Descriptor descriptor = discoveredDescriptors.get(key);
+      if (descriptor == null || descriptor.getDeviceId().equals(device.getId())) {
+        discoveredDescriptorsKeysToRemove.add(key);
+      }
+    }
+    for (int key : discoveredDescriptorsKeysToRemove) {
+      if (discoveredDescriptors.contains(key)) {
+        discoveredDescriptors.remove(key);
       }
     }
   }
