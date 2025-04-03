@@ -1571,7 +1571,7 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
       }
     }
     for (int key : discoveredServicesKeysToRemove) {
-      if (discoveredServices.contains(key)) {
+      if (discoveredServices.indexOfKey(key) >= 0) {
         discoveredServices.remove(key);
       }
     }
@@ -1585,7 +1585,7 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
       }
     }
     for (int key : discoveredCharacteristicsKeysToRemove) {
-      if (discoveredCharacteristics.contains(key)) {
+      if (discoveredCharacteristics.indexOfKey(key) >= 0) {
         discoveredCharacteristics.remove(key);
       }
     }
@@ -1599,7 +1599,7 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
       }
     }
     for (int key : discoveredDescriptorsKeysToRemove) {
-      if (discoveredDescriptors.contains(key)) {
+      if (discoveredDescriptors.indexOfKey(key) >= 0) {
         discoveredDescriptors.remove(key);
       }
     }
