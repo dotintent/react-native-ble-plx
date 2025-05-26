@@ -1562,27 +1562,44 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
   }
 
   private void cleanServicesAndCharacteristicsForDevice(@NonNull Device device) {
-    for (int i = discoveredServices.size() - 1; i >= 0; i--) {
+    List<Integer> discoveredServicesKeysToRemove = new ArrayList<>();
+    for (int i = 0; i < discoveredServices.size(); i++) {
       int key = discoveredServices.keyAt(i);
       Service service = discoveredServices.get(key);
-
-      if (service.getDeviceID().equals(device.getId())) {
+      if (service == null || service.getDeviceID().equals(device.getId())) {
+          discoveredServicesKeysToRemove.add(key);
+      }
+    }
+    for (int key : discoveredServicesKeysToRemove) {
+      if (discoveredServices.indexOfKey(key) >= 0) {
         discoveredServices.remove(key);
       }
     }
-    for (int i = discoveredCharacteristics.size() - 1; i >= 0; i--) {
+    
+    List<Integer> discoveredCharacteristicsKeysToRemove = new ArrayList<>();
+    for (int i = 0; i < discoveredCharacteristics.size(); i++) {
       int key = discoveredCharacteristics.keyAt(i);
       Characteristic characteristic = discoveredCharacteristics.get(key);
-
-      if (characteristic.getDeviceId().equals(device.getId())) {
+      if (characteristic == null || characteristic.getDeviceId().equals(device.getId())) {
+        discoveredCharacteristicsKeysToRemove.add(key);
+      }
+    }
+    for (int key : discoveredCharacteristicsKeysToRemove) {
+      if (discoveredCharacteristics.indexOfKey(key) >= 0) {
         discoveredCharacteristics.remove(key);
       }
     }
 
-    for (int i = discoveredDescriptors.size() - 1; i >= 0; i--) {
+    List<Integer> discoveredDescriptorsKeysToRemove = new ArrayList<>();
+    for (int i = 0; i < discoveredDescriptors.size(); i++) {
       int key = discoveredDescriptors.keyAt(i);
       Descriptor descriptor = discoveredDescriptors.get(key);
-      if (descriptor.getDeviceId().equals(device.getId())) {
+      if (descriptor == null || descriptor.getDeviceId().equals(device.getId())) {
+        discoveredDescriptorsKeysToRemove.add(key);
+      }
+    }
+    for (int key : discoveredDescriptorsKeysToRemove) {
+      if (discoveredDescriptors.indexOfKey(key) >= 0) {
         discoveredDescriptors.remove(key);
       }
     }
