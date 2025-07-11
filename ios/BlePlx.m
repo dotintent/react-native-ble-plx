@@ -54,10 +54,14 @@ RCT_EXPORT_MODULE();
     return YES;
 }
 
-RCT_EXPORT_METHOD(createClient:(NSString*)restoreIdentifierKey) {
-    _manager = [BleAdapterFactory getNewAdapterWithQueue:self.methodQueue
+RCT_EXPORT_METHOD(createClient:(id)restoreIdentifierKey) {
+  if (restoreIdentifierKey == nil || [restoreIdentifierKey isEqual:[NSNull null]] ||
+      ([restoreIdentifierKey isKindOfClass:[NSString class]] && [(NSString *)restoreIdentifierKey length] == 0)) {
+    restoreIdentifierKey = nil;
+  }
+  _manager = [BleAdapterFactory getNewAdapterWithQueue:dispatch_get_main_queue()
                                     restoreIdentifierKey:restoreIdentifierKey];
-    _manager.delegate = self;
+  _manager.delegate = self;
 }
 
 RCT_EXPORT_METHOD(destroyClient) {
@@ -97,7 +101,13 @@ RCT_EXPORT_METHOD(   state:(RCTPromiseResolveBlock)resolve
 
 RCT_EXPORT_METHOD(startDeviceScan:(NSArray*)filteredUUIDs
                           options:(NSDictionary*)options) {
-    [_manager startDeviceScan:filteredUUIDs options:options];
+  if (filteredUUIDs == nil || [filteredUUIDs isEqual:[NSNull null]]) {
+    filteredUUIDs = @[];
+  }
+  if (options == nil || [options isEqual:[NSNull null]]) {
+    options = @{};
+  }
+  [_manager startDeviceScan:filteredUUIDs options:options];
 }
 
 RCT_EXPORT_METHOD(stopDeviceScan) {
