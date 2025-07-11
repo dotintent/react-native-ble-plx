@@ -2,6 +2,14 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.5.1] - 2025-07-11
+
+### Fixed
+
+- Fixed iOS null/nil handling in `createClient` method to prevent crashes when null values are passed from JavaScript
+- Changed dispatch queue from `self.methodQueue` to `dispatch_get_main_queue()` for better thread safety
+- Added proper null/nil checks for `filteredUUIDs` and `options` parameters in `startDeviceScan` method
+
 ## [3.5.0] - 2025-02-07
 
 ### Changed
