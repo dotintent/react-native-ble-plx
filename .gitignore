@@ -62,3 +62,4 @@ buck-out/
 *.jsbundle
 /lib
 /test_project
+*.tsbuildinfo
