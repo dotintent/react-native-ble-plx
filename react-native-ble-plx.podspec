@@ -18,6 +18,15 @@ Pod::Spec.new do |s|
   s.dependency "MultiplatformBleAdapter", "0.2.0"
   s.compiler_flags = "-DMULTIPLATFORM_BLE_ADAPTER -fmodules -fcxx-modules"
 
+  # Optional iOS BLE restoration support (off by default).
+  # Consumers who want to integrate with a restoration registry can enable the
+  # `Restoration` subspec, which adds a small Swift adapter plus the
+  # BleRestoration pod dependency.
+  s.subspec "Restoration" do |ss|
+    ss.source_files = "ios/Restoration/**/*.{h,m,mm,swift}"
+    ss.dependency "BleRestoration"
+  end
+
   # Use install_modules_dependencies helper to install the dependencies if React Native version >=0.71.0.
   # See https://github.com/facebook/react-native/blob/febf6b7f33fdb4904669f99d795eba4c0f95d7bf/scripts/cocoapods/new_architecture.rb#L79.
   if respond_to?(:install_modules_dependencies, true)

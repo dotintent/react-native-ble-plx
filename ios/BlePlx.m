@@ -59,8 +59,18 @@ RCT_EXPORT_METHOD(createClient:(id)restoreIdentifierKey) {
       ([restoreIdentifierKey isKindOfClass:[NSString class]] && [(NSString *)restoreIdentifierKey length] == 0)) {
     restoreIdentifierKey = nil;
   }
-  _manager = [BleAdapterFactory getNewAdapterWithQueue:dispatch_get_main_queue()
-                                    restoreIdentifierKey:restoreIdentifierKey];
+  // If a restoration manager was created during background wakeup, reuse it so we keep
+  // CBCentralManager continuity and pending connections.
+  BleClientManager *restoredManager = [BlePlxRestorationState takeRestoredManager];
+
+  if (restoredManager != nil) {
+    _manager = restoredManager;
+  } else {
+    _manager = [BleAdapterFactory getNewAdapterWithQueue:dispatch_get_main_queue()
+                                      restoreIdentifierKey:restoreIdentifierKey];
+  }
+
+  // Always set the delegate to receive events after JS attaches.
   _manager.delegate = self;
 }
 

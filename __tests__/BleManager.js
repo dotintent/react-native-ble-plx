@@ -15,6 +15,8 @@ const nativeOperationCancelledError =
   '{"errorCode": 2, "attErrorCode": null, "iosErrorCode": null, "reason": null, "androidErrorCode": null}'
 
 beforeEach(() => {
+  BleManager.sharedInstance = null
+  restoreStateFunction.mockClear()
   Native.BleModule = {
     createClient: jest.fn(),
     destroyClient: jest.fn(),
@@ -44,6 +46,7 @@ beforeEach(() => {
     ScanEvent: 'scan_event',
     ReadEvent: 'read_event',
     StateChangeEvent: 'state_change_event',
+    RestoreStateEvent: 'restore_state_event',
     DisconnectionEvent: 'disconnection_event'
   }
   bleManager = new BleManager({
@@ -340,7 +343,7 @@ test('BleManager properly monitors characteristic value', async () => {
   subscription.remove()
   expect(listener).toHaveBeenCalledTimes(2)
   expect(Native.BleModule.cancelTransaction).toBeCalledWith('x')
-  expect(Native.BleModule.monitorCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', 'x', undefined)
+  expect(Native.BleModule.monitorCharacteristicForDevice).toBeCalledWith('id', 'aaaa', 'bbbb', 'x')
 })
 
 test('BleManager properly handles errors while monitoring characteristic values', async () => {
