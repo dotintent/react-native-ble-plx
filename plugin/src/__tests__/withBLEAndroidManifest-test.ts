@@ -109,3 +109,7 @@ describe('addBLEHardwareFeatureToManifest', () => {
     )
   })
 })
+jest.mock('expo/config', () => ({
+  getNameFromConfig: () => ({ appName: 'App', webName: 'App' }),
+  getConfig: () => ({ exp: { name: 'App', slug: 'app', web: {}, ios: {}, android: {} } })
+}))
