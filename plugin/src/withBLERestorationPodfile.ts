@@ -1,7 +1,12 @@
 import { withPodfile, type ConfigPlugin } from '@expo/config-plugins'
 
-const POD_LINE_TEMPLATE = (pkgName: string) =>
-  `  pod '${pkgName}/Restoration', :path => File.join(File.dirname(__FILE__), '../node_modules/${pkgName}')\n`
+// NPM package may be scoped (@scope/pkg) but the CocoaPods spec name is unscoped (pkg).
+const toPodName = (pkgName: string) => pkgName.includes('/') ? pkgName.split('/').pop()! : pkgName
+
+const POD_LINE_TEMPLATE = (pkgName: string) => {
+  const podName = toPodName(pkgName)
+  return `  pod '${podName}/Restoration', :path => File.join(File.dirname(__FILE__), '../node_modules/${pkgName}')\n`
+}
 
 // Pure helper for easier testing
 export function injectRestorationPodLine(podfile: string, pkgName: string): string {

@@ -34,6 +34,11 @@ describe('withBLERestorationPodfile', () => {
     expect(insertionIndex).toBeLessThan(postInstallIndex)
   })
 
+  it('strips npm scope for pod name', () => {
+    const result = injectRestorationPodLine(SAMPLE_PODFILE, '@scope/react-native-ble-plx')
+    expect(result).toContain("pod 'react-native-ble-plx/Restoration', :path => File.join(File.dirname(__FILE__), '../node_modules/@scope/react-native-ble-plx')")
+  })
+
   it('is idempotent', () => {
     const initial = injectRestorationPodLine(SAMPLE_PODFILE, 'react-native-ble-plx')
     const again = injectRestorationPodLine(initial, 'react-native-ble-plx')
