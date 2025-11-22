@@ -254,7 +254,13 @@ To publish a new version of the package:
    git push origin master
    ```
 
-4. **Build and publish:**
+4. **Create and push git tag:**
+   ```bash
+   git tag vX.Y.Z -m "Release vX.Y.Z"
+   git push origin vX.Y.Z
+   ```
+
+5. **Build and publish:**
    ```bash
    pnpm run prepack
    pnpm publish --access public --no-git-checks
