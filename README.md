@@ -36,7 +36,8 @@ It does NOT support:
 3. [Documentation & Support](#documentation--support)
 4. [Configuration & Installation](#configuration--installation)
 5. [Troubleshooting](#troubleshooting)
-6. [Contributions](#contributions)
+6. [Releasing](#releasing)
+7. [Contributions](#contributions)
 
 ## Compatibility
 
@@ -227,6 +228,43 @@ const manager = new BleManager({
    With `neverForLocation` flag active, you no longer need to ask for `ACCESS_FINE_LOCATION` in your app
 
 ## Troubleshooting
+
+## Releasing
+
+To publish a new version of the package:
+
+1. **Ensure all tests pass:**
+   ```bash
+   pnpm test:package
+   pnpm test:plugin
+   ```
+
+2. **Commit your changes** with a conventional commit message:
+   ```bash
+   git add .
+   git commit -m "fix: description of fix"
+   git push origin master
+   ```
+
+3. **Bump version** in `package.json` (follow semver):
+   ```bash
+   # Edit package.json to update version
+   git add package.json
+   git commit -m "chore: release X.Y.Z"
+   git push origin master
+   ```
+
+4. **Build and publish:**
+   ```bash
+   pnpm run prepack
+   pnpm publish --access public --no-git-checks
+   ```
+
+**Commit message conventions:**
+- `fix:` - Bug fixes (patch version)
+- `feat:` - New features (minor version)
+- `chore:` - Maintenance tasks
+- `docs:` - Documentation updates
 
 ## Contributions
 
