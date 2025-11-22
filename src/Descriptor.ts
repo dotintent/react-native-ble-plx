@@ -51,6 +51,13 @@ export class Descriptor implements NativeDescriptor {
    * @private
    */
   constructor(nativeDescriptor: NativeDescriptor, manager: BleManager) {
+    if (!nativeDescriptor) {
+      throw new Error('Descriptor constructor: nativeDescriptor cannot be null or undefined')
+    }
+    if (!manager) {
+      throw new Error('Descriptor constructor: manager cannot be null or undefined')
+    }
+
     Object.assign(this, nativeDescriptor)
     Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
 

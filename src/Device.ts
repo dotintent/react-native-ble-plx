@@ -105,6 +105,13 @@ export class Device implements NativeDevice {
    * @private
    */
   constructor(nativeDevice: NativeDevice, manager: BleManager) {
+    if (!nativeDevice) {
+      throw new Error('Device constructor: nativeDevice cannot be null or undefined')
+    }
+    if (!manager) {
+      throw new Error('Device constructor: manager cannot be null or undefined')
+    }
+
     Object.assign(this, nativeDevice)
     Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
 
@@ -332,11 +339,9 @@ export class Device implements NativeDevice {
     transactionId: TransactionId | null = null,
     subscriptionType?: CharacteristicSubscriptionType
   ): Subscription {
-    if (isIOS) {
-      return this._manager.monitorCharacteristicForDevice(this.id, serviceUUID, characteristicUUID, listener, transactionId || undefined, null)
-    } else {
-      return this._manager.monitorCharacteristicForDevice(this.id, serviceUUID, characteristicUUID, listener, transactionId || undefined, subscriptionType)
-    }
+    const commonArgs = [this.id, serviceUUID, characteristicUUID, listener, transactionId || undefined]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+    return this._manager.monitorCharacteristicForDevice(...args)
   }
 
   /**

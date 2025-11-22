@@ -49,6 +49,13 @@ export class Service implements NativeService {
    * @ignore
    */
   constructor(nativeService: NativeService, manager: BleManager) {
+    if (!nativeService) {
+      throw new Error('Service constructor: nativeService cannot be null or undefined')
+    }
+    if (!manager) {
+      throw new Error('Service constructor: manager cannot be null or undefined')
+    }
+
     Object.assign(this, nativeService)
     Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
 
@@ -157,11 +164,9 @@ export class Service implements NativeService {
     transactionId: TransactionId | null = null,
     subscriptionType: CharacteristicSubscriptionType | null = null
   ): Subscription {
-    if (isIOS) {
-       return this._manager._monitorCharacteristicForService(this.id, characteristicUUID, listener, transactionId || undefined, null)
-    } else {
-       return this._manager._monitorCharacteristicForService(this.id, characteristicUUID, listener, transactionId || undefined, subscriptionType)
-    }
+    const commonArgs = [this.id, characteristicUUID, listener, transactionId || undefined]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+    return this._manager._monitorCharacteristicForService(...args)
   }
 
   /**

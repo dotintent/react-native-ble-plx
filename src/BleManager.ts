@@ -972,22 +972,14 @@ export class BleManager {
     subscriptionType?: CharacteristicSubscriptionType | null
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
-    const commonArgs = [deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId] as const
+    const commonArgs = [deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType || null]
 
-    if (isIOS) {
-        return this._handleMonitorCharacteristic(
-            BleModule.monitorCharacteristicForDevice(...commonArgs, null),
-            filledTransactionId,
-            listener
-        )
-    } else {
-        const args = [...commonArgs, subscriptionType || null] as const
-        return this._handleMonitorCharacteristic(
-            BleModule.monitorCharacteristicForDevice(...args),
-            filledTransactionId,
-            listener
-        )
-    }
+    return this._handleMonitorCharacteristic(
+        BleModule.monitorCharacteristicForDevice(...args),
+        filledTransactionId,
+        listener
+    )
   }
 
   /**

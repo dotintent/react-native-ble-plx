@@ -78,6 +78,13 @@ export class Characteristic implements NativeCharacteristic {
    * @private
    */
   constructor(nativeCharacteristic: NativeCharacteristic, manager: BleManager) {
+    if (!nativeCharacteristic) {
+      throw new Error('Characteristic constructor: nativeCharacteristic cannot be null or undefined')
+    }
+    if (!manager) {
+      throw new Error('Characteristic constructor: manager cannot be null or undefined')
+    }
+
     Object.assign(this, nativeCharacteristic)
     Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
 
@@ -160,11 +167,9 @@ export class Characteristic implements NativeCharacteristic {
     transactionId: TransactionId | null = null,
     subscriptionType: CharacteristicSubscriptionType | null = null
   ): Subscription {
-    if (isIOS) {
-      return this._manager._monitorCharacteristic(this.id, listener, transactionId || undefined, null);
-    } else {
-      return this._manager._monitorCharacteristic(this.id, listener, transactionId || undefined, subscriptionType);
-    }
+    const commonArgs = [this.id, listener, transactionId || undefined]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+    return this._manager._monitorCharacteristic(...args)
   }
 
   /**

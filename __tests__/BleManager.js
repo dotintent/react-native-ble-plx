@@ -14,6 +14,71 @@ const restoreStateFunction = jest.fn()
 const nativeOperationCancelledError =
   '{"errorCode": 2, "attErrorCode": null, "iosErrorCode": null, "reason": null, "androidErrorCode": null}'
 
+// Helper function to create mock NativeDevice objects
+function createMockDevice(overrides = {}) {
+  return {
+    id: 'mock-device-id',
+    name: 'Mock Device',
+    rssi: -50,
+    mtu: 23,
+    manufacturerData: null,
+    rawScanRecord: '',
+    serviceData: null,
+    serviceUUIDs: null,
+    localName: null,
+    txPowerLevel: null,
+    solicitedServiceUUIDs: null,
+    isConnectable: true,
+    overflowServiceUUIDs: null,
+    ...overrides
+  }
+}
+
+// Helper function to create mock NativeService objects
+function createMockService(overrides = {}) {
+  return {
+    id: 'mock-service-id',
+    uuid: 'mock-service-uuid',
+    deviceID: 'mock-device-id',
+    isPrimary: true,
+    ...overrides
+  }
+}
+
+// Helper function to create mock NativeCharacteristic objects
+function createMockCharacteristic(overrides = {}) {
+  return {
+    id: 'mock-characteristic-id',
+    uuid: 'mock-characteristic-uuid',
+    serviceID: 'mock-service-id',
+    serviceUUID: 'mock-service-uuid',
+    deviceID: 'mock-device-id',
+    isReadable: true,
+    isWritableWithResponse: true,
+    isWritableWithoutResponse: false,
+    isNotifiable: true,
+    isNotifying: false,
+    isIndicatable: false,
+    value: null,
+    ...overrides
+  }
+}
+
+// Helper function to create mock NativeDescriptor objects
+function createMockDescriptor(overrides = {}) {
+  return {
+    id: 'mock-descriptor-id',
+    uuid: 'mock-descriptor-uuid',
+    characteristicID: 'mock-characteristic-id',
+    characteristicUUID: 'mock-characteristic-uuid',
+    serviceID: 'mock-service-id',
+    serviceUUID: 'mock-service-uuid',
+    deviceID: 'mock-device-id',
+    value: null,
+    ...overrides
+  }
+}
+
 beforeEach(() => {
   BleManager.sharedInstance = null
   restoreStateFunction.mockClear()
@@ -28,11 +93,11 @@ beforeEach(() => {
     state: jest.fn(),
     startDeviceScan: jest.fn(),
     stopDeviceScan: jest.fn(),
-    readRSSIForDevice: jest.fn(),
+    readRSSIForDevice: jest.fn().mockResolvedValue(createMockDevice()),
     connectToDevice: jest.fn(),
     cancelDeviceConnection: jest.fn(),
     isDeviceConnected: jest.fn(),
-    discoverAllServicesAndCharacteristicsForDevice: jest.fn(),
+    discoverAllServicesAndCharacteristicsForDevice: jest.fn().mockResolvedValue(createMockDevice()),
     servicesForDevice: jest.fn(),
     characteristicsForDevice: jest.fn(),
     descriptorsForDevice: jest.fn(),
@@ -41,8 +106,8 @@ beforeEach(() => {
     monitorCharacteristicForDevice: jest.fn(),
     readDescriptorForDevice: jest.fn(),
     writeDescriptorForDevice: jest.fn(),
-    requestMTUForDevice: jest.fn(),
-    requestConnectionPriorityForDevice: jest.fn(),
+    requestMTUForDevice: jest.fn().mockResolvedValue(createMockDevice({ mtu: 512 })),
+    requestConnectionPriorityForDevice: jest.fn().mockResolvedValue(createMockDevice()),
     ScanEvent: 'scan_event',
     ReadEvent: 'read_event',
     StateChangeEvent: 'state_change_event',
