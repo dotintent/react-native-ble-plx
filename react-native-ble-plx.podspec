@@ -11,10 +11,11 @@ Pod::Spec.new do |s|
   s.license      = package["license"]
   s.authors      = package["author"]
 
-  s.platforms    = { :ios => "11.0" }
+  s.platforms    = { :ios => "13.4" }
   s.source       = { :git => "https://github.com/dotintent/react-native-ble-plx.git", :tag => "#{s.version}" }
 
   s.source_files = "ios/**/*.{h,m,mm}"
+  s.resource_bundles = { 'BlePlx' => ['ios/PrivacyInfo.xcprivacy'] }
   s.dependency "MultiplatformBleAdapter", "0.2.0"
   s.compiler_flags = "-DMULTIPLATFORM_BLE_ADAPTER -fmodules -fcxx-modules"
 

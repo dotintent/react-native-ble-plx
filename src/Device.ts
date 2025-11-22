@@ -1,5 +1,3 @@
-// @flow
-'use strict'
 
 import type { BleManager } from './BleManager'
 import type { BleError } from './BleError'
@@ -38,12 +36,12 @@ export class Device implements NativeDevice {
   /**
    * Device name if present
    */
-  name: ?string
+  name: string | null
 
   /**
    * Current Received Signal Strength Indication of device
    */
-  rssi: ?number
+  rssi: number | null
 
   /**
    * Current Maximum Transmission Unit for this device. When device is not connected
@@ -56,7 +54,7 @@ export class Device implements NativeDevice {
   /**
    * Device's custom manufacturer data. Its format is defined by manufacturer.
    */
-  manufacturerData: ?Base64
+  manufacturerData: Base64 | null
 
   /**
    * Raw device scan data. When you have specific advertiser data,
@@ -67,37 +65,37 @@ export class Device implements NativeDevice {
   /**
    * Map of service UUIDs (as keys) with associated data (as values).
    */
-  serviceData: ?{ [uuid: UUID]: Base64 }
+  serviceData: { [uuid: UUID]: Base64 } | null
 
   /**
    * List of available services visible during scanning.
    */
-  serviceUUIDs: ?Array<UUID>
+  serviceUUIDs: Array<UUID> | null
 
   /**
    * User friendly name of device.
    */
-  localName: ?string
+  localName: string | null
 
   /**
    * Transmission power level of device.
    */
-  txPowerLevel: ?number
+  txPowerLevel: number | null
 
   /**
    * List of solicited service UUIDs.
    */
-  solicitedServiceUUIDs: ?Array<UUID>
+  solicitedServiceUUIDs: Array<UUID> | null
 
   /**
    * Is device connectable. [iOS only]
    */
-  isConnectable: ?boolean
+  isConnectable: boolean | null
 
   /**
    * List of overflow service UUIDs. [iOS only]
    */
-  overflowServiceUUIDs: ?Array<UUID>
+  overflowServiceUUIDs: Array<UUID> | null
 
   /**
    * Private constructor used to create {@link Device} object.
@@ -109,6 +107,22 @@ export class Device implements NativeDevice {
   constructor(nativeDevice: NativeDevice, manager: BleManager) {
     Object.assign(this, nativeDevice)
     Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
+
+    // Manually assign properties since Object.assign doesn't satisfy Typescript compiler for class properties
+    this.id = nativeDevice.id
+    this.name = nativeDevice.name
+    this.rssi = nativeDevice.rssi
+    this.mtu = nativeDevice.mtu
+    this.manufacturerData = nativeDevice.manufacturerData
+    this.rawScanRecord = nativeDevice.rawScanRecord
+    this.serviceData = nativeDevice.serviceData
+    this.serviceUUIDs = nativeDevice.serviceUUIDs
+    this.localName = nativeDevice.localName
+    this.txPowerLevel = nativeDevice.txPowerLevel
+    this.solicitedServiceUUIDs = nativeDevice.solicitedServiceUUIDs
+    this.isConnectable = nativeDevice.isConnectable
+    this.overflowServiceUUIDs = nativeDevice.overflowServiceUUIDs
+    this._manager = manager
   }
 
   /**
@@ -119,8 +133,8 @@ export class Device implements NativeDevice {
    * @returns {Promise<Device>} Connected device.
    */
   requestConnectionPriority(
-    connectionPriority: $Values<typeof ConnectionPriority>,
-    transactionId: ?TransactionId
+    connectionPriority: ConnectionPriority,
+    transactionId?: TransactionId
   ): Promise<Device> {
     return this._manager.requestConnectionPriorityForDevice(this.id, connectionPriority, transactionId)
   }
@@ -131,7 +145,7 @@ export class Device implements NativeDevice {
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation.
    * @returns {Promise<Device>} This device with updated RSSI value.
    */
-  readRSSI(transactionId: ?TransactionId): Promise<Device> {
+  readRSSI(transactionId?: TransactionId): Promise<Device> {
     return this._manager.readRSSIForDevice(this.id, transactionId)
   }
 
@@ -141,7 +155,7 @@ export class Device implements NativeDevice {
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation.
    * @returns {Promise<Device>} Device with updated MTU size. Default value is 23.
    */
-  requestMTU(mtu: number, transactionId: ?TransactionId): Promise<Device> {
+  requestMTU(mtu: number, transactionId?: TransactionId): Promise<Device> {
     return this._manager.requestMTUForDevice(this.id, mtu, transactionId)
   }
 
@@ -151,7 +165,7 @@ export class Device implements NativeDevice {
    * @param {?ConnectionOptions} options Platform specific options for connection establishment. Not used currently.
    * @returns {Promise<Device>} Connected {@link Device} object if successful.
    */
-  connect(options: ?ConnectionOptions): Promise<Device> {
+  connect(options?: ConnectionOptions): Promise<Device> {
     return this._manager.connectToDevice(this.id, options)
   }
 
@@ -181,7 +195,7 @@ export class Device implements NativeDevice {
    * {@link #blemanagercanceldeviceconnection|bleManager.cancelDeviceConnection()} call.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
-  onDisconnected(listener: (error: ?BleError, device: Device) => void): Subscription {
+  onDisconnected(listener: (error: BleError | null, device: Device) => void): Subscription {
     return this._manager.onDeviceDisconnected(this.id, listener)
   }
 
@@ -192,7 +206,7 @@ export class Device implements NativeDevice {
    * @returns {Promise<Device>} Promise which emits {@link Device} object if all available services and
    * characteristics have been discovered.
    */
-  discoverAllServicesAndCharacteristics(transactionId: ?TransactionId): Promise<Device> {
+  discoverAllServicesAndCharacteristics(transactionId?: TransactionId): Promise<Device> {
     return this._manager.discoverAllServicesAndCharacteristicsForDevice(this.id, transactionId)
   }
 
@@ -242,7 +256,7 @@ export class Device implements NativeDevice {
   readCharacteristicForService(
     serviceUUID: UUID,
     characteristicUUID: UUID,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     return this._manager.readCharacteristicForDevice(this.id, serviceUUID, characteristicUUID, transactionId)
   }
@@ -262,7 +276,7 @@ export class Device implements NativeDevice {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     return this._manager.writeCharacteristicWithResponseForDevice(
       this.id,
@@ -288,7 +302,7 @@ export class Device implements NativeDevice {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     return this._manager.writeCharacteristicWithoutResponseForDevice(
       this.id,
@@ -314,14 +328,15 @@ export class Device implements NativeDevice {
   monitorCharacteristicForService(
     serviceUUID: UUID,
     characteristicUUID: UUID,
-    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId,
+    listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+    transactionId: TransactionId | null = null,
     subscriptionType?: CharacteristicSubscriptionType
   ): Subscription {
-    const commonArgs = [this.id, serviceUUID, characteristicUUID, listener, transactionId]
-    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
-
-    return this._manager.monitorCharacteristicForDevice(...args)
+    if (isIOS) {
+      return this._manager.monitorCharacteristicForDevice(this.id, serviceUUID, characteristicUUID, listener, transactionId || undefined, null)
+    } else {
+      return this._manager.monitorCharacteristicForDevice(this.id, serviceUUID, characteristicUUID, listener, transactionId || undefined, subscriptionType)
+    }
   }
 
   /**
@@ -339,7 +354,7 @@ export class Device implements NativeDevice {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     descriptorUUID: UUID,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     return this._manager.readDescriptorForDevice(
       this.id,
@@ -365,7 +380,7 @@ export class Device implements NativeDevice {
     characteristicUUID: UUID,
     descriptorUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     return this._manager.writeDescriptorForDevice(
       this.id,

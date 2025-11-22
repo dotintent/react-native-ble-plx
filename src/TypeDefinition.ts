@@ -1,7 +1,5 @@
-// @flow
-'use strict'
 
-import type { Device } from './Device'
+import { Device } from './Device'
 import { BleErrorCode } from './BleError'
 
 /**
@@ -55,7 +53,7 @@ export interface Subscription {
 /**
  * Type of error code mapping table
  */
-export type BleErrorCodeMessageMapping = { [$Values<typeof BleErrorCode>]: string }
+export type BleErrorCodeMessageMapping = { [key in BleErrorCode]: string }
 
 /**
  * Options which can be passed to when creating BLE Manager
@@ -77,7 +75,7 @@ export interface BleManagerOptions {
    * @memberof BleManagerOptions
    * @instance
    */
-  restoreStateFunction?: (restoredState: ?BleRestoredState) => void;
+  restoreStateFunction?: (restoredState: BleRestoredState | null) => void;
 
   /**
    * Optional mapping of error codes to error messages. Uses {@link BleErrorCodeMessage}
@@ -108,54 +106,54 @@ export interface BleRestoredState {
 /**
  * Scan mode for Bluetooth LE scan.
  */
-export const ScanMode = {
+export enum ScanMode {
   /**
    * A special Bluetooth LE scan mode. Applications using this scan mode will passively listen for
    * other scan results without starting BLE scans themselves.
    */
-  Opportunistic: -1,
+  Opportunistic = -1,
 
   /**
    * Perform Bluetooth LE scan in low power mode. This is the default scan mode as it consumes the
    * least power. [default value]
    */
-  LowPower: 0,
+  LowPower = 0,
 
   /**
    * Perform Bluetooth LE scan in balanced power mode. Scan results are returned at a rate that
    * provides a good trade-off between scan frequency and power consumption.
    */
-  Balanced: 1,
+  Balanced = 1,
 
   /**
    * Scan using highest duty cycle. It's recommended to only use this mode when the application is
    * running in the foreground.
    */
-  LowLatency: 2
+  LowLatency = 2
 }
 
 /**
  * Scan callback type for Bluetooth LE scan.
  * @name ScanCallbackType
  */
-export const ScanCallbackType = {
+export enum ScanCallbackType {
   /**
    * Trigger a callback for every Bluetooth advertisement found that matches the filter criteria.
    * If no filter is active, all advertisement packets are reported. [default value]
    */
-  AllMatches: 1,
+  AllMatches = 1,
 
   /**
    * A result callback is only triggered for the first advertisement packet received that matches
    * the filter criteria.
    */
-  FirstMatch: 2,
+  FirstMatch = 2,
 
   /**
    * Receive a callback when advertisements are no longer received from a device that has been
    * previously reported by a first match callback.
    */
-  MatchLost: 4
+  MatchLost = 4
 }
 
 /**
@@ -175,14 +173,14 @@ export interface ScanOptions {
    * @memberof ScanOptions
    * @instance
    */
-  scanMode?: $Values<typeof ScanMode>;
+  scanMode?: ScanMode;
 
   /**
    * Scan callback type for Bluetooth LE scan [Android only]
    * @memberof ScanOptions
    * @instance
    */
-  callbackType?: $Values<typeof ScanCallbackType>;
+  callbackType?: ScanCallbackType;
   /**
    * Use legacyScan (default true) [Android only]
    * https://developer.android.com/reference/android/bluetooth/le/ScanSettings.Builder#setLegacy(boolean)
@@ -236,79 +234,79 @@ export interface ConnectionOptions {
  * Device Bluetooth Low Energy state. It's keys are used to check {@link #blemanagerstate} values
  * received by {@link BleManager}
  */
-export const State = {
+export enum State {
   /**
    * The current state of the manager is unknown; an update is imminent.
    */
-  Unknown: 'Unknown',
+  Unknown = 'Unknown',
   /**
    * The connection with the system service was momentarily lost; an update is imminent.
    */
-  Resetting: 'Resetting',
+  Resetting = 'Resetting',
   /**
    * The platform does not support Bluetooth low energy.
    */
-  Unsupported: 'Unsupported',
+  Unsupported = 'Unsupported',
   /**
    * The app is not authorized to use Bluetooth low energy.
    */
-  Unauthorized: 'Unauthorized',
+  Unauthorized = 'Unauthorized',
   /**
    * Bluetooth is currently powered off.
    */
-  PoweredOff: 'PoweredOff',
+  PoweredOff = 'PoweredOff',
   /**
    * Bluetooth is currently powered on and available to use.
    */
-  PoweredOn: 'PoweredOn'
+  PoweredOn = 'PoweredOn'
 }
 
 /**
  * Native module logging log level. By default it is set to None.
  * @name LogLevel
  */
-export const LogLevel = {
+export enum LogLevel {
   /**
    * Logging in native module is disabled
    */
-  None: 'None',
+  None = 'None',
   /**
    * All logs in native module are shown
    */
-  Verbose: 'Verbose',
+  Verbose = 'Verbose',
   /**
    * Only debug logs and of higher importance are shown in native module.
    */
-  Debug: 'Debug',
+  Debug = 'Debug',
   /**
    * Only info logs and of higher importance are shown in native module.
    */
-  Info: 'Info',
+  Info = 'Info',
   /**
    * Only warning logs and of higher importance are shown in native module.
    */
-  Warning: 'Warning',
+  Warning = 'Warning',
   /**
    * Only error logs and of higher importance are shown in native module.
    */
-  Error: 'Error'
+  Error = 'Error'
 }
 
 /**
  * Connection priority of BLE link determining the balance between power consumption and data throughput.
  * @name ConnectionPriority
  */
-export const ConnectionPriority = {
+export enum ConnectionPriority {
   /**
    * Default, recommended option balanced between power consumption and data throughput.
    */
-  Balanced: 0,
+  Balanced = 0,
   /**
    * High priority, low latency connection, which increases transfer speed at the expense of power consumption.
    */
-  High: 1,
+  High = 1,
   /**
    * Low power, reduced data rate connection setup.
    */
-  LowPower: 2
+  LowPower = 2
 }

@@ -1,6 +1,3 @@
-// @flow
-'use strict'
-
 import type { BleManager } from './BleManager'
 import type { NativeDescriptor } from './BleModule'
 import type { DeviceId, Identifier, UUID, TransactionId, Base64 } from './TypeDefinition'
@@ -45,7 +42,7 @@ export class Descriptor implements NativeDescriptor {
   /**
    * Descriptor value if present
    */
-  value: ?Base64
+  value: Base64 | null
 
   /**
    * Private constructor used to create instance of {@link Descriptor}.
@@ -56,6 +53,17 @@ export class Descriptor implements NativeDescriptor {
   constructor(nativeDescriptor: NativeDescriptor, manager: BleManager) {
     Object.assign(this, nativeDescriptor)
     Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
+
+    // Manually assign properties since Object.assign doesn't satisfy Typescript compiler for class properties
+    this.id = nativeDescriptor.id
+    this.uuid = nativeDescriptor.uuid
+    this.characteristicID = nativeDescriptor.characteristicID
+    this.characteristicUUID = nativeDescriptor.characteristicUUID
+    this.serviceID = nativeDescriptor.serviceID
+    this.serviceUUID = nativeDescriptor.serviceUUID
+    this.deviceID = nativeDescriptor.deviceID
+    this.value = nativeDescriptor.value
+    this._manager = manager
   }
 
   /**
@@ -66,7 +74,7 @@ export class Descriptor implements NativeDescriptor {
    * @returns {Promise<Descriptor>} Promise which emits first {@link Descriptor} object matching specified
    * UUID paths. Latest value of {@link Descriptor} will be stored inside returned object.
    */
-  async read(transactionId: ?TransactionId): Promise<Descriptor> {
+  async read(transactionId?: TransactionId): Promise<Descriptor> {
     return this._manager._readDescriptor(this.id, transactionId)
   }
 
@@ -77,7 +85,7 @@ export class Descriptor implements NativeDescriptor {
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<Descriptor>} Descriptor which saved passed value.
    */
-  async write(valueBase64: Base64, transactionId: ?TransactionId): Promise<Descriptor> {
+  async write(valueBase64: Base64, transactionId?: TransactionId): Promise<Descriptor> {
     return this._manager._writeDescriptor(this.id, valueBase64, transactionId)
   }
 }

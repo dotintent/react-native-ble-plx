@@ -1,6 +1,3 @@
-// @flow
-'use strict'
-
 import type { BleManager } from './BleManager'
 import type { BleError } from './BleError'
 import { Descriptor } from './Descriptor'
@@ -72,7 +69,7 @@ export class Characteristic implements NativeCharacteristic {
   /**
    * Characteristic value if present
    */
-  value: ?Base64
+  value: Base64 | null
 
   /**
    * Private constructor used to create instance of {@link Characteristic}.
@@ -83,6 +80,21 @@ export class Characteristic implements NativeCharacteristic {
   constructor(nativeCharacteristic: NativeCharacteristic, manager: BleManager) {
     Object.assign(this, nativeCharacteristic)
     Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
+
+    // Manually assign properties since Object.assign doesn't satisfy Typescript compiler for class properties
+    this.id = nativeCharacteristic.id
+    this.uuid = nativeCharacteristic.uuid
+    this.serviceID = nativeCharacteristic.serviceID
+    this.serviceUUID = nativeCharacteristic.serviceUUID
+    this.deviceID = nativeCharacteristic.deviceID
+    this.isReadable = nativeCharacteristic.isReadable
+    this.isWritableWithResponse = nativeCharacteristic.isWritableWithResponse
+    this.isWritableWithoutResponse = nativeCharacteristic.isWritableWithoutResponse
+    this.isNotifiable = nativeCharacteristic.isNotifiable
+    this.isNotifying = nativeCharacteristic.isNotifying
+    this.isIndicatable = nativeCharacteristic.isIndicatable
+    this.value = nativeCharacteristic.value
+    this._manager = manager
   }
 
   /**
@@ -103,7 +115,7 @@ export class Characteristic implements NativeCharacteristic {
    * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value will be stored
    * inside returned object.
    */
-  read(transactionId: ?TransactionId): Promise<Characteristic> {
+  read(transactionId?: TransactionId): Promise<Characteristic> {
     return this._manager._readCharacteristic(this.id, transactionId)
   }
 
@@ -116,7 +128,7 @@ export class Characteristic implements NativeCharacteristic {
    * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value may
    * not be stored inside returned object.
    */
-  writeWithResponse(valueBase64: Base64, transactionId: ?TransactionId): Promise<Characteristic> {
+  writeWithResponse(valueBase64: Base64, transactionId?: TransactionId): Promise<Characteristic> {
     return this._manager._writeCharacteristicWithResponse(this.id, valueBase64, transactionId)
   }
 
@@ -129,7 +141,7 @@ export class Characteristic implements NativeCharacteristic {
    * @returns {Promise<Characteristic>} Promise which emits this {@link Characteristic}. Latest value may
    * not be stored inside returned object.
    */
-  writeWithoutResponse(valueBase64: Base64, transactionId: ?TransactionId): Promise<Characteristic> {
+  writeWithoutResponse(valueBase64: Base64, transactionId?: TransactionId): Promise<Characteristic> {
     return this._manager._writeCharacteristicWithoutResponse(this.id, valueBase64, transactionId)
   }
 
@@ -144,13 +156,15 @@ export class Characteristic implements NativeCharacteristic {
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
   monitor(
-    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId,
-    subscriptionType: ?CharacteristicSubscriptionType
+    listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+    transactionId: TransactionId | null = null,
+    subscriptionType: CharacteristicSubscriptionType | null = null
   ): Subscription {
-    const commonArgs = [this.id, listener, transactionId]
-    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
-    return this._manager._monitorCharacteristic(...args)
+    if (isIOS) {
+      return this._manager._monitorCharacteristic(this.id, listener, transactionId || undefined, null);
+    } else {
+      return this._manager._monitorCharacteristic(this.id, listener, transactionId || undefined, subscriptionType);
+    }
   }
 
   /**
@@ -162,7 +176,7 @@ export class Characteristic implements NativeCharacteristic {
    * @returns {Promise<Descriptor>} Promise which emits first {@link Descriptor} object matching specified
    * UUID paths. Latest value of {@link Descriptor} will be stored inside returned object.
    */
-  async readDescriptor(descriptorUUID: UUID, transactionId: ?TransactionId): Promise<Descriptor> {
+  async readDescriptor(descriptorUUID: UUID, transactionId?: TransactionId): Promise<Descriptor> {
     return this._manager._readDescriptorForCharacteristic(this.id, descriptorUUID, transactionId)
   }
 
@@ -174,7 +188,7 @@ export class Characteristic implements NativeCharacteristic {
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<Descriptor>} Descriptor which saved passed value.
    */
-  async writeDescriptor(descriptorUUID: UUID, valueBase64: Base64, transactionId: ?TransactionId): Promise<Descriptor> {
+  async writeDescriptor(descriptorUUID: UUID, valueBase64: Base64, transactionId?: TransactionId): Promise<Descriptor> {
     return this._manager._writeDescriptorForCharacteristic(this.id, descriptorUUID, valueBase64, transactionId)
   }
 }
