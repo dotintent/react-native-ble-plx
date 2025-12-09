@@ -172,6 +172,22 @@ export class BleManager {
   }
 
   /**
+   * Debug method to check if BLE restoration components are available.
+   * Useful for diagnosing issues with the Restoration subspec installation.
+   *
+   * @returns {Promise<{blePlxRestorationAdapterFound: boolean, bleRestorationRegistryFound: boolean, hasRegisterSelector: boolean, initializeWasCalled: boolean}>}
+   * Status object indicating which restoration components are available in the native binary.
+   */
+  async checkRestorationStatus(): Promise<{
+    blePlxRestorationAdapterFound: boolean
+    bleRestorationRegistryFound: boolean
+    hasRegisterSelector: boolean
+    initializeWasCalled: boolean
+  }> {
+    return BleModule.checkRestorationStatus()
+  }
+
+  /**
    * Generates new unique identifier to be used internally.
    *
    * @returns {string} New identifier.

@@ -6,16 +6,14 @@ import BleRestoration
 /// Generic restoration adapter for react-native-ble-plx.
 /// Lives in an optional subspec so host apps can opt-in.
 ///
-/// Registration happens in two ways:
-/// 1. Explicit: Call `BlePlxRestorationAdapter.register()` from your app or module init
-/// 2. Legacy: The `+load` method attempts auto-registration (may fail due to static linking)
-///
-/// For reliable registration, use the explicit `register()` method which is called
-/// automatically from BlePlx.m when the Restoration subspec is included.
+/// Registration is triggered from BlePlx.m via the explicit `register()` method,
+/// which is called during the module's +load phase.
 @objc(BlePlxRestorationAdapter)
 public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
 
   /// Identifier shared between native and JS for CBCentral restoration.
+  /// Set `BlePlxRestoreIdentifier` in Info.plist to match the value you pass
+  /// as `restoreStateIdentifier` to BleManager in JS.
   public static let restorationIdentifier: String = {
     if let id = Bundle.main.object(forInfoDictionaryKey: "BlePlxRestoreIdentifier") as? String,
        !id.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -27,7 +25,7 @@ public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
   /// Track whether we've already registered to avoid duplicate registrations
   private static var isRegistered = false
 
-  public static func handleRestored(
+  @objc public static func handleRestored(
     central: CBCentralManager,
     willRestoreState dict: [String : Any]
   ) {
@@ -38,8 +36,9 @@ public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
     }
 
     // Recreate a BleClientManager bound to the same restoration ID.
-    let manager = BleAdapterFactory.getNewAdapter(
-      queue: DispatchQueue.main,
+    // Using direct initializer (recommended over factory for type safety).
+    let manager = BleClientManager(
+      queue: .main,
       restoreIdentifierKey: restorationIdentifier
     )
     BlePlxRestorationState.storeRestoredManager(manager)
@@ -65,14 +64,11 @@ public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
     }
   }
 
-  // MARK: - Explicit Registration (Recommended)
+  // MARK: - Explicit Registration (Called from BlePlx.m)
 
   /// Explicit registration with BleRestorationRegistry.
-  /// This is the recommended way to register the adapter, called from BlePlx.m.
+  /// This is called from BlePlx.m during its +load phase.
   /// Uses reflection to remain optional - if BleRestoration pod is not present, this is a no-op.
-  ///
-  /// Call this from your module initialization to ensure the adapter is registered
-  /// regardless of static linking behavior.
   @objc public static func register() {
     // Prevent duplicate registrations
     guard !isRegistered else {
@@ -94,16 +90,5 @@ public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
 
     isRegistered = true
     print("[BlePlxRestorationAdapter] ✓ Registered with BleRestorationRegistry")
-  }
-
-  // MARK: - Legacy Auto-Registration (May not work with static linking)
-
-  /// Legacy auto-registration via +load.
-  /// Note: This may not work reliably with static CocoaPods libraries because
-  /// the linker can strip this class if no symbols are referenced.
-  /// For reliable registration, use the explicit `register()` method instead.
-  @objc public override class func load() {
-    // Attempt auto-registration, but this may fail due to static linking
-    register()
   }
 }

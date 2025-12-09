@@ -35,9 +35,10 @@ It does NOT support:
 2. [Recent Changes](#recent-changes)
 3. [Documentation & Support](#documentation--support)
 4. [Configuration & Installation](#configuration--installation)
-5. [Troubleshooting](#troubleshooting)
-6. [Releasing](#releasing)
-7. [Contributions](#contributions)
+5. [iOS BLE State Restoration](#ios-ble-state-restoration-optional)
+6. [Troubleshooting](#troubleshooting)
+7. [Releasing](#releasing)
+8. [Contributions](#contributions)
 
 ## Compatibility
 
@@ -226,6 +227,98 @@ const manager = new BleManager({
    ```
 
    With `neverForLocation` flag active, you no longer need to ask for `ACCESS_FINE_LOCATION` in your app
+
+## iOS BLE State Restoration (Optional)
+
+This fork includes **optional** support for iOS BLE state restoration, allowing your app to automatically reconnect to BLE devices after iOS terminates it in the background.
+
+### Why Use State Restoration?
+
+| Scenario | Without Restoration | With Restoration |
+|----------|---------------------|------------------|
+| App killed by iOS while connected | Connection lost, user must manually reconnect | Auto-reconnects when device sends data |
+| Phone rebooted while wearing sensor | Must open app and reconnect | System restores connection automatically |
+| Long recording session (hours) | Risk of disconnection if iOS reclaims memory | Seamless reconnection maintains session |
+
+### How It Works
+
+1. User connects to a BLE device and starts streaming data
+2. User switches to another app or locks the phone
+3. iOS terminates your app to free memory (not a crash - iOS reclaiming resources)
+4. Later, the BLE device sends data (e.g., user is still wearing it)
+5. iOS wakes your app in the background with the restoration state
+6. `BlePlxRestorationAdapter` handles automatic reconnection
+
+### Enabling Restoration (Expo)
+
+```json
+{
+  "expo": {
+    "plugins": [
+      [
+        "react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": ["central"],
+          "iosEnableRestoration": true,
+          "iosRestorationIdentifier": "com.yourapp.bleplx"
+        }
+      ]
+    ]
+  }
+}
+```
+
+Then in your JavaScript code:
+
+```typescript
+const manager = new BleManager({
+  restoreStateIdentifier: 'com.yourapp.bleplx',  // Must match iosRestorationIdentifier
+  restoreStateFunction: (restoredState) => {
+    if (restoredState?.connectedPeripherals) {
+      console.log('Restored peripherals:', restoredState.connectedPeripherals);
+      // Reconnect to devices, resume streaming, etc.
+    }
+  },
+});
+```
+
+### Enabling Restoration (Manual / Non-Expo)
+
+1. Add the Restoration subspec to your Podfile:
+   ```ruby
+   pod 'react-native-ble-plx/Restoration', :path => '../node_modules/react-native-ble-plx'
+   ```
+
+2. Add `BleRestoration` pod as a dependency (or implement your own restoration registry)
+
+3. Add to your `Info.plist`:
+   ```xml
+   <key>BlePlxRestoreIdentifier</key>
+   <string>com.yourapp.bleplx</string>
+   ```
+
+4. Enable background modes in Xcode: `Capabilities` → `Background Modes` → `Uses Bluetooth LE accessories`
+
+### Not Using Restoration?
+
+**No action needed.** The restoration feature is entirely opt-in:
+
+- The `Restoration` subspec is not included by default
+- Native code uses runtime reflection - if restoration classes aren't present, it's a no-op
+- No changes to the JavaScript API
+- Works exactly like upstream `react-native-ble-plx`
+
+### Multi-Adapter Support
+
+If your app uses multiple BLE SDKs (e.g., Polar SDK + generic BLE-PLX), the restoration system supports routing devices to the correct adapter via `BleRestorationRegistry`:
+
+```swift
+// Each adapter registers itself
+BleRestorationRegistry.registerDevice(deviceId, BlePlxRestorationAdapter.self)
+```
+
+This ensures that when iOS restores the app, each device is reconnected by the appropriate SDK.
 
 ## Troubleshooting
 

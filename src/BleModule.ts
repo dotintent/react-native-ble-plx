@@ -273,6 +273,18 @@ export interface BleModuleInterface {
   createClient(restoreIdentifierKey: string | null): void;
 
   /**
+   * Debug method to check if BLE restoration components are available.
+   * @returns {Promise<{blePlxRestorationAdapterFound: boolean, bleRestorationRegistryFound: boolean, hasRegisterSelector: boolean, initializeWasCalled: boolean}>}
+   * @private
+   */
+  checkRestorationStatus(): Promise<{
+    blePlxRestorationAdapterFound: boolean;
+    bleRestorationRegistryFound: boolean;
+    hasRegisterSelector: boolean;
+    initializeWasCalled: boolean;
+  }>;
+
+  /**
    * Destroys previously instantiated module. This function is
    * only safe when previously BleModule was created.
    * @returns {Promise<void>} Promise may return an error when the function cannot be called.
