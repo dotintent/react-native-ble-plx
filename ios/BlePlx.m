@@ -23,6 +23,27 @@
 
 RCT_EXPORT_MODULE();
 
+// Called once when the class is first used.
+// We use this to optionally register the BlePlxRestorationAdapter if:
+// 1. The Restoration subspec is included (BlePlxRestorationAdapter class exists)
+// 2. The host app has BleRestoration pod (handled inside register())
+//
+// This approach is completely optional - apps that don't use the Restoration
+// subspec will simply skip this registration with no errors.
++ (void)initialize {
+    if (self == [BlePlx class]) {
+        // Try to register BlePlxRestorationAdapter if the Restoration subspec is included.
+        // Using NSClassFromString keeps this completely optional - no compile-time dependency.
+        Class adapterClass = NSClassFromString(@"BlePlxRestorationAdapter");
+        if (adapterClass && [adapterClass respondsToSelector:@selector(register)]) {
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [adapterClass performSelector:@selector(register)];
+            #pragma clang diagnostic pop
+        }
+    }
+}
+
 
 - (void)dispatchEvent:(NSString * _Nonnull)name value:(id _Nonnull)value {
     if (hasListeners) {

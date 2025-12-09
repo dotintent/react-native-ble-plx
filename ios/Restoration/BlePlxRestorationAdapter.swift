@@ -5,6 +5,13 @@ import BleRestoration
 
 /// Generic restoration adapter for react-native-ble-plx.
 /// Lives in an optional subspec so host apps can opt-in.
+///
+/// Registration happens in two ways:
+/// 1. Explicit: Call `BlePlxRestorationAdapter.register()` from your app or module init
+/// 2. Legacy: The `+load` method attempts auto-registration (may fail due to static linking)
+///
+/// For reliable registration, use the explicit `register()` method which is called
+/// automatically from BlePlx.m when the Restoration subspec is included.
 @objc(BlePlxRestorationAdapter)
 public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
 
@@ -16,6 +23,9 @@ public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
     }
     return "com.reactnativebleplx.restore"
   }()
+
+  /// Track whether we've already registered to avoid duplicate registrations
+  private static var isRegistered = false
 
   public static func handleRestored(
     central: CBCentralManager,
@@ -55,17 +65,45 @@ public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
     }
   }
 
-  // Auto-register with the registry if it is present in the host app.
-  @objc public override class func load() {
+  // MARK: - Explicit Registration (Recommended)
+
+  /// Explicit registration with BleRestorationRegistry.
+  /// This is the recommended way to register the adapter, called from BlePlx.m.
+  /// Uses reflection to remain optional - if BleRestoration pod is not present, this is a no-op.
+  ///
+  /// Call this from your module initialization to ensure the adapter is registered
+  /// regardless of static linking behavior.
+  @objc public static func register() {
+    // Prevent duplicate registrations
+    guard !isRegistered else {
+      return
+    }
+
     guard
       let registryCls = NSClassFromString("BleRestorationRegistry") as? NSObject.Type,
       registryCls.responds(to: NSSelectorFromString("shared")),
       let shared = registryCls.perform(NSSelectorFromString("shared"))?.takeUnretainedValue()
     else {
+      // BleRestorationRegistry not available - this is expected if the host app
+      // doesn't include the BleRestoration pod
       return
     }
 
     _ = (shared as AnyObject)
       .perform(NSSelectorFromString("registerAdapter:"), with: BlePlxRestorationAdapter.self)
+
+    isRegistered = true
+    print("[BlePlxRestorationAdapter] ✓ Registered with BleRestorationRegistry")
+  }
+
+  // MARK: - Legacy Auto-Registration (May not work with static linking)
+
+  /// Legacy auto-registration via +load.
+  /// Note: This may not work reliably with static CocoaPods libraries because
+  /// the linker can strip this class if no symbols are referenced.
+  /// For reliable registration, use the explicit `register()` method instead.
+  @objc public override class func load() {
+    // Attempt auto-registration, but this may fail due to static linking
+    register()
   }
 }
