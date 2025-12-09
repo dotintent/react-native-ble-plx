@@ -1,4 +1,5 @@
-export { BleError, BleErrorCode, BleAndroidErrorCode, BleIOSErrorCode, BleATTErrorCode } from './BleError'
+
+export { BleError, BleErrorCode, BleATTErrorCode, BleIOSErrorCode, BleAndroidErrorCode } from './BleError'
 export { BleManager } from './BleManager'
 export { Device } from './Device'
 export { Service } from './Service'

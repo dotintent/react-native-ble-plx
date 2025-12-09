@@ -1,6 +1,3 @@
-// @flow
-'use strict'
-
 import type { BleManager } from './BleManager'
 import type { BleError } from './BleError'
 import type { Characteristic } from './Characteristic'
@@ -52,8 +49,22 @@ export class Service implements NativeService {
    * @ignore
    */
   constructor(nativeService: NativeService, manager: BleManager) {
+    if (!nativeService) {
+      throw new Error('Service constructor: nativeService cannot be null or undefined')
+    }
+    if (!manager) {
+      throw new Error('Service constructor: manager cannot be null or undefined')
+    }
+
     Object.assign(this, nativeService)
     Object.defineProperty(this, '_manager', { value: manager, enumerable: false })
+
+    // Manually assign properties since Object.assign doesn't satisfy Typescript compiler for class properties
+    this.id = nativeService.id
+    this.uuid = nativeService.uuid
+    this.deviceID = nativeService.deviceID
+    this.isPrimary = nativeService.isPrimary
+    this._manager = manager
   }
 
   /**
@@ -86,7 +97,7 @@ export class Service implements NativeService {
    * @returns {Promise<Characteristic>} Promise which emits first {@link Characteristic} object matching specified
    * UUID path. Latest value of {@link Characteristic} will be stored inside returned object.
    */
-  readCharacteristic(characteristicUUID: UUID, transactionId: ?TransactionId): Promise<Characteristic> {
+  readCharacteristic(characteristicUUID: UUID, transactionId?: TransactionId): Promise<Characteristic> {
     return this._manager._readCharacteristicForService(this.id, characteristicUUID, transactionId)
   }
 
@@ -103,7 +114,7 @@ export class Service implements NativeService {
   writeCharacteristicWithResponse(
     characteristicUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     return this._manager._writeCharacteristicWithResponseForService(
       this.id,
@@ -126,7 +137,7 @@ export class Service implements NativeService {
   writeCharacteristicWithoutResponse(
     characteristicUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     return this._manager._writeCharacteristicWithoutResponseForService(
       this.id,
@@ -149,13 +160,12 @@ export class Service implements NativeService {
    */
   monitorCharacteristic(
     characteristicUUID: UUID,
-    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId,
-    subscriptionType: ?CharacteristicSubscriptionType
+    listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+    transactionId: TransactionId | null = null,
+    subscriptionType: CharacteristicSubscriptionType | null = null
   ): Subscription {
-    const commonArgs = [this.id, characteristicUUID, listener, transactionId]
+    const commonArgs = [this.id, characteristicUUID, listener, transactionId || undefined]
     const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
-
     return this._manager._monitorCharacteristicForService(...args)
   }
 
@@ -172,7 +182,7 @@ export class Service implements NativeService {
   async readDescriptorForCharacteristic(
     characteristicUUID: UUID,
     descriptorUUID: UUID,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     return this._manager._readDescriptorForService(this.id, characteristicUUID, descriptorUUID, transactionId)
   }
@@ -190,7 +200,7 @@ export class Service implements NativeService {
     characteristicUUID: UUID,
     descriptorUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     return this._manager._writeDescriptorForService(
       this.id,

@@ -1,6 +1,3 @@
-// @flow
-'use strict'
-
 import { NativeModules, NativeEventEmitter } from 'react-native'
 import { State, LogLevel, ConnectionPriority } from './TypeDefinition'
 import type {
@@ -28,12 +25,12 @@ export interface NativeDevice {
    * Device name if present
    * @private
    */
-  name: ?string;
+  name: string | null;
   /**
    * Current Received Signal Strength Indication of device
    * @private
    */
-  rssi: ?number;
+  rssi: number | null;
   /**
    * Current Maximum Transmission Unit for this device. When device is not connected
    * default value of 23 is used.
@@ -47,7 +44,7 @@ export interface NativeDevice {
    * Device's custom manufacturer data. Its format is defined by manufacturer.
    * @private
    */
-  manufacturerData: ?Base64;
+  manufacturerData: Base64 | null;
 
   /**
    * Raw device scan data. When you have specific advertiser data,
@@ -60,43 +57,43 @@ export interface NativeDevice {
    * Map of service UUIDs with associated data.
    * @private
    */
-  serviceData: ?{ [uuid: UUID]: Base64 };
+  serviceData: { [uuid: string]: Base64 } | null;
 
   /**
    * List of available services visible during scanning.
    * @private
    */
-  serviceUUIDs: ?Array<UUID>;
+  serviceUUIDs: Array<UUID> | null;
 
   /**
    * User friendly name of device.
    * @private
    */
-  localName: ?string;
+  localName: string | null;
 
   /**
    * Transmission power level of device.
    * @private
    */
-  txPowerLevel: ?number;
+  txPowerLevel: number | null;
 
   /**
    * List of solicited service UUIDs.
    * @private
    */
-  solicitedServiceUUIDs: ?Array<UUID>;
+  solicitedServiceUUIDs: Array<UUID> | null;
 
   /**
    * Is device connectable.
    * @private
    */
-  isConnectable: ?boolean;
+  isConnectable: boolean | null;
 
   /**
    * List of overflow service UUIDs.
    * @private
    */
-  overflowServiceUUIDs: ?Array<UUID>;
+  overflowServiceUUIDs: Array<UUID> | null;
 }
 
 /**
@@ -190,7 +187,7 @@ export interface NativeCharacteristic {
    * Characteristic value if present
    * @private
    */
-  value: ?Base64;
+  value: Base64 | null;
 }
 
 /**
@@ -237,7 +234,7 @@ export interface NativeDescriptor {
    * Descriptor value if present
    * @private
    */
-  value: ?Base64;
+  value: Base64 | null;
 }
 
 /**
@@ -262,8 +259,8 @@ export interface NativeBleRestoredState {
 export interface BleModuleInterface {
   // NativeModule methods
 
-  addListener(string): void;
-  removeListeners(number): void;
+  addListener(eventType: string): void;
+  removeListeners(count: number): void;
 
   // Lifecycle
 
@@ -273,7 +270,19 @@ export interface BleModuleInterface {
    * @param {?string} restoreIdentifierKey Optional unique Id used for state restoration of BLE manager.
    * @private
    */
-  createClient(restoreIdentifierKey: ?string): void;
+  createClient(restoreIdentifierKey: string | null): void;
+
+  /**
+   * Debug method to check if BLE restoration components are available.
+   * @returns {Promise<{blePlxRestorationAdapterFound: boolean, bleRestorationRegistryFound: boolean, hasRegisterSelector: boolean, initializeWasCalled: boolean}>}
+   * @private
+   */
+  checkRestorationStatus(): Promise<{
+    blePlxRestorationAdapterFound: boolean;
+    bleRestorationRegistryFound: boolean;
+    hasRegisterSelector: boolean;
+    initializeWasCalled: boolean;
+  }>;
 
   /**
    * Destroys previously instantiated module. This function is
@@ -309,7 +318,7 @@ export interface BleModuleInterface {
    * @returns {Promise<State>} Current state of BLE device.
    * @private
    */
-  state(): Promise<$Keys<typeof State>>;
+  state(): Promise<keyof typeof State>;
 
   // Scanning
 
@@ -322,7 +331,7 @@ export interface BleModuleInterface {
    * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
    * @private
    */
-  startDeviceScan(filteredUUIDs: ?Array<UUID>, options: ?ScanOptions): Promise<void>;
+  startDeviceScan(filteredUUIDs: Array<UUID> | null, options: ScanOptions | null): Promise<void>;
 
   /**
    * Stops device scan.
@@ -345,7 +354,7 @@ export interface BleModuleInterface {
    */
   requestConnectionPriorityForDevice(
     deviceIdentifier: DeviceId,
-    connectionPriority: $Values<typeof ConnectionPriority>,
+    connectionPriority: ConnectionPriority,
     transactionId: TransactionId
   ): Promise<NativeDevice>;
 
@@ -401,7 +410,7 @@ export interface BleModuleInterface {
    * @returns {Promise<NativeDevice>} Connected device.
    * @private
    */
-  connectToDevice(deviceIdentifier: DeviceId, options: ?ConnectionOptions): Promise<NativeDevice>;
+  connectToDevice(deviceIdentifier: DeviceId, options: ConnectionOptions | null): Promise<NativeDevice>;
 
   /**
    * Cancels pending device connection.
@@ -617,7 +626,7 @@ export interface BleModuleInterface {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     transactionId: TransactionId,
-    subscriptionType: ?CharacteristicSubscriptionType
+    subscriptionType: CharacteristicSubscriptionType | null
   ): Promise<void>;
 
   /**
@@ -634,7 +643,7 @@ export interface BleModuleInterface {
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
     transactionId: TransactionId,
-    subscriptionType: ?CharacteristicSubscriptionType
+    subscriptionType: CharacteristicSubscriptionType | null
   ): Promise<void>;
 
   /**
@@ -649,7 +658,7 @@ export interface BleModuleInterface {
   monitorCharacteristic(
     characteristicIdentifier: Identifier,
     transactionId: TransactionId,
-    subscriptionType: ?CharacteristicSubscriptionType
+    subscriptionType: CharacteristicSubscriptionType | null
   ): Promise<void>;
 
   // Descriptor operations
@@ -804,14 +813,14 @@ export interface BleModuleInterface {
    * @returns {Promise<LogLevel>} Current log level.
    * @private
    */
-  setLogLevel(logLevel: $Keys<typeof LogLevel>): Promise<$Keys<typeof LogLevel> | void>;
+  setLogLevel(logLevel: keyof typeof LogLevel): Promise<keyof typeof LogLevel | void>;
 
   /**
    * Get current log level for native module's logging mechanism.
    * @returns {Promise<LogLevel>} Current log level.
    * @private
    */
-  logLevel(): Promise<$Keys<typeof LogLevel>>;
+  logLevel(): Promise<keyof typeof LogLevel>;
 
   // Events
 
@@ -852,6 +861,7 @@ export interface BleModuleInterface {
  *
  * @private
  */
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const BleModule: BleModuleInterface = NativeModules.BlePlx
 
 export const EventEmitter = NativeEventEmitter

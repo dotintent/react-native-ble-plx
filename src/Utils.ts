@@ -1,5 +1,3 @@
-// @flow
-'use strict'
 
 import { Platform } from 'react-native'
 import type { UUID } from './TypeDefinition'
@@ -20,8 +18,10 @@ export function fullUUID(uuid: UUID): UUID {
   return uuid.toLowerCase()
 }
 
-export function fillStringWithArguments(value: string, object: Object): string {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function fillStringWithArguments(value: string, object: any): string {
   return value.replace(/\{([^}]+)\}/g, function (_, arg: string) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
     return object[arg] || '?'
   })
 }

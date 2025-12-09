@@ -1,6 +1,3 @@
-// @flow
-'use strict'
-
 import { Device } from './Device'
 import { Service } from './Service'
 import { Characteristic } from './Characteristic'
@@ -11,10 +8,7 @@ import {
   parseBleError,
   BleError,
   BleErrorCode,
-  BleErrorCodeMessage,
-  BleATTErrorCode,
-  BleAndroidErrorCode,
-  BleIOSErrorCode
+  BleErrorCodeMessage
 } from './BleError'
 import type { NativeDevice, NativeCharacteristic, NativeDescriptor, NativeBleRestoredState } from './BleModule'
 import type {
@@ -52,20 +46,20 @@ const enableDisableDeprecatedMessage =
  */
 export class BleManager {
   // Scan subscriptions
-  // $FlowIssue[missing-type-arg]
-  _scanEventSubscription: ?EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _scanEventSubscription: any | null
   // Listening to BleModule events
-  // $FlowIssue[missing-type-arg]
-  _eventEmitter: EventEmitter
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  _eventEmitter: any
   // Unique identifier used to create internal transactionIds
-  _uniqueId: number
+  _uniqueId!: number
   // Map of active promises with functions to forcibly cancel them
-  _activePromises: { [id: string]: (error: BleError) => void }
+  _activePromises!: { [id: string]: (error: BleError) => void }
   // Map of active subscriptions
-  _activeSubscriptions: { [id: string]: Subscription }
+  _activeSubscriptions!: { [id: string]: Subscription }
 
   // Map of error codes to error messages
-  _errorCodesToMessagesMapping: BleErrorCodeMessageMapping
+  _errorCodesToMessagesMapping!: BleErrorCodeMessageMapping
 
   static sharedInstance: BleManager | null = null
 
@@ -76,7 +70,6 @@ export class BleManager {
    */
   constructor(options: BleManagerOptions = {}) {
     if (BleManager.sharedInstance !== null) {
-      // $FlowFixMe - Constructor returns shared instance for singleton pattern
       return BleManager.sharedInstance
     }
 
@@ -84,29 +77,36 @@ export class BleManager {
     this._uniqueId = 0
     this._activePromises = {}
     this._activeSubscriptions = {}
+    this._errorCodesToMessagesMapping = options.errorCodesToMessagesMapping
+      ? options.errorCodesToMessagesMapping
+      : BleErrorCodeMessage
+    this._scanEventSubscription = null
 
     const restoreStateFunction = options.restoreStateFunction
     if (restoreStateFunction != null && options.restoreStateIdentifier != null) {
-      // $FlowIssue[prop-missing]
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       this._activeSubscriptions[this._nextUniqueID()] = this._eventEmitter.addListener(
         BleModule.RestoreStateEvent,
-        (nativeRestoredState: NativeBleRestoredState) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (nativeRestoredState: NativeBleRestoredState | any) => {
           if (nativeRestoredState == null) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+            // @ts-ignore: Suppress possibly undefined error as we check for existence before call, though TS doesn't infer it inside the closure perfectly with the variable from outer scope if not const
             restoreStateFunction(null)
             return
           }
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+          // @ts-ignore: Suppress possibly undefined error
           restoreStateFunction({
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             connectedPeripherals: nativeRestoredState.connectedPeripherals.map(
-              nativeDevice => new Device(nativeDevice, this)
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              (nativeDevice: any) => new Device(nativeDevice, this)
             )
           })
         }
       )
     }
-
-    this._errorCodesToMessagesMapping = options.errorCodesToMessagesMapping
-      ? options.errorCodesToMessagesMapping
-      : BleErrorCodeMessage
 
     BleModule.createClient(options.restoreStateIdentifier || null)
     BleManager.sharedInstance = this
@@ -120,14 +120,15 @@ export class BleManager {
     const destroyedError = new BleError(
       {
         errorCode: BleErrorCode.BluetoothManagerDestroyed,
-        attErrorCode: (null: ?$Values<typeof BleATTErrorCode>),
-        iosErrorCode: (null: ?$Values<typeof BleIOSErrorCode>),
-        androidErrorCode: (null: ?$Values<typeof BleAndroidErrorCode>),
-        reason: (null: ?string)
+        attErrorCode: null,
+        iosErrorCode: null,
+        androidErrorCode: null,
+        reason: null
       },
       this._errorCodesToMessagesMapping
     )
     for (const id in this._activePromises) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
       this._activePromises[id](destroyedError)
     }
   }
@@ -138,6 +139,7 @@ export class BleManager {
    */
   _destroySubscriptions() {
     for (const id in this._activeSubscriptions) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       this._activeSubscriptions[id].remove()
     }
   }
@@ -153,6 +155,7 @@ export class BleManager {
 
     // Unsubscribe from any subscriptions
     if (this._scanEventSubscription != null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       this._scanEventSubscription.remove()
       this._scanEventSubscription = null
     }
@@ -166,6 +169,22 @@ export class BleManager {
     this._destroyPromises()
 
     return response
+  }
+
+  /**
+   * Debug method to check if BLE restoration components are available.
+   * Useful for diagnosing issues with the Restoration subspec installation.
+   *
+   * @returns {Promise<{blePlxRestorationAdapterFound: boolean, bleRestorationRegistryFound: boolean, hasRegisterSelector: boolean, initializeWasCalled: boolean}>}
+   * Status object indicating which restoration components are available in the native binary.
+   */
+  async checkRestorationStatus(): Promise<{
+    blePlxRestorationAdapterFound: boolean
+    bleRestorationRegistryFound: boolean
+    hasRegisterSelector: boolean
+    initializeWasCalled: boolean
+  }> {
+    return BleModule.checkRestorationStatus()
   }
 
   /**
@@ -189,16 +208,16 @@ export class BleManager {
   async _callPromise<T>(promise: Promise<T>): Promise<T> {
     const id = this._nextUniqueID()
     try {
-      const destroyPromise = new Promise((resolve, reject) => {
+      const destroyPromise = new Promise<T>((_, reject) => {
         this._activePromises[id] = reject
       })
       const value = await Promise.race([destroyPromise, promise])
       delete this._activePromises[id]
-      // $FlowIssue[incompatible-return]
       return value
     } catch (error) {
       delete this._activePromises[id]
-      throw parseBleError(error.message, this._errorCodesToMessagesMapping)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      throw parseBleError((error as any).message, this._errorCodesToMessagesMapping)
     }
   }
 
@@ -209,7 +228,7 @@ export class BleManager {
    * @param {LogLevel} logLevel New log level to be set.
    * @returns {Promise<LogLevel>} Current log level.
    */
-  setLogLevel(logLevel: $Keys<typeof LogLevel>): Promise<$Keys<typeof LogLevel> | void> {
+  setLogLevel(logLevel: keyof typeof LogLevel): Promise<keyof typeof LogLevel | void> {
     return this._callPromise(BleModule.setLogLevel(logLevel))
   }
 
@@ -217,7 +236,7 @@ export class BleManager {
    * Get current log level for native module's logging mechanism.
    * @returns {Promise<LogLevel>} Current log level.
    */
-  logLevel(): Promise<$Keys<typeof LogLevel>> {
+  logLevel(): Promise<keyof typeof LogLevel> {
     return this._callPromise(BleModule.logLevel())
   }
 
@@ -258,7 +277,7 @@ export class BleManager {
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<BleManager>} Promise completes when state transition was successful.
    */
-  async enable(transactionId: ?TransactionId): Promise<BleManager> {
+  async enable(transactionId?: TransactionId): Promise<BleManager> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
@@ -273,7 +292,7 @@ export class BleManager {
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<BleManager>} Promise completes when state transition was successful.
    */
-  async disable(transactionId: ?TransactionId): Promise<BleManager> {
+  async disable(transactionId?: TransactionId): Promise<BleManager> {
     console.warn(enableDisableDeprecatedMessage)
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -288,7 +307,7 @@ export class BleManager {
    *
    * @returns {Promise<State>} Promise which emits current state of BleManager.
    */
-  state(): Promise<$Keys<typeof State>> {
+  state(): Promise<keyof typeof State> {
     return this._callPromise(BleModule.state())
   }
 
@@ -309,13 +328,14 @@ export class BleManager {
    *
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
-  onStateChange(listener: (newState: $Keys<typeof State>) => void, emitCurrentState: boolean = false): Subscription {
+  onStateChange(listener: (newState: keyof typeof State) => void, emitCurrentState: boolean = false): Subscription {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment
     const subscription: Subscription = this._eventEmitter.addListener(BleModule.StateChangeEvent, listener)
     const id = this._nextUniqueID()
-    var wrappedSubscription: Subscription
+    let wrappedSubscription: Subscription
 
     if (emitCurrentState) {
-      var cancelled = false
+      let cancelled = false
       this._callPromise(this.state()).then(currentState => {
         if (!cancelled) {
           listener(currentState)
@@ -327,6 +347,7 @@ export class BleManager {
           if (this._activeSubscriptions[id] != null) {
             cancelled = true
             delete this._activeSubscriptions[id]
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             subscription.remove()
           }
         }
@@ -336,6 +357,7 @@ export class BleManager {
         remove: () => {
           if (this._activeSubscriptions[id] != null) {
             delete this._activeSubscriptions[id]
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
             subscription.remove()
           }
         }
@@ -362,20 +384,21 @@ export class BleManager {
    * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
    */
   async startDeviceScan(
-    UUIDs: ?Array<UUID>,
-    options: ?ScanOptions,
-    listener: (error: ?BleError, scannedDevice: ?Device) => Promise<void>
+    UUIDs: Array<UUID> | null,
+    options: ScanOptions | null,
+    listener: (error: BleError | null, scannedDevice: Device | null) => void
   ): Promise<void> {
-    const scanListener = ([error, nativeDevice]: [?string, ?NativeDevice]) => {
+    const scanListener = ([error, nativeDevice]: [string | null, NativeDevice | null]) => {
       listener(
         error ? parseBleError(error, this._errorCodesToMessagesMapping) : null,
         nativeDevice ? new Device(nativeDevice, this) : null
       )
     }
-    // $FlowFixMe: Flow cannot deduce EmitterSubscription type.
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     this._scanEventSubscription = this._eventEmitter.addListener(BleModule.ScanEvent, scanListener)
 
-    return this._callPromise(BleModule.startDeviceScan(UUIDs, options))
+    return this._callPromise(BleModule.startDeviceScan(UUIDs || null, options || null))
   }
 
   /**
@@ -384,6 +407,7 @@ export class BleManager {
    */
   stopDeviceScan(): Promise<void> {
     if (this._scanEventSubscription != null) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
       this._scanEventSubscription.remove()
       this._scanEventSubscription = null
     }
@@ -402,8 +426,8 @@ export class BleManager {
    */
   async requestConnectionPriorityForDevice(
     deviceIdentifier: DeviceId,
-    connectionPriority: $Values<typeof ConnectionPriority>,
-    transactionId: ?TransactionId
+    connectionPriority: ConnectionPriority,
+    transactionId?: TransactionId
   ): Promise<Device> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -421,7 +445,7 @@ export class BleManager {
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<Device>} Connected device with updated RSSI value.
    */
-  async readRSSIForDevice(deviceIdentifier: DeviceId, transactionId: ?TransactionId): Promise<Device> {
+  async readRSSIForDevice(deviceIdentifier: DeviceId, transactionId?: TransactionId): Promise<Device> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
@@ -439,7 +463,7 @@ export class BleManager {
    * @param {?TransactionId} transactionId Transaction handle used to cancel operation
    * @returns {Promise<Device>} Device with updated MTU size. Default value is 23 (517 since Android 14)..
    */
-  async requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number, transactionId: ?TransactionId): Promise<Device> {
+  async requestMTUForDevice(deviceIdentifier: DeviceId, mtu: number, transactionId?: TransactionId): Promise<Device> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
@@ -484,11 +508,11 @@ export class BleManager {
    * @param {?ConnectionOptions} options Platform specific options for connection establishment.
    * @returns {Promise<Device>} Connected {@link Device} object if successful.
    */
-  async connectToDevice(deviceIdentifier: DeviceId, options: ?ConnectionOptions): Promise<Device> {
+  async connectToDevice(deviceIdentifier: DeviceId, options?: ConnectionOptions): Promise<Device> {
     if (Platform.OS === 'android' && (await this.isDeviceConnected(deviceIdentifier))) {
       await this.cancelDeviceConnection(deviceIdentifier)
     }
-    const nativeDevice = await this._callPromise(BleModule.connectToDevice(deviceIdentifier, options))
+    const nativeDevice = await this._callPromise(BleModule.connectToDevice(deviceIdentifier, options || null))
     return new Device(nativeDevice, this)
   }
 
@@ -512,14 +536,15 @@ export class BleManager {
    * {@link #blemanagercanceldeviceconnection|bleManager.cancelDeviceConnection()} call.
    * @returns {Subscription} Subscription on which `remove()` function can be called to unsubscribe.
    */
-  onDeviceDisconnected(deviceIdentifier: DeviceId, listener: (error: ?BleError, device: Device) => void): Subscription {
-    const disconnectionListener = ([error, nativeDevice]: [?string, NativeDevice]) => {
+  onDeviceDisconnected(deviceIdentifier: DeviceId, listener: (error: BleError | null, device: Device) => void): Subscription {
+    const disconnectionListener = ([error, nativeDevice]: [string | null, NativeDevice]) => {
       if (deviceIdentifier !== nativeDevice.id) {
         return
       }
       listener(error ? parseBleError(error, this._errorCodesToMessagesMapping) : null, new Device(nativeDevice, this))
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     const subscription: Subscription = this._eventEmitter.addListener(
       BleModule.DisconnectionEvent,
       disconnectionListener
@@ -560,7 +585,7 @@ export class BleManager {
    */
   async discoverAllServicesAndCharacteristicsForDevice(
     deviceIdentifier: DeviceId,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Device> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -571,12 +596,11 @@ export class BleManager {
     const services = await this._callPromise(BleModule.servicesForDevice(deviceIdentifier))
     const serviceUUIDs = (services || []).map(service => service.uuid)
 
-    // $FlowFixMe
     const device = {
       ...nativeDevice,
       serviceUUIDs
     }
-    return new Device(device, this)
+    return new Device(device as NativeDevice, this)
   }
 
   // Mark: Service and characteristic getters --------------------------------------------------------------------------
@@ -709,7 +733,7 @@ export class BleManager {
     deviceIdentifier: DeviceId,
     serviceUUID: UUID,
     characteristicUUID: UUID,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -734,7 +758,7 @@ export class BleManager {
   async _readCharacteristicForService(
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -757,7 +781,7 @@ export class BleManager {
    */
   async _readCharacteristic(
     characteristicIdentifier: Identifier,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -785,7 +809,7 @@ export class BleManager {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     base64Value: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -819,7 +843,7 @@ export class BleManager {
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
     base64Value: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -844,7 +868,7 @@ export class BleManager {
   async _writeCharacteristicWithResponse(
     characteristicIdentifier: Identifier,
     base64Value: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -872,7 +896,7 @@ export class BleManager {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     base64Value: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -906,7 +930,7 @@ export class BleManager {
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
     base64Value: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -931,7 +955,7 @@ export class BleManager {
   async _writeCharacteristicWithoutResponse(
     characteristicIdentifier: Identifier,
     base64Value: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Characteristic> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -959,18 +983,18 @@ export class BleManager {
     deviceIdentifier: DeviceId,
     serviceUUID: UUID,
     characteristicUUID: UUID,
-    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId,
-    subscriptionType: ?CharacteristicSubscriptionType
+    listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+    transactionId?: TransactionId,
+    subscriptionType?: CharacteristicSubscriptionType | null
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
     const commonArgs = [deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId]
-    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType || null]
 
     return this._handleMonitorCharacteristic(
-      BleModule.monitorCharacteristicForDevice(...args),
-      filledTransactionId,
-      listener
+        BleModule.monitorCharacteristicForDevice(...args),
+        filledTransactionId,
+        listener
     )
   }
 
@@ -990,19 +1014,27 @@ export class BleManager {
   _monitorCharacteristicForService(
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
-    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId,
-    subscriptionType: ?CharacteristicSubscriptionType
+    listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+    transactionId?: TransactionId,
+    subscriptionType?: CharacteristicSubscriptionType | null
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
-    const commonArgs = [serviceIdentifier, characteristicUUID, filledTransactionId]
-    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+    const commonArgs = [serviceIdentifier, characteristicUUID, filledTransactionId] as const
 
-    return this._handleMonitorCharacteristic(
-      BleModule.monitorCharacteristicForService(...args),
-      filledTransactionId,
-      listener
-    )
+    if (isIOS) {
+        return this._handleMonitorCharacteristic(
+            BleModule.monitorCharacteristicForService(...commonArgs, null),
+            filledTransactionId,
+            listener
+        )
+    } else {
+        const args = [...commonArgs, subscriptionType || null] as const
+        return this._handleMonitorCharacteristic(
+            BleModule.monitorCharacteristicForService(...args),
+            filledTransactionId,
+            listener
+        )
+    }
   }
 
   /**
@@ -1020,15 +1052,27 @@ export class BleManager {
    */
   _monitorCharacteristic(
     characteristicIdentifier: Identifier,
-    listener: (error: ?BleError, characteristic: ?Characteristic) => void,
-    transactionId: ?TransactionId,
-    subscriptionType: ?CharacteristicSubscriptionType
+    listener: (error: BleError | null, characteristic: Characteristic | null) => void,
+    transactionId?: TransactionId,
+    subscriptionType?: CharacteristicSubscriptionType | null
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
-    const commonArgs = [characteristicIdentifier, filledTransactionId]
-    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
+    const commonArgs = [characteristicIdentifier, filledTransactionId] as const
 
-    return this._handleMonitorCharacteristic(BleModule.monitorCharacteristic(...args), filledTransactionId, listener)
+    if (isIOS) {
+        return this._handleMonitorCharacteristic(
+            BleModule.monitorCharacteristic(...commonArgs, null),
+            filledTransactionId,
+            listener
+        )
+    } else {
+        const args = [...commonArgs, subscriptionType || null] as const
+        return this._handleMonitorCharacteristic(
+            BleModule.monitorCharacteristic(...args),
+            filledTransactionId,
+            listener
+        )
+    }
   }
 
   /**
@@ -1044,10 +1088,10 @@ export class BleManager {
   _handleMonitorCharacteristic(
     monitorPromise: Promise<void>,
     transactionId: TransactionId,
-    listener: (error: ?BleError, characteristic: ?Characteristic) => void
+    listener: (error: BleError | null, characteristic: Characteristic | null) => void
   ): Subscription {
     const monitorListener = ([error, characteristic, msgTransactionId]: [
-      ?string,
+      string | null,
       NativeCharacteristic,
       TransactionId
     ]) => {
@@ -1061,6 +1105,7 @@ export class BleManager {
       listener(null, new Characteristic(characteristic, this))
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     const subscription: Subscription = this._eventEmitter.addListener(BleModule.ReadEvent, monitorListener)
 
     const id = this._nextUniqueID()
@@ -1074,12 +1119,15 @@ export class BleManager {
     }
     this._activeSubscriptions[id] = wrappedSubscription
 
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     this._callPromise(monitorPromise).then(
       () => {
         wrappedSubscription.remove()
       },
-      (error: BleError) => {
-        listener(error, null)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (error: any) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        listener(parseBleError(error.message, this._errorCodesToMessagesMapping), null)
         wrappedSubscription.remove()
       }
     )
@@ -1110,7 +1158,7 @@ export class BleManager {
     serviceUUID: UUID,
     characteristicUUID: UUID,
     descriptorUUID: UUID,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -1143,7 +1191,7 @@ export class BleManager {
     serviceIdentifier: Identifier,
     characteristicUUID: UUID,
     descriptorUUID: UUID,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -1168,7 +1216,7 @@ export class BleManager {
   async _readDescriptorForCharacteristic(
     characteristicIdentifier: Identifier,
     descriptorUUID: UUID,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -1189,7 +1237,7 @@ export class BleManager {
    * UUID paths. Latest value of {@link Descriptor} will be stored inside returned object.
    * @private
    */
-  async _readDescriptor(descriptorIdentifier: Identifier, transactionId: ?TransactionId): Promise<Descriptor> {
+  async _readDescriptor(descriptorIdentifier: Identifier, transactionId?: TransactionId): Promise<Descriptor> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
     }
@@ -1214,7 +1262,7 @@ export class BleManager {
     characteristicUUID: UUID,
     descriptorUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -1248,7 +1296,7 @@ export class BleManager {
     characteristicUUID: UUID,
     descriptorUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -1279,7 +1327,7 @@ export class BleManager {
     characteristicIdentifier: Identifier,
     descriptorUUID: UUID,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()
@@ -1302,7 +1350,7 @@ export class BleManager {
   async _writeDescriptor(
     descriptorIdentifier: Identifier,
     valueBase64: Base64,
-    transactionId: ?TransactionId
+    transactionId?: TransactionId
   ): Promise<Descriptor> {
     if (!transactionId) {
       transactionId = this._nextUniqueID()

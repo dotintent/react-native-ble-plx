@@ -5,10 +5,15 @@ import BleRestoration
 
 /// Generic restoration adapter for react-native-ble-plx.
 /// Lives in an optional subspec so host apps can opt-in.
+///
+/// Registration is triggered from BlePlx.m via the explicit `register()` method,
+/// which is called during the module's +load phase.
 @objc(BlePlxRestorationAdapter)
 public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
 
   /// Identifier shared between native and JS for CBCentral restoration.
+  /// Set `BlePlxRestoreIdentifier` in Info.plist to match the value you pass
+  /// as `restoreStateIdentifier` to BleManager in JS.
   public static let restorationIdentifier: String = {
     if let id = Bundle.main.object(forInfoDictionaryKey: "BlePlxRestoreIdentifier") as? String,
        !id.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -17,7 +22,10 @@ public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
     return "com.reactnativebleplx.restore"
   }()
 
-  public static func handleRestored(
+  /// Track whether we've already registered to avoid duplicate registrations
+  private static var isRegistered = false
+
+  @objc public static func handleRestored(
     central: CBCentralManager,
     willRestoreState dict: [String : Any]
   ) {
@@ -28,8 +36,9 @@ public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
     }
 
     // Recreate a BleClientManager bound to the same restoration ID.
-    let manager = BleAdapterFactory.getNewAdapter(
-      queue: DispatchQueue.main,
+    // Using direct initializer (recommended over factory for type safety).
+    let manager = BleClientManager(
+      queue: .main,
       restoreIdentifierKey: restorationIdentifier
     )
     BlePlxRestorationState.storeRestoredManager(manager)
@@ -55,17 +64,31 @@ public final class BlePlxRestorationAdapter: NSObject, BleRestorableAdapter {
     }
   }
 
-  // Auto-register with the registry if it is present in the host app.
-  @objc public override class func load() {
+  // MARK: - Explicit Registration (Called from BlePlx.m)
+
+  /// Explicit registration with BleRestorationRegistry.
+  /// This is called from BlePlx.m during its +load phase.
+  /// Uses reflection to remain optional - if BleRestoration pod is not present, this is a no-op.
+  @objc public static func register() {
+    // Prevent duplicate registrations
+    guard !isRegistered else {
+      return
+    }
+
     guard
       let registryCls = NSClassFromString("BleRestorationRegistry") as? NSObject.Type,
       registryCls.responds(to: NSSelectorFromString("shared")),
       let shared = registryCls.perform(NSSelectorFromString("shared"))?.takeUnretainedValue()
     else {
+      // BleRestorationRegistry not available - this is expected if the host app
+      // doesn't include the BleRestoration pod
       return
     }
 
     _ = (shared as AnyObject)
       .perform(NSSelectorFromString("registerAdapter:"), with: BlePlxRestorationAdapter.self)
+
+    isRegistered = true
+    print("[BlePlxRestorationAdapter] ✓ Registered with BleRestorationRegistry")
   }
 }

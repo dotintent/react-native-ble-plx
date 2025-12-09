@@ -7,8 +7,12 @@
 //
 
 #import "BlePlx.h"
-#import "BlePlx-Swift.h"
 
+// Conditionally import Swift header - it may not exist if no Swift code is compiled
+// (e.g., when the Restoration subspec is not included)
+#if __has_include("BlePlx-Swift.h")
+#import "BlePlx-Swift.h"
+#endif
 
 @interface BlePlx () <BleClientManagerDelegate>
 @property(nonatomic) BleClientManager* manager;
@@ -22,6 +26,41 @@
 @synthesize methodQueue = _methodQueue;
 
 RCT_EXPORT_MODULE();
+
+// Track whether we've attempted adapter registration
+static BOOL _hasAttemptedAdapterRegistration = NO;
+
+// +initialize is called by the Objective-C runtime when the class is first used.
+// This happens early during React Native module registration, BEFORE JavaScript runs.
+// Unlike +load, it doesn't conflict with Swift and is called at a predictable time.
++ (void)initialize {
+    if (self == [BlePlx class]) {
+        // Only run for BlePlx itself, not subclasses
+        NSLog(@"[BlePlx] +initialize called - attempting early adapter registration");
+        [self attemptAdapterRegistration];
+    }
+}
+
+// Attempt to register the BlePlxRestorationAdapter if the Restoration subspec is included.
+// Called from +initialize for early registration, and also from createClient as a fallback.
++ (void)attemptAdapterRegistration {
+    if (_hasAttemptedAdapterRegistration) return;
+    _hasAttemptedAdapterRegistration = YES;
+
+    NSLog(@"[BlePlx] Attempting to register BlePlxRestorationAdapter");
+    Class adapterClass = NSClassFromString(@"BlePlxRestorationAdapter");
+    NSLog(@"[BlePlx] BlePlxRestorationAdapter class: %@", adapterClass ? @"FOUND" : @"NOT FOUND (Restoration subspec may not be included)");
+    if (adapterClass && [adapterClass respondsToSelector:@selector(register)]) {
+        NSLog(@"[BlePlx] Calling BlePlxRestorationAdapter.register()");
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        [adapterClass performSelector:@selector(register)];
+        #pragma clang diagnostic pop
+        NSLog(@"[BlePlx] BlePlxRestorationAdapter.register() completed");
+    } else if (adapterClass) {
+        NSLog(@"[BlePlx] WARNING: BlePlxRestorationAdapter found but register selector not available");
+    }
+}
 
 
 - (void)dispatchEvent:(NSString * _Nonnull)name value:(id _Nonnull)value {
@@ -54,14 +93,42 @@ RCT_EXPORT_MODULE();
     return YES;
 }
 
+// Debug method to check restoration adapter availability from JS
+RCT_EXPORT_METHOD(checkRestorationStatus:(RCTPromiseResolveBlock)resolve
+                                rejecter:(RCTPromiseRejectBlock)reject) {
+    Class adapterClass = NSClassFromString(@"BlePlxRestorationAdapter");
+    Class registryClass = NSClassFromString(@"BleRestorationRegistry");
+
+    NSDictionary *status = @{
+        @"blePlxRestorationAdapterFound": @(adapterClass != nil),
+        @"bleRestorationRegistryFound": @(registryClass != nil),
+        @"hasRegisterSelector": @(adapterClass && [adapterClass respondsToSelector:@selector(register)]),
+        @"initializeWasCalled": @YES  // If this method is reachable, BlePlx was loaded
+    };
+    resolve(status);
+}
+
 RCT_EXPORT_METHOD(createClient:(id)restoreIdentifierKey) {
+  // Attempt adapter registration on first createClient call
+  [BlePlx attemptAdapterRegistration];
+
   if (restoreIdentifierKey == nil || [restoreIdentifierKey isEqual:[NSNull null]] ||
       ([restoreIdentifierKey isKindOfClass:[NSString class]] && [(NSString *)restoreIdentifierKey length] == 0)) {
     restoreIdentifierKey = nil;
   }
+
   // If a restoration manager was created during background wakeup, reuse it so we keep
   // CBCentralManager continuity and pending connections.
-  BleClientManager *restoredManager = [BlePlxRestorationState takeRestoredManager];
+  // BlePlxRestorationState only exists when the Restoration subspec is included,
+  // so we use runtime reflection to check for it.
+  BleClientManager *restoredManager = nil;
+  Class restorationStateClass = NSClassFromString(@"BlePlxRestorationState");
+  if (restorationStateClass && [restorationStateClass respondsToSelector:@selector(takeRestoredManager)]) {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    restoredManager = [restorationStateClass performSelector:@selector(takeRestoredManager)];
+    #pragma clang diagnostic pop
+  }
 
   if (restoredManager != nil) {
     _manager = restoredManager;
