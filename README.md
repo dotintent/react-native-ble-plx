@@ -42,19 +42,31 @@ It does NOT support:
 
 ## Compatibility
 
-For old RN versions (<0.60) please check [old README](./docs/README_V1.md) (1.x)
-for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
+> **Note**: This is a fork of `dotintent/react-native-ble-plx` maintained at `@sfourdrinier/react-native-ble-plx`. It has been converted from Flow to TypeScript and updated for modern React Native.
 
-| React Native | 3.1.2              |
-| ------------ | ------------------ |
-| 0.81.4       | :white_check_mark: |
-| 0.74.1       | :white_check_mark: |
-| 0.69.6       | :white_check_mark: |
-| Expo 51      | :white_check_mark: |
+**Minimum Requirements (v3.5.0+):**
+- React Native **0.81.4+**
+- Expo SDK **54+**
+- Node.js **18+**
+
+| React Native | Expo SDK | This Fork |
+| ------------ | -------- | --------- |
+| 0.81.4+      | 54+      | :white_check_mark: |
+| < 0.81       | < 54     | :x: Not supported |
+
+For older React Native versions, use the upstream [dotintent/react-native-ble-plx](https://github.com/dotintent/react-native-ble-plx) library.
 
 ## Recent Changes
 
-**3.2.0**
+**3.5.x (This Fork)**
+
+- Converted from Flow to TypeScript
+- Updated for React Native 0.81.4 and Expo SDK 54
+- Added iOS BLE state restoration support (optional)
+- Fixed TypeScript errors from Flow-to-TS conversion
+- Dropped support for React Native < 0.81 and Expo < 54
+
+**3.2.0 (Upstream)**
 
 - Added Android Instance checking before calling its method, an error will be visible on the RN side
 - Added information related to Android 14 to the documentation.
@@ -76,18 +88,23 @@ Contact us at [intent](https://withintent.com/contact-us/?utm_source=github&utm_
 
 ## Configuration & Installation
 
-### Expo SDK 43+
+### Expo SDK 54+
 
-> Tested against Expo SDK 49
 > This package cannot be used in the "Expo Go" app because [it requires custom native code](https://docs.expo.io/workflow/customizing/).
 > First install the package with yarn, npm, or [`npx expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install).
 
-After installing this npm package, add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
+```bash
+npm install @sfourdrinier/react-native-ble-plx
+# or
+pnpm add @sfourdrinier/react-native-ble-plx
+```
+
+After installing, add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
 
 ```json
 {
   "expo": {
-    "plugins": ["react-native-ble-plx"]
+    "plugins": ["@sfourdrinier/react-native-ble-plx"]
   }
 }
 ```
@@ -115,30 +132,25 @@ The plugin provides props for extra customization. Every time you change the pro
 ```json
 {
   "expo": {
-  "plugins": [
-    [
-      "react-native-ble-plx",
-      {
-        "isBackgroundEnabled": true,
-        "modes": ["peripheral", "central"],
-        "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices",
-        "iosEnableRestoration": true,
-        "iosRestorationIdentifier": "com.example.myapp.bleplx"
-      }
+    "plugins": [
+      [
+        "@sfourdrinier/react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": ["peripheral", "central"],
+          "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices",
+          "iosEnableRestoration": true,
+          "iosRestorationIdentifier": "com.example.myapp.bleplx"
+        }
+      ]
     ]
-  ]
-}
+  }
 }
 ```
 
-### Legacy Expo (SDK < 43)
+### iOS (Manual Setup)
 
-1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.dev/expokit/eject/). (only for Expo SDK < 43)
-2. Follow steps for iOS/Android.
-
-### iOS ([example setup](https://github.com/Cierpliwy/SensorTag))
-
-1. `npm install --save react-native-ble-plx`
+1. `npm install --save @sfourdrinier/react-native-ble-plx`
 1. Enter `ios` folder and run `pod update`
 1. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
 1. If you want to support background mode:
@@ -163,9 +175,9 @@ const manager = new BleManager({
 
 - The Restoration subspec exposes a Swift adapter (`BlePlxRestorationAdapter`) that will register with any restoration registry present in the host app (for example, a shared `BleRestorationRegistry`). If no registry is present, it is a no-op.
 
-### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
+### Android (Manual Setup)
 
-1. `npm install --save react-native-ble-plx`
+1. `npm install --save @sfourdrinier/react-native-ble-plx`
 1. In top level `build.gradle` make sure that min SDK version is at least 23:
 
    ```groovy
@@ -256,7 +268,7 @@ This fork includes **optional** support for iOS BLE state restoration, allowing 
   "expo": {
     "plugins": [
       [
-        "react-native-ble-plx",
+        "@sfourdrinier/react-native-ble-plx",
         {
           "isBackgroundEnabled": true,
           "modes": ["central"],
@@ -287,7 +299,7 @@ const manager = new BleManager({
 
 1. Add the Restoration subspec to your Podfile:
    ```ruby
-   pod 'react-native-ble-plx/Restoration', :path => '../node_modules/react-native-ble-plx'
+   pod 'react-native-ble-plx/Restoration', :path => '../node_modules/@sfourdrinier/react-native-ble-plx'
    ```
 
 2. Add `BleRestoration` pod as a dependency (or implement your own restoration registry)
