@@ -17,9 +17,6 @@ importers:
       '@babel/core':
         specifier: ^7.25.2
         version: 7.28.0
-      '@babel/preset-flow':
-        specifier: ^7.25.9
-        version: 7.27.1(@babel/core@7.28.0)
       '@babel/preset-typescript':
         specifier: ^7.25.2
         version: 7.27.1(@babel/core@7.28.0)
@@ -86,12 +83,6 @@ importers:
       eslint-config-prettier:
         specifier: ^9.0.0
         version: 9.1.0(eslint@8.57.1)
-      eslint-plugin-flowtype:
-        specifier: ^8.0.3
-        version: 8.0.3(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.0))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.0))(eslint@8.57.1)
-      eslint-plugin-ft-flow:
-        specifier: ^2.0.1
-        version: 2.0.3(@babel/eslint-parser@7.28.0(@babel/core@7.28.0)(eslint@8.57.1))(eslint@8.57.1)
       eslint-plugin-import:
         specifier: ^2.28.1
         version: 2.32.0(@typescript-eslint/parser@5.62.0(eslint@8.57.1)(typescript@5.8.3))(eslint@8.57.1)
@@ -110,9 +101,6 @@ importers:
       expo-module-scripts:
         specifier: ^5.0.0
         version: 5.0.7(@babel/core@7.28.0)(@babel/runtime@7.27.6)(@jest/types@29.6.3)(@types/eslint@9.6.1)(babel-jest@29.7.0(@babel/core@7.28.0))(eslint@8.57.1)(expo@54.0.25(@babel/core@7.28.0)(graphql@15.8.0)(react-native@0.81.4(@babel/core@7.28.0)(@types/react@19.2.6)(react@19.1.1))(react@19.1.1))(jest@29.7.0(@types/node@24.0.13)(ts-node@10.9.2(@types/node@24.0.13)(typescript@5.8.3)))(prettier@3.6.2)(react-dom@19.1.0(react@19.1.1))(react-native@0.81.4(@babel/core@7.28.0)(@types/react@19.2.6)(react@19.1.1))(react-refresh@0.14.2)(react-test-renderer@19.1.0(react@19.1.1))(react@19.1.1)(webpack@5.103.0)
-      flow-bin:
-        specifier: ^0.259.1
-        version: 0.259.1
       hermes-eslint:
         specifier: ^0.15.1
         version: 0.15.1
@@ -3325,14 +3313,6 @@ packages:
     peerDependencies:
       eslint: '>=4.19.1'
 
-  eslint-plugin-flowtype@8.0.3:
-    resolution: {integrity: sha512-dX8l6qUL6O+fYPtpNRideCFSpmWOUVx5QcaGLVqe/vlDiBSe4vYljDWDETwnyFzpl7By/WVIu6rcrniCgH9BqQ==}
-    engines: {node: '>=12.0.0'}
-    peerDependencies:
-      '@babel/plugin-syntax-flow': ^7.14.5
-      '@babel/plugin-transform-react-jsx': ^7.14.9
-      eslint: ^8.1.0
-
   eslint-plugin-ft-flow@2.0.3:
     resolution: {integrity: sha512-Vbsd/b+LYA99jUbsL6viEUWShFaYQt2YQs3QN3f+aeszOhh2sgdcU0mjzDyD4yyBvMc8qy2uwvBBWfMzEX06tg==}
     engines: {node: '>=12.22.0'}
@@ -3706,11 +3686,6 @@ packages:
 
   flatted@3.3.3:
     resolution: {integrity: sha512-GX+ysw4PBCz0PzosHDepZGANEuFCMLrnRTiEy9McGjmkCQYwRq4A/X786G/fjM/+OjsWSU1ZrY5qyARZmO/uwg==}
-
-  flow-bin@0.259.1:
-    resolution: {integrity: sha512-c5vsjZ19tWGO1ldc3gNmrH6eDdB0W428xPluIDB8UNm1eMCsBM/otZUoE3dmZuWUg/+5/1eKc28Z57/JUVVslQ==}
-    engines: {node: '>=0.10.0'}
-    hasBin: true
 
   flow-enums-runtime@0.0.6:
     resolution: {integrity: sha512-3PYnM29RFXwvAN6Pc/scUfkI7RwhQ/xqyLUyPNlXUp9S40zI8nup9tUSrTLSVnWGBN38FNiGWbwZOB6uR4OGdw==}
@@ -11884,14 +11859,6 @@ snapshots:
       eslint: 8.57.1
       ignore: 5.3.2
 
-  eslint-plugin-flowtype@8.0.3(@babel/plugin-syntax-flow@7.27.1(@babel/core@7.28.0))(@babel/plugin-transform-react-jsx@7.27.1(@babel/core@7.28.0))(eslint@8.57.1):
-    dependencies:
-      '@babel/plugin-syntax-flow': 7.27.1(@babel/core@7.28.0)
-      '@babel/plugin-transform-react-jsx': 7.27.1(@babel/core@7.28.0)
-      eslint: 8.57.1
-      lodash: 4.17.21
-      string-natural-compare: 3.0.1
-
   eslint-plugin-ft-flow@2.0.3(@babel/eslint-parser@7.28.0(@babel/core@7.28.0)(eslint@8.57.1))(eslint@8.57.1):
     dependencies:
       '@babel/eslint-parser': 7.28.0(@babel/core@7.28.0)(eslint@8.57.1)
@@ -12484,8 +12451,6 @@ snapshots:
       rimraf: 3.0.2
 
   flatted@3.3.3: {}
-
-  flow-bin@0.259.1: {}
 
   flow-enums-runtime@0.0.6: {}
 
