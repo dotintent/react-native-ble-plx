@@ -167,9 +167,10 @@ export class Characteristic implements NativeCharacteristic {
     transactionId: TransactionId | null = null,
     subscriptionType: CharacteristicSubscriptionType | null = null
   ): Subscription {
-    const commonArgs = [this.id, listener, transactionId || undefined]
-    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
-    return this._manager._monitorCharacteristic(...args)
+    if (isIOS) {
+      return this._manager._monitorCharacteristic(this.id, listener, transactionId ?? undefined)
+    }
+    return this._manager._monitorCharacteristic(this.id, listener, transactionId ?? undefined, subscriptionType)
   }
 
   /**

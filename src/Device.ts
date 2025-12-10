@@ -26,7 +26,7 @@ export class Device implements NativeDevice {
    * Internal BLE Manager handle
    * @private
    */
-  _manager: BleManager
+  _manager!: BleManager
 
   /**
    * Device identifier: MAC address on Android and UUID on iOS.
@@ -129,7 +129,6 @@ export class Device implements NativeDevice {
     this.solicitedServiceUUIDs = nativeDevice.solicitedServiceUUIDs
     this.isConnectable = nativeDevice.isConnectable
     this.overflowServiceUUIDs = nativeDevice.overflowServiceUUIDs
-    this._manager = manager
   }
 
   /**
@@ -339,9 +338,10 @@ export class Device implements NativeDevice {
     transactionId: TransactionId | null = null,
     subscriptionType?: CharacteristicSubscriptionType
   ): Subscription {
-    const commonArgs = [this.id, serviceUUID, characteristicUUID, listener, transactionId || undefined]
-    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
-    return this._manager.monitorCharacteristicForDevice(...args)
+    if (isIOS) {
+      return this._manager.monitorCharacteristicForDevice(this.id, serviceUUID, characteristicUUID, listener, transactionId ?? undefined)
+    }
+    return this._manager.monitorCharacteristicForDevice(this.id, serviceUUID, characteristicUUID, listener, transactionId ?? undefined, subscriptionType)
   }
 
   /**
