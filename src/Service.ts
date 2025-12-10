@@ -164,9 +164,10 @@ export class Service implements NativeService {
     transactionId: TransactionId | null = null,
     subscriptionType: CharacteristicSubscriptionType | null = null
   ): Subscription {
-    const commonArgs = [this.id, characteristicUUID, listener, transactionId || undefined]
-    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType]
-    return this._manager._monitorCharacteristicForService(...args)
+    if (isIOS) {
+      return this._manager._monitorCharacteristicForService(this.id, characteristicUUID, listener, transactionId ?? undefined)
+    }
+    return this._manager._monitorCharacteristicForService(this.id, characteristicUUID, listener, transactionId ?? undefined, subscriptionType)
   }
 
   /**

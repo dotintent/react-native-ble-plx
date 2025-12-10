@@ -1,4 +1,4 @@
-import { injectRestorationPodLine, withBLERestorationPodfile } from '../withBLERestorationPodfile'
+import { injectRestorationPodLine } from '../withBLERestorationPodfile'
 
 const SAMPLE_PODFILE = `require_relative '../node_modules/react-native/scripts/react_native_pods'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
@@ -24,7 +24,6 @@ end
 
 describe('withBLERestorationPodfile', () => {
   it('injects the Restoration subspec pod line before post_install', () => {
-    const config: any = { modResults: SAMPLE_PODFILE }
     const result = injectRestorationPodLine(SAMPLE_PODFILE, 'react-native-ble-plx')
 
     expect(result).toContain("pod 'react-native-ble-plx/Restoration', :path => File.join(File.dirname(__FILE__), '../node_modules/react-native-ble-plx')")

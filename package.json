@@ -1,6 +1,6 @@
 {
   "name": "@sfourdrinier/react-native-ble-plx",
-  "version": "3.5.16",
+  "version": "3.6.0",
   "description": "React Native Bluetooth Low Energy library",
   "main": "src/index",
   "module": "src/index",

@@ -128,8 +128,7 @@ export class BleManager {
       this._errorCodesToMessagesMapping
     )
     for (const id in this._activePromises) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      this._activePromises[id](destroyedError)
+      this._activePromises[id]?.(destroyedError)
     }
   }
 
@@ -139,8 +138,7 @@ export class BleManager {
    */
   _destroySubscriptions() {
     for (const id in this._activeSubscriptions) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-      this._activeSubscriptions[id].remove()
+      this._activeSubscriptions[id]?.remove()
     }
   }
 
@@ -988,14 +986,12 @@ export class BleManager {
     subscriptionType?: CharacteristicSubscriptionType | null
   ): Subscription {
     const filledTransactionId = transactionId || this._nextUniqueID()
-    const commonArgs = [deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId]
-    const args = isIOS ? commonArgs : [...commonArgs, subscriptionType || null]
 
-    return this._handleMonitorCharacteristic(
-        BleModule.monitorCharacteristicForDevice(...args),
-        filledTransactionId,
-        listener
-    )
+    const promise = isIOS
+      ? BleModule.monitorCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId, null)
+      : BleModule.monitorCharacteristicForDevice(deviceIdentifier, serviceUUID, characteristicUUID, filledTransactionId, subscriptionType ?? null)
+
+    return this._handleMonitorCharacteristic(promise, filledTransactionId, listener)
   }
 
   /**
