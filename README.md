@@ -7,6 +7,10 @@
   />
 </h1>
 
+> **Fork Notice**: This library is forked from [dotintent/react-native-ble-plx](https://github.com/dotintent/react-native-ble-plx) because the official library does not support Expo SDK 54+ and React Native 0.81+. We've updated it to work with modern React Native and converted it from Flow to TypeScript.
+>
+> **Looking for maintainers!** We're looking for volunteers to help maintain this fork. If you're interested, please open an issue or submit a PR.
+
 ## About this library
 
 It supports:
