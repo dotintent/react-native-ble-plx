@@ -22,7 +22,8 @@ import type {
   Base64,
   ScanOptions,
   ConnectionOptions,
-  BleManagerOptions
+  BleManagerOptions,
+  BackgroundModeOptions
 } from './TypeDefinition'
 import { isIOS } from './Utils'
 import { Platform } from 'react-native'
@@ -1355,5 +1356,99 @@ export class BleManager {
       BleModule.writeDescriptor(descriptorIdentifier, valueBase64, transactionId)
     )
     return new Descriptor(nativeDescriptor, this)
+  }
+
+  // Mark: Background Mode (Android) ---------------------------------------------------------------------------------
+
+  /**
+   * Enable background mode using Android foreground service. [Android only]
+   *
+   * This starts a foreground service that keeps BLE operations alive when the app
+   * is in the background. A persistent notification will be shown to the user.
+   *
+   * On iOS, background mode is handled through UIBackgroundModes in Info.plist
+   * and state restoration, so this method is a no-op on iOS.
+   *
+   * @example
+   * // Enable background mode with custom notification
+   * await manager.enableBackgroundMode({
+   *   notificationTitle: 'Connected to Heart Rate Monitor',
+   *   notificationText: 'Syncing health data...'
+   * });
+   *
+   * @param {BackgroundModeOptions} options Configuration for the foreground service notification.
+   * @returns {Promise<boolean>} True if background mode was enabled successfully.
+   */
+  async enableBackgroundMode(options?: BackgroundModeOptions): Promise<boolean> {
+    if (isIOS) {
+      // iOS uses UIBackgroundModes and state restoration instead
+      console.warn(
+        'enableBackgroundMode: iOS uses UIBackgroundModes in Info.plist for background support. ' +
+          'This method is only needed on Android.'
+      )
+      return true
+    }
+    return this._callPromise(BleModule.enableBackgroundMode(options || null))
+  }
+
+  /**
+   * Disable background mode and stop the foreground service. [Android only]
+   *
+   * This stops the foreground service and removes the persistent notification.
+   * BLE operations may be terminated by the system when the app goes to background.
+   *
+   * @example
+   * // Disable background mode when done with BLE operations
+   * await manager.disableBackgroundMode();
+   *
+   * @returns {Promise<boolean>} True if background mode was disabled successfully.
+   */
+  async disableBackgroundMode(): Promise<boolean> {
+    if (isIOS) {
+      return true
+    }
+    return this._callPromise(BleModule.disableBackgroundMode())
+  }
+
+  /**
+   * Update the foreground service notification content. [Android only]
+   *
+   * Use this to update the notification while background mode is active,
+   * for example to show connection status or sync progress.
+   *
+   * @example
+   * // Update notification to show progress
+   * await manager.updateBackgroundNotification({
+   *   notificationTitle: 'Syncing Data',
+   *   notificationText: 'Progress: 75%'
+   * });
+   *
+   * @param {BackgroundModeOptions} options New notification content.
+   * @returns {Promise<boolean>} True if notification was updated successfully.
+   */
+  async updateBackgroundNotification(options: BackgroundModeOptions): Promise<boolean> {
+    if (isIOS) {
+      return true
+    }
+    return this._callPromise(BleModule.updateBackgroundNotification(options || null))
+  }
+
+  /**
+   * Check if background mode is currently enabled. [Android only]
+   *
+   * @example
+   * const isEnabled = await manager.isBackgroundModeEnabled();
+   * if (!isEnabled) {
+   *   await manager.enableBackgroundMode();
+   * }
+   *
+   * @returns {Promise<boolean>} True if background mode (foreground service) is running.
+   */
+  async isBackgroundModeEnabled(): Promise<boolean> {
+    if (isIOS) {
+      // On iOS, background mode is always "enabled" if UIBackgroundModes is configured
+      return true
+    }
+    return this._callPromise(BleModule.isBackgroundModeEnabled())
   }
 }

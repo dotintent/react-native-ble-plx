@@ -796,6 +796,49 @@ export interface BleModuleInterface {
     transactionId: TransactionId
   ): Promise<NativeDescriptor>;
 
+  // Background Mode (Android Foreground Service)
+
+  /**
+   * Enable background mode using Android foreground service. [Android only]
+   * This keeps BLE operations alive when the app is in the background.
+   *
+   * @param {object} options Configuration options for the foreground service
+   * @param {string} options.notificationTitle Title for the notification
+   * @param {string} options.notificationText Text content for the notification
+   * @returns {Promise<boolean>} True if background mode was enabled successfully
+   * @private
+   */
+  enableBackgroundMode(options: { notificationTitle?: string; notificationText?: string } | null): Promise<boolean>;
+
+  /**
+   * Disable background mode and stop the foreground service. [Android only]
+   *
+   * @returns {Promise<boolean>} True if background mode was disabled successfully
+   * @private
+   */
+  disableBackgroundMode(): Promise<boolean>;
+
+  /**
+   * Update the notification content while background mode is active. [Android only]
+   *
+   * @param {object} options New notification content
+   * @param {string} options.notificationTitle New title for the notification
+   * @param {string} options.notificationText New text content for the notification
+   * @returns {Promise<boolean>} True if notification was updated successfully
+   * @private
+   */
+  updateBackgroundNotification(
+    options: { notificationTitle?: string; notificationText?: string } | null
+  ): Promise<boolean>;
+
+  /**
+   * Check if background mode is currently enabled. [Android only]
+   *
+   * @returns {Promise<boolean>} True if background mode is enabled
+   * @private
+   */
+  isBackgroundModeEnabled(): Promise<boolean>;
+
   // Other APIs
 
   /**

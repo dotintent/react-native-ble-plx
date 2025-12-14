@@ -3,6 +3,7 @@ import { AndroidConfig, type ConfigPlugin, createRunOncePlugin, WarningAggregato
 // Path is ../../package.json because this file is compiled to plugin/build/withBLE.js
 const pkg = require('../../package.json')
 import { withBLEAndroidManifest } from './withBLEAndroidManifest'
+import { withBLEAndroidForegroundService } from './withBLEAndroidForegroundService'
 import { BackgroundMode, withBLEBackgroundModes } from './withBLEBackgroundModes'
 import { withBluetoothPermissions } from './withBluetoothPermissions'
 import { withBLERestorationPodfile } from './withBLERestorationPodfile'
@@ -20,6 +21,8 @@ const withBLE: ConfigPlugin<
     iosEnableRestoration?: boolean
     /** Optional custom restoration identifier passed to iOS central manager */
     iosRestorationIdentifier?: string
+    /** Enable Android foreground service for background BLE operations */
+    androidEnableForegroundService?: boolean
   } | void
 > = (config, props = {}) => {
   console.log('[BLEPLX_PLUGIN] Plugin running with props:', JSON.stringify(props))
@@ -30,8 +33,10 @@ const withBLE: ConfigPlugin<
   const neverForLocation = _props.neverForLocation ?? false
   const iosEnableRestoration = _props.iosEnableRestoration ?? false
   const iosRestorationIdentifier = _props.iosRestorationIdentifier ?? 'com.reactnativebleplx.restore'
+  const androidEnableForegroundService = _props.androidEnableForegroundService ?? false
 
   console.log('[BLEPLX_PLUGIN] iosEnableRestoration:', iosEnableRestoration)
+  console.log('[BLEPLX_PLUGIN] androidEnableForegroundService:', androidEnableForegroundService)
 
   if ('bluetoothPeripheralPermission' in _props) {
     WarningAggregator.addWarningIOS(
@@ -71,6 +76,16 @@ const withBLE: ConfigPlugin<
     isBackgroundEnabled,
     neverForLocation
   })
+
+  // Android foreground service for background BLE operations
+  if (androidEnableForegroundService) {
+    console.log('[BLEPLX_PLUGIN] ✓ androidEnableForegroundService is TRUE - adding foreground service config')
+    config = withBLEAndroidForegroundService(config, {
+      enableAndroidForegroundService: true
+    })
+  } else {
+    console.log('[BLEPLX_PLUGIN] ✗ androidEnableForegroundService is FALSE - skipping foreground service config')
+  }
 
   return config
 }

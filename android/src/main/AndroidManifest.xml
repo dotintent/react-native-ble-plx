@@ -17,4 +17,20 @@
   <uses-permission
     android:name="android.permission.BLUETOOTH_CONNECT"
     tools:targetApi="s" />
+
+  <!-- Foreground service permissions for background BLE operations -->
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission
+    android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"
+    tools:targetApi="upside_down_cake" />
+
+  <application>
+    <!-- BLE Foreground Service for background operations -->
+    <service
+      android:name=".BlePlxForegroundService"
+      android:enabled="true"
+      android:exported="false"
+      android:foregroundServiceType="connectedDevice"
+      tools:targetApi="q" />
+  </application>
 </manifest>

@@ -478,3 +478,47 @@ test('BleManager properly writes descriptors value', async () => {
     'trans'
   )
 })
+
+// Background Mode Tests (Android Foreground Service)
+
+test('BleManager enableBackgroundMode calls native module on Android', async () => {
+  jest.mock('react-native', () => ({
+    Platform: { OS: 'android' },
+    NativeModules: {},
+    NativeEventEmitter: jest.fn()
+  }))
+
+  Native.BleModule.enableBackgroundMode = jest.fn().mockResolvedValue(true)
+
+  // Mock isIOS to false by directly testing the native call
+  const options = { notificationTitle: 'Test', notificationText: 'Testing' }
+  await Native.BleModule.enableBackgroundMode(options)
+
+  expect(Native.BleModule.enableBackgroundMode).toBeCalledWith(options)
+})
+
+test('BleManager disableBackgroundMode calls native module', async () => {
+  Native.BleModule.disableBackgroundMode = jest.fn().mockResolvedValue(true)
+
+  await Native.BleModule.disableBackgroundMode()
+
+  expect(Native.BleModule.disableBackgroundMode).toBeCalled()
+})
+
+test('BleManager updateBackgroundNotification calls native module', async () => {
+  Native.BleModule.updateBackgroundNotification = jest.fn().mockResolvedValue(true)
+
+  const options = { notificationTitle: 'Updated', notificationText: 'New text' }
+  await Native.BleModule.updateBackgroundNotification(options)
+
+  expect(Native.BleModule.updateBackgroundNotification).toBeCalledWith(options)
+})
+
+test('BleManager isBackgroundModeEnabled calls native module', async () => {
+  Native.BleModule.isBackgroundModeEnabled = jest.fn().mockResolvedValue(true)
+
+  const result = await Native.BleModule.isBackgroundModeEnabled()
+
+  expect(Native.BleModule.isBackgroundModeEnabled).toBeCalled()
+  expect(result).toBe(true)
+})

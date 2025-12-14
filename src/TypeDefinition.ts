@@ -310,3 +310,71 @@ export enum ConnectionPriority {
    */
   LowPower = 2
 }
+
+/**
+ * Options for enabling background mode on Android using a foreground service.
+ * This keeps BLE operations alive when the app is in the background.
+ * @name BackgroundModeOptions
+ */
+export interface BackgroundModeOptions {
+  /**
+   * Title displayed in the foreground service notification.
+   * @default "BLE Active"
+   * @memberof BackgroundModeOptions
+   * @instance
+   */
+  notificationTitle?: string;
+
+  /**
+   * Text content displayed in the foreground service notification.
+   * @default "Bluetooth connection active in background"
+   * @memberof BackgroundModeOptions
+   * @instance
+   */
+  notificationText?: string;
+}
+
+/**
+ * Options for automatic reconnection behavior.
+ * @name ReconnectionOptions
+ */
+export interface ReconnectionOptions {
+  /**
+   * Maximum number of reconnection attempts before giving up.
+   * @default 5
+   * @memberof ReconnectionOptions
+   * @instance
+   */
+  maxRetries?: number;
+
+  /**
+   * Initial delay in milliseconds before the first reconnection attempt.
+   * @default 1000
+   * @memberof ReconnectionOptions
+   * @instance
+   */
+  initialDelayMs?: number;
+
+  /**
+   * Maximum delay in milliseconds between reconnection attempts (for exponential backoff).
+   * @default 30000
+   * @memberof ReconnectionOptions
+   * @instance
+   */
+  maxDelayMs?: number;
+
+  /**
+   * Multiplier for exponential backoff between reconnection attempts.
+   * @default 2
+   * @memberof ReconnectionOptions
+   * @instance
+   */
+  backoffMultiplier?: number;
+
+  /**
+   * Connection options to use when reconnecting.
+   * @memberof ReconnectionOptions
+   * @instance
+   */
+  connectionOptions?: ConnectionOptions;
+}

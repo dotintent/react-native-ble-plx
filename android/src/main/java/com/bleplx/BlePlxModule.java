@@ -26,6 +26,9 @@ import com.bleplx.converter.ScanResultToJsObjectConverter;
 import com.bleplx.converter.ServiceToJsObjectConverter;
 import com.bleplx.utils.ReadableArrayConverter;
 import com.bleplx.utils.SafePromise;
+import android.app.ActivityManager;
+import android.content.Context;
+
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -1080,6 +1083,87 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
         }
       }
     );
+  }
+
+  // Mark: Background Mode (Foreground Service) --------------------------------------------------
+
+  @ReactMethod
+  public void enableBackgroundMode(final ReadableMap options, final Promise promise) {
+    try {
+      String title = null;
+      String text = null;
+
+      if (options != null) {
+        if (options.hasKey("notificationTitle") && options.getType("notificationTitle") == ReadableType.String) {
+          title = options.getString("notificationTitle");
+        }
+        if (options.hasKey("notificationText") && options.getType("notificationText") == ReadableType.String) {
+          text = options.getString("notificationText");
+        }
+      }
+
+      BlePlxForegroundService.start(reactContext, title, text);
+      promise.resolve(true);
+    } catch (Exception e) {
+      promise.reject("BACKGROUND_MODE_ERROR", "Failed to enable background mode: " + e.getMessage(), e);
+    }
+  }
+
+  @ReactMethod
+  public void disableBackgroundMode(final Promise promise) {
+    try {
+      BlePlxForegroundService.stop(reactContext);
+      promise.resolve(true);
+    } catch (Exception e) {
+      promise.reject("BACKGROUND_MODE_ERROR", "Failed to disable background mode: " + e.getMessage(), e);
+    }
+  }
+
+  @ReactMethod
+  public void updateBackgroundNotification(final ReadableMap options, final Promise promise) {
+    try {
+      String title = null;
+      String text = null;
+
+      if (options != null) {
+        if (options.hasKey("notificationTitle") && options.getType("notificationTitle") == ReadableType.String) {
+          title = options.getString("notificationTitle");
+        }
+        if (options.hasKey("notificationText") && options.getType("notificationText") == ReadableType.String) {
+          text = options.getString("notificationText");
+        }
+      }
+
+      BlePlxForegroundService.updateNotification(reactContext, title, text);
+      promise.resolve(true);
+    } catch (Exception e) {
+      promise.reject("BACKGROUND_MODE_ERROR", "Failed to update background notification: " + e.getMessage(), e);
+    }
+  }
+
+  @ReactMethod
+  public void isBackgroundModeEnabled(final Promise promise) {
+    try {
+      boolean isRunning = isServiceRunning(BlePlxForegroundService.class);
+      promise.resolve(isRunning);
+    } catch (Exception e) {
+      promise.reject("BACKGROUND_MODE_ERROR", "Failed to check background mode status: " + e.getMessage(), e);
+    }
+  }
+
+  /**
+   * Check if a service is running
+   */
+  private boolean isServiceRunning(Class<?> serviceClass) {
+    ActivityManager manager = (ActivityManager) reactContext.getSystemService(Context.ACTIVITY_SERVICE);
+    if (manager != null) {
+      for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+        if (serviceClass.getName().equals(service.service.getClassName())) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   @ReactMethod
