@@ -2,6 +2,51 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [4.0.0] - 2025-12-20
+
+### Added
+
+- **Background BLE Operations (Android)**
+  - `startBackgroundDeviceScan()` - Scan for devices in background with foreground service
+  - `startBackgroundDataCollection()` - Background connection and data monitoring
+  - `connectBackgroundDevice()` - Connect to device in background with auto-reconnect
+  - `getPendingBackgroundData()` - Retrieve data collected while app was killed
+  - `clearPendingBackgroundData()` - Clear pending background data
+  - `BleBackgroundDataManager` - Data persistence via SharedPreferences
+  - `BleConnectionForegroundService` - Foreground service for background connections
+
+- **Background BLE Operations (iOS)**
+  - Added iOS method stubs for API parity with Android
+  - Uses native CoreBluetooth state restoration
+
+### Changed
+
+- **BREAKING**: Minimum iOS version increased from 11.0 to 13.0
+- **BREAKING**: Minimum Node.js version increased to 20.0.0
+- **BREAKING**: Updated to React 19.0.0 and React Native 0.77.0
+- Updated Java version from 1.8 to 17
+- Updated RxAndroidBle from 1.17.2 to 1.19.1
+- Updated RxJava from 2.2.17 to 2.2.21
+- Updated Gradle lint configuration from deprecated `lintOptions` to `lint` block
+- Migrated from Yarn to pnpm
+- Updated Expo SDK to 54.0.30 (supports 53+)
+- Updated TypeScript to 5.7.2
+- Modernized Android Expo plugins (removed deprecated permissions)
+
+### Fixed
+
+- Android 13+ deprecated API usage:
+  - `BluetoothGattCharacteristic.getValue()` - Now uses stored value field
+  - `BluetoothGattDescriptor.getValue()` - Now uses stored value field
+- Removed redundant `_manager` assignment causing read-only property error
+- SafePromise null code handling in reject method
+
+### Removed
+
+- Deprecated `BLUETOOTH` and `BLUETOOTH_ADMIN` permissions (Android 12+ doesn't need them)
+- Deprecated `ACCESS_COARSE_LOCATION` permission
+- Removed pre-Android O version checks in foreground service
+
 ## [3.5.0] - 2025-02-07
 
 ### Changed

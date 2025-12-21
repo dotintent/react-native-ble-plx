@@ -67,13 +67,13 @@ android {
     }
   }
 
-  lintOptions {
+  lint {
     disable "GradleCompatible"
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
   }
 
 }
@@ -85,12 +85,9 @@ repositories {
 
 
 dependencies {
-  // For < 0.71, this will be from the local maven repo
-  // For > 0.71, this will be replaced by `com.facebook.react:react-android:$version` by react gradle plugin
-  //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
-  implementation 'io.reactivex.rxjava2:rxjava:2.2.17'
-  implementation "com.polidea.rxandroidble2:rxandroidble:1.17.2"
+  implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+  implementation "com.polidea.rxandroidble2:rxandroidble:1.19.1"
 }
 
 if (isNewArchitectureEnabled()) {

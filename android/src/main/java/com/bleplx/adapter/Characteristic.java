@@ -115,14 +115,7 @@ public class Characteristic {
 
   public boolean isNotifying() {
     BluetoothGattDescriptor descriptor = gattCharacteristic.getDescriptor(Constants.CLIENT_CHARACTERISTIC_CONFIG_UUID);
-    boolean isNotifying = false;
-    if (descriptor != null) {
-      byte[] descriptorValue = descriptor.getValue();
-      if (descriptorValue != null) {
-        isNotifying = (descriptorValue[0] & 0x01) != 0;
-      }
-    }
-    return isNotifying;
+    return descriptor != null && value != null && value.length > 0 && (value[0] & 0x01) != 0;
   }
 
   public boolean isIndicatable() {
@@ -140,11 +133,9 @@ public class Characteristic {
     return new Descriptor(this, descriptor);
   }
 
-  void logValue(String message, byte[] value) {
-    if (value == null) {
-      value = gattCharacteristic.getValue();
-    }
-    String hexValue = value != null ? ByteUtils.bytesToHex(value) : "(null)";
+  void logValue(String message, byte[] val) {
+    byte[] logVal = val != null ? val : value;
+    String hexValue = logVal != null ? ByteUtils.bytesToHex(logVal) : "(null)";
     RxBleLog.v(message +
       " Characteristic(uuid: " + gattCharacteristic.getUuid().toString() +
       ", id: " + id +

@@ -174,6 +174,19 @@ declare module 'react-native-ble-plx' {
     legacyScan?: boolean
   }
 
+  export interface BackgroundDataCollectionOptions {
+    notificationTitle?: string
+    notificationContent?: string
+  }
+
+  export interface BackgroundDataEntry {
+    deviceId: string
+    serviceUUID: string
+    characteristicUUID: string
+    value: Base64
+    timestamp: number
+  }
+
   /**
    * Connection specific options to be passed before connection happen. [Not used]
    */
@@ -1143,6 +1156,73 @@ declare module 'react-native-ble-plx' {
      * @returns {Promise<void>} the promise may be rejected if the operation is impossible to perform.
      */
     stopDeviceScan(): Promise<void>
+
+    /**
+     * [Android only] Starts device scanning in background using a foreground service.
+     * This allows scanning to continue when the app is in the background by displaying
+     * a persistent notification as required by Android 8+ for foreground services.
+     * Scan results are emitted via the 'BlePlxBackgroundScanResult' event.
+     *
+     * @param {?Array<UUID>} UUIDs Array of service UUIDs to filter scanned devices.
+     * @param {?Object} options Optional configuration including notification customization.
+     * @returns {Promise<void>} Promise resolves when background scan starts.
+     */
+    startBackgroundDeviceScan(
+      UUIDs: UUID[] | null,
+      options?: {
+        notificationTitle?: string
+        notificationContent?: string
+        scanMode?: ScanMode
+        callbackType?: ScanCallbackType
+        legacyScan?: boolean
+      } | null
+    ): Promise<void>
+
+    /**
+     * [Android only] Stops background device scan if in progress.
+     * @returns {Promise<void>} Promise resolves when background scan stops.
+     */
+    stopBackgroundDeviceScan(): Promise<void>
+
+    /**
+     * [Android only] Check if background scan is currently running.
+     * @returns {Promise<boolean>} True if background scan is running.
+     */
+    isBackgroundScanRunning(): Promise<boolean>
+
+    /**
+     * [Android only] Starts background data collection and monitoring with a foreground service.
+     * @param {?BackgroundDataCollectionOptions} options Optional notification configuration.
+     * @returns {Promise<void>} Promise resolves when background data collection starts.
+     */
+    startBackgroundDataCollection(options?: BackgroundDataCollectionOptions | null): Promise<void>
+
+    /**
+     * [Android only] Connects to a device and monitors a characteristic in background.
+     * @param {DeviceId} deviceId Device identifier.
+     * @param {UUID} serviceUUID Service UUID containing the characteristic.
+     * @param {UUID} characteristicUUID Characteristic UUID to monitor.
+     * @returns {Promise<void>} Promise resolves when background connection is requested.
+     */
+    connectBackgroundDevice(deviceId: DeviceId, serviceUUID: UUID, characteristicUUID: UUID): Promise<void>
+
+    /**
+     * [Android only] Stops background data collection if running.
+     * @returns {Promise<void>} Promise resolves when background data collection stops.
+     */
+    stopBackgroundDataCollection(): Promise<void>
+
+    /**
+     * [Android only] Returns data collected while the app was in background or terminated.
+     * @returns {Promise<Array<BackgroundDataEntry>>} Collected data entries.
+     */
+    getPendingBackgroundData(): Promise<Array<BackgroundDataEntry>>
+
+    /**
+     * [Android only] Clears stored background data.
+     * @returns {Promise<void>} Promise resolves when data is cleared.
+     */
+    clearPendingBackgroundData(): Promise<void>
 
     /**
      * Request a connection parameter update. This functions may update connection parameters on Android API level 21 or

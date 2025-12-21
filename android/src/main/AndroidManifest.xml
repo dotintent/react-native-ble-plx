@@ -17,4 +17,22 @@
   <uses-permission
     android:name="android.permission.BLUETOOTH_CONNECT"
     tools:targetApi="s" />
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+  <uses-permission
+    android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"
+    tools:targetApi="34" />
+  <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+  <application>
+    <service
+      android:name=".service.BleScanForegroundService"
+      android:enabled="true"
+      android:exported="false"
+      android:foregroundServiceType="connectedDevice" />
+    <service
+      android:name=".service.BleConnectionForegroundService"
+      android:enabled="true"
+      android:exported="false"
+      android:foregroundServiceType="connectedDevice" />
+  </application>
 </manifest>

@@ -1,11 +1,3 @@
-//
-//  BleClient.m
-//  BleClient
-//
-//  Created by Przemysław Lenart on 27/07/16.
-//  Copyright © 2016 Polidea. All rights reserved.
-//
-
 #import "BlePlx.h"
 #import "BlePlx-Swift.h"
 
@@ -102,6 +94,54 @@ RCT_EXPORT_METHOD(startDeviceScan:(NSArray*)filteredUUIDs
 
 RCT_EXPORT_METHOD(stopDeviceScan) {
     [_manager stopDeviceScan];
+}
+
+RCT_EXPORT_METHOD(startBackgroundDeviceScan:(NSArray*)filteredUUIDs
+                                    options:(NSDictionary*)options
+                                   resolver:(RCTPromiseResolveBlock)resolve
+                                   rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager startDeviceScan:filteredUUIDs options:options];
+    resolve(nil);
+}
+
+RCT_EXPORT_METHOD(stopBackgroundDeviceScan:(RCTPromiseResolveBlock)resolve
+                                  rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager stopDeviceScan];
+    resolve(nil);
+}
+
+RCT_EXPORT_METHOD(isBackgroundScanRunning:(RCTPromiseResolveBlock)resolve
+                                 rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve(@NO);
+}
+
+RCT_EXPORT_METHOD(startBackgroundDataCollection:(NSDictionary*)options
+                                       resolver:(RCTPromiseResolveBlock)resolve
+                                       rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve(nil);
+}
+
+RCT_EXPORT_METHOD(connectBackgroundDevice:(NSString*)deviceId
+                              serviceUUID:(NSString*)serviceUUID
+                       characteristicUUID:(NSString*)characteristicUUID
+                                 resolver:(RCTPromiseResolveBlock)resolve
+                                 rejecter:(RCTPromiseRejectBlock)reject) {
+    [_manager connectToDevice:deviceId options:nil resolve:resolve reject:reject];
+}
+
+RCT_EXPORT_METHOD(stopBackgroundDataCollection:(RCTPromiseResolveBlock)resolve
+                                      rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve(nil);
+}
+
+RCT_EXPORT_METHOD(getPendingBackgroundData:(RCTPromiseResolveBlock)resolve
+                                  rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve(@[]);
+}
+
+RCT_EXPORT_METHOD(clearPendingBackgroundData:(RCTPromiseResolveBlock)resolve
+                                    rejecter:(RCTPromiseRejectBlock)reject) {
+    resolve(nil);
 }
 
 RCT_EXPORT_METHOD(requestConnectionPriorityForDevice:(NSString*)deviceIdentifier
@@ -376,7 +416,7 @@ RCT_EXPORT_METHOD(monitorCharacteristic:(nonnull NSNumber*)characteristicIdentif
                              reject:reject];
 }
 
-// Mark: Characteristics operations ------------------------------------------------------------------------------------
+// Mark: Descriptor operations -----------------------------------------------------------------------------------------
 
 RCT_EXPORT_METHOD(readDescriptorForDevice:(NSString*)deviceIdentifier
                   serviceUUID:(NSString*)serviceUUID

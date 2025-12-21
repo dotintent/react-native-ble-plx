@@ -5,36 +5,23 @@ export enum BackgroundMode {
   Peripheral = 'peripheral'
 }
 
-function ensureKey(arr: string[], key: string) {
-  if (!arr.find(mode => mode === key)) {
-    arr.push(key)
-  }
-  return arr
-}
+const ensureKey = (arr: string[], key: string) => arr.includes(key) ? arr : [...arr, key]
 
-const centralKey = 'bluetooth-central'
-const peripheralKey = 'bluetooth-peripheral'
-
-/**
- * Append `UIBackgroundModes` to the `Info.plist`.
- */
 export const withBLEBackgroundModes: ConfigPlugin<BackgroundMode[]> = (c, modes) =>
   withInfoPlist(c, config => {
     if (!Array.isArray(config.modResults.UIBackgroundModes)) {
       config.modResults.UIBackgroundModes = []
     }
 
+    let bgModes = config.modResults.UIBackgroundModes
+
     if (modes.includes(BackgroundMode.Central)) {
-      config.modResults.UIBackgroundModes = ensureKey(config.modResults.UIBackgroundModes, centralKey)
+      bgModes = ensureKey(bgModes, 'bluetooth-central')
     }
     if (modes.includes(BackgroundMode.Peripheral)) {
-      config.modResults.UIBackgroundModes = ensureKey(config.modResults.UIBackgroundModes, peripheralKey)
+      bgModes = ensureKey(bgModes, 'bluetooth-peripheral')
     }
 
-    // Prevent empty array
-    if (!config.modResults.UIBackgroundModes.length) {
-      delete config.modResults.UIBackgroundModes
-    }
-
+    config.modResults.UIBackgroundModes = bgModes.length ? bgModes : undefined
     return config
   })

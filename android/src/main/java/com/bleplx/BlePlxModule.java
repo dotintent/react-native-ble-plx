@@ -24,6 +24,9 @@ import com.bleplx.converter.DescriptorToJsObjectConverter;
 import com.bleplx.converter.DeviceToJsObjectConverter;
 import com.bleplx.converter.ScanResultToJsObjectConverter;
 import com.bleplx.converter.ServiceToJsObjectConverter;
+import com.bleplx.service.BleScanForegroundService;
+import com.bleplx.service.BleConnectionForegroundService;
+import com.bleplx.service.BleBackgroundDataManager;
 import com.bleplx.utils.ReadableArrayConverter;
 import com.bleplx.utils.SafePromise;
 import com.facebook.react.bridge.Arguments;
@@ -39,6 +42,8 @@ import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.module.annotations.ReactModule;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.rxandroidble2.internal.RxBleLog;
+
+import android.content.Intent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -250,6 +255,77 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
       return;
     }
     bleAdapter.stopDeviceScan();
+    promise.resolve(null);
+  }
+
+  @ReactMethod
+  public void startBackgroundDeviceScan(@Nullable ReadableArray filteredUUIDs, @Nullable ReadableMap options, final Promise promise) {
+    if (!this.isRequestPossibleHandler("startBackgroundDeviceScan", promise)) return;
+
+    String title = "Scanning for devices";
+    String content = "Bluetooth scanning is active";
+    int scanMode = 0;
+    int callbackType = 1;
+    boolean legacyScan = true;
+    String[] uuids = filteredUUIDs != null ? ReadableArrayConverter.toStringArray(filteredUUIDs) : null;
+
+    if (options != null) {
+      if (options.hasKey("notificationTitle")) title = options.getString("notificationTitle");
+      if (options.hasKey("notificationContent")) content = options.getString("notificationContent");
+      if (options.hasKey("scanMode")) scanMode = options.getInt("scanMode");
+      if (options.hasKey("callbackType")) callbackType = options.getInt("callbackType");
+      if (options.hasKey("legacyScan")) legacyScan = options.getBoolean("legacyScan");
+    }
+
+    reactContext.startForegroundService(BleScanForegroundService.createStartIntent(reactContext, title, content, uuids, scanMode, callbackType, legacyScan));
+    promise.resolve(null);
+  }
+
+  @ReactMethod
+  public void stopBackgroundDeviceScan(final Promise promise) {
+    reactContext.startService(BleScanForegroundService.createStopIntent(reactContext));
+    promise.resolve(null);
+  }
+
+  @ReactMethod
+  public void isBackgroundScanRunning(final Promise promise) {
+    promise.resolve(false);
+  }
+
+  @ReactMethod
+  public void startBackgroundDataCollection(@Nullable ReadableMap options, final Promise promise) {
+    String title = "Collecting BLE data";
+    String content = "Monitoring device data in background";
+    if (options != null) {
+      if (options.hasKey("notificationTitle")) title = options.getString("notificationTitle");
+      if (options.hasKey("notificationContent")) content = options.getString("notificationContent");
+    }
+    reactContext.startForegroundService(BleConnectionForegroundService.createStartIntent(reactContext, title, content));
+    promise.resolve(null);
+  }
+
+  @ReactMethod
+  public void connectBackgroundDevice(final String deviceId, final String serviceUUID, final String characteristicUUID, final Promise promise) {
+    reactContext.startService(BleConnectionForegroundService.createConnectIntent(reactContext, deviceId, serviceUUID, characteristicUUID));
+    promise.resolve(null);
+  }
+
+  @ReactMethod
+  public void stopBackgroundDataCollection(final Promise promise) {
+    reactContext.startService(BleConnectionForegroundService.createStopIntent(reactContext));
+    promise.resolve(null);
+  }
+
+  @ReactMethod
+  public void getPendingBackgroundData(final Promise promise) {
+    BleBackgroundDataManager dataManager = new BleBackgroundDataManager(reactContext);
+    promise.resolve(dataManager.getPendingDataAsArray());
+  }
+
+  @ReactMethod
+  public void clearPendingBackgroundData(final Promise promise) {
+    BleBackgroundDataManager dataManager = new BleBackgroundDataManager(reactContext);
+    dataManager.clearPendingData();
     promise.resolve(null);
   }
 
