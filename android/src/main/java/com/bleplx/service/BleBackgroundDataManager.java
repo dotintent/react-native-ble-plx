@@ -7,8 +7,8 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import android.util.Base64;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 public class BleBackgroundDataManager {
@@ -41,7 +41,7 @@ public class BleBackgroundDataManager {
             map.putString("deviceId", entry.deviceId);
             map.putString("serviceUUID", entry.serviceUUID);
             map.putString("characteristicUUID", entry.characteristicUUID);
-            map.putString("value", Base64.getEncoder().encodeToString(entry.value));
+            map.putString("value", Base64.encodeToString(entry.value, Base64.NO_WRAP));
             map.putDouble("timestamp", entry.timestamp);
             arr.pushMap(map);
         }
@@ -65,7 +65,7 @@ public class BleBackgroundDataManager {
                 obj.put("deviceId", entry.deviceId);
                 obj.put("serviceUUID", entry.serviceUUID);
                 obj.put("characteristicUUID", entry.characteristicUUID);
-                obj.put("value", Base64.getEncoder().encodeToString(entry.value));
+                obj.put("value", Base64.encodeToString(entry.value, Base64.NO_WRAP));
                 obj.put("timestamp", entry.timestamp);
                 arr.put(obj);
             }
@@ -84,7 +84,7 @@ public class BleBackgroundDataManager {
                     obj.getString("deviceId"),
                     obj.getString("serviceUUID"),
                     obj.getString("characteristicUUID"),
-                    Base64.getDecoder().decode(obj.getString("value")),
+                    Base64.decode(obj.getString("value"), Base64.NO_WRAP),
                     obj.getLong("timestamp")
                 ));
             }

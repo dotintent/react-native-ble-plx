@@ -9,6 +9,7 @@ import android.bluetooth.BluetoothGattDescriptor;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ServiceInfo;
+import android.os.Build;
 import android.os.Binder;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
@@ -21,7 +22,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.rxandroidble2.RxBleClient;
 import com.polidea.rxandroidble2.RxBleConnection;
 import com.polidea.rxandroidble2.RxBleDevice;
-import java.util.Base64;
+import android.util.Base64;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import io.reactivex.disposables.CompositeDisposable;
@@ -74,7 +75,11 @@ public class BleConnectionForegroundService extends Service {
                 intent.getStringExtra(EXTRA_TITLE),
                 intent.getStringExtra(EXTRA_CONTENT)
             );
-            startForeground(notificationHelper.getNotificationId() + 1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startForeground(notificationHelper.getNotificationId() + 1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE);
+            } else {
+                startForeground(notificationHelper.getNotificationId() + 1, notification);
+            }
             isRunning = true;
         }
 
@@ -130,7 +135,7 @@ public class BleConnectionForegroundService extends Service {
         params.putString("deviceId", deviceId);
         params.putString("serviceUUID", serviceUUID);
         params.putString("characteristicUUID", characteristicUUID);
-        params.putString("value", Base64.getEncoder().encodeToString(dataCopy));
+        params.putString("value", Base64.encodeToString(dataCopy, Base64.NO_WRAP));
         params.putDouble("timestamp", System.currentTimeMillis());
         sendEvent("BlePlxBackgroundData", params);
     }

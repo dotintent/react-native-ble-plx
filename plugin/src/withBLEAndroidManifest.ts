@@ -3,7 +3,7 @@ import { type ConfigPlugin, withAndroidManifest, AndroidConfig } from '@expo/con
 type InnerManifest = AndroidConfig.Manifest.AndroidManifest['manifest']
 type ManifestPermission = InnerManifest['permission']
 
-type ExtraTools = { 'tools:targetApi'?: string }
+type ExtraTools = { 'tools:targetApi'?: string; 'android:maxSdkVersion'?: string }
 type ManifestUsesPermissionWithExtraTools = { $: AndroidConfig.Manifest.ManifestUsesPermission['$'] & ExtraTools }
 
 type AndroidManifest = {
@@ -39,6 +39,11 @@ export function addLocationPermissionToManifest(androidManifest: AndroidManifest
 
   const permissions = androidManifest.manifest['uses-permission-sdk-23']
   
+  // ACCESS_COARSE_LOCATION for Android 9 and below
+  if (!permissions.find(item => item.$['android:name'] === 'android.permission.ACCESS_COARSE_LOCATION')) {
+    permissions.push({ $: { 'android:name': 'android.permission.ACCESS_COARSE_LOCATION', 'android:maxSdkVersion': '28' } })
+  }
+  
   if (!permissions.find(item => item.$['android:name'] === 'android.permission.ACCESS_FINE_LOCATION')) {
     permissions.push({ $: { 'android:name': 'android.permission.ACCESS_FINE_LOCATION', ...optMaxSdkVersion } })
   }
@@ -52,6 +57,16 @@ export function addScanPermissionToManifest(androidManifest: AndroidManifest, ne
   }
 
   const permissions = androidManifest.manifest['uses-permission']
+  
+  // Legacy BLUETOOTH permission for Android 11 and below
+  if (!permissions.find(item => item.$['android:name'] === 'android.permission.BLUETOOTH')) {
+    permissions.push({ $: { 'android:name': 'android.permission.BLUETOOTH', 'android:maxSdkVersion': '30' } })
+  }
+  
+  // Legacy BLUETOOTH_ADMIN permission for Android 11 and below
+  if (!permissions.find(item => item.$['android:name'] === 'android.permission.BLUETOOTH_ADMIN')) {
+    permissions.push({ $: { 'android:name': 'android.permission.BLUETOOTH_ADMIN', 'android:maxSdkVersion': '30' } })
+  }
   
   if (!permissions.find(item => item.$['android:name'] === 'android.permission.BLUETOOTH_SCAN')) {
     AndroidConfig.Manifest.ensureToolsAvailable(androidManifest)

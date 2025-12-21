@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ServiceInfo;
+import android.os.Build;
 import android.os.Binder;
 import android.os.IBinder;
 
@@ -65,7 +66,11 @@ public class BleScanForegroundService extends Service {
                 intent.getStringExtra(EXTRA_TITLE),
                 intent.getStringExtra(EXTRA_CONTENT)
             );
-            startForeground(notificationHelper.getNotificationId(), notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startForeground(notificationHelper.getNotificationId(), notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE);
+            } else {
+                startForeground(notificationHelper.getNotificationId(), notification);
+            }
             startScanning(
                 intent.getStringArrayExtra(EXTRA_FILTERED_UUIDS),
                 intent.getIntExtra(EXTRA_SCAN_MODE, 0),

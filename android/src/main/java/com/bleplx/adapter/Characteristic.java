@@ -115,7 +115,9 @@ public class Characteristic {
 
   public boolean isNotifying() {
     BluetoothGattDescriptor descriptor = gattCharacteristic.getDescriptor(Constants.CLIENT_CHARACTERISTIC_CONFIG_UUID);
-    return descriptor != null && value != null && value.length > 0 && (value[0] & 0x01) != 0;
+    if (descriptor == null) return false;
+    byte[] descriptorValue = descriptor.getValue();
+    return descriptorValue != null && descriptorValue.length > 0 && (descriptorValue[0] & 0x03) != 0;
   }
 
   public boolean isIndicatable() {
