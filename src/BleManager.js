@@ -53,7 +53,7 @@ const enableDisableDeprecatedMessage =
 export class BleManager {
   // Scan subscriptions
   // $FlowIssue[missing-type-arg]
-  _scanEventSubscription: ?EventEmitter
+  _scanEventSubscription: ?Subscription
   // Listening to BleModule events
   // $FlowIssue[missing-type-arg]
   _eventEmitter: EventEmitter

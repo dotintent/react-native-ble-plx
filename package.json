@@ -1,6 +1,6 @@
 {
-  "name": "react-native-ble-plx",
-  "version": "4.0.0",
+  "name": "@srivathsav03/react-native-ble-plx",
+  "version": "4.0.3",
   "packageManager": "pnpm@9.0.0",
   "description": "React Native Bluetooth Low Energy library",
   "main": "src/index",
@@ -37,6 +37,7 @@
     "test:example": "jest --config example/jest.config.js --passWithNoTests",
     "docs": "documentation build src/index.js -o docs --config documentation.yml -f html",
     "typecheck": "tsc --noEmit",
+    "flow": "flow",
     "lint": "flow && eslint \"**/*.{js,ts,tsx}\" && documentation lint index.js && pnpm typecheck",
     "prepack": "bob build",
     "release": "release-it",
@@ -65,14 +66,18 @@
     "Energy",
     "BLE"
   ],
-  "repository": "https://github.com/dotintent/react-native-ble-plx.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Srivathsav-max/react-native-ble-plx.git"
+  },
   "author": "dotintent (https://withintent.com/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dotintent/react-native-ble-plx/issues"
+    "url": "https://github.com/Srivathsav-max/react-native-ble-plx/issues"
   },
-  "homepage": "https://github.com/dotintent/react-native-ble-plx#readme",
+  "homepage": "https://github.com/Srivathsav-max/react-native-ble-plx#readme",
   "publishConfig": {
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "devDependencies": {
@@ -80,6 +85,8 @@
     "@babel/core": "^7.26.0",
     "@babel/preset-flow": "^7.25.9",
     "@commitlint/config-conventional": "^19.6.0",
+    "@eslint/eslintrc": "^3.3.3",
+    "@eslint/js": "^9.39.2",
     "@evilmartians/lefthook": "^1.9.4",
     "@expo/config-plugins": "^9.0.14",
     "@react-native/eslint-config": "^0.83.0",

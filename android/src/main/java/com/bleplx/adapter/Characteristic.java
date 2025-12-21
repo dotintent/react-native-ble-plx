@@ -113,6 +113,11 @@ public class Characteristic {
     return descriptors;
   }
 
+  /**
+   * Returns true if the characteristic is actively subscribed for updates via
+   * either notifications (0x01) or indications (0x02). The 0x03 bitmask checks
+   * for either subscription type being enabled.
+   */
   public boolean isNotifying() {
     BluetoothGattDescriptor descriptor = gattCharacteristic.getDescriptor(Constants.CLIENT_CHARACTERISTIC_CONFIG_UUID);
     if (descriptor == null) return false;

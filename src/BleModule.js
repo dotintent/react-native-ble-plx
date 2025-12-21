@@ -845,6 +845,70 @@ export interface BleModuleInterface {
    * @private
    */
   DisconnectionEvent: string;
+
+  // Background scanning and data collection
+
+  /**
+   * Starts background device scan.
+   * @param {?Array<UUID>} filteredUUIDs List of UUIDs for services.
+   * @param {?Object} options Scan options.
+   * @returns {Promise<void>}
+   * @private
+   */
+  startBackgroundDeviceScan(filteredUUIDs: ?Array<UUID>, options: ?Object): Promise<void>;
+
+  /**
+   * Stops background device scan.
+   * @returns {Promise<void>}
+   * @private
+   */
+  stopBackgroundDeviceScan(): Promise<void>;
+
+  /**
+   * Checks if background scan is running.
+   * @returns {Promise<boolean>}
+   * @private
+   */
+  isBackgroundScanRunning(): Promise<boolean>;
+
+  /**
+   * Starts background data collection.
+   * @param {?Object} options Collection options.
+   * @returns {Promise<void>}
+   * @private
+   */
+  startBackgroundDataCollection(options: ?Object): Promise<void>;
+
+  /**
+   * Connects a device for background data collection.
+   * @param {DeviceId} deviceId Device identifier.
+   * @param {UUID} serviceUUID Service UUID.
+   * @param {UUID} characteristicUUID Characteristic UUID.
+   * @returns {Promise<void>}
+   * @private
+   */
+  connectBackgroundDevice(deviceId: DeviceId, serviceUUID: UUID, characteristicUUID: UUID): Promise<void>;
+
+  /**
+   * Stops background data collection.
+   * @returns {Promise<void>}
+   * @private
+   */
+  stopBackgroundDataCollection(): Promise<void>;
+
+  /**
+   * Gets pending background data.
+   * @returns {Promise<Array<Object>>}
+   * @private
+   */
+  getPendingBackgroundData(): Promise<Array<Object>>;
+
+  /**
+   * Clears pending background data.
+   * @returns {Promise<void>}
+   * @private
+   */
+  clearPendingBackgroundData(): Promise<void>;
 }
 
 /**

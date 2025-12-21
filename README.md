@@ -11,23 +11,23 @@
 
 It supports:
 
-- [observing device's Bluetooth adapter state](https://github.com/dotintent/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
-- [scanning BLE devices](https://github.com/dotintent/react-native-ble-plx/wiki/Bluetooth-Scanning)
-- [making connections to peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Connecting)
-- [discovering services/characteristics](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Service-Discovery)
-- [reading](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
-- [observing characteristic notifications/indications](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Notifying)
-- [reading RSSI](https://github.com/dotintent/react-native-ble-plx/wiki/RSSI-Reading)
-- [negotiating MTU](https://github.com/dotintent/react-native-ble-plx/wiki/MTU-Negotiation)
-- [background mode on iOS](<https://github.com/dotintent/react-native-ble-plx/wiki/Background-mode-(iOS)>)
+- [observing device's Bluetooth adapter state](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
+- [scanning BLE devices](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/Bluetooth-Scanning)
+- [making connections to peripherals](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/Device-Connecting)
+- [discovering services/characteristics](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/Device-Service-Discovery)
+- [reading](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
+- [observing characteristic notifications/indications](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/Characteristic-Notifying)
+- [reading RSSI](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/RSSI-Reading)
+- [negotiating MTU](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/MTU-Negotiation)
+- [background mode on iOS](<https://github.com/Srivathsav-max/react-native-ble-plx/wiki/Background-mode-(iOS)>)
 - turning the device's Bluetooth adapter on
 
 It does NOT support:
 
 - bluetooth classic devices.
 - communicating between phones using BLE (Peripheral support)
-- [bonding peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Bonding)
-- [beacons](https://github.com/dotintent/react-native-ble-plx/wiki/=-FAQ:-Beacons)
+- [bonding peripherals](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/Device-Bonding)
+- [beacons](https://github.com/Srivathsav-max/react-native-ble-plx/wiki/=-FAQ:-Beacons)
 
 ## Table of Contents
 
@@ -66,9 +66,9 @@ Minimums: iOS 15+, Node.js 20+ (tooling).
 
 Interested in React Native project involving Bluetooth Low Energy? [We can help you!](https://withintent.com/?utm_source=github&utm_medium=github&utm_campaign=external_traffic)
 
-[Documentation can be found here](https://dotintent.github.io/react-native-ble-plx/).
+[Documentation can be found here](https://Srivathsav-max.github.io/react-native-ble-plx/).
 
-[Quick introduction can be found here](https://github.com/dotintent/react-native-ble-plx/blob/master/INTRO.md)
+[Quick introduction can be found here](https://github.com/Srivathsav-max/react-native-ble-plx/blob/master/INTRO.md)
 
 Contact us at [intent](https://withintent.com/contact-us/?utm_source=github&utm_medium=github&utm_campaign=external_traffic).
 
@@ -85,7 +85,7 @@ After installing this npm package, add the [config plugin](https://docs.expo.io/
 ```json
 {
   "expo": {
-    "plugins": ["react-native-ble-plx"]
+    "plugins": ["@srivathsav03/react-native-ble-plx"]
   }
 }
 ```
@@ -113,7 +113,7 @@ The plugin provides props for extra customization. Every time you change the pro
   "expo": {
     "plugins": [
       [
-        "react-native-ble-plx",
+        "@srivathsav03/react-native-ble-plx",
         {
           "isBackgroundEnabled": true,
           "modes": ["peripheral", "central"],
@@ -132,7 +132,7 @@ The plugin provides props for extra customization. Every time you change the pro
 
 ### iOS ([example setup](https://github.com/Cierpliwy/SensorTag))
 
-1. `npm install --save react-native-ble-plx`
+1. `npm install --save @srivathsav03/react-native-ble-plx`
 1. Enter `ios` folder and run `pod update`
 1. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
 1. If you want to support background mode:
@@ -142,7 +142,7 @@ The plugin provides props for extra customization. Every time you change the pro
 
 ### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 
-1. `npm install --save react-native-ble-plx`
+1. `npm install --save @srivathsav03/react-native-ble-plx`
 1. In top level `build.gradle` make sure that min SDK version is at least 23:
 
    ```groovy

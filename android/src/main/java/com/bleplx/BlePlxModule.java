@@ -44,6 +44,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.rxandroidble2.internal.RxBleLog;
 
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.List;
@@ -300,12 +301,14 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
       if (options.hasKey("notificationTitle")) title = options.getString("notificationTitle");
       if (options.hasKey("notificationContent")) content = options.getString("notificationContent");
     }
+    Log.d("BlePlx", "startBackgroundDataCollection called, title=" + title);
     reactContext.startForegroundService(BleConnectionForegroundService.createStartIntent(reactContext, title, content));
     promise.resolve(null);
   }
 
   @ReactMethod
   public void connectBackgroundDevice(final String deviceId, final String serviceUUID, final String characteristicUUID, final Promise promise) {
+    Log.d("BlePlx", "connectBackgroundDevice called, deviceId=" + deviceId + ", service=" + serviceUUID + ", characteristic=" + characteristicUUID);
     reactContext.startService(BleConnectionForegroundService.createConnectIntent(reactContext, deviceId, serviceUUID, characteristicUUID));
     promise.resolve(null);
   }

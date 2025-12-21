@@ -23,6 +23,7 @@ import com.polidea.rxandroidble2.RxBleClient;
 import com.polidea.rxandroidble2.RxBleConnection;
 import com.polidea.rxandroidble2.RxBleDevice;
 import android.util.Base64;
+import android.util.Log;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import io.reactivex.disposables.CompositeDisposable;
@@ -71,6 +72,7 @@ public class BleConnectionForegroundService extends Service {
         }
 
         if (ACTION_START.equals(action)) {
+            Log.d("BlePlx", "BleConnectionForegroundService start foreground");
             Notification notification = notificationHelper.buildNotification(
                 intent.getStringExtra(EXTRA_TITLE),
                 intent.getStringExtra(EXTRA_CONTENT)
@@ -88,6 +90,7 @@ public class BleConnectionForegroundService extends Service {
             String serviceUUID = intent.getStringExtra(EXTRA_SERVICE_UUID);
             String characteristicUUID = intent.getStringExtra(EXTRA_CHARACTERISTIC_UUID);
             if (deviceId != null && serviceUUID != null && characteristicUUID != null) {
+                Log.d("BlePlx", "BleConnectionForegroundService connect deviceId=" + deviceId + ", service=" + serviceUUID + ", characteristic=" + characteristicUUID);
                 connectAndMonitor(deviceId, UUID.fromString(serviceUUID), UUID.fromString(characteristicUUID));
             }
         }
@@ -113,7 +116,7 @@ public class BleConnectionForegroundService extends Service {
                 activeConnections.put(deviceId, connection);
                 emitConnectionState(deviceId, "connected");
                 return connection.discoverServices()
-                    .flatMap(services -> connection.setupNotification(characteristicUUID))
+                    .flatMapObservable(services -> connection.setupNotification(characteristicUUID))
                     .flatMap(notificationObservable -> notificationObservable);
             })
             .subscribe(
