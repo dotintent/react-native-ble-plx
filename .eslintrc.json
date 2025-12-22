@@ -1,7 +1,7 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "extends": ["@react-native-community", "prettier"],
+  "extends": ["@react-native/eslint-config", "prettier"],
   "env": {
     "react-native/react-native": true,
     "es2020": true
@@ -14,7 +14,7 @@
         "plugin:react/recommended",
         "plugin:flowtype/recommended",
         "plugin:prettier/recommended",
-        "@react-native-community",
+        "@react-native/eslint-config",
         "eslint:recommended",
         "plugin:jest/recommended",
         "plugin:ft-flow/recommended"

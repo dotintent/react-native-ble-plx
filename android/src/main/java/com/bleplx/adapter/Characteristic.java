@@ -113,16 +113,16 @@ public class Characteristic {
     return descriptors;
   }
 
+  /**
+   * Returns true if the characteristic is actively subscribed for updates via
+   * either notifications (0x01) or indications (0x02). The 0x03 bitmask checks
+   * for either subscription type being enabled.
+   */
   public boolean isNotifying() {
     BluetoothGattDescriptor descriptor = gattCharacteristic.getDescriptor(Constants.CLIENT_CHARACTERISTIC_CONFIG_UUID);
-    boolean isNotifying = false;
-    if (descriptor != null) {
-      byte[] descriptorValue = descriptor.getValue();
-      if (descriptorValue != null) {
-        isNotifying = (descriptorValue[0] & 0x01) != 0;
-      }
-    }
-    return isNotifying;
+    if (descriptor == null) return false;
+    byte[] descriptorValue = descriptor.getValue();
+    return descriptorValue != null && descriptorValue.length > 0 && (descriptorValue[0] & 0x03) != 0;
   }
 
   public boolean isIndicatable() {
@@ -140,11 +140,9 @@ public class Characteristic {
     return new Descriptor(this, descriptor);
   }
 
-  void logValue(String message, byte[] value) {
-    if (value == null) {
-      value = gattCharacteristic.getValue();
-    }
-    String hexValue = value != null ? ByteUtils.bytesToHex(value) : "(null)";
+  void logValue(String message, byte[] val) {
+    byte[] logVal = val != null ? val : value;
+    String hexValue = logVal != null ? ByteUtils.bytesToHex(logVal) : "(null)";
     RxBleLog.v(message +
       " Characteristic(uuid: " + gattCharacteristic.getUuid().toString() +
       ", id: " + id +

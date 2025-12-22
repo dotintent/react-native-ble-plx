@@ -53,7 +53,7 @@ const enableDisableDeprecatedMessage =
 export class BleManager {
   // Scan subscriptions
   // $FlowIssue[missing-type-arg]
-  _scanEventSubscription: ?EventEmitter
+  _scanEventSubscription: ?Subscription
   // Listening to BleModule events
   // $FlowIssue[missing-type-arg]
   _eventEmitter: EventEmitter
@@ -389,6 +389,38 @@ export class BleManager {
     }
 
     return this._callPromise(BleModule.stopDeviceScan())
+  }
+
+  async startBackgroundDeviceScan(UUIDs: ?Array<UUID>, options: ?Object): Promise<void> {
+    return this._callPromise(BleModule.startBackgroundDeviceScan(UUIDs, options))
+  }
+
+  stopBackgroundDeviceScan(): Promise<void> {
+    return this._callPromise(BleModule.stopBackgroundDeviceScan())
+  }
+
+  isBackgroundScanRunning(): Promise<boolean> {
+    return this._callPromise(BleModule.isBackgroundScanRunning())
+  }
+
+  async startBackgroundDataCollection(options: ?Object): Promise<void> {
+    return this._callPromise(BleModule.startBackgroundDataCollection(options))
+  }
+
+  async connectBackgroundDevice(deviceId: DeviceId, serviceUUID: UUID, characteristicUUID: UUID): Promise<void> {
+    return this._callPromise(BleModule.connectBackgroundDevice(deviceId, serviceUUID, characteristicUUID))
+  }
+
+  async stopBackgroundDataCollection(): Promise<void> {
+    return this._callPromise(BleModule.stopBackgroundDataCollection())
+  }
+
+  async getPendingBackgroundData(): Promise<Array<Object>> {
+    return this._callPromise(BleModule.getPendingBackgroundData())
+  }
+
+  async clearPendingBackgroundData(): Promise<void> {
+    return this._callPromise(BleModule.clearPendingBackgroundData())
   }
 
   /**

@@ -1,18 +1,10 @@
 import { type ConfigPlugin, withAndroidManifest, AndroidConfig } from '@expo/config-plugins'
 
 type InnerManifest = AndroidConfig.Manifest.AndroidManifest['manifest']
-
 type ManifestPermission = InnerManifest['permission']
 
-// TODO: add to `AndroidManifestAttributes` in @expo/config-plugins
-type ExtraTools = {
-  // https://developer.android.com/studio/write/tool-attributes#toolstargetapi
-  'tools:targetApi'?: string
-}
-
-type ManifestUsesPermissionWithExtraTools = {
-  $: AndroidConfig.Manifest.ManifestUsesPermission['$'] & ExtraTools
-}
+type ExtraTools = { 'tools:targetApi'?: string; 'android:maxSdkVersion'?: string }
+type ManifestUsesPermissionWithExtraTools = { $: AndroidConfig.Manifest.ManifestUsesPermission['$'] & ExtraTools }
 
 type AndroidManifest = {
   manifest: InnerManifest & {
@@ -20,6 +12,7 @@ type AndroidManifest = {
     'uses-permission'?: ManifestUsesPermissionWithExtraTools[]
     'uses-permission-sdk-23'?: ManifestUsesPermissionWithExtraTools[]
     'uses-feature'?: InnerManifest['uses-feature']
+    application?: { service?: any[] }[]
   }
 }
 
@@ -32,79 +25,55 @@ export const withBLEAndroidManifest: ConfigPlugin<{
     config.modResults = addScanPermissionToManifest(config.modResults, neverForLocation)
     if (isBackgroundEnabled) {
       config.modResults = addBLEHardwareFeatureToManifest(config.modResults)
+      config.modResults = addForegroundServiceToManifest(config.modResults)
     }
     return config
   })
 
-/**
- * Add location permissions
- *  - 'android.permission.ACCESS_COARSE_LOCATION' for Android SDK 28 (Android 9) and lower
- *  - 'android.permission.ACCESS_FINE_LOCATION' for Android SDK 29 (Android 10) and higher.
- *    From Android SDK 31 (Android 12) it might not be required if BLE is not used for location.
- */
 export function addLocationPermissionToManifest(androidManifest: AndroidManifest, neverForLocationSinceSdk31: boolean) {
   if (!Array.isArray(androidManifest.manifest['uses-permission-sdk-23'])) {
     androidManifest.manifest['uses-permission-sdk-23'] = []
   }
 
-  const optMaxSdkVersion = neverForLocationSinceSdk31
-    ? {
-        'android:maxSdkVersion': '30'
-      }
-    : {}
+  const optMaxSdkVersion = neverForLocationSinceSdk31 ? { 'android:maxSdkVersion': '30' } : {}
 
-  if (
-    !androidManifest.manifest['uses-permission-sdk-23'].find(
-      item => item.$['android:name'] === 'android.permission.ACCESS_COARSE_LOCATION'
-    )
-  ) {
-    androidManifest.manifest['uses-permission-sdk-23'].push({
-      $: {
-        'android:name': 'android.permission.ACCESS_COARSE_LOCATION',
-        ...optMaxSdkVersion
-      }
-    })
+  const permissions = androidManifest.manifest['uses-permission-sdk-23']
+  
+  // ACCESS_COARSE_LOCATION for Android 9 and below
+  if (!permissions.find(item => item.$['android:name'] === 'android.permission.ACCESS_COARSE_LOCATION')) {
+    permissions.push({ $: { 'android:name': 'android.permission.ACCESS_COARSE_LOCATION', 'android:maxSdkVersion': '28' } })
   }
-
-  if (
-    !androidManifest.manifest['uses-permission-sdk-23'].find(
-      item => item.$['android:name'] === 'android.permission.ACCESS_FINE_LOCATION'
-    )
-  ) {
-    androidManifest.manifest['uses-permission-sdk-23'].push({
-      $: {
-        'android:name': 'android.permission.ACCESS_FINE_LOCATION',
-        ...optMaxSdkVersion
-      }
-    })
+  
+  if (!permissions.find(item => item.$['android:name'] === 'android.permission.ACCESS_FINE_LOCATION')) {
+    permissions.push({ $: { 'android:name': 'android.permission.ACCESS_FINE_LOCATION', ...optMaxSdkVersion } })
   }
 
   return androidManifest
 }
 
-/**
- * Add 'android.permission.BLUETOOTH_SCAN'.
- * Required since Android SDK 31 (Android 12).
- */
 export function addScanPermissionToManifest(androidManifest: AndroidManifest, neverForLocation: boolean) {
   if (!Array.isArray(androidManifest.manifest['uses-permission'])) {
     androidManifest.manifest['uses-permission'] = []
   }
 
-  if (
-    !androidManifest.manifest['uses-permission'].find(
-      item => item.$['android:name'] === 'android.permission.BLUETOOTH_SCAN'
-    )
-  ) {
+  const permissions = androidManifest.manifest['uses-permission']
+  
+  // Legacy BLUETOOTH permission for Android 11 and below
+  if (!permissions.find(item => item.$['android:name'] === 'android.permission.BLUETOOTH')) {
+    permissions.push({ $: { 'android:name': 'android.permission.BLUETOOTH', 'android:maxSdkVersion': '30' } })
+  }
+  
+  // Legacy BLUETOOTH_ADMIN permission for Android 11 and below
+  if (!permissions.find(item => item.$['android:name'] === 'android.permission.BLUETOOTH_ADMIN')) {
+    permissions.push({ $: { 'android:name': 'android.permission.BLUETOOTH_ADMIN', 'android:maxSdkVersion': '30' } })
+  }
+  
+  if (!permissions.find(item => item.$['android:name'] === 'android.permission.BLUETOOTH_SCAN')) {
     AndroidConfig.Manifest.ensureToolsAvailable(androidManifest)
-    androidManifest.manifest['uses-permission']?.push({
+    permissions.push({
       $: {
         'android:name': 'android.permission.BLUETOOTH_SCAN',
-        ...(neverForLocation
-          ? {
-              'android:usesPermissionFlags': 'neverForLocation'
-            }
-          : {}),
+        ...(neverForLocation ? { 'android:usesPermissionFlags': 'neverForLocation' } : {}),
         'tools:targetApi': '31'
       }
     })
@@ -112,22 +81,38 @@ export function addScanPermissionToManifest(androidManifest: AndroidManifest, ne
   return androidManifest
 }
 
-// Add this line if your application always requires BLE. More info can be found on: https://developer.android.com/guide/topics/connectivity/bluetooth-le.html#permissions
 export function addBLEHardwareFeatureToManifest(androidManifest: AndroidConfig.Manifest.AndroidManifest) {
-  // Add `<uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>` to the AndroidManifest.xml
   if (!Array.isArray(androidManifest.manifest['uses-feature'])) {
     androidManifest.manifest['uses-feature'] = []
   }
 
-  if (
-    !androidManifest.manifest['uses-feature'].find(item => item.$['android:name'] === 'android.hardware.bluetooth_le')
-  ) {
-    androidManifest.manifest['uses-feature']?.push({
+  if (!androidManifest.manifest['uses-feature'].find(item => item.$['android:name'] === 'android.hardware.bluetooth_le')) {
+    androidManifest.manifest['uses-feature'].push({
+      $: { 'android:name': 'android.hardware.bluetooth_le', 'android:required': 'true' }
+    })
+  }
+  return androidManifest
+}
+
+export function addForegroundServiceToManifest(androidManifest: any) {
+  const application = androidManifest.manifest.application?.[0]
+  if (!application) return androidManifest
+
+  if (!Array.isArray(application.service)) {
+    application.service = []
+  }
+
+  const serviceName = '.service.BleScanForegroundService'
+  if (!application.service.find((s: any) => s.$?.['android:name'] === serviceName)) {
+    application.service.push({
       $: {
-        'android:name': 'android.hardware.bluetooth_le',
-        'android:required': 'true'
+        'android:name': serviceName,
+        'android:enabled': 'true',
+        'android:exported': 'false',
+        'android:foregroundServiceType': 'connectedDevice'
       }
     })
   }
+
   return androidManifest
 }

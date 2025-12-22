@@ -96,19 +96,17 @@ public class Descriptor {
     this.value = value;
   }
 
-  public void setValueFromCache() {
-    value = descriptor.getValue();
+  public void setValueFromCache(byte[] val) {
+    this.value = val;
   }
 
   public BluetoothGattDescriptor getNativeDescriptor() {
     return descriptor;
   }
 
-  public void logValue(String message, byte[] value) {
-    if (value == null) {
-      value = descriptor.getValue();
-    }
-    String hexValue = value != null ? ByteUtils.bytesToHex(value) : "(null)";
+  public void logValue(String message, byte[] val) {
+    byte[] logVal = val != null ? val : value;
+    String hexValue = logVal != null ? ByteUtils.bytesToHex(logVal) : "(null)";
     RxBleLog.v(message +
       " Descriptor(uuid: " + descriptor.getUuid().toString() +
       ", id: " + id +

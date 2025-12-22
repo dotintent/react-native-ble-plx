@@ -22,7 +22,7 @@ public class SafePromise {
 
   public void reject(String code, String message) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code, message);
+      promise.reject(code != null ? code : "UNKNOWN_ERROR", message);
     }
   }
 
