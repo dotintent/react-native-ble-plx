@@ -67,8 +67,6 @@ Interested in React Native project involving Bluetooth Low Energy? [We can help 
 
 [Documentation can be found here](https://dotintent.github.io/react-native-ble-plx/).
 
-[Quick introduction can be found here](https://github.com/dotintent/react-native-ble-plx/blob/master/INTRO.md)
-
 Contact us at [intent](https://withintent.com/contact-us/?utm_source=github&utm_medium=github&utm_campaign=external_traffic).
 
 ## Configuration & Installation
