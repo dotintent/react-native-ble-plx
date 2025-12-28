@@ -20,23 +20,21 @@ public class SafePromise {
     }
   }
 
-  private static final String DEFAULT_ERROR_CODE = "BLE_ERROR";
-
   public void reject(String code, String message) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code != null ? code : DEFAULT_ERROR_CODE, message != null ? message : "Unknown BLE error");
+      promise.reject(code != null ? code : "UNKNOWN_ERROR", message);
     }
   }
 
   public void reject(String code, Throwable e) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code != null ? code : DEFAULT_ERROR_CODE, e);
+      promise.reject(code, e);
     }
   }
 
   public void reject(String code, String message, Throwable e) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code != null ? code : DEFAULT_ERROR_CODE, message != null ? message : "Unknown BLE error", e);
+      promise.reject(code, message, e);
     }
   }
 
