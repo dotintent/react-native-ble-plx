@@ -100,7 +100,6 @@ public class ScanResult {
     if (!deviceId.equals(that.deviceId)) return false;
     if (!Objects.equals(deviceName, that.deviceName))
       return false;
-    // Probably incorrect - comparing Object[] arrays with Arrays.equals
     if (!Arrays.equals(overflowServiceUUIDs, that.overflowServiceUUIDs)) return false;
     return Objects.equals(advertisementData, that.advertisementData);
   }

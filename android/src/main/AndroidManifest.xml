@@ -17,22 +17,36 @@
   <uses-permission
     android:name="android.permission.BLUETOOTH_CONNECT"
     tools:targetApi="s" />
+  <uses-permission
+    android:name="android.permission.BLUETOOTH_ADVERTISE"
+    tools:targetApi="s" />
   <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   <uses-permission
     android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"
     tools:targetApi="34" />
   <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+  <!-- For AlarmManager-based service restart on Android 12+ -->
+  <uses-permission
+    android:name="android.permission.SCHEDULE_EXACT_ALARM"
+    android:maxSdkVersion="32" />
+  <uses-permission
+    android:name="android.permission.USE_EXACT_ALARM"
+    tools:targetApi="34" />
+  <!-- For battery optimization exemption request -->
+  <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
 
   <application>
     <service
       android:name=".service.BleScanForegroundService"
       android:enabled="true"
       android:exported="false"
+      android:stopWithTask="false"
       android:foregroundServiceType="connectedDevice" />
     <service
       android:name=".service.BleConnectionForegroundService"
       android:enabled="true"
       android:exported="false"
+      android:stopWithTask="false"
       android:foregroundServiceType="connectedDevice" />
   </application>
 </manifest>

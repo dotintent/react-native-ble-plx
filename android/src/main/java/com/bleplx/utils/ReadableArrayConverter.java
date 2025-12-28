@@ -18,9 +18,14 @@ public class ReadableArrayConverter {
 
   public static ReadableArray toReadableArray(List<UUID> uuids) {
     WritableArray array = Arguments.createArray();
+    if (uuids == null) {
+      return array;
+    }
 
     for (UUID uuid : uuids) {
-      array.pushString(uuid.toString());
+      if (uuid != null) {
+        array.pushString(uuid.toString());
+      }
     }
 
     return array;

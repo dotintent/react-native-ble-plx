@@ -2,6 +2,13 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [4.0.4] - 2025-12-28
+
+### Fixed
+
+- Android background scan service now reinitializes BLE dependencies after auto-restart.
+- Android background connection service restores saved connections on restart and persists connection parameters.
+
 ## [4.0.0] - 2025-12-20
 
 ### Added

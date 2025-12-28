@@ -36,7 +36,7 @@ public class ConnectionOptions {
   @ConnectionPriority
   private final int connectionPriority;
 
-  public ConnectionOptions(Boolean autoConnect,
+  public ConnectionOptions(boolean autoConnect,
                            int requestMTU,
                            RefreshGattMoment refreshGattMoment,
                            @Nullable Long timeoutInMillis,
@@ -48,7 +48,7 @@ public class ConnectionOptions {
     this.connectionPriority = connectionPriority;
   }
 
-  public Boolean getAutoConnect() {
+  public boolean getAutoConnect() {
     return autoConnect;
   }
 

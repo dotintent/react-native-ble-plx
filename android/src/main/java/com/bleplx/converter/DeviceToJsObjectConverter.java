@@ -1,7 +1,5 @@
 package com.bleplx.converter;
 
-import android.util.Log;
-
 import com.bleplx.adapter.Device;
 import com.bleplx.utils.ReadableArrayConverter;
 import com.facebook.react.bridge.Arguments;

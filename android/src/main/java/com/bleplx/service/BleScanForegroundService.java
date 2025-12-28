@@ -2,16 +2,20 @@ package com.bleplx.service;
 
 import android.app.Notification;
 import android.app.Service;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
 import com.bleplx.adapter.BleModule;
+import com.bleplx.adapter.OnEventCallback;
 import com.bleplx.adapter.ScanResult;
 import com.bleplx.adapter.errors.BleError;
 import com.facebook.react.bridge.Arguments;
@@ -35,6 +39,15 @@ public class BleScanForegroundService extends Service {
     private ReactContext reactContext;
     private final IBinder binder = new LocalBinder();
     private volatile boolean isScanning;
+    private boolean ownsBleModule;
+    
+    // Store scan parameters for restart
+    private String pendingTitle = "Scanning";
+    private String pendingContent = "Bluetooth scanning active";
+    private String[] pendingUuids;
+    private int pendingScanMode;
+    private int pendingCallbackType;
+    private boolean pendingLegacyScan;
 
     public class LocalBinder extends Binder {
         public BleScanForegroundService getService() { return BleScanForegroundService.this; }
@@ -62,29 +75,109 @@ public class BleScanForegroundService extends Service {
         }
 
         if (ACTION_START.equals(action)) {
-            Notification notification = notificationHelper.buildNotification(
-                intent.getStringExtra(EXTRA_TITLE),
-                intent.getStringExtra(EXTRA_CONTENT)
-            );
+            ensureBleModuleInitialized();
+            // Handle null extras with defaults
+            String title = intent.getStringExtra(EXTRA_TITLE);
+            String content = intent.getStringExtra(EXTRA_CONTENT);
+            pendingTitle = title != null ? title : "Scanning";
+            pendingContent = content != null ? content : "Bluetooth scanning active";
+            pendingUuids = intent.getStringArrayExtra(EXTRA_FILTERED_UUIDS);
+            pendingScanMode = intent.getIntExtra(EXTRA_SCAN_MODE, 0);
+            pendingCallbackType = intent.getIntExtra(EXTRA_CALLBACK_TYPE, 1);
+            pendingLegacyScan = intent.getBooleanExtra(EXTRA_LEGACY_SCAN, true);
+
+            Notification notification = notificationHelper.buildNotification(pendingTitle, pendingContent);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 startForeground(notificationHelper.getNotificationId(), notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE);
             } else {
                 startForeground(notificationHelper.getNotificationId(), notification);
             }
-            startScanning(
-                intent.getStringArrayExtra(EXTRA_FILTERED_UUIDS),
-                intent.getIntExtra(EXTRA_SCAN_MODE, 0),
-                intent.getIntExtra(EXTRA_CALLBACK_TYPE, 1),
-                intent.getBooleanExtra(EXTRA_LEGACY_SCAN, true)
-            );
+            startScanning(pendingUuids, pendingScanMode, pendingCallbackType, pendingLegacyScan);
         }
 
-        return START_STICKY;
+        return START_REDELIVER_INTENT;  // Re-deliver intent if service is killed
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.d("BlePlx", "BleScanForegroundService onTaskRemoved - restarting service");
+        // Schedule restart using AlarmManager for reliability
+        if (isScanning) {
+            Intent restartIntent = createStartIntent(
+                getApplicationContext(),
+                pendingTitle,
+                pendingContent,
+                pendingUuids,
+                pendingScanMode,
+                pendingCallbackType,
+                pendingLegacyScan
+            );
+
+            PendingIntent pendingServiceIntent = PendingIntent.getService(
+                getApplicationContext(),
+                2,
+                restartIntent,
+                PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE
+            );
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                long triggerTime = System.currentTimeMillis() + 1000;
+                // Android 12+ (API 31): Check if exact alarms are allowed
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    if (alarmManager.canScheduleExactAlarms()) {
+                        alarmManager.setExactAndAllowWhileIdle(
+                            AlarmManager.RTC_WAKEUP,
+                            triggerTime,
+                            pendingServiceIntent
+                        );
+                    } else {
+                        // Fall back to inexact alarm if exact alarms not permitted
+                        Log.w("BlePlx", "Exact alarms not permitted, using inexact alarm");
+                        alarmManager.setAndAllowWhileIdle(
+                            AlarmManager.RTC_WAKEUP,
+                            triggerTime,
+                            pendingServiceIntent
+                        );
+                    }
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    // Android 6.0+ (API 23): Use setExactAndAllowWhileIdle for Doze mode
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        triggerTime,
+                        pendingServiceIntent
+                    );
+                } else {
+                    // Pre-Android 6.0: Use set
+                    alarmManager.set(
+                        AlarmManager.RTC_WAKEUP,
+                        triggerTime,
+                        pendingServiceIntent
+                    );
+                }
+            }
+        }
+        super.onTaskRemoved(rootIntent);
     }
 
     public void initialize(BleModule module, ReactContext context) {
         this.bleModule = module;
         this.reactContext = context;
+        this.ownsBleModule = false;
+    }
+
+    private void ensureBleModuleInitialized() {
+        if (bleModule != null) return;
+        BleModule module = new BleModule(getApplicationContext());
+        module.createClient(null, new OnEventCallback<String>() {
+            @Override
+            public void onEvent(String data) {}
+        }, new OnEventCallback<Integer>() {
+            @Override
+            public void onEvent(Integer data) {}
+        });
+        bleModule = module;
+        ownsBleModule = true;
     }
 
     private void startScanning(String[] uuids, int scanMode, int callbackType, boolean legacyScan) {
@@ -132,6 +225,9 @@ public class BleScanForegroundService extends Service {
     @Override
     public void onDestroy() {
         stopScanning();
+        if (ownsBleModule && bleModule != null) {
+            bleModule.destroyClient();
+        }
         super.onDestroy();
     }
 

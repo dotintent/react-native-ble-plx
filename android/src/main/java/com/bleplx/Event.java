@@ -8,7 +8,7 @@ public enum Event {
   RestoreStateEvent("RestoreStateEvent"),
   DisconnectionEvent("DisconnectionEvent");
 
-  public String name;
+  public final String name;
 
   Event(String name) {
     this.name = name;

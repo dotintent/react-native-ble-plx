@@ -6,16 +6,16 @@ import java.util.UUID;
 
 public class UUIDConverter {
 
-  private static String baseUUIDPrefix = "0000";
-  private static String baseUUIDSuffix = "-0000-1000-8000-00805F9B34FB";
+  private static final String BASE_UUID_PREFIX = "0000";
+  private static final String BASE_UUID_SUFFIX = "-0000-1000-8000-00805F9B34FB";
 
   public static UUID convert(String sUUID) {
     if (sUUID == null) return null;
 
     if (sUUID.length() == 4) {
-      sUUID = baseUUIDPrefix + sUUID + baseUUIDSuffix;
+      sUUID = BASE_UUID_PREFIX + sUUID + BASE_UUID_SUFFIX;
     } else if (sUUID.length() == 8) {
-      sUUID = sUUID + baseUUIDSuffix;
+      sUUID = sUUID + BASE_UUID_SUFFIX;
     }
 
     try {
@@ -32,9 +32,9 @@ public class UUIDConverter {
       if (sUUIDs[i] == null) return null;
 
       if (sUUIDs[i].length() == 4) {
-        sUUIDs[i] = baseUUIDPrefix + sUUIDs[i] + baseUUIDSuffix;
+        sUUIDs[i] = BASE_UUID_PREFIX + sUUIDs[i] + BASE_UUID_SUFFIX;
       } else if (sUUIDs[i].length() == 8) {
-        sUUIDs[i] = sUUIDs[i] + baseUUIDSuffix;
+        sUUIDs[i] = sUUIDs[i] + BASE_UUID_SUFFIX;
       }
 
       try {
@@ -47,14 +47,16 @@ public class UUIDConverter {
   }
 
   public static UUID[] convert(ReadableArray aUUIDs) {
+    if (aUUIDs == null) return null;
     UUID[] UUIDs = new UUID[aUUIDs.size()];
     for (int i = 0; i < aUUIDs.size(); i++) {
       try {
         String sUUID = aUUIDs.getString(i);
+        if (sUUID == null) return null;
         if (sUUID.length() == 4) {
-          sUUID = baseUUIDPrefix + sUUID + baseUUIDSuffix;
+          sUUID = BASE_UUID_PREFIX + sUUID + BASE_UUID_SUFFIX;
         } else if (sUUID.length() == 8) {
-          sUUID = sUUID + baseUUIDSuffix;
+          sUUID = sUUID + BASE_UUID_SUFFIX;
         }
         UUIDs[i] = UUID.fromString(sUUID);
       } catch (Throwable e) {

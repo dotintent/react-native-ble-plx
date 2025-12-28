@@ -2,7 +2,7 @@ package com.bleplx.adapter;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -141,7 +141,7 @@ public class AdvertisementData {
     if (advData.localName == null || adType == 0x09) {
       byte[] bytes = new byte[adLength];
       data.get(bytes, 0, adLength);
-      advData.localName = new String(bytes, Charset.forName("UTF-8"));
+      advData.localName = new String(bytes, StandardCharsets.UTF_8);
     }
   }
 

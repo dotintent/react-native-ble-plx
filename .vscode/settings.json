@@ -8,5 +8,6 @@
   ],
   "javascript.validate.enable": false,
   // Flow
-  "flow.useNPMPackagedFlow": true
+  "flow.useNPMPackagedFlow": true,
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

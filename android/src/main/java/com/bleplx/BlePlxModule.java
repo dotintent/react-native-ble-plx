@@ -44,6 +44,10 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.polidea.rxandroidble2.internal.RxBleLog;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -330,6 +334,79 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
     BleBackgroundDataManager dataManager = new BleBackgroundDataManager(reactContext);
     dataManager.clearPendingData();
     promise.resolve(null);
+  }
+
+  // Mark: Battery Optimization ------------------------------------------------------------------
+
+  /**
+   * Check if the app is ignoring battery optimizations
+   * @param promise Returns true if battery optimizations are disabled for this app
+   */
+  @ReactMethod
+  public void isIgnoringBatteryOptimizations(final Promise promise) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      PowerManager pm = (PowerManager) reactContext.getSystemService(reactContext.POWER_SERVICE);
+      if (pm != null) {
+        promise.resolve(pm.isIgnoringBatteryOptimizations(reactContext.getPackageName()));
+      } else {
+        promise.resolve(true); // Assume no restrictions if PowerManager unavailable
+      }
+    } else {
+      promise.resolve(true); // No battery optimization restrictions before Android M
+    }
+  }
+
+  /**
+   * Request to ignore battery optimizations.
+   * This will show a system dialog asking the user to exempt the app.
+   * Note: Using this directly may violate Play Store policies for some app categories.
+   * @param promise Returns true if the request was initiated successfully
+   */
+  @ReactMethod
+  public void requestIgnoreBatteryOptimizations(final Promise promise) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+      try {
+        PowerManager pm = (PowerManager) reactContext.getSystemService(reactContext.POWER_SERVICE);
+        if (pm != null && !pm.isIgnoringBatteryOptimizations(reactContext.getPackageName())) {
+          Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+          intent.setData(Uri.parse("package:" + reactContext.getPackageName()));
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+          reactContext.startActivity(intent);
+          promise.resolve(true);
+        } else {
+          // Already ignoring battery optimizations
+          promise.resolve(true);
+        }
+      } catch (Exception e) {
+        Log.e("BlePlx", "Failed to request battery optimization exemption: " + e.getMessage());
+        promise.reject("BATTERY_OPTIMIZATION_ERROR", "Failed to request battery optimization exemption: " + e.getMessage(), e);
+      }
+    } else {
+      promise.resolve(true); // No action needed before Android M
+    }
+  }
+
+  /**
+   * Open the battery optimization settings page for the app.
+   * This is a safer alternative that lets the user manually disable battery optimization.
+   * @param promise Returns true if the settings page was opened successfully
+   */
+  @ReactMethod
+  public void openBatteryOptimizationSettings(final Promise promise) {
+    try {
+      Intent intent = new Intent();
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        intent.setAction(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+      } else {
+        intent.setAction(Settings.ACTION_SETTINGS);
+      }
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+      reactContext.startActivity(intent);
+      promise.resolve(true);
+    } catch (Exception e) {
+      Log.e("BlePlx", "Failed to open battery optimization settings: " + e.getMessage());
+      promise.reject("BATTERY_SETTINGS_ERROR", "Failed to open battery optimization settings: " + e.getMessage(), e);
+    }
   }
 
   // Mark: Device management ---------------------------------------------------------------------
