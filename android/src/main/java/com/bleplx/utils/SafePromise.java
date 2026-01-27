@@ -20,28 +20,35 @@ public class SafePromise {
     }
   }
 
-  public void reject(String code, String message) {
+  // Safe reject: ensures code is never null
+  public void reject(@Nullable String code, @Nullable String message) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code, message);
+      String safeCode = code != null ? code : "UNKNOWN_ERROR";
+      String safeMessage = message != null ? message : "No message provided";
+      promise.reject(safeCode, safeMessage);
     }
   }
 
-  public void reject(String code, Throwable e) {
+  public void reject(@Nullable String code, Throwable e) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code, e);
+      String safeCode = code != null ? code : "UNKNOWN_ERROR";
+      promise.reject(safeCode, e);
     }
   }
 
-  public void reject(String code, String message, Throwable e) {
+  public void reject(@Nullable String code, @Nullable String message, Throwable e) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code, message, e);
+      String safeCode = code != null ? code : "UNKNOWN_ERROR";
+      String safeMessage = message != null ? message : "No message provided";
+      promise.reject(safeCode, safeMessage, e);
     }
   }
 
   @Deprecated
-  public void reject(String message) {
+  public void reject(@Nullable String message) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(message);
+      String safeMessage = message != null ? message : "No message provided";
+      promise.reject(safeMessage);
     }
   }
 
