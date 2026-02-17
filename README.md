@@ -45,6 +45,7 @@ for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
 
 | React Native | 3.1.2              |
 | ------------ | ------------------ |
+| 0.81.4       | :white_check_mark: |
 | 0.74.1       | :white_check_mark: |
 | 0.69.6       | :white_check_mark: |
 | Expo 51      | :white_check_mark: |
@@ -100,6 +101,8 @@ The plugin provides props for extra customization. Every time you change the pro
 - `neverForLocation` (_boolean_): Set to true only if you can strongly assert that your app never derives physical location from Bluetooth scan results. The location permission will be still required on older Android devices. Note, that some BLE beacons are filtered from the scan results. Android SDK 31+. Default `false`. _WARNING: This parameter is experimental and BLE might not work. Make sure to test before releasing to production._
 - `modes` (_string[]_): Adds iOS `UIBackgroundModes` to the `Info.plist`. Options are: `peripheral`, and `central`. Defaults to undefined.
 - `bluetoothAlwaysPermission` (_string | false_): Sets the iOS `NSBluetoothAlwaysUsageDescription` permission message to the `Info.plist`. Setting `false` will skip adding the permission. Defaults to `Allow $(PRODUCT_NAME) to connect to bluetooth devices`.
+- `iosEnableRestoration` (_boolean_): Opt-in to the iOS BLE state restoration subspec (disabled by default). When true, the Podfile will include `react-native-ble-plx/Restoration` and the adapter will register with a restoration registry if present.
+- `iosRestorationIdentifier` (_string_): Custom CBCentralManager restoration identifier. Written to `Info.plist` as `BlePlxRestoreIdentifier` and passed to `BleManager` for state restoration. Defaults to `com.reactnativebleplx.restore`.
 
 > Expo SDK 48 supports iOS 13+ which means `NSBluetoothPeripheralUsageDescription` is fully deprecated. It is no longer setup in `@config-plugins/react-native-ble-plx@5.0.0` and greater.
 
@@ -108,17 +111,19 @@ The plugin provides props for extra customization. Every time you change the pro
 ```json
 {
   "expo": {
-    "plugins": [
-      [
-        "react-native-ble-plx",
-        {
-          "isBackgroundEnabled": true,
-          "modes": ["peripheral", "central"],
-          "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
-        }
-      ]
+  "plugins": [
+    [
+      "react-native-ble-plx",
+      {
+        "isBackgroundEnabled": true,
+        "modes": ["peripheral", "central"],
+        "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices",
+        "iosEnableRestoration": true,
+        "iosRestorationIdentifier": "com.example.myapp.bleplx"
+      }
     ]
-  }
+  ]
+}
 }
 ```
 
@@ -136,6 +141,23 @@ The plugin provides props for extra customization. Every time you change the pro
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
    - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
+
+#### Optional: iOS BLE State Restoration (Restoration subspec)
+
+- Opt-in via the config plugin: set `iosEnableRestoration: true` and optionally `iosRestorationIdentifier` to a stable string.
+- The plugin writes `BlePlxRestoreIdentifier` into `Info.plist` and injects the `react-native-ble-plx/Restoration` subspec into your Podfile.
+- In JS, pass the same identifier to `BleManager`:
+
+```ts
+const manager = new BleManager({
+  restoreStateIdentifier: 'com.example.myapp.bleplx',
+  restoreStateFunction: (restoredState) => {
+    // Rehydrate your app, reconnect devices, etc.
+  },
+});
+```
+
+- The Restoration subspec exposes a Swift adapter (`BlePlxRestorationAdapter`) that will register with any restoration registry present in the host app (for example, a shared `BleRestorationRegistry`). If no registry is present, it is a no-op.
 
 ### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
 

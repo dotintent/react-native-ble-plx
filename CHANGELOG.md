@@ -2,6 +2,27 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.5.2] - 2025-11-20
+
+### Added
+
+- Optional iOS BLE state restoration subspec (`react-native-ble-plx/Restoration`) with a Swift adapter that reuses CBCentralManager, reconnects restored peripherals, and registers with a host restoration registry when present.
+- Config plugin options `iosEnableRestoration` and `iosRestorationIdentifier`; writes the identifier to Info.plist (`BlePlxRestoreIdentifier`) and injects the subspec into Podfile when enabled.
+- Podfile injection test for the new plugin option.
+- JS `BleManager` example now documents passing `restoreStateIdentifier` for restoration.
+
+### Changed
+
+- Obj-C bridge reuses a restored BleClientManager instance when available to maintain continuity after iOS background relaunch.
+
+## [3.5.1] - 2025-07-11
+
+### Fixed
+
+- Fixed iOS null/nil handling in `createClient` method to prevent crashes when null values are passed from JavaScript
+- Changed dispatch queue from `self.methodQueue` to `dispatch_get_main_queue()` for better thread safety
+- Added proper null/nil checks for `filteredUUIDs` and `options` parameters in `startDeviceScan` method
+
 ## [3.5.0] - 2025-02-07
 
 ### Changed
