@@ -20,28 +20,34 @@ public class SafePromise {
     }
   }
 
-  public void reject(String code, String message) {
+  public void reject(@Nullable String code, @Nullable String message) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code, message);
+      String safeCode = code == null ? ErrorDefaults.CODE : code;
+      String safeMessage = message == null ? ErrorDefaults.MESSAGE : message;
+      promise.reject(safeCode, safeMessage);
     }
   }
 
-  public void reject(String code, Throwable e) {
+  public void reject(@Nullable String code, Throwable e) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code, e);
+      String safeCode = code == null ? ErrorDefaults.CODE : code;
+      promise.reject(safeCode, e);
     }
   }
 
-  public void reject(String code, String message, Throwable e) {
+  public void reject(@Nullable String code, @Nullable String message, Throwable e) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(code, message, e);
+      String safeCode = code == null ? ErrorDefaults.CODE : code;
+      String safeMessage = message == null ? ErrorDefaults.MESSAGE : message;
+      promise.reject(safeCode, safeMessage, e);
     }
   }
 
   @Deprecated
-  public void reject(String message) {
+  public void reject(@Nullable String message) {
     if (isFinished.compareAndSet(false, true)) {
-      promise.reject(message);
+      String safeMessage = message == null ? ErrorDefaults.MESSAGE : message;
+      promise.reject(ErrorDefaults.CODE, safeMessage);
     }
   }
 
