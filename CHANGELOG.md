@@ -2,6 +2,17 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [3.5.1] - 2026-02-17
+
+### Changed
+
+- Update README.md ([#1320](https://github.com/dotintent/react-native-ble-plx/pull/1320))
+
+### Fixed
+
+- Guard to avoid `Service.getDeviceID()` null object reference and `cleanServicesAndCharacteristicsForDevice` out-of-bounds crashes ([#1290](https://github.com/dotintent/react-native-ble-plx/pull/1290))
+- Prevent Android `Promise.reject` crash with null arguments ([#1329](https://github.com/dotintent/react-native-ble-plx/pull/1329))
+
 ## [3.5.0] - 2025-02-07
 
 ### Changed
