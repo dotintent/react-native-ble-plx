@@ -211,6 +211,9 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
       scanSubscription.dispose();
       scanSubscription = null;
     }
+
+    // Clear discovered devices cache to ensure devices can be rediscovered after disconnection
+    discoveredDevices.clear();
   }
 
   @Override
@@ -1299,6 +1302,9 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
     if (device == null) {
       return;
     }
+
+    // Remove device from discovered devices cache so it can be rediscovered during scans
+    discoveredDevices.remove(rxDevice.getMacAddress());
 
     cleanServicesAndCharacteristicsForDevice(device);
     connectingDevices.removeSubscription(device.getId());
