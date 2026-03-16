@@ -1,0 +1,36 @@
+# Test 17: Permission Denied (Android only)
+# Verifies scan error is displayed when BLE permissions are revoked
+# NOTE: Permissions are revoked by run-e2e.sh before this test
+appId: com.bleplxexample
+---
+- stopApp
+- launchApp
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 15000
+
+# Dismiss permission dialogs if they appear
+- tapOn:
+    text: "Don't allow"
+    optional: true
+- tapOn:
+    text: "Don't allow"
+    optional: true
+- tapOn:
+    text: "Don't allow"
+    optional: true
+
+- waitForAnimationToEnd
+
+- tapOn:
+    id: "scan-start-btn"
+
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-error"
+    timeout: 5000

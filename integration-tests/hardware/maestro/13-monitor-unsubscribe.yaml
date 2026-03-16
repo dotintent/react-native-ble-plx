@@ -1,0 +1,36 @@
+# Test 13: Monitor Unsubscribe Verification
+# Verifies that disabling monitor stops notifications
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-notify-stream"
+
+- extendedWaitUntil:
+    visible:
+      id: "monitor-toggle"
+    timeout: 5000
+
+- tapOn:
+    id: "monitor-toggle"
+
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+- assertNotVisible:
+    text: "Samples: 0"
+
+- tapOn:
+    id: "monitor-toggle"
+
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+- assertVisible:
+    text: "Monitor: STOPPED"

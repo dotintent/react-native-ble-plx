@@ -7,7 +7,7 @@
   "arrowParens": "avoid",
   "overrides": [
     {
-      "files": ["src/*"],
+      "files": ["src/*.js", "src/*.jsx"],
       "options": {
         "parser": "babel-flow",
         "useTabs": false,
@@ -15,6 +15,12 @@
         "jsxSingleQuote": false,
         "bracketSpacing": true,
         "jsxBracketSameLine": false
+      }
+    },
+    {
+      "files": ["src/*.ts", "src/*.tsx", "__tests__/*.ts", "__tests__/*.tsx"],
+      "options": {
+        "parser": "typescript"
       }
     }
   ]

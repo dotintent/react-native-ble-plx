@@ -1,12 +1,4 @@
 {
   "name": "BlePlxExample",
-  "displayName": "BlePlxExample",
-  "expo": {
-    "android": {
-      "package": "com.testProject"
-    },
-    "ios": {
-      "bundleIdentifier": "com.testProject"
-    }
-  }
+  "displayName": "BlePlxExample"
 }

@@ -1,0 +1,61 @@
+# Test 07: Disconnect and Reconnect
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+# Disconnect
+- tapOn:
+    id: "disconnect-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 8000
+
+# Re-scan
+- tapOn:
+    id: "scan-start-btn"
+
+# Filter by name to find BlePlxTest
+- tapOn:
+    id: "scan-search"
+- inputText: "BlePlxTest"
+- hideKeyboard
+
+- extendedWaitUntil:
+    visible:
+      id: "device-BlePlxTest"
+    timeout: 20000
+
+# Tap BlePlxTest device row to reconnect
+- tapOn:
+    id: "device-BlePlxTest"
+
+# Verify reconnected
+- extendedWaitUntil:
+    visible:
+      id: "discover-btn"
+    timeout: 15000
+
+# Re-discover
+- tapOn:
+    id: "discover-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "service-test"
+    timeout: 10000
+
+- extendedWaitUntil:
+    visible:
+      id: "char-read-counter"
+    timeout: 5000
+
+# Final disconnect
+- tapOn:
+    id: "disconnect-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 8000

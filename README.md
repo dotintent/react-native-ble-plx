@@ -7,77 +7,46 @@
   />
 </h1>
 
-## About this library
+# react-native-ble-plx
 
-It supports:
+A React Native library for talking to Bluetooth Low Energy peripherals. Built as a TurboModule for the New Architecture from the ground up.
 
-- [observing device's Bluetooth adapter state](https://github.com/dotintent/react-native-ble-plx/wiki/Bluetooth-Adapter-State)
-- [scanning BLE devices](https://github.com/dotintent/react-native-ble-plx/wiki/Bluetooth-Scanning)
-- [making connections to peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Connecting)
-- [discovering services/characteristics](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Service-Discovery)
-- [reading](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Reading)/[writing](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Writing) characteristics
-- [observing characteristic notifications/indications](https://github.com/dotintent/react-native-ble-plx/wiki/Characteristic-Notifying)
-- [reading RSSI](https://github.com/dotintent/react-native-ble-plx/wiki/RSSI-Reading)
-- [negotiating MTU](https://github.com/dotintent/react-native-ble-plx/wiki/MTU-Negotiation)
-- [background mode on iOS](<https://github.com/dotintent/react-native-ble-plx/wiki/Background-mode-(iOS)>)
-- turning the device's Bluetooth adapter on
+Yes, BLE is hard. No, this library won't make it easy -- but it'll make it possible without losing your mind.
 
-It does NOT support:
+## What's New in v4
 
-- bluetooth classic devices.
-- communicating between phones using BLE (Peripheral support)
-- [bonding peripherals](https://github.com/dotintent/react-native-ble-plx/wiki/Device-Bonding)
-- [beacons](https://github.com/dotintent/react-native-ble-plx/wiki/=-FAQ:-Beacons)
+v4 is a complete rewrite. The old Bridge-based native code is gone, replaced by:
 
-## Table of Contents
-
-1. [Compatibility](#compatibility)
-2. [Recent Changes](#recent-changes)
-3. [Documentation & Support](#documentation--support)
-4. [Configuration & Installation](#configuration--installation)
-5. [Troubleshooting](#troubleshooting)
-6. [Contributions](#contributions)
+- **TurboModule with Codegen** -- typed native events, no more `NativeEventEmitter` manual wiring
+- **Fabric / New Architecture only** -- React Native 0.82+ required (legacy arch was removed in 0.82)
+- **Android: Nordic BLE Library** -- proper GATT operation queuing, auto-MTU 517, coroutine-based
+- **iOS: Swift actor + CoreBluetooth** -- thread-safe by design, no more delegate spaghetti
+- **Modern BLE features** -- PHY selection, L2CAP channels, connection events, bond state monitoring
+- **Unified error model** -- rich, cross-platform `BleError` with platform diagnostics
+- **Event batching** -- configurable backpressure so notification storms don't crash your JS thread
+- **25 audit issues fixed** -- every known bug from the v3 audit is resolved
 
 ## Compatibility
 
-For old RN versions (<0.60) please check [old README](./docs/README_V1.md) (1.x)
-for the old instructions or [migration guide](./docs/MIGRATION_V1.md).
+| Requirement | Minimum |
+|-------------|---------|
+| React Native | >= 0.82.0 |
+| Expo SDK | 55+ |
+| iOS | 15+ |
+| Android API | 23+ |
+| Architecture | New Architecture (TurboModule) |
 
-| React Native | 3.1.2              |
-| ------------ | ------------------ |
-| 0.74.1       | :white_check_mark: |
-| 0.69.6       | :white_check_mark: |
-| Expo 51      | :white_check_mark: |
+This library does **not** work with Expo Go. You need a [development build](https://docs.expo.dev/develop/development-builds/introduction/).
 
-## Recent Changes
+## 60-Second Quickstart
 
-**3.2.0**
+### Expo (recommended)
 
-- Added Android Instance checking before calling its method, an error will be visible on the RN side
-- Added information related to Android 14 to the documentation.
-- Changed destroyClient, cancelTransaction, setLogLevel, startDeviceScan, stopDeviceScan calls to promises to allow error reporting if it occurs.
-- Fixed one of the functions calls that clean up the BLE instance after it is destroyed.
+```bash
+npx expo install react-native-ble-plx
+```
 
-[Current version changes](CHANGELOG.md)
-[All previous changes](CHANGELOG-pre-3.0.0.md)
-
-## Documentation & Support
-
-Interested in React Native project involving Bluetooth Low Energy? [We can help you!](https://withintent.com/?utm_source=github&utm_medium=github&utm_campaign=external_traffic)
-
-[Documentation can be found here](https://dotintent.github.io/react-native-ble-plx/).
-
-Contact us at [intent](https://withintent.com/contact-us/?utm_source=github&utm_medium=github&utm_campaign=external_traffic).
-
-## Configuration & Installation
-
-### Expo SDK 43+
-
-> Tested against Expo SDK 49
-> This package cannot be used in the "Expo Go" app because [it requires custom native code](https://docs.expo.io/workflow/customizing/).
-> First install the package with yarn, npm, or [`npx expo install`](https://docs.expo.io/workflow/expo-cli/#expo-install).
-
-After installing this npm package, add the [config plugin](https://docs.expo.io/guides/config-plugins/) to the [`plugins`](https://docs.expo.io/versions/latest/config/app/#plugins) array of your `app.json` or `app.config.js`:
+Add the config plugin to your `app.json`:
 
 ```json
 {
@@ -87,23 +56,112 @@ After installing this npm package, add the [config plugin](https://docs.expo.io/
 }
 ```
 
-Then you should build the version using native modules (e.g. with `npx expo prebuild` command).
-And install it directly into your device with `npx expo run:android`.
+Build and run on a physical device:
 
-You can find more details in the ["Adding custom native code"](https://docs.expo.io/workflow/customizing/) guide.
+```bash
+npx expo run:ios --device
+```
 
-## API
+### Bare React Native
 
-The plugin provides props for extra customization. Every time you change the props or plugins, you'll need to rebuild (and `prebuild`) the native app. If no extra properties are added, defaults will be used.
+```bash
+npm install react-native-ble-plx
+cd ios && pod install
+```
 
-- `isBackgroundEnabled` (_boolean_): Enable background BLE support on Android. Adds `<uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>` to the `AndroidManifest.xml`. Default `false`.
-- `neverForLocation` (_boolean_): Set to true only if you can strongly assert that your app never derives physical location from Bluetooth scan results. The location permission will be still required on older Android devices. Note, that some BLE beacons are filtered from the scan results. Android SDK 31+. Default `false`. _WARNING: This parameter is experimental and BLE might not work. Make sure to test before releasing to production._
-- `modes` (_string[]_): Adds iOS `UIBackgroundModes` to the `Info.plist`. Options are: `peripheral`, and `central`. Defaults to undefined.
-- `bluetoothAlwaysPermission` (_string | false_): Sets the iOS `NSBluetoothAlwaysUsageDescription` permission message to the `Info.plist`. Setting `false` will skip adding the permission. Defaults to `Allow $(PRODUCT_NAME) to connect to bluetooth devices`.
+### Then, regardless of how you got here:
 
-> Expo SDK 48 supports iOS 13+ which means `NSBluetoothPeripheralUsageDescription` is fully deprecated. It is no longer setup in `@config-plugins/react-native-ble-plx@5.0.0` and greater.
+```typescript
+import { BleManager, State } from 'react-native-ble-plx';
 
-#### Example
+const manager = new BleManager();
+await manager.createClient();
+
+// Wait for Bluetooth to be ready
+const currentState = await manager.state();
+if (currentState !== State.PoweredOn) {
+  await new Promise<void>(resolve => {
+    const sub = manager.onStateChange(state => {
+      if (state === State.PoweredOn) {
+        sub.remove();
+        resolve();
+      }
+    });
+  });
+}
+
+// Scan for devices
+manager.startDeviceScan(null, null, (error, device) => {
+  if (error) return console.error(error);
+  if (device?.name === 'MyDevice') {
+    manager.stopDeviceScan();
+    connectAndRead(device.id);
+  }
+});
+
+async function connectAndRead(deviceId: string) {
+  const device = await manager.connectToDevice(deviceId);
+  await manager.discoverAllServicesAndCharacteristics(deviceId);
+  const char = await manager.readCharacteristicForDevice(
+    deviceId,
+    'service-uuid-here',
+    'characteristic-uuid-here'
+  );
+  console.log('Value:', char.value); // Base64-encoded
+}
+```
+
+That's it. For the full setup (permissions, platform config, Expo), see the [Getting Started guide](docs/GETTING_STARTED.md).
+
+## Example Apps
+
+- **[Expo example](example-expo/)** -- Expo SDK 55, expo-router. Start here.
+- **[Bare RN example](example/)** -- React Native 0.84, React Navigation. For the brave.
+
+## Documentation
+
+- **[Getting Started](docs/GETTING_STARTED.md)** -- Installation, permissions, platform setup, first scan
+- **[API Reference](docs/API.md)** -- Every method on `BleManager`, fully typed
+- **[Migration Guide (v3 to v4)](docs/MIGRATION_V3_TO_V4.md)** -- What changed, what broke, how to fix it
+- **[Troubleshooting](docs/TROUBLESHOOTING.md)** -- Common problems and their solutions
+- **[E2E Testing](docs/TESTING.md)** -- Hardware test infrastructure and maestro-runner flows
+
+## What This Library Does
+
+- Observe Bluetooth adapter state
+- Scan for BLE peripherals (including BLE 5.0 extended advertising)
+- Connect to peripherals with configurable retry and timeout
+- Discover services and characteristics
+- Read, write (with and without response), and monitor characteristics
+- Subscribe to notifications and indications
+- Negotiate MTU
+- Request PHY (BLE 5.0, Android)
+- Open L2CAP channels (iOS)
+- Monitor bond state changes (Android)
+- iOS background mode with state restoration
+
+## What This Library Does NOT Do
+
+- Bluetooth Classic -- BLE only
+- Peripheral/server role -- central only
+- Beacons -- use a dedicated beacon library
+- LE Audio / LC3 codec
+- Web or desktop platforms
+
+## Migrating from v3
+
+The API surface is intentionally similar to v3, but there are breaking changes. The big ones:
+
+- `enable()` and `disable()` are gone (broken on Android 12+, use system settings)
+- `State`, `ConnectionPriority`, etc. are `const` objects, not TypeScript enums
+- Monitor subscription `.remove()` now actually cleans up (yes, it was broken before)
+- Requires React Native 0.82+ (New Architecture only)
+
+Full details in the [Migration Guide](docs/MIGRATION_V3_TO_V4.md).
+
+## Expo Config Plugin
+
+The quickstart above covers the basics. If you need background BLE or want to customize permissions, pass options:
 
 ```json
 {
@@ -113,7 +171,7 @@ The plugin provides props for extra customization. Every time you change the pro
         "react-native-ble-plx",
         {
           "isBackgroundEnabled": true,
-          "modes": ["peripheral", "central"],
+          "modes": ["central"],
           "bluetoothAlwaysPermission": "Allow $(PRODUCT_NAME) to connect to bluetooth devices"
         }
       ]
@@ -122,88 +180,19 @@ The plugin provides props for extra customization. Every time you change the pro
 }
 ```
 
-### Legacy Expo (SDK < 43)
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `isBackgroundEnabled` | boolean | `false` | Add `bluetooth-central` to iOS background modes |
+| `modes` | string[] | `[]` | iOS `UIBackgroundModes`: `"peripheral"`, `"central"` |
+| `bluetoothAlwaysPermission` | string \| false | `'Allow $(PRODUCT_NAME) to connect to bluetooth devices'` | iOS `NSBluetoothAlwaysUsageDescription` |
+| `neverForLocation` | boolean | `true` | If true, adds `neverForLocation` flag to Android `BLUETOOTH_SCAN` |
 
-1. Make sure your Expo project is ejected (formerly: detached). You can read how to do it [here](https://docs.expo.dev/expokit/eject/). (only for Expo SDK < 43)
-2. Follow steps for iOS/Android.
+Full details in the [Getting Started guide](docs/GETTING_STARTED.md).
 
-### iOS ([example setup](https://github.com/Cierpliwy/SensorTag))
+## Contributing
 
-1. `npm install --save react-native-ble-plx`
-1. Enter `ios` folder and run `pod update`
-1. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
-1. If you want to support background mode:
-   - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
-     `Background Modes` section.
-   - Pass `restoreStateIdentifier` and `restoreStateFunction` to `BleManager` constructor.
+PRs welcome. If you're fixing a bug, include a test case or at minimum describe how to reproduce it. If you're adding a feature, open an issue first so we can discuss the API.
 
-### Android ([example setup](https://github.com/Cierpliwy/SensorTag))
+## License
 
-1. `npm install --save react-native-ble-plx`
-1. In top level `build.gradle` make sure that min SDK version is at least 23:
-
-   ```groovy
-   buildscript {
-       ext {
-           ...
-           minSdkVersion = 23
-           ...
-   ```
-
-1. In `build.gradle` make sure to add jitpack repository to known repositories:
-
-   ```groovy
-   allprojects {
-       repositories {
-         ...
-         maven { url 'https://www.jitpack.io' }
-       }
-   }
-   ```
-
-1. In `AndroidManifest.xml`, add Bluetooth permissions and update `<uses-sdk/>`:
-
-   ```xml
-   <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-
-      ...
-
-      <!-- Android >= 12 -->
-      <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-      <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-      <!-- Android < 12 -->
-      <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-      <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
-      <!-- common -->
-      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
-      <!-- Add this line if your application always requires BLE. More info can be found on:
-          https://developer.android.com/guide/topics/connectivity/bluetooth-le.html#permissions
-        -->
-      <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
-
-       ...
-   ```
-
-1. (Optional) In SDK 31+ You can remove `ACCESS_FINE_LOCATION` (or mark it as `android:maxSdkVersion="30"` ) from `AndroidManifest.xml` and add `neverForLocation` flag into `BLUETOOTH_SCAN` permissions which says that you will not use location based on scanning eg:
-
-   ```xml
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Android >= 12 -->
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <!-- Android < 12 -->
-    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
-
-       ...
-   ```
-
-   With `neverForLocation` flag active, you no longer need to ask for `ACCESS_FINE_LOCATION` in your app
-
-## Troubleshooting
-
-## Contributions
-
-- Special thanks to @EvanBacon for supporting the expo config plugin.
+Apache License 2.0

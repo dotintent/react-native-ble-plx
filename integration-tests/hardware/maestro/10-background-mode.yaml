@@ -1,0 +1,69 @@
+# Test 10: Background Mode
+# Connects, starts monitoring, backgrounds the app, then returns to verify
+# monitoring is still active (sample count increased while backgrounded)
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+# Navigate to Notify Stream
+- tapOn:
+    id: "char-notify-stream"
+
+- extendedWaitUntil:
+    visible:
+      id: "monitor-toggle"
+    timeout: 5000
+
+# Enable monitoring
+- tapOn:
+    id: "monitor-toggle"
+
+# Wait for some samples to arrive
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# Verify monitoring is working
+- assertNotVisible:
+    text: "Samples: 0"
+
+# Background the app by launching Settings
+- launchApp:
+    appId: "com.android.settings"
+
+# Wait 3 seconds in the background
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# Return to our app
+- launchApp:
+    appId: "com.bleplxexample"
+
+# Wait for the app to come back
+- waitForAnimationToEnd
+
+# Verify we're still on the CharacteristicScreen and monitoring continued
+- extendedWaitUntil:
+    visible:
+      id: "value-display"
+    timeout: 5000
+
+# The sample count should have increased while we were away
+# If it was at ~4 before backgrounding and 3s passed (500ms interval = ~6 more),
+# we should have >= 5 now
+- assertNotVisible:
+    text: "Samples: 0"
+- assertNotVisible:
+    text: "Samples: 1"
+- assertNotVisible:
+    text: "Samples: 2"
+- assertNotVisible:
+    text: "Samples: 3"
+- assertNotVisible:
+    text: "Samples: 4"
+
+# Disable monitoring
+- tapOn:
+    id: "monitor-toggle"
+
+- waitForAnimationToEnd

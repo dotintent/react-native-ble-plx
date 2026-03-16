@@ -19,7 +19,7 @@ const withBLE: ConfigPlugin<
 > = (config, props = {}) => {
   const _props = props || {}
   const isBackgroundEnabled = _props.isBackgroundEnabled ?? false
-  const neverForLocation = _props.neverForLocation ?? false
+  const neverForLocation = _props.neverForLocation ?? true
 
   if ('bluetoothPeripheralPermission' in _props) {
     WarningAggregator.addWarningIOS(

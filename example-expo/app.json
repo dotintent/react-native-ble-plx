@@ -1,29 +1,44 @@
 {
   "expo": {
-    "name": "example-expo",
-    "slug": "example-expo",
+    "name": "BLE PLX Example",
+    "slug": "ble-plx-expo-example",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
+    "icon": "./assets/images/icon.png",
+    "scheme": "bleplxexample",
+    "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.withintent.bleplxexample"
+      "bundleIdentifier": "com.iotashan.example.bleplxexpo"
     },
     "android": {
+      "package": "com.bleplx.expoexample",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.withintent.bleplxexample"
+        "backgroundColor": "#3737DC",
+        "foregroundImage": "./assets/images/icon.png"
+      }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "plugins": [
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "17.0"
+          }
+        }
+      ],
+      [
+        "react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": ["central"],
+          "bluetoothAlwaysPermission": "This app uses Bluetooth to communicate with BLE devices.",
+          "neverForLocation": false
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
     }
   }
 }

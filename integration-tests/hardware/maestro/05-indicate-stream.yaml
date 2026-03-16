@@ -1,0 +1,54 @@
+# Test 05: Indication Stream
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-indicate-stream"
+
+- extendedWaitUntil:
+    visible:
+      id: "monitor-toggle"
+    timeout: 5000
+
+# Verify counters start at 0
+- assertVisible:
+    id: "sample-count"
+
+# Enable monitoring
+- tapOn:
+    id: "monitor-toggle"
+
+# Wait 12 seconds for indications (1000ms interval = ~12 expected)
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# Assert we received at least 3 samples
+- assertNotVisible:
+    text: "Samples: 0"
+- assertNotVisible:
+    text: "Samples: 1"
+- assertNotVisible:
+    text: "Samples: 2"
+
+# Assert at least 2 distinct values
+- assertNotVisible:
+    text: "Distinct: 0"
+- assertNotVisible:
+    text: "Distinct: 1"
+
+# Disable monitoring
+- tapOn:
+    id: "monitor-toggle"
+
+- waitForAnimationToEnd

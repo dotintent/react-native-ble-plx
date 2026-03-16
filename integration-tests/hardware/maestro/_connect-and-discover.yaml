@@ -1,0 +1,62 @@
+# Shared subflow: Connect to BlePlxTest and discover services
+appId: com.bleplxexample
+---
+
+# 1. Kill BlePlxTest if it's running on this device (avoid conflict)
+- stopApp:
+    appId: "com.bleplx.testperipheral"
+- stopApp:
+    appId: "com.bleplx.testperipheral.ios"
+
+# 2. Stop and relaunch the scanner app fresh
+- stopApp
+- launchApp
+
+# 3. Wait for app to load and BLE to power on
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 15000
+
+# 4. Start scanning
+- tapOn:
+    id: "scan-start-btn"
+
+# 5. Filter the list by typing in search box
+- tapOn:
+    id: "scan-search"
+- inputText: "BlePlxTest"
+- hideKeyboard
+
+# 6. Wait for BlePlxTest device row to appear
+- extendedWaitUntil:
+    visible:
+      id: "device-BlePlxTest"
+    timeout: 20000
+
+# 7. Tap BlePlxTest device row to connect
+- tapOn:
+    id: "device-BlePlxTest"
+
+# 8. Wait for DeviceScreen to load (connection established)
+#    BLE connection can take several seconds to complete
+- extendedWaitUntil:
+    visible:
+      id: "discover-btn"
+    timeout: 30000
+
+# 9. Discover services
+- tapOn:
+    id: "discover-btn"
+
+# 10. Wait for the test service to appear and auto-expand
+- extendedWaitUntil:
+    visible:
+      id: "service-test"
+    timeout: 10000
+
+# 11. Verify the test characteristics are visible
+- extendedWaitUntil:
+    visible:
+      id: "char-read-counter"
+    timeout: 5000

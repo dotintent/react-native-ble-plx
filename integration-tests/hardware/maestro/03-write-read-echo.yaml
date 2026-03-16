@@ -1,0 +1,34 @@
+# Test 03: Write -> Read Echo Roundtrip
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-write-echo"
+
+- extendedWaitUntil:
+    visible:
+      id: "write-input"
+    timeout: 5000
+
+# Write "Hello" (base64: SGVsbG8=)
+- tapOn:
+    id: "write-input"
+- eraseText: 50
+- inputText: "SGVsbG8="
+
+- tapOn:
+    id: "write-btn"
+
+# Wait for write to complete
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# Read back and verify the echoed value
+- tapOn:
+    id: "read-btn"
+
+- extendedWaitUntil:
+    visible:
+      text: "SGVsbG8="
+    timeout: 5000

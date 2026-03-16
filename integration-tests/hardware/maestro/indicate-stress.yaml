@@ -1,0 +1,188 @@
+# Maestro flow: Indicate Stream Stress Test
+#
+# Verifies that the library correctly handles a sustained BLE indication stream
+# over 30 seconds without dropping the connection, leaking memory, or crashing.
+#
+# The BlePlxTest peripheral sends indications on the Indicate Stream
+# characteristic continuously while monitoring is active.
+# This flow enables the monitor toggle, waits 30 seconds with periodic
+# liveness checks, then disables monitoring and disconnects.
+#
+# Prerequisites:
+#   - The BlePlxTest peripheral is powered on and advertising within range.
+#   - The test app is installed and foregrounded on the device under test.
+#   - BLE permissions have been pre-granted (see README.md).
+#   - The BlePlxTest firmware implements an indicatable characteristic that
+#     sends indications at a regular cadence when enabled.
+#
+# Run:
+#   maestro test integration-tests/hardware/maestro/indicate-stress.yaml
+
+appId: com.bleplxexample
+
+---
+
+# ---------------------------------------------------------------------------
+# 1. Launch and scan
+# ---------------------------------------------------------------------------
+- launchApp:
+    clearState: true
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 5000
+
+- extendedWaitUntil:
+    visible:
+      id: "ble-state"
+    timeout: 10000
+
+- tapOn:
+    id: "scan-start-btn"
+
+- tapOn:
+    id: "scan-search"
+- inputText: "BlePlxTest"
+- hideKeyboard
+
+- extendedWaitUntil:
+    visible:
+      id: "device-BlePlxTest"
+    timeout: 15000
+
+# ---------------------------------------------------------------------------
+# 2. Connect to BlePlxTest
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "device-BlePlxTest"
+
+- extendedWaitUntil:
+    visible:
+      id: "discover-btn"
+    timeout: 10000
+
+# ---------------------------------------------------------------------------
+# 3. Discover services
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "discover-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "service-test"
+    timeout: 10000
+
+# ---------------------------------------------------------------------------
+# 4. Navigate to the Indicate Stream characteristic
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "char-indicate-stream"
+
+- extendedWaitUntil:
+    visible:
+      id: "monitor-toggle"
+    timeout: 5000
+
+# Confirm the value-display is present before enabling monitoring
+- assertVisible:
+    id: "value-display"
+
+# ---------------------------------------------------------------------------
+# 5. Enable the monitor
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "monitor-toggle"
+
+# Give a moment for the first indication to arrive
+- waitForAnimationToEnd:
+    timeout: 2000
+
+# Confirm the value-display is still visible and no error alert appeared
+- assertVisible:
+    id: "value-display"
+- assertNotVisible:
+    text: "Monitor error"
+
+# ---------------------------------------------------------------------------
+# 6. Run for 30 seconds with periodic liveness checks
+# ---------------------------------------------------------------------------
+
+# t ~ 5 s
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible:
+    id: "value-display"
+- assertNotVisible:
+    text: "Monitor error"
+
+# t ~ 10 s
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible:
+    id: "value-display"
+- assertNotVisible:
+    text: "Monitor error"
+
+# t ~ 15 s
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible:
+    id: "value-display"
+- assertNotVisible:
+    text: "Monitor error"
+
+# t ~ 20 s
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible:
+    id: "value-display"
+- assertNotVisible:
+    text: "Monitor error"
+
+# t ~ 25 s
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible:
+    id: "value-display"
+- assertNotVisible:
+    text: "Monitor error"
+
+# t ~ 30 s — final check
+- waitForAnimationToEnd:
+    timeout: 5000
+- assertVisible:
+    id: "value-display"
+- assertNotVisible:
+    text: "Monitor error"
+
+# ---------------------------------------------------------------------------
+# 7. Disable monitoring
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "monitor-toggle"
+
+- waitForAnimationToEnd:
+    timeout: 1000
+
+# No error should appear after stopping
+- assertNotVisible:
+    text: "Monitor error"
+
+# ---------------------------------------------------------------------------
+# 8. Navigate back and disconnect cleanly
+# ---------------------------------------------------------------------------
+- back
+
+- extendedWaitUntil:
+    visible:
+      id: "disconnect-btn"
+    timeout: 5000
+
+- tapOn:
+    id: "disconnect-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 8000

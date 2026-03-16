@@ -1,4 +1,11 @@
 {
   "extends": "./tsconfig",
-  "exclude": ["example"]
+  "exclude": [
+    "example",
+    "example-expo",
+    "__tests__",
+    "integration-tests",
+    "src/specs",
+    "src/index.d.ts"
+  ]
 }

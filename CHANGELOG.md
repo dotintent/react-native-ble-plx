@@ -2,6 +2,58 @@
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [4.0.0-alpha.0] - 2026-03-16
+
+### Changed
+
+- Complete rewrite as a TurboModule for React Native New Architecture (0.82+)
+- Android native layer rewritten in Kotlin using Nordic Android-BLE-Library
+- iOS native layer rewritten in Swift with actor-based CoreBluetooth wrapper
+- `State`, `ConnectionPriority`, `ConnectionState`, `LogLevel` changed from TypeScript enums to `as const` objects
+- `BleManager` constructor no longer auto-initializes — `createClient()` must be called explicitly
+- `BleManager` is no longer a silent singleton — each instance is independent
+- Monitor subscription `.remove()` now properly cleans up both native and JS listeners
+- All values remain Base64-encoded (same as v3)
+- Minimum React Native version raised to 0.82.0
+- Minimum iOS version raised to 15
+- Minimum Android API raised to 23
+
+### Added
+
+- TurboModule with Codegen typed events (no manual NativeEventEmitter setup)
+- `requestPhy()` and `readPhy()` for BLE 5.0 PHY selection (Android)
+- `openL2CAPChannel()`, `writeL2CAPChannel()`, `closeL2CAPChannel()` for L2CAP streams (iOS)
+- `requestConnectionPriority()` for Android connection priority hints
+- `getAuthorizationStatus()` for iOS Bluetooth authorization state
+- `onConnectionEvent()` for iOS 13+ connection events
+- `onBondStateChange()` for Android bond state monitoring
+- `onRestoreState()` for iOS background state restoration
+- Connection retry with `retries` and `retryDelay` options in `connectToDevice()`
+- Auto-MTU 517 negotiation on Android connect
+- Event batching for scan results and characteristic notifications
+- `BleError` unified cross-platform error model with rich diagnostic fields
+- `MonitorOptions` with `batchInterval` and `subscriptionType` parameters
+- `BleManagerOptions` with `scanBatchIntervalMs` constructor option
+- Complete documentation rewrite: README, Getting Started, API Reference, Migration Guide, Troubleshooting, E2E Testing Guide
+
+### Removed
+
+- `enable()` and `disable()` (broken on Android 12+, no-op on iOS)
+- `setLogLevel()` (not exposed in TurboModule interface)
+- Bridge-based native modules (New Architecture only)
+- Support for React Native < 0.82
+
+### Fixed
+
+- All 25 issues from the v3 code audit
+- Thread-unsafe shared state on both platforms
+- Monitor subscription cleanup leak (#1308, #1299)
+- Hardcoded MTU 23 on iOS for scanned devices
+- State restoration race condition on iOS
+- Never-settled promises (every operation now has a timeout)
+- Android disconnection always reporting null error
+- Promise double-resolution on iOS
+
 ## [3.5.1] - 2026-02-17
 
 ### Changed

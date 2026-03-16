@@ -1,0 +1,57 @@
+# Test 10 (iOS variant): Background Mode
+# Same as 10-background-mode.yaml but uses iOS Settings app to background
+appId: com.iotashan.example.--PRODUCT-NAME-rfc1034identifier-
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-notify-stream"
+
+- extendedWaitUntil:
+    visible:
+      id: "monitor-toggle"
+    timeout: 5000
+
+- tapOn:
+    id: "monitor-toggle"
+
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+- assertNotVisible:
+    text: "Samples: 0"
+
+# Background by launching iOS Settings
+- launchApp:
+    appId: "com.apple.Preferences"
+
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# Return to our app
+- launchApp:
+    appId: "com.iotashan.example.--PRODUCT-NAME-rfc1034identifier-"
+
+- waitForAnimationToEnd
+
+- extendedWaitUntil:
+    visible:
+      id: "value-display"
+    timeout: 5000
+
+- assertNotVisible:
+    text: "Samples: 0"
+- assertNotVisible:
+    text: "Samples: 1"
+- assertNotVisible:
+    text: "Samples: 2"
+- assertNotVisible:
+    text: "Samples: 3"
+- assertNotVisible:
+    text: "Samples: 4"
+
+- tapOn:
+    id: "monitor-toggle"
+
+- waitForAnimationToEnd

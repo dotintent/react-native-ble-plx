@@ -1,0 +1,19 @@
+# Test 12: Request MTU (Android only)
+# Requests MTU 247 and verifies the request succeeds
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- assertVisible:
+    id: "device-mtu"
+
+- tapOn:
+    id: "request-mtu-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "mtu-request-status"
+    timeout: 5000
+
+- assertVisible:
+    text: "Success:"

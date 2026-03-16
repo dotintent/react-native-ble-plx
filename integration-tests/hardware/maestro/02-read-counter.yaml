@@ -1,0 +1,36 @@
+# Test 02: Read Counter Characteristic
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-read-counter"
+
+- extendedWaitUntil:
+    visible:
+      id: "read-btn"
+    timeout: 5000
+
+# First read
+- tapOn:
+    id: "read-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "value-display"
+    timeout: 5000
+
+# Verify value is no longer the default
+- assertNotVisible:
+    text: "Value: (none)"
+
+# Second read (counter should increment)
+- tapOn:
+    id: "read-btn"
+
+- waitForAnimationToEnd
+
+- assertVisible:
+    id: "value-display"
+- assertNotVisible:
+    text: "Value: (none)"

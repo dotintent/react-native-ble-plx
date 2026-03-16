@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>BlePlxTest needs Bluetooth to act as a BLE peripheral for testing.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>BlePlxTest needs Bluetooth to advertise as a BLE peripheral.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>bluetooth-peripheral</string>
+	</array>
+</dict>
+</plist>

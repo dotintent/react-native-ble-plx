@@ -3,3 +3,9 @@ node_modules/
 docs/**
 plugin/build
 lib/**
+integration-tests/hardware/maestro/drivers/**
+integration-tests/simulated/**
+example/**
+example-expo/**
+test-peripheral-app/**
+test-peripheral-app-ios/**

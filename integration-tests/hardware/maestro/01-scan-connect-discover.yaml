@@ -1,0 +1,31 @@
+# Test 01: Scan -> Connect -> Discover Services
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+# Verify all 5 test characteristics are visible
+- assertVisible:
+    id: "char-read-counter"
+- assertVisible:
+    id: "char-write-echo"
+- assertVisible:
+    id: "char-notify-stream"
+- assertVisible:
+    id: "char-indicate-stream"
+- assertVisible:
+    id: "char-mtu-test"
+
+# Verify MTU is displayed
+- extendedWaitUntil:
+    visible:
+      id: "device-mtu"
+    timeout: 3000
+
+# Clean disconnect
+- tapOn:
+    id: "disconnect-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 8000

@@ -2,7 +2,7 @@ pre-commit:
   parallel: true
   commands:
     lint:
-      files: git diff --name-only @{push}
+      files: git diff --name-only HEAD
       glob: '*.{js,ts,jsx,tsx}'
       run: yarn lint
 commit-msg:

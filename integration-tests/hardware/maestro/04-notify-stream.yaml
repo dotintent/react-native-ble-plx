@@ -1,0 +1,56 @@
+# Test 04: Notification Stream
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-notify-stream"
+
+- extendedWaitUntil:
+    visible:
+      id: "monitor-toggle"
+    timeout: 5000
+
+# Verify counters start at 0
+- assertVisible:
+    id: "sample-count"
+
+# Enable monitoring
+- tapOn:
+    id: "monitor-toggle"
+
+# Wait 10 seconds for notifications to stream in (500ms interval = ~20 expected)
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# Assert we received samples (not still at 0-4)
+- assertNotVisible:
+    text: "Samples: 0"
+- assertNotVisible:
+    text: "Samples: 1"
+- assertNotVisible:
+    text: "Samples: 2"
+- assertNotVisible:
+    text: "Samples: 3"
+- assertNotVisible:
+    text: "Samples: 4"
+
+# Assert at least 2 distinct values (proves counter is incrementing)
+- assertNotVisible:
+    text: "Distinct: 0"
+- assertNotVisible:
+    text: "Distinct: 1"
+
+# Disable monitoring
+- tapOn:
+    id: "monitor-toggle"
+
+- waitForAnimationToEnd

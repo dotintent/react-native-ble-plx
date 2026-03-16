@@ -1,0 +1,30 @@
+# Test 06: MTU Read
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+# Verify MTU is displayed on DeviceScreen
+- extendedWaitUntil:
+    visible:
+      id: "device-mtu"
+    timeout: 3000
+
+- tapOn:
+    id: "char-mtu-test"
+
+- extendedWaitUntil:
+    visible:
+      id: "read-btn"
+    timeout: 5000
+
+- tapOn:
+    id: "read-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "value-display"
+    timeout: 5000
+
+# Verify we got an actual value
+- assertNotVisible:
+    text: "Value: (none)"

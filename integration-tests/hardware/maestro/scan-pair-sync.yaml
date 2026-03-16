@@ -1,0 +1,128 @@
+# Maestro flow: Scan → Pair → Sync (full happy path)
+#
+# Verifies the complete happy-path of discovering a BLE peripheral, connecting
+# to it, discovering services, navigating to a readable characteristic, reading
+# its value, and disconnecting cleanly.
+#
+# Prerequisites:
+#   - The BlePlxTest peripheral is powered on and advertising within range.
+#   - The test app is installed and foregrounded on the device under test.
+#   - BLE permissions have been pre-granted (see README.md).
+#   - See integration-tests/hardware/peripheral-firmware/README.md for firmware
+#     requirements.
+#
+# Run:
+#   maestro test integration-tests/hardware/maestro/scan-pair-sync.yaml
+
+appId: com.bleplxexample
+
+---
+
+# ---------------------------------------------------------------------------
+# 1. Launch the app fresh
+# ---------------------------------------------------------------------------
+- launchApp:
+    clearState: true
+
+# Wait for the scan screen buttons to be visible
+- assertVisible:
+    id: "scan-start-btn"
+    timeout: 5000
+
+# ---------------------------------------------------------------------------
+# 2. Wait for BLE to be powered on, then start scanning
+# ---------------------------------------------------------------------------
+- extendedWaitUntil:
+    visible:
+      id: "ble-state"
+    timeout: 10000
+
+- tapOn:
+    id: "scan-start-btn"
+
+# ---------------------------------------------------------------------------
+# 3. Filter and wait for the BlePlxTest peripheral to appear
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "scan-search"
+- inputText: "BlePlxTest"
+- hideKeyboard
+
+- assertVisible:
+    id: "device-list"
+
+- extendedWaitUntil:
+    visible:
+      id: "device-BlePlxTest"
+    timeout: 15000
+
+# ---------------------------------------------------------------------------
+# 4. Tap the device row to connect
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "device-BlePlxTest"
+
+# ---------------------------------------------------------------------------
+# 5. Wait for the DeviceScreen to load
+# ---------------------------------------------------------------------------
+- extendedWaitUntil:
+    visible:
+      id: "discover-btn"
+    timeout: 10000
+
+# ---------------------------------------------------------------------------
+# 6. Discover services
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "discover-btn"
+
+# Wait for the test service to appear and auto-expand
+- extendedWaitUntil:
+    visible:
+      id: "service-test"
+    timeout: 10000
+
+# ---------------------------------------------------------------------------
+# 7. Navigate to the Read Counter characteristic
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "char-read-counter"
+
+# ---------------------------------------------------------------------------
+# 8. On CharacteristicScreen: read the value and verify it appears
+# ---------------------------------------------------------------------------
+- extendedWaitUntil:
+    visible:
+      id: "read-btn"
+    timeout: 5000
+
+- tapOn:
+    id: "read-btn"
+
+# value-display starts as "(none)"; after a successful read it shows a base64
+# encoded value. Assert it is no longer showing "(none)".
+- extendedWaitUntil:
+    visible:
+      id: "value-display"
+    timeout: 5000
+- assertNotVisible:
+    text: "Value: (none)"
+
+# ---------------------------------------------------------------------------
+# 9. Navigate back and disconnect
+# ---------------------------------------------------------------------------
+- back
+
+- extendedWaitUntil:
+    visible:
+      id: "disconnect-btn"
+    timeout: 5000
+
+- tapOn:
+    id: "disconnect-btn"
+
+# After disconnecting, navigation returns to ScanScreen
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 8000

@@ -1,0 +1,51 @@
+# Test 16: Payload Boundary Tests
+# Writes 1-byte and 20-byte payloads, reads back, verifies
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-write-echo"
+
+- extendedWaitUntil:
+    visible:
+      id: "write-input"
+    timeout: 5000
+
+- tapOn:
+    id: "write-1byte-btn"
+
+- tapOn:
+    id: "write-btn"
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+- tapOn:
+    id: "read-btn"
+
+- extendedWaitUntil:
+    visible:
+      text: "QQ=="
+    timeout: 5000
+
+- assertVisible:
+    text: "Payload: 1 bytes"
+
+- tapOn:
+    id: "write-20byte-btn"
+
+- tapOn:
+    id: "write-btn"
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+- tapOn:
+    id: "read-btn"
+
+- extendedWaitUntil:
+    visible:
+      text: "QUJDREVGR0hJSktMTU5PUFFSU1Q="
+    timeout: 5000
+
+- assertVisible:
+    text: "Payload: 20 bytes"

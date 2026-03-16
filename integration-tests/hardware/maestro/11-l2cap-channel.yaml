@@ -1,0 +1,56 @@
+# Test 11: L2CAP Channel
+# Reads the L2CAP PSM from the peripheral, opens a channel, writes data, closes it
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+# Tap the L2CAP PSM characteristic — this reads the PSM and navigates to L2CAP screen
+- tapOn:
+    id: "char-l2cap-psm"
+
+# Wait for L2CAP screen to load
+- extendedWaitUntil:
+    visible:
+      id: "l2cap-open-btn"
+    timeout: 5000
+
+# Verify PSM is displayed
+- assertVisible:
+    id: "l2cap-psm"
+
+# Open the L2CAP channel
+- tapOn:
+    id: "l2cap-open-btn"
+
+# Wait for connection
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# Verify channel ID is shown (proves connection succeeded)
+- assertVisible:
+    id: "l2cap-channel-id"
+
+# Write some data (base64 "Hello" = SGVsbG8=)
+- tapOn:
+    id: "l2cap-write-input"
+- eraseText: 50
+- inputText: "SGVsbG8="
+
+- tapOn:
+    id: "l2cap-write-btn"
+
+# Wait for write to complete
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# No error should have appeared
+- assertNotVisible:
+    id: "l2cap-error"
+
+# Close the channel
+- tapOn:
+    id: "l2cap-close-btn"
+
+- waitForAnimationToEnd
+- waitForAnimationToEnd

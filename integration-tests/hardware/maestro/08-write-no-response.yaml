@@ -1,0 +1,35 @@
+# Test 08: Write Without Response
+# Writes a value using write-without-response, then reads back to verify echo
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-write-no-response"
+
+- extendedWaitUntil:
+    visible:
+      id: "write-input"
+    timeout: 5000
+
+# Write "Test" (base64: VGVzdA==) without response
+- tapOn:
+    id: "write-input"
+- eraseText: 50
+- inputText: "VGVzdA=="
+
+- tapOn:
+    id: "write-btn"
+
+# Wait for write to complete
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+# Read back the echoed value
+- tapOn:
+    id: "read-btn"
+
+- extendedWaitUntil:
+    visible:
+      text: "VGVzdA=="
+    timeout: 5000

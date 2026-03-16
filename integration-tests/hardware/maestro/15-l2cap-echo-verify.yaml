@@ -1,0 +1,50 @@
+# Test 15: L2CAP Echo Data Verification
+# Opens L2CAP channel, writes data, verifies echo received
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-l2cap-psm"
+
+- extendedWaitUntil:
+    visible:
+      id: "l2cap-open-btn"
+    timeout: 5000
+
+- tapOn:
+    id: "l2cap-open-btn"
+
+# Wait for channel to actually open (BLE async, not UI animation)
+- extendedWaitUntil:
+    visible:
+      id: "l2cap-channel-id"
+    timeout: 8000
+
+- tapOn:
+    id: "l2cap-write-input"
+- eraseText: 50
+- inputText: "SGVsbG8="
+
+- tapOn:
+    id: "l2cap-write-btn"
+
+# Wait for echo data
+- extendedWaitUntil:
+    visible:
+      id: "l2cap-rx-data"
+    timeout: 5000
+
+# Verify echo content matches what was sent
+- assertVisible:
+    text: "SGVsbG8="
+
+# Close the channel
+- tapOn:
+    id: "l2cap-close-btn"
+
+- waitForAnimationToEnd
+
+# Verify channel closed
+- assertNotVisible:
+    id: "l2cap-channel-id"

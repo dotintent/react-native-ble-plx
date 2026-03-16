@@ -1,0 +1,29 @@
+# Test 14: Invalid Base64 Write
+# Verifies that writing invalid base64 shows an error
+appId: com.bleplxexample
+---
+- runFlow: _connect-and-discover.yaml
+
+- tapOn:
+    id: "char-write-echo"
+
+- extendedWaitUntil:
+    visible:
+      id: "write-input"
+    timeout: 5000
+
+- tapOn:
+    id: "write-input"
+- eraseText: 50
+- inputText: "!!!NOT-BASE64!!!"
+
+- tapOn:
+    id: "write-btn"
+
+- waitForAnimationToEnd
+- waitForAnimationToEnd
+
+- extendedWaitUntil:
+    visible:
+      id: "write-error"
+    timeout: 5000

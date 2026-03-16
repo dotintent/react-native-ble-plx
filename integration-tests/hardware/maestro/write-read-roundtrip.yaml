@@ -1,0 +1,134 @@
+# Maestro flow: Write → Read Roundtrip
+#
+# Verifies that a value written to the Write Echo characteristic can be read
+# back with the same content, confirming bidirectional characteristic I/O works
+# end-to-end.
+#
+# Prerequisites:
+#   - The BlePlxTest peripheral is powered on and advertising within range.
+#   - The test app is installed and foregrounded on the device under test.
+#   - BLE permissions have been pre-granted (see README.md).
+#   - The BlePlxTest firmware implements a write-echo characteristic that echoes
+#     back whatever value was last written.
+#
+# Run:
+#   maestro test integration-tests/hardware/maestro/write-read-roundtrip.yaml
+
+appId: com.bleplxexample
+
+---
+
+# ---------------------------------------------------------------------------
+# 1. Launch the app and wait for BLE to be ready
+# ---------------------------------------------------------------------------
+- launchApp:
+    clearState: true
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 5000
+
+- extendedWaitUntil:
+    visible:
+      id: "ble-state"
+    timeout: 10000
+
+# ---------------------------------------------------------------------------
+# 2. Scan and connect to BlePlxTest
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "scan-start-btn"
+
+- tapOn:
+    id: "scan-search"
+- inputText: "BlePlxTest"
+- hideKeyboard
+
+- extendedWaitUntil:
+    visible:
+      id: "device-BlePlxTest"
+    timeout: 15000
+
+- tapOn:
+    id: "device-BlePlxTest"
+
+- extendedWaitUntil:
+    visible:
+      id: "discover-btn"
+    timeout: 10000
+
+# ---------------------------------------------------------------------------
+# 3. Discover services
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "discover-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "service-test"
+    timeout: 10000
+
+# ---------------------------------------------------------------------------
+# 4. Navigate to the Write Echo characteristic
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "char-write-echo"
+
+- extendedWaitUntil:
+    visible:
+      id: "write-input"
+    timeout: 5000
+
+# ---------------------------------------------------------------------------
+# 5. Write a test value
+#
+# "Hello" base64-encoded is "SGVsbG8=". The write-input accepts base64 strings.
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "write-input"
+- eraseText: 50
+- inputText: "SGVsbG8="
+
+- tapOn:
+    id: "write-btn"
+
+# Dismiss the "Value written successfully" alert
+- extendedWaitUntil:
+    visible:
+      text: "Value written successfully"
+    timeout: 5000
+- tapOn:
+    text: "OK"
+
+# ---------------------------------------------------------------------------
+# 6. Read back the value and verify it matches what was written
+# ---------------------------------------------------------------------------
+- tapOn:
+    id: "read-btn"
+
+# The value-display should now show the echoed base64 value
+- extendedWaitUntil:
+    visible:
+      id: "value-display"
+    timeout: 5000
+- assertVisible:
+    text: "SGVsbG8="
+
+# ---------------------------------------------------------------------------
+# 7. Navigate back and disconnect
+# ---------------------------------------------------------------------------
+- back
+
+- extendedWaitUntil:
+    visible:
+      id: "disconnect-btn"
+    timeout: 5000
+
+- tapOn:
+    id: "disconnect-btn"
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 8000

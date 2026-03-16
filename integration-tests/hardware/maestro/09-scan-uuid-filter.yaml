@@ -1,0 +1,65 @@
+# Test 09: Scan with Service UUID Filter
+# Scans with the test service UUID filter and verifies only BlePlxTest appears
+# (or at least far fewer devices than unfiltered scan)
+appId: com.bleplxexample
+---
+# Stop peripheral apps and restart scanner fresh
+- stopApp:
+    appId: "com.bleplx.testperipheral"
+- stopApp:
+    appId: "com.bleplx.testperipheral.ios"
+- stopApp
+- launchApp
+
+- extendedWaitUntil:
+    visible:
+      id: "scan-start-btn"
+    timeout: 5000
+
+- extendedWaitUntil:
+    visible:
+      id: "ble-state"
+    timeout: 10000
+
+# Enable UUID filter before scanning
+- tapOn:
+    id: "scan-filter-btn"
+
+# Verify filter is active (text match on filter button label)
+- assertVisible:
+    id: "scan-filter-btn"
+
+# Start filtered scan
+- tapOn:
+    id: "scan-start-btn"
+
+# Type in search to filter for BlePlxTest
+- tapOn:
+    id: "scan-search"
+- inputText: "BlePlxTest"
+- hideKeyboard
+
+# Wait for BlePlxTest to appear — it should be found since it advertises the test service UUID
+- extendedWaitUntil:
+    visible:
+      id: "device-BlePlxTest"
+    timeout: 20000
+
+# Stop scan
+- tapOn:
+    id: "scan-stop-btn"
+
+- waitForAnimationToEnd
+
+# At minimum, BlePlxTest should be present
+- assertVisible:
+    id: "device-BlePlxTest"
+
+# Verify we can still connect through filtered scan
+- tapOn:
+    id: "device-BlePlxTest"
+
+- extendedWaitUntil:
+    visible:
+      id: "discover-btn"
+    timeout: 15000

@@ -1,40 +1,45 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config')
-const path = require('path')
-const escape = require('escape-string-regexp')
-const exclusionList = require('metro-config/src/defaults/exclusionList')
-const pak = require('../package.json')
+const path = require('path');
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
-const root = path.resolve(__dirname, '..')
-const modules = Object.keys({ ...pak.peerDependencies })
+const libraryRoot = path.resolve(__dirname, '..');
+const exampleNodeModules = path.resolve(__dirname, 'node_modules');
+
+// Packages that must resolve from the example app's node_modules so that there
+// is only a single copy at runtime (avoids version mismatches between the
+// library's devDependencies and the example app's dependencies).
+const forcedModules = ['react', 'react-native'];
 
 /**
  * Metro configuration
- * https://facebook.github.io/metro/docs/configuration
+ * https://reactnative.dev/docs/metro
  *
  * @type {import('@react-native/metro-config').MetroConfig}
  */
 const config = {
-  watchFolders: [root],
-
-  // We need to make sure that only one version is loaded for peerDependencies
-  // So we block them at the root, and alias them to the versions in example's node_modules
+  watchFolders: [libraryRoot],
   resolver: {
-    blacklistRE: exclusionList(modules.map(m => new RegExp(`^${escape(path.join(root, 'node_modules', m))}\\/.*$`))),
-
-    extraNodeModules: modules.reduce((acc, name) => {
-      acc[name] = path.join(__dirname, 'node_modules', name)
-      return acc
-    }, {})
-  },
-
-  transformer: {
-    getTransformOptions: async () => ({
-      transform: {
-        experimentalImportSupport: false,
-        inlineRequires: true
+    // Make sure Metro can resolve modules from the library root
+    // Only resolve from the example app's node_modules — the library root
+    // should NOT have its own node_modules installed (prevents duplicate
+    // react-native versions causing TurboModule resolution failures).
+    nodeModulesPaths: [
+      exampleNodeModules,
+    ],
+    // Force react and react-native to always resolve from the example app's
+    // node_modules. Without this, files under libraryRoot (e.g. src/) would
+    // pick up the library's devDependency versions which may differ from the
+    // versions the native binary was built against.
+    resolveRequest: (context, moduleName, platform) => {
+      if (forcedModules.includes(moduleName)) {
+        return context.resolveRequest(
+          { ...context, originModulePath: path.join(exampleNodeModules, 'react-native', 'dummy.js') },
+          moduleName,
+          platform,
+        );
       }
-    })
-  }
-}
+      return context.resolveRequest(context, moduleName, platform);
+    },
+  },
+};
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config)
+module.exports = mergeConfig(getDefaultConfig(__dirname), config);
