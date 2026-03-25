@@ -131,7 +131,9 @@ The plugin provides props for extra customization. Every time you change the pro
 
 1. `npm install --save react-native-ble-plx`
 1. Enter `ios` folder and run `pod update`
-1. Add `NSBluetoothAlwaysUsageDescription` in `info.plist` file. (it is a requirement since iOS 13)
+1. Add the `NSBluetoothAlwaysUsageDescription` key to your `Info.plist` file.
+You can do this by selecting your app `target` in Xcode, navigating to `Signing & Capabilities`, clicking the `+ Capability` button, and adding `Bluetooth`.
+This permission is required for apps using Bluetooth starting from iOS 13.
 1. If you want to support background mode:
    - In your application target go to `Capabilities` tab and enable `Uses Bluetooth LE Accessories` in
      `Background Modes` section.
