@@ -1095,7 +1095,7 @@ public class BleModule extends ReactContextBaseJavaModule implements BleAdapter 
     final SafeExecutor<Void> safeExecutor = new SafeExecutor<>(onSuccessCallback, onErrorCallback);
 
     final Disposable subscription = new RxBleAdapterStateObservable(context)
-      .takeUntil(actualAdapterState -> desiredAdapterState == actualAdapterState)
+      .filter(actualAdapterState -> desiredAdapterState == actualAdapterState)
       .firstOrError()
       .doOnDispose(() -> {
         safeExecutor.error(BleErrorUtils.cancelled());
