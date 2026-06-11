@@ -199,6 +199,15 @@ public class AdvertisementData {
 
   private static void parseManufacturerData(AdvertisementData advData, int adLength, ByteBuffer data) {
     if (adLength < 2) return;
+    // A merged scan record can carry more than one manufacturer-specific AD
+    // structure (0xFF), e.g. one from ADV_IND and another from SCAN_RSP. The
+    // previous behaviour kept whichever structure appeared last, so a short
+    // placeholder could replace the real payload. Keep the longest structure
+    // instead, matching what iOS exposes via CoreBluetooth's merged
+    // advertisement data.
+    if (advData.manufacturerData != null && advData.manufacturerData.length >= adLength) {
+      return;
+    }
     advData.manufacturerData = new byte[adLength];
     data.get(advData.manufacturerData, 0, adLength);
   }
