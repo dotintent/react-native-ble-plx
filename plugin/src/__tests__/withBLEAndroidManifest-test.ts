@@ -1,4 +1,4 @@
-import { AndroidConfig, XML } from '@expo/config-plugins'
+import { AndroidConfig, XML } from 'expo/config-plugins'
 import { resolve } from 'path'
 
 import {

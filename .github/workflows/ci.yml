@@ -35,6 +35,9 @@ jobs:
       - name: Run unit tests
         run: yarn test --maxWorkers=2 --coverage
 
+      - name: Run config plugin tests
+        run: yarn test:plugin --runInBand
+
   build-library:
     runs-on: ubuntu-latest
     steps:

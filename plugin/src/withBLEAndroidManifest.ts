@@ -1,10 +1,10 @@
-import { type ConfigPlugin, withAndroidManifest, AndroidConfig } from '@expo/config-plugins'
+import { type ConfigPlugin, withAndroidManifest, AndroidConfig } from 'expo/config-plugins'
 
 type InnerManifest = AndroidConfig.Manifest.AndroidManifest['manifest']
 
 type ManifestPermission = InnerManifest['permission']
 
-// TODO: add to `AndroidManifestAttributes` in @expo/config-plugins
+// TODO: add to `AndroidManifestAttributes` in expo/config-plugins
 type ExtraTools = {
   // https://developer.android.com/studio/write/tool-attributes#toolstargetapi
   'tools:targetApi'?: string
