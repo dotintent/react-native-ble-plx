@@ -175,7 +175,7 @@ The plugin provides props for extra customization. Every time you change the pro
       <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
       <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
       <!-- common -->
-      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+      <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" />
 
       <!-- Add this line if your application always requires BLE. More info can be found on:
           https://developer.android.com/guide/topics/connectivity/bluetooth-le.html#permissions
@@ -195,12 +195,14 @@ The plugin provides props for extra customization. Every time you change the pro
     <!-- Android < 12 -->
     <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
+    <uses-permission-sdk-23 android:name="android.permission.ACCESS_FINE_LOCATION" android:maxSdkVersion="30" />
 
        ...
    ```
 
-   With `neverForLocation` flag active, you no longer need to ask for `ACCESS_FINE_LOCATION` in your app
+   Use `uses-permission-sdk-23` for the location permission so Android's manifest merger can combine it with
+   RxAndroidBle's declaration. With `neverForLocation` flag active, you no longer need to ask for
+   `ACCESS_FINE_LOCATION` in your app on Android 12 and newer.
 
 ## Troubleshooting
 
