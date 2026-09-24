@@ -67,7 +67,7 @@
   ],
   "repository": "https://github.com/dotintent/react-native-ble-plx.git",
   "author": "dotintent (https://withintent.com/)",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "bugs": {
     "url": "https://github.com/dotintent/react-native-ble-plx/issues"
   },
