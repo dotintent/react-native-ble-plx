@@ -99,6 +99,10 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void createClient(String restoreStateIdentifier) {
+    // A second BleManager would otherwise orphan the first client and keep its connections open.
+    if (bleAdapter != null) {
+      bleAdapter.destroyClient();
+    }
     bleAdapter = BleAdapterFactory.getNewAdapter(reactContext);
     bleAdapter.createClient(restoreStateIdentifier,
       new OnEventCallback<String>() {
@@ -112,6 +116,20 @@ public class BlePlxModule extends ReactContextBaseJavaModule {
           sendEvent(Event.RestoreStateEvent, null);
         }
       });
+  }
+
+  /**
+   * The React instance is going away (a JS reload, an OTA update): close the client's connections.
+   * Otherwise they stay open with no JS to drive them, and a connected peripheral stops advertising,
+   * so the reloaded app can't find it.
+   */
+  @Override
+  public void invalidate() {
+    if (bleAdapter != null) {
+      bleAdapter.destroyClient();
+      bleAdapter = null;
+    }
+    super.invalidate();
   }
 
   @ReactMethod
